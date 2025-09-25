@@ -1,0 +1,14 @@
+%Input
+Let $x$ be the original input data or feature vector. Let $\alpha$ be a scalar value that controls the step size for adjusting $x$. It determines the magnitude of the perturbation applied to $x$.
+
+%Output
+Generate one adversarial attack variant based on the M-PGD AUTO gradient-based optimization approach. One adversarial attack variant, named "M-PGD AUTO with Adaptive Perturbation", is proposed. This variant introduces an adaptive perturbation strategy that adjusts the step size $\alpha$ based on the distance between the original input and the target output.
+
+%Formula
+$\delta^{(0)} = 0$
+for $n = 1 \text{ to } N: \quad\n\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha_n \cdot \text{sign} \left( \nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y) \right) \right)$
+
+%Explanation
+The M-PGD AUTO-AP Adaptive Perturbation variant introduces an adaptive perturbation strategy that adjusts the step size $\alpha$ based on the distance between the original input and the target output. This approach is inspired by AUTO gradient-based optimization method, which iteratively updates the perturbation to adapt to the model's behavior. The adaptive perturbation strategy improves the variant's ability to effectively mislead the model across a wide range of inputs.
+
+The variant differs from the main PGD Fast-Universal attack in its use of an adaptive perturbation strategy, which allows it to adjust the step size based on the distance between the original input and the target output. This approach enables the M-PGD AUTO variant to generate more effective adversarial examples that are better suited to the specific characteristics of each input image.

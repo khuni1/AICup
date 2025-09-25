@@ -1,0 +1,41 @@
+%Input
+Let \( x \) be the original input data, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Practical Swarm attack generates adversarial examples by simulating a swarm-based optimization technique to find perturbations.
+
+%Output
+The output of the Practical Swarm attack is a modified input \( x^* \) that successfully misleads the model while remaining similar to the original input.
+
+%Formula
+The Practical Swarm adversarial attack can be formulated as follows:
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Define a swarm of particles \( P \) where each particle represents a potential perturbation:
+   $
+   P = \{p_1, p_2, \ldots, p_n\}.
+   $
+3. For each particle \( p_i \) in the swarm:
+   - Compute the perturbed input:
+   $
+   x' = x + p_i.
+   $
+   - Evaluate the model's prediction:
+   $
+   \hat{y} = f_{\theta}(x').
+   $
+   - Update the particle's position based on its fitness (e.g., classification loss):
+   $
+   p_i = p_i + \alpha \nabla J(f_{\theta}(x'), y),
+   $
+   where \( \alpha \) is a learning rate.
+4. The goal is to find:
+   $
+   x^* = x + p^*,
+   $
+   where \( p^* \) is the best-performing particle after the optimization iterations:
+   $
+   p^* = \arg\min_{p_i} J(f_{\theta}(x + p_i), y).
+   $
+
+%Explanation
+The Practical Swarm attack generates adversarial examples by utilizing a swarm-based optimization strategy to explore potential perturbations in the input \( x \). By simulating a population of particles, each representing different perturbations, the attack seeks to find an effective perturbation \( p^* \) that, when added to the original input, results in a new input \( x^* \) that misleads the model. This method showcases the effectiveness of swarm intelligence in crafting adversarial examples and emphasizes the need for robust defenses against such adaptive attacks.

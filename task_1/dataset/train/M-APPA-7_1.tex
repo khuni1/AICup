@@ -1,0 +1,19 @@
+%Input
+Let \( X \) be the original input, and let \( g_{\text{pick}} \) and \( g_{\text{plug}} \) be transformation functions. The pick function selects specific elements, while the plug function reconstructs the modified input using selected components. Additionally, let \( S_i = [x_{Si1}, x_{Si2}, \ldots, x_{Sij}] \) represent a set of selected components.
+
+%Output
+The transformed input after applying the pick-and-plug process, denoted as:
+\[
+T_{\text{pick-n-plug}}(X) = g_{\text{plug}}(g_{\text{pick}}(X)) = X_0.
+\]
+This transformation includes an adversarial perturbation, making it more effective against robust models.
+
+
+%Formula
+$T_{\text{pick-n-plug}}(X) = g_{\text{plug}}(g_{\text{pick}}(X)) = X_0$
+$S_i = [x_{Si1}, x_{Si2}, \ldots, x_{Sij}]$
+
+%Explanation
+The JSMA Pick-and-Plug variant with adversarial perturbation is a modification of the original pick-and-plug transformations. The new attack introduces a gradient-based perturbation strategy to improve the effectiveness of the attack. The pick transformation $g_{\text{pick}}(X)$ remains unchanged, but the plug transformation $g_{\text{plug}}(X, [S_1, \ldots, S_l])$ is modified to incorporate an adversarial perturbation $\delta$. The final output $X_0$ is then calculated using the original formula. 
+
+This Adversarial Pick-and-Plug Attack (APPA) variant improves upon the original by incorporating a targeted perturbation strategy, making it more effective against robust models.

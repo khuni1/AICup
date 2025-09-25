@@ -1,0 +1,27 @@
+%Input
+\begin{align*}
+L(\mathbf{x} + \delta, y, \theta) &= 0.5 \|\delta\|_p^2 \\
+\gamma_k &= h(\gamma_0, \gamma_K, k, K)
+\end{align*}
+
+%Output
+\begin{align*}
+\mathbf{x}^* &: \text{Adversarial example found by the attack} \\
+\delta^* &: \text{Optimized adversarial perturbation} \\
+\epsilon_k &: \text{Updated step size at iteration } k \\
+\alpha_k &: \text{Weighting factor for the update rule at iteration } k
+\end{align*}
+
+%Formula
+\begin{align*}
+\mathbf{x}_k &\gets \mathbf{x}_0 + \delta_k \\
+\epsilon_k &= \min(\epsilon_{k-1}(1 - \gamma_k), \|\delta^*\|_p)\\
+\alpha_k &= h(\alpha_0, \alpha_K, k, K)
+\end{align*}
+
+%Explanation
+The FastMinimumNormAttack is an improvement over the original perturbation core. The key modifications are:
+- **Adversarial example constraints**: This attack introduces two constraints to ensure that the adversarial example is misclassified and lies within the feasible input space.
+- **Lagrangian function**: We use a Lagrangian function to balance the objective function with the constraints, providing a more robust optimization framework for the attack.
+
+This variant is designed to improve upon the original attack by incorporating additional constraints and optimizing the $\epsilon$-step size decay. The new attack can potentially lead to more effective and stealthy adversarial examples while maintaining the core principle of minimizing-norm perturbation.

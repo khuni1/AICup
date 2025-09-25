@@ -1,0 +1,31 @@
+%Input
+Original input: $X \in \mathbb{R}^d$
+True label: $y \in \mathcal{Y}$
+Model function: $f(X)$
+Target class (for targeted attack): $y_{\text{target}}$
+Loss function: $\mathcal{L}(f(X), y)$
+Perturbation budget: $\epsilon$
+Trade-off parameter: $c$
+Maximum iterations: $T$
+Step size for optimization: $\alpha$
+
+%Output
+Output: Adversarial example $X_{\text{adv}}$ such that $\|X_{\text{adv}} - X\|_p \leq \epsilon$.
+
+%Formula
+Optimization Objective:
+    \[
+    \min_{\delta} \|\delta\|_p + c \cdot g(X + \delta)
+    \]
+    where $g(X + \delta)$ enforces misclassification:
+    \[
+    g(X + \delta) = 
+    \begin{cases} 
+    \max(0, Z(X + \delta)_y - Z(X + \delta)_{y_{\text{target}}} + \kappa), & \text{targeted attack}, \\
+    \max(0, Z(X + \delta)_y - \max_{j \neq y} Z(X + \delta)_j + \kappa), & \text{untargeted attack}.
+    \end{cases}
+    \]
+
+%Explanation
+This variant Max-Norm Constrained Adversarial Attack (MNCAA) is similar to the original method but with an added constraint of using a different scoring function for misclassification. The new scoring function uses the maximum norm between the predicted probabilities and the target class, which can be more effective in certain cases.
+This variant Max-Norm Constrained Adversarial Attack (MNCAA) introduces a new scoring function that can lead to more effective attacks, but it maintains the core principle of the original method.

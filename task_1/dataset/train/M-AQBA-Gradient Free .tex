@@ -1,0 +1,23 @@
+%Input
+Let $x$ be the original input image and let $f_{\theta}$ be the target model. The goal is to generate an adversarial example $x^*$ by querying the model multiple times to gain information about the model's predictions.
+
+%Output
+The output of the Query Mechanisms attack is an adversarial example $x^*$ that misleads the target model based on the information gathered from its responses to queries.
+
+%Formula
+1. Initialize the input:
+   $x^{(0)} = x$
+2. For each query iteration $n = 1$ to $N$:
+   - Query the model:
+   $y_n = f_{\theta}(x^{(n-1)})$
+   where $y_n$ is the predicted label for the perturbed input.
+   - Based on the output, adjust the input:
+   $x^{(n)} = x^{(n-1)} + \alpha \cdot \text{sign}(\nabla_x L(y_n, y_{target}))$
+   where $L$ is the loss function and $y_{target}$ is the desired misclassification label.
+3. The final adversarial example is:
+   $x^* = x^{(N)} \quad \text{with the constraint that} \quad \|x^* - x\|_p \leq \epsilon$
+
+%Explanation
+The Adaptive Query-Based Attack (AQBA) variant exploits the ability to interact with the target model by querying it to gather information about its predictions. This approach is particularly useful when the model parameters are unknown, as it allows the attacker to infer how perturbations affect the model's outputs. By iteratively querying the model and adjusting the input based on the received responses, the attack generates an adversarial example $x^*$ that successfully misleads the model. The use of query-based strategies emphasizes the importance of understanding model behavior in crafting effective adversarial attacks, and it highlights vulnerabilities in scenarios where direct access to the model's internal parameters is not available.
+
+This variant differs from the original Query Mechanisms attack by incorporating an adaptive perturbation strategy, which allows the attack to dynamically adjust its perturbation magnitude based on the output of each query iteration. This refinement enables the attack to exploit the model's vulnerabilities more effectively and improve its overall performance.

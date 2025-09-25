@@ -1,0 +1,43 @@
+%Input
+\[
+\textbf{Input:} \quad \mathbf{x}_{\text{original}}, \quad y_{\text{true}}, \quad y_{\text{target}}, \quad d(\cdot, \cdot), \quad c, \quad \kappa, \quad b
+\]
+
+\textbf{Definitions:}
+\begin{itemize}
+    \item \( \mathbf{x}_{\text{original}} \) is the original input example.
+    \item \( y_{\text{true}} \) is the true class label.
+    \item \( y_{\text{target}} \) is the target label for targeted attacks.
+    \item \( d(\cdot, \cdot) \) is the chosen distance metric (\( L_2 \), \( L_0 \), or \( L_\infty \)).
+    \item \( c \) is a trade-off coefficient balancing distance and attack success.
+    \item \( \kappa \) is a confidence margin for misclassification.
+    \item \( b \) is a scaling parameter for the new scoring function.
+\end{itemize}
+
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$.
+
+%Formula
+1.Objective:
+   \[
+   \mathbf{x}_{\text{adv}} = \arg \min_{\mathbf{x}} \; d(\mathbf{x}, \mathbf{x}_{\text{original}}) + c \cdot g(\mathbf{x}),
+   \]
+   where $g(\mathbf{x})$ ensures misclassification:
+   \[
+   g(\mathbf{x}) = \max \big( f(\mathbf{x})_{y_{\text{true}}} - f(\mathbf{x})_{y_{\text{target}}} + \kappa, 0 \big).
+   \]
+
+2.Multiple-Bit Attack:
+   - Distance metric remains the same as in $L_2$, $L_0$, and $L_\infty$ attacks.
+   - Introduce a new scoring function $s(\mathbf{x}) = (\max(g(\mathbf{x}), 0))^b$, where $b > 1$ is a scaling parameter.
+
+3.Optimization:
+   - Use iterative optimization with gradient-based descent to minimize the objective while ensuring $g(\mathbf{x}) \leq 0$.
+   - Gradually reduce the allowed perturbation region to control attack strength, enforced by the scoring function $s(\mathbf{x})$.
+
+4.Norm-Specific Behavior:
+   - Multiple-Bit Attack preserves smoothness with minimal energy ($L_2$), focuses on sparse perturbations with a limited number of modified features ($L_0$), and limits uniform constraints per pixel ($L_\infty$).
+
+%Explanation
+The Multi-Bit Adversarial Perturbation (MBAP) variant is distinct from the C\&W attack by introducing a new scoring function $s(\mathbf{x}) = (\max(g(\mathbf{x}), 0))^b$, which controls the aggressiveness of the attack and allows for more efficient optimization. This modification maintains the core principles of the original attack while providing improved stealth capabilities.

@@ -1,0 +1,42 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original text input sequence.
+$f(\mathbf{x})$: Target model (e.g., text classifier).
+$y_{\text{true}}$: True label of the input sequence.
+$\epsilon$: Maximum allowed number of character swaps.
+$\mathcal{N}(c)$: Set of neighboring characters for a character $c$, based on a keyboard layout.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with minimal changes}.
+\]
+
+%Formula
+1. Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Iterative Character Substitution:
+   - For each character $c_i$ in $\mathbf{x}_{\text{adv}}$:
+     \[
+     c_i' = \underset{c' \in \mathcal{N}(c_i)}{\arg \max} \, \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(i \rightarrow c')}, y_{\text{true}}),
+     \]
+     where $\mathbf{x}_{\text{adv}}^{(i \rightarrow c')}$ represents the input with $c_i$ replaced by a neighboring character $c'$.
+
+3. Update the Input:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} \, \text{with the replaced character}.
+   \]
+
+4. Stopping Condition:
+   - If $f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}$, or if the number of modified characters exceeds $\epsilon$, terminate the attack.
+
+%Explanation
+Pruthi's Keyboard Character Swap Attack is a heuristic-based adversarial attack designed for natural language processing (NLP) tasks.
+
+1. Objective: The attack generates adversarial text by swapping characters in a way that mimics real-world typing errors (e.g., adjacent key swaps), causing misclassification by the target model.
+2. Keyboard Layout: The attack uses a predefined keyboard layout to identify valid neighboring characters for each character in the input.
+3. Iterative Substitution: Characters are iteratively replaced with their neighboring counterparts, prioritizing those changes that increase the model's loss the most.
+4. Semantic Preservation: The character swaps are designed to resemble realistic typographical errors, maintaining the overall readability and semantic meaning of the text.
+5. Non-Gradient Based: This attack does not require access to the model's gradients, making it applicable even in scenarios where the target model is a black box.

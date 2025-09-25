@@ -1,0 +1,21 @@
+%Input
+The input includes:
+- The original input sample \( x \).
+- The adversarial loss function \( \mathcal{L}_{\text{adv}}(x, f) \).
+- The flow regularization loss \( \mathcal{L}_{\text{flow}}(f) \).
+- The trade-off parameter \( \tau \).
+- The target function \( f \) to be optimized.
+
+The goal is to find the optimal function \( f^* \) that minimizes the combined adversarial and flow regularization losses.
+
+
+%Output
+Optimal function $f^*$.
+
+%Formula
+\[
+f^* = \text{argmin}_f \left( \mathcal{L}_{\text{adv}}(x, f) + \tau \mathcal{L}_{\text{flow}}(f) \right)
+\]
+
+%Explanation
+The Flow-Regularized Adversarial Optimization (FRAO) variant of the perturbation core that incorporates spatial transformation based optimization. The key difference between this variant and the original perturbation core is the inclusion of flow regularization loss in the optimization objective, which encourages smoothness or consistency in the predictions. This modification makes the variant more robust to adversarial attacks while maintaining the core principle of the original attack.

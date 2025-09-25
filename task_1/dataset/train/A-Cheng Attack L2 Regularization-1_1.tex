@@ -1,0 +1,41 @@
+%Input
+Input: Filename: A-Cheng Attack-Gradient Based Optimization.tex
+Input: $\mathbf{x}_{\text{original}}$: Original input (e.g., image, text, or data sample). \\
+$f(\mathbf{x})$: Target model for classification or regression. \\
+$y_{\text{true}}$: True label of the input. \\
+$\epsilon$: Perturbation limit controlling the magnitude of changes. \\
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function representing the attack objective. \\
+$T$: Number of optimization iterations. \\
+$\eta$: Learning rate or step size for the attack optimization.
+
+%Output
+Output: Generate one adversarial attack variant that is logically derived from the perturbation core described in the uploaded LaTeX input provided.
+
+%Formula
+1. Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Gradient-Based Perturbation Update:
+   For $t = 0, 1, \ldots, T-1$, update the adversarial example:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} - \eta \cdot \nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{true}}) + \gamma (\mathbf{x}_{\text{adv}}^{(t)} - \mathbf{x}^*),
+   \]
+   where $\nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}, y)$ is the gradient of the loss with respect to the input, and $\gamma$ is a regularization coefficient.
+
+3. Perturbation Projection:
+   Ensure the adversarial example remains within the allowed perturbation limit $\epsilon$:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}(\mathbf{x}_{\text{adv}}^{(t+1)}, \mathbf{x}_{\text{original}} - \epsilon, \mathbf{x}_{\text{original}} + \epsilon).
+   \]
+
+4. Stopping Criterion:
+   Terminate the attack when:
+   \[
+   f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}, \quad \text{or} \quad ||\nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}, y_{\text{true}})|| < \lambda,
+   \]
+   where $\lambda$ is a threshold for the gradient magnitude.
+
+%Explanation
+This variant modifies the original A-Cheng Attack by incorporating L2 regularization. The additional term in the gradient update step encourages the adversarial example to be closer to the target model's output, reducing the likelihood of misclassification. The regularization coefficient $\gamma$ controls the strength of this effect. This modification makes the attack more robust and effective, while maintaining its core principle of using gradients to craft perturbations.

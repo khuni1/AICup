@@ -1,0 +1,27 @@
+%Input 
+Let $x$ be the original input sample, and let $f_{\theta}$ represent the target model parameterized by \(\theta\). The goal is to generate an adversarial perturbation \(\delta\) that maximizes the loss while considering an ensemble of loss functions.  
+
+The optimization problem is formulated as:  
+\[
+\underset{\delta}{\text{maximize}} \quad L(f_{\theta}(x + \delta), y) + \beta \cdot g(F_1, F_2, \dots, F_n)
+\]
+subject to the constraint:  
+\[
+\|\delta\|_p \leq \epsilon
+\]
+where \(L\) represents the primary loss function, \(g\) is an ensemble-based loss function, \(\beta\) is a trade-off parameter, and \(\epsilon\) defines the perturbation budget.
+
+
+%Output
+The PGD Ensemble Attack variant is a logically derived extension of the original perturbation core. It combines the principles of ensemble-based optimization with the Fast-Universal attack, aiming to improve the robustness and diversity of generated adversarial examples.
+
+%Formula
+$\delta^{(0)} = 0$
+for $n = 1 \text{ to } N: \quad\n\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y) \right) + \beta \cdot g^n(F_1, F_2, \dots, F_n) \right)$
+
+where $g^n(F_1, F_2, \dots, F_n)$ represents an ensemble of loss functions evaluated at the current iteration $n$, and $\beta$ is a hyperparameter controlling the trade-off between the perturbation and the ensemble-based optimization.
+
+%Explanation
+The Projected Gradient Descent Ensemble Attack (PGD Ens) variant extends the original Fast-Universal attack by incorporating an ensemble-based optimization component. The addition of the ensemble loss function, $g^n(F_1, F_2, \dots, F_n)$, allows the attack to adaptively adjust the perturbation $\delta^{(n)}$ based on the performance of individual components within the ensemble. This modification enables the generated adversarial examples to be more robust and diverse across different parts of the input space.
+
+The PGD Ensemble Attack variant differs from the original PGD Fast-Universal attack by incorporating an ensemble-based optimization component, which adaptsively adjusts the perturbation based on the performance of individual components within the ensemble. This modification improves the robustness and diversity of generated adversarial examples.

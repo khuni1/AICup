@@ -1,0 +1,23 @@
+%Input
+Let $J$ be the Jacobian matrix of the function $f$ with respect to the input. The adversarial perturbation $\delta^*$ is computed using the Moore-Penrose pseudoinverse $J^{+}$ of the Jacobian matrix. The objective is to maximize the loss function while ensuring that the perturbation remains constrained.
+
+Given:
+- $J$: Jacobian matrix of the function $f$.
+- $J^{+}$: Moore-Penrose pseudoinverse of $J$.
+- $\nabla f$: Gradient of the function $f$.
+- $(J^{+})^{\top}$: Transpose of the pseudoinverse matrix.
+- $\mu$: Scaling factor that controls the magnitude of the perturbation.
+
+The optimization process aims to find an optimal perturbation vector $\delta^*$ that maximizes the objective function while maintaining numerical stability and efficiency.
+
+
+%Output
+$\delta^* = \mu \frac{\left( J^{+}J \right)^{-1} \nabla f}{\| (J^{+})^{\top} \nabla f \|^2}$
+
+%Formula
+$\delta^*$ represents the optimal perturbation vector that maximizes the objective function under the given constraints. $\mu$ is a scaling factor that adjusts the magnitude of the perturbation.
+
+%Explanation
+The Pseudoinverse Jacobian Perturbation Attack (PJPA) variant with inverse matrix-based optimization where, $\delta^*$ is the optimal perturbation vector. $J^{+}$ is the Moore-Penrose pseudoinverse of the Jacobian matrix $J$. $\nabla f$ is the gradient of the function $f$. $(J^{+})^{\top}$ is the transpose of the pseudoinverse matrix $J^{+}$. The formula uses the inverse of the product of the pseudoinverse and the Jacobian matrix to adjust the perturbation vector in the direction that maximizes the loss. $\mu$ is a scaling factor that adjusts the magnitude of the perturbation.
+
+This variant is different from the main PPGD attack in that it uses an inverse matrix-based optimization approach, which provides a more robust and stable method for generating adversarial examples. The use of $(J^{+})^{-1}$ instead of $\left( J^+J \right)^{-1}$ allows for a more efficient computation of the perturbation vector, making this variant faster than the original PPGD attack.

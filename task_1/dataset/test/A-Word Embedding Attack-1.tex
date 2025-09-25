@@ -1,0 +1,28 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input text sequence.
+$f(\mathbf{x})$: Target model (e.g., classifier).
+$y_{\text{true}}$: True label of the input sequence.
+$\epsilon$: Perturbation limit (e.g., maximum allowed changes).
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function to minimize for successful attack.
+$\mathcal{E}$: Word embedding space (e.g., GloVe or Word2Vec).
+$N$: Maximum number of iterations.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+  \[
+  f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with minimal semantic distortion}.
+  \]
+
+%Formula
+$\delta^{(0)} = 0$
+$\text{for } n = 1 \text{ to } N: \quad\n$
+$\delta^{(n)} = \mathcal{E}^{-1} \left( \delta^{(n-1)} + \alpha \cdot \nabla_\delta \mathcal{L}(f_\theta(\mathbf{x}_{\text{adv}}^{(n-1)}), y_{\text{true}}) \right)$
+$\text{if } f(\mathbf{x}_{\text{adv}}^{(n)}) \neq y_{\text{true}}, \text{ or if } |\delta^{(n)}| > \epsilon: \quad\n$
+$\delta^{(n)} = 0$
+
+%Explanation
+This variant TextFooler-Word Embedding Attack of the TextFooler attack is inspired by the perturbation core described in the uploaded LaTeX input. The main difference between this variant and the original TextFooler attack lies in its use of word embeddings to guide the optimization process. In this version, the attack uses a word embedding space (e.g., GloVe or Word2Vec) to compute the gradient of the loss function with respect to the perturbation. This allows for a more targeted approach to modifying the input text sequence, potentially leading to improved semantic preservation and stealth.
+
+The update rule for the perturbation has been modified to incorporate the word embedding space, where the new perturbation is computed as the negative inverse of the word embedding space. The attack now iteratively refines the perturbation until it achieves misclassification or exceeds the allowed number of modifications.
+
+This variant maintains the core principle of the original TextFooler attack while introducing a new constraint and scoring function inspired by word embeddings.

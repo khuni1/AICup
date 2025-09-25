@@ -1,0 +1,43 @@
+%Input
+Let \( x \) be the original input image, \( y \) be the true label, and \( f_{\theta} \) be the target model. The APGD-AT attack aims to generate an adversarial example \( x^* \) that maximizes the model's loss while ensuring that the perturbation remains within a specified bound.
+
+%Output
+The output of the APGD-AT attack is an adversarial example \( x^* \) that effectively misclassifies the input while adhering to the constraints of adversarial training.
+
+%Formula
+The APGD-AT adversarial attack can be formulated as follows:
+1. Initialize the input:
+   $
+   x^{(0)} = x.
+   $
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size \( \epsilon \), the number of iterations \( N \), and the step size \( \alpha \).
+3. For each iteration \( n = 1 \) to \( N \):
+   - Compute the model's prediction:
+   $
+   \hat{y}^{(n)} = f_{\theta}(x^{(n-1)}).
+   $
+   - Calculate the gradient of the loss function:
+   $
+   g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y).
+   $
+   - Update the input by adding the perturbation:
+   $
+   x^{(n)} = x^{(n-1)} + \alpha \cdot \text{sign}(g_n).
+   $
+   - Project the updated input back into the feasible region:
+   $
+   x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)}, \epsilon),
+   $
+   ensuring:
+   $
+   \|x^{(n)} - x\|_p \leq \epsilon.
+   $
+
+4. The final adversarial example is:
+   $
+   x^* = x^{(N)}.
+   $
+
+%Explanation
+The APGD-AT (Adaptive Projected Gradient Descent for Adversarial Training) attack generates adversarial examples through an iterative process that combines the principles of projected gradient descent and adaptive learning. By adjusting the input based on the gradients of the loss function, the attack aims to maximize the model's loss while maintaining the perturbation within a predefined limit. The resulting adversarial example \( x^* \) effectively deceives the model, highlighting the vulnerabilities of models under adversarial training scenarios and underscoring the necessity for robust defense strategies.

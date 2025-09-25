@@ -1,0 +1,21 @@
+%Input
+\[
+\text{Minimize } f(x_1, x_2) = x_1 + x_2 \text{ subject to } x_1^2 + x_2^2 \leq 2, \quad x_1 \geq 0, \quad x_2 \geq 0
+\]
+
+%Output
+Optimal solution: 
+\[
+(x_1, x_2) = (1, 1)
+\]
+Objective value: 
+\[
+f(1, 1) = 2
+\]
+
+
+%Formula
+$\mathcal{L}(x_1, x_2, \lambda, \mu_1, \mu_2) = x_1 + x_2 + \lambda (x_1^2 + x_2^2 - 2) - \mu_1 x_1 - \mu_2 x_2$
+
+%Explanation
+The Integrated Optimization Zoo (IOZ) variant maintains the core principle of the original method but introduces a new constraint that combines both $x_1$ and $x_2$ into a single scalar value. This allows for a more integrated optimization process, where the minimization of the objective function is dependent on the values of both $x_1$ and $x_2$. The Integrated Optimization Zoo (IOZ) method uses the Lagrange multiplier technique to incorporate this new constraint, resulting in an improved solution that better reflects the relationship between $x_1$ and $x_2$. In contrast to the original M-Zoo method, which separated the objective function into two distinct terms, the variant combines these terms into a single function, leading to a more holistic approach to optimization.

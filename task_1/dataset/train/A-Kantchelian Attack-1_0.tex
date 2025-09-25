@@ -1,0 +1,51 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input sequence (e.g., text or image data). \\
+$f(\mathbf{x})$: Target model (e.g., classifier or regressor). \\
+$y_{\text{true}}$: True label of the input. \\
+$\epsilon$: Perturbation limit for adversarial perturbation. \\
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function to minimize for successful attack. \\
+$N$: Maximum number of iterations.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with minimal perturbation}.
+\]
+
+%Formula
+1. Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Perturbation Update:
+   Compute the perturbation as the solution to the optimization problem:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} + \alpha \cdot \nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{true}}),
+   \]
+   where $\alpha$ is the step size for each update.
+
+3. Perturbation Constraint:
+   Ensure the perturbation remains within the limit $\epsilon$:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}(\mathbf{x}_{\text{adv}}^{(t+1)}, \mathbf{x}_{\text{original}} - \epsilon, \mathbf{x}_{\text{original}} + \epsilon).
+   \]
+
+4. Stopping Condition:
+   Terminate the attack when:
+   \[
+   f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}, \quad \text{or when} \, t \geq N.
+   \]
+
+%Explanation
+The Kantchelian Adversarial Attack is designed to generate adversarial examples by iteratively perturbing the input data. The goal of the attack is to mislead the target model $f$ into making incorrect predictions while keeping the changes to the input minimal and imperceptible.
+
+1. Initialization: The process starts with the original input $\mathbf{x}_{\text{original}}$, and the attack generates an adversarial example $\mathbf{x}_{\text{adv}}$ by modifying the input.
+
+2. Perturbation Update: The attack iteratively updates the adversarial example by adding a perturbation based on the gradient of the loss function with respect to the input. The perturbation is scaled by a step size $\alpha$.
+
+3. Constraint on Perturbation: The perturbation is constrained to ensure it does not exceed a predefined bound $\epsilon$, which limits the maximum change allowed for each feature.
+
+4. Stopping Criteria: The attack terminates when either the adversarial example successfully misleads the model ($f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}$) or the maximum number of iterations is reached.
+
+This attack is gradient-based, as it relies on the computation of gradients of the loss function with respect to the input to craft adversarial perturbations.

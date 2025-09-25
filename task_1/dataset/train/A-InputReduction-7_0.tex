@@ -1,0 +1,52 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input sequence (e.g., text, image, etc.).  
+$f(\mathbf{x})$: Target model (e.g., classifier).  
+$y_{\text{true}}$: True label of the input sequence.  
+$N$: Maximum number of iterations for reduction.  
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function to evaluate the change in prediction.  
+$T$: Threshold for stopping when the prediction changes.
+
+%Output
+Reduced adversarial input $\mathbf{x}_{\text{red}}$ such that:  
+\[
+f(\mathbf{x}_{\text{red}}) \neq y_{\text{true}}, \quad \text{while retaining minimal information from } \mathbf{x}_{\text{original}}.
+\]
+
+%Formula
+
+1.Initialization:  
+   Start with the full input:  
+   \[
+   \mathbf{x}_{\text{red}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2.Feature Importance Scoring:  
+   Identify the importance of each feature/component $x_i$ in $\mathbf{x}_{\text{red}}$:  
+   \[
+   I(x_i) = \mathcal{L}(f, \mathbf{x}_{\text{red}}^{(-i)}, y_{\text{true}}) - \mathcal{L}(f, \mathbf{x}_{\text{red}}, y_{\text{true}}),
+   \]
+   where $\mathbf{x}_{\text{red}}^{(-i)}$ represents the input with feature $x_i$ removed.
+
+3.Feature Removal:  
+   Iteratively remove the least important feature based on $I(x_i)$:  
+   \[
+   \mathbf{x}_{\text{red}}^{(t+1)} = \mathbf{x}_{\text{red}}^{(t)} \setminus \{x_j\},
+   \]
+   where $x_j = \underset{x_i}{\arg \min} \, I(x_i)$.
+
+4.Stopping Condition:  
+   - If the prediction changes such that $f(\mathbf{x}_{\text{red}}^{(t+1)}) \neq y_{\text{true}}$, or  
+   - The input size is reduced to a minimal representation below the threshold $T$, terminate the attack.
+
+%Explanation
+Input Reduction Adversarial Attack is designed to minimize the input size while preserving adversarial effectiveness. It operates by iteratively identifying and removing the least important features from the input, as measured by their contribution to the model's prediction. The key advantage of this attack is its ability to reveal the minimal set of features required to manipulate the model's prediction. Unlike gradient-based attacks, Input Reduction emphasizes interpretability and practical insights into model behavior.
+
+1.Objective: The Input Reduction Attack seeks to identify and remove irrelevant features/components of the input while preserving adversarial effectiveness. The goal is to create a reduced input $\mathbf{x}_{\text{red}}$ that leads to model misclassification.
+
+2.Feature Importance: Features are scored based on their impact on the model's loss function. Features with the least impact are removed first.
+
+3.Iterative Removal: By progressively eliminating features, the attack minimizes the input size while ensuring that the reduced input still causes misclassification.
+
+4.Stopping Criterion: The attack stops either when misclassification is achieved or when a minimal feature set is reached, ensuring that the reduction is effective but does not over-remove critical components.
+
+5.Applicability: This attack is particularly effective for interpretable models or models with structured inputs, where feature contributions can be explicitly assessed.

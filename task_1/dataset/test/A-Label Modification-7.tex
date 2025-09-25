@@ -1,0 +1,27 @@
+%Input
+Let \( x \) be the original input data, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Label Modification attack aims to change the label of an input to mislead the model into making incorrect predictions.
+
+%Output
+The output of the Label Modification attack is a modified label \( y^* \) that causes the model to misclassify the input \( x \).
+
+%Formula
+The Label Modification adversarial attack can be formulated as follows:
+1. Initialize the input and true label:
+   $
+   (x, y)
+   $
+2. Define the target label \( y^* \) that is different from \( y \):
+   $
+   y^* \neq y.
+   $
+3. The goal of the attack is to maximize the likelihood of the incorrect label:
+   $
+   y^* = \arg\max_{y'} P(f_{\theta}(x) = y' \mid x),
+   $
+   subject to the constraint that the model's prediction must change:
+   $
+   f_{\theta}(x) \neq y^*.
+   $
+
+% Explanation
+The Label Modification attack works by strategically altering the label of an input \( x \) to mislead the model. By identifying a target label \( y^* \) that differs from the true label \( y \), the attack aims to force the model to incorrectly classify the input as \( y^* \). This approach demonstrates how adversarial manipulation can exploit the decision boundaries of models, emphasizing the need for robust label handling mechanisms in machine learning systems.

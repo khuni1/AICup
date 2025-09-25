@@ -1,0 +1,38 @@
+%Input
+The input is the original sample \(x\) and the initial perturbation \(\delta\). The perturbation is then subjected to a randomized approach.
+
+%Output
+The output is the updated perturbation \(\delta_{\text{final}}\) applied to the input \(x\), resulting in the adversarial example \(x_{\text{new}} = x + \delta_{\text{final}}\).
+Output: This variant introduces a randomized approach, where multiple perturbations are blended using random weights and then selected based on their magnitude. The process ensures that the final perturbation is unpredictable and can lead to more robust adversarial examples.
+
+%Formula
+The perturbation update follows these steps:
+
+Randomization Spell Generate a random perturbation \(\delta_{\text{random}}\) from a Gaussian distribution:
+
+\[
+\delta_{\text{random}} \sim \mathcal{N}(0, \sigma)
+\]
+
+Witch’s Cauldron Blending Combine multiple perturbations with random weights:
+
+\[
+\delta_{\text{final}} = \sum_{i} \omega_i \cdot \delta_i
+\]
+
+Unpredictable Update Rule Apply the final perturbation to the input:
+
+\[
+x_{\text{new}} = x_{\text{old}} + \delta_{\text{final}}
+\]
+
+Hexed Decision Choose the perturbation that maximizes the classification uncertainty:
+
+\[
+\text{Chaos Metric} = \sum_j \left| \frac{\partial y_j}{\partial x_i} \right|
+\]
+
+%Explanation
+This Chaotic Spell Attack (CSA) variant modifies the original WitchCraft method by introducing randomness in the blending process. The new approach generates multiple perturbations and selects the one that maximizes the Chaos Metric, ensuring that the adversarial example is unpredictable and robust against various input variations.
+
+This variant differs from the main perturbation core by incorporating a randomized element, which introduces uncertainty and unpredictability to the adversarial attack.

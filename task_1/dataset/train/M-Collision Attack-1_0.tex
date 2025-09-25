@@ -1,0 +1,18 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, and $f_\theta(x)$ be the model's prediction for the input image. The goal is to create an adversarial example $x^*$ that collides with a target example in feature space.
+
+%Output
+The output of the Collision Attack is an adversarial example $x^*$ that is misclassified by the model while being close to a target example $x_t$ in the feature space.
+
+%Formula
+The Collision Attack can be formulated as:
+$x^* = \arg\min_{x'} \left( \|f_\theta(x') - f_\theta(x_t)\|^2 + \lambda \|x' - x\|^2 \right)$
+where:
+- $f_\theta(x_t)$ is the feature representation of the target example,
+- $\lambda$ is a hyperparameter that balances the trade-off between the feature collision and the perturbation size.
+
+The objective is to find $x^*$ such that:
+$f_\theta(x^*) \neq y \quad \text{and} \quad \|f_\theta(x^*) - f_\theta(x_t)\|^2 \text{ is minimized.}$
+
+%Explanation
+The Collision Attack leverages the concept of feature space representation to create adversarial examples. By minimizing the distance between the feature representations of the original input and a target example, the attack aims to generate an adversarial example $x^*$ that is close to the target in feature space but misclassified by the model. This approach can exploit the nonlinearities and complexities of the model's decision boundaries, allowing for successful evasion while preserving perceptual similarity to the original input. The trade-off parameter $\lambda$ is crucial in controlling the extent of the perturbation, ensuring that the resulting adversarial example is both effective and minimally intrusive.

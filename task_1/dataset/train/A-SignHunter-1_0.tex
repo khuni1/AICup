@@ -1,0 +1,68 @@
+%Input
+An input/label pair $(x, y)$.
+Black-box function $g: H \to \mathbb{R}$ to be maximized over the binary hypercube $H \equiv \{-1, +1\}^n$.
+This reformulates the gradient sign estimation problem from a single $n$-dimensional to $n$ one-dimensional binary black-box optimization problems, reducing the search space of sign bits from $2^n$ to $2n$. 
+\textbf{Input:} Input to be perturbed $x_{\text{init}}$, true label $y_{\text{init}}$, $B_p(., \epsilon)$: $\ell_p$ perturbation ball of radius $\epsilon$, loss function $L$.
+
+%Output
+Estimated sign vector $s$.
+Adversarial example $x$.
+
+%Formula
+The directional derivative of the loss function $L$ at an input/label pair $(x, y)$ in the direction of a binary code $q$ is given by:
+$D_q L(x, y) = q^T g^*$
+where $g^* = \nabla_x L(x, y)$.
+The directional derivative $D_q L(x, y)$ of the loss function $L$ at an input/label pair $(x, y)$ in the direction of a binary code $q$ is separable:
+$\max_{q \in H} D_q L(x, y) = \max_{q \in H} q^T g^* = \sum_{i=1}^n \max_{q_i \in \{-1, +1\}} q_i g^*_i.$
+Initialize $i \leftarrow 0$, $h \leftarrow 0$.
+$s \sim U(H)$ (e.g., $[+1, \ldots, +1]$).
+$\text{done} \leftarrow \text{false}$.
+$g_{\text{best}} \leftarrow -\infty$.
+The steps are as follows:
+
+\textbf{Initial Guess:} Start with an arbitrary sign vector $q$ and compute the directional derivative $D_q L(x, y)$. This requires two queries: $L(x + \delta q, y)$ and $L(x, y)$.
+
+\textbf{Bit Flipping:} For the remaining $n$ queries, flip $q$'s bits one by one and compute the corresponding directional derivative with one query each: $L(x + \delta q, y)$.
+\textbf{Bit Retention:} Retain bit flips that maximize the directional derivative $D_q L(x, y)$ and revert those otherwise.
+The process is as follows:
+\textbf{Flip All Bits:} Flip all bits to get a new sign vector $q_2 = -q_1$. If $D_{q_2} L(x, y) \geq D_{q_1} L(x, y)$, retain $q_2$; otherwise, revert to $q_1$.
+
+$\delta \leftarrow \epsilon$.
+$x_o \leftarrow x_{\text{init}}$.
+Define $g(q) = \frac{L(\Pi_{B_p(x_{\text{init}}, \epsilon)} (x_o + \delta q), y_{\text{init}}) - L(x_o, y_{\text{init}})}{\delta}$.
+\textsc{SignHunter.init}(g).
+\textbf{while} $C(x) = y_{\text{init}}$
+\textsc{SignHunter.step}().
+$s \leftarrow \textsc{SignHunter.getCurrentSignEstimate}()$.
+$x \leftarrow \Pi_{B_p(x_{\text{init}}, \epsilon)} (x_o + \delta s)$.
+\textbf{if} \textsc{SignHunter.isDone()} \textbf{then}
+$x_o \leftarrow x$.
+Define $g$ as in Line 5 (with $x_o$ updated).
+\textsc{SignHunter.init}(g).
+\textbf{end if}
+\textbf{end while}
+\textbf{return} $x$.
+
+
+%Explanation
+We use the non-standard definition of the sign function whose range is $\{-1, +1\}$. This follows from the observation that DNNs' gradients with respect to their inputs are not sparse.
+To improve efficiency, we can flip all bits at once or in chunks, reducing the number of queries further.
+\textbf{function IsDone()}
+\textbf{return} $\text{done}$.
+\textbf{function Step()}
+$c_{\text{len}} \leftarrow \lceil n/2^h \rceil$.
+$s[i \cdot c_{\text{len}} : (i+1) \cdot c_{\text{len}}] \mathrel{*}= -1$.
+\textbf{if} $g(s) \geq g_{\text{best}}$ \textbf{then}
+$g_{\text{best}} \leftarrow g(s)$.
+\textbf{else}
+$s[i \cdot c_{\text{len}} : (i+1) \cdot c_{\text{len}}] \mathrel{*}= -1$.
+$i \leftarrow i + 1$.
+\textbf{if} $i == 2^h$ \textbf{then}
+$i \leftarrow 0$.
+$h \leftarrow h + 1$.
+\textbf{if} $h == \lceil \log_2(n) \rceil + 1$ \textbf{then}
+$\text{done} \leftarrow \text{true}$.
+\textbf{function GetCurrentSignEstimate()}
+\textbf{return} $s$.
+\textbf{Chunk-based Flipping:} Iteratively flip chunks of bits and apply the flip/revert procedure to recover sign bits.
+This divide-and-conquer approach significantly reduces the query complexity and ensures efficient gradient sign estimation.

@@ -1,0 +1,48 @@
+%Input
+$X_{\text{train}}$: Original training dataset.
+$y_{\text{train}}$: Labels for the training dataset.
+$\mathcal{A}$: Target learning algorithm.
+$f_{\theta}$: Target model parameterized by $\theta$.
+$\epsilon$: Perturbation budget for poisoning.
+$z_p$: Poisoned data points added to the training set.
+$\mathcal{L}(f_{\theta}, X, y)$: Loss function for model training.
+
+%Output
+$X_{\text{poisoned}}$: Modified training dataset containing poisoned data.
+Adversarially trained model $f_{\theta^{\ast}}$ that behaves as intended by the adversary.
+
+%Formula
+1. Objective of Poisoning Attack
+Maximize the adversarial loss by introducing $z_p$ into the training set:
+\[
+\max_{z_p \in \mathcal{Z}} \mathcal{L}(f_{\theta^{\ast}}, X_{\text{test}}, y_{\text{test}})
+\]
+subject to:
+\[
+\theta^{\ast} = \arg \min_{\theta} \mathcal{L}(f_{\theta}, X_{\text{train}} \cup z_p, y_{\text{train}} \cup y_p),
+\]
+where $\mathcal{Z}$ defines the constraint on the poisoned data $z_p$.
+
+2. Gradient-based Optimization
+Poisoned data $z_p$ is computed iteratively using gradient updates:
+\[
+z_p^{(t+1)} = z_p^{(t)} - \alpha \nabla_{z_p} \mathcal{L}(f_{\theta^{(t)}}, X_{\text{test}}, y_{\text{test}}).
+\]
+
+3. Model Retraining
+Incorporate $z_p$ into the training set:
+\[
+X_{\text{poisoned}} = X_{\text{train}} \cup z_p, \quad y_{\text{poisoned}} = y_{\text{train}} \cup y_p.
+\]
+Retrain the model:
+\[
+\theta^{\ast} = \arg \min_{\theta} \mathcal{L}(f_{\theta}, X_{\text{poisoned}}, y_{\text{poisoned}}).
+\]
+
+
+%Explanation
+Systematic Poisoning Adversarial Attacks aim to introduce carefully crafted poisoned data points into the training set, exploiting the learning algorithm to degrade model performance on a specific test set or induce targeted misclassification.
+Attack Objective: The adversary seeks to maximize test-time loss or control model predictions by influencing training with poisoned data.
+Iterative Refinement: The attack uses gradient-based optimization to iteratively refine the poisoned samples $z_p$, ensuring they achieve the adversarial objective without violating constraints.
+Targeted Behavior: By retraining the model on the poisoned dataset, the attacker ensures that the learned model behaves as intended while retaining plausible model accuracy on the clean validation set.
+Applications: Common in settings like recommendation systems, autonomous vehicles, or fraud detection, where training data integrity is critical. This attack leverages systematic poisoning techniques to alter the decision boundary of the model in a controlled and adversarial manner.

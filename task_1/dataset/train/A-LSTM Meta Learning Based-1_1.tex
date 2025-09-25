@@ -1,0 +1,44 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input sequence (e.g., text or time-series data). \\
+$f(\mathbf{x})$: Target LSTM model for classification or prediction. \\
+$y_{\text{true}}$: True label of the input sequence. \\
+$\epsilon$: Perturbation limit to control adversarial changes. \\
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function to minimize for successful attack. \\
+$N$: Maximum number of iterations. \\
+$\eta$: Learning rate for gradient updates.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{while ensuring minimal perturbation to the input sequence}.
+\]
+%Formula
+1. Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Meta-Learning Update:
+   Compute the meta-learning loss based on past attacks and adapt the model weights:
+   \[
+   \theta^{(t+1)} = \theta^{(t)} - \eta_{m} \cdot \nabla_{\theta} \mathcal{M}(f, \theta, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{true}})
+   \]
+   where $\mathcal{M}$ is the meta-learning loss function.
+
+3. Perturbation Update:
+   Apply the perturbation to maximize the loss using updated model weights:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} + \eta \cdot \text{sign}(\nabla_\delta L(f_{\theta}(\mathbf{x} + \delta), y))
+   \]
+   where $\theta$ is the updated model parameters.
+
+4. Perturbation Constraint:
+   Ensure the perturbation does not exceed $\epsilon$:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}(\mathbf{x}_{\text{adv}}^{(t+1)}, \mathbf{x}_{\text{original}} - \epsilon, \mathbf{x}_{\text{original}} + \epsilon).
+   \]
+
+5. Stopping Criteria:
+   The attack ends when the meta-learning loss reaches a minimum or when the maximum number of iterations is reached.
+%Explanation
+The proposed variant, "LSTM-Meta-Learning Based Perturbation," improves upon the original LSTM-based perturbation by incorporating meta-learning to adapt the model weights based on past attacks. This approach leverages the concept of meta-learning to generate more effective adversarial examples by adapting the model parameters to improve its ability to recognize and exploit vulnerabilities in the target models. The meta-learning update step allows the attack to learn from successful past attacks, improving its accuracy and stealthiness over time.

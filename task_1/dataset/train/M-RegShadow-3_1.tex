@@ -1,0 +1,27 @@
+%Input
+Let $x$ be the original input sample, and let $\theta$ represent the parameters of the neural network. The adversary aims to generate a perturbation $\delta$ that maximizes the loss function while ensuring the perturbation satisfies specific constraints.
+
+Given:
+- $f_{\theta}$: The target neural network with parameters $\theta$.
+- $L(\theta, x)$: The loss function associated with the model’s prediction.
+- $\delta$: The adversarial perturbation applied to $x$.
+- $\lambda_c$, $\lambda_{\text{tv}}$, $\lambda_s$: Regularization parameters controlling different aspects of the perturbation.
+- $C(\delta)$: A constraint function on the perturbation magnitude.
+- $TV(\delta)$: A total variation constraint to enforce smoothness.
+- $\text{Dissim}(\delta)$: A constraint enforcing dissimilarity of the perturbation.
+
+The adversarial perturbation $\delta$ is optimized to maximize the model’s loss while satisfying the given constraints.
+
+
+%Output
+The output of the Shadow Attack is a perturbation $\delta$ that maximizes the loss function for the neural network while satisfying several regularization constraints. The attack aims to misclassify the input sample and controls the magnitude, smoothness, and dissimilarity of the perturbation.
+
+%Formula
+\begin{equation*}
+\overline{y}_6 = \max_{y, \delta} \left( -L(\theta, x + \delta k \overline{y}) - \lambda_c C(\delta) - \lambda_{\text{tv}} TV(\delta) - \lambda_s \text{Dissim}(\delta) \right)
+\end{equation*}
+
+%Explanation
+The RegShadow-PGD variant approach that finds the perturbation $\delta$ that maximizes the loss function for the neural network while also satisfying several regularization constraints. The attack includes a negative loss term to encourage misclassification and regularizations terms such as constraint on magnitude, total variation, and dissimilarity of the perturbation. This variant maintains the core principle of the original attack but introduces new constraints to control the perturbation's properties.
+
+The variant modifies the Shadow Attack by introducing an additional regularization term that focuses on the magnitude of the perturbation, making it more similar to the PGD Fast-Universal attack.

@@ -1,0 +1,18 @@
+%Input
+$x$
+
+%Output
+The output of the Label Modification attack is a modified label $y^*$ that causes the model to misclassify the input $x$.
+
+%Formula
+1. Initialize the input and true label:
+$(x, y)$
+
+2. Define the target label $y^* = \arg\max_{y'} P(f_{\theta}(x) = y' \mid x)$,
+subject to the constraint that the model's prediction must change:
+$f_{\theta}(x) \neq y^*$.
+
+%Explanation
+The Label Modification adversarial attack modifies the true label $y$ of an input $x$ by finding a new target label $y^*$ that maximizes the likelihood of the incorrect label, subject to ensuring the model's prediction changes. This approach exploits the model's vulnerability to label noise by reweighting the distribution over possible labels for the input.
+
+The variant differs from the main perturbation core in its focus on modifying the output space rather than the input space. By redefining the objective function to maximize the likelihood of a new target label, this attack can create more subtle and nuanced attacks that are less detectable than traditional adversarial examples.

@@ -1,0 +1,46 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input text sequence.  
+$f(\mathbf{x})$: Target model (e.g., classifier).  
+$y_{\text{true}}$: True label of the input sequence.  
+$\mathcal{S}_{WN}(w)$: Set of synonyms for word $w$ obtained from WordNet.  
+$\epsilon$: Perturbation limit (maximum allowed word replacements).  
+$N$: Maximum number of iterations.
+
+%Output
+Generate one adversarial attack variant that incorporates robustness enhancement through a margin-based similarity metric. 
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:  
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with minimal semantic distortion}.
+\]
+
+
+%Formula
+1. Initialization:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Word Importance Scoring:  
+   - For each word $w_i$ in $\mathbf{x}_{\text{adv}}$, compute the impact on the model's prediction using a margin-based similarity metric:  
+     \[
+     I(w_i) = |f(\mathbf{x}_{\text{adv}}^{(-i)}) - f(\mathbf{x}_{\text{adv}})| - \max(0, m - d(w_i, w')),
+     \]  
+     where $\mathbf{x}_{\text{adv}}^{(-i)}$ represents $\mathbf{x}_{\text{adv}}$ with $w_i$ removed or masked, and $m$ is the margin-based similarity threshold.
+
+3. Synonym Replacement:  
+   - For the most important word $w_i$ (highest $I(w_i)$):  
+     \[
+     w_i' = \underset{w' \in \mathcal{S}_{WN}(w_i)}{\arg \min} \, d(w_i, w'),
+     \]  
+     where $d(w_i, w')$ is the margin-based similarity metric.
+
+4. Update the Input:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} \, \text{with } w_i \text{ replaced by } w_i'.
+   \]
+
+5. Stopping Condition:  
+   - If $f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}$, or if the number of replacements exceeds $\epsilon$, terminate the attack.
+
+%Explanation
+The Margin-Based Robust Semantic Adversarial Perturbation (MRSAP) variant incorporates a margin-based similarity metric to enhance robustness against adversarial attacks. By incorporating this new scoring function, the attack better maintains the semantic meaning of the input while improving its overall robustness and effectiveness. This modification enables the attack to target models with stricter margin-based similarity requirements, making it more suitable for scenarios where robustness is crucial.

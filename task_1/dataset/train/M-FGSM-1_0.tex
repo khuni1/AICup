@@ -1,0 +1,30 @@
+%Input
+Original input: $X \in \mathbb{R}^d$
+True label: $y \in \mathcal{Y}$
+Loss function: $\mathcal{L}(f(X), y)$, where $f$ is the model
+Perturbation budget: $\epsilon$
+Step size: $\alpha$
+Number of iterations: $T$
+Decay factor: $\mu$
+
+
+%Output
+Adversarial example $X_{\text{adv}}$ such that $\|X_{\text{adv}} - X\|_\infty \leq \epsilon$.
+
+%Formula
+Initialize $X^{(0)}_{\text{adv}} = X$ and $g^{(0)} = 0$ (momentum term). For $t = 0, \dots, T-1$:
+\[
+g^{(t+1)} = \mu \cdot g^{(t)} + \frac{\nabla_X \mathcal{L}(f(X^{(t)}_{\text{adv}}), y)}{\|\nabla_X \mathcal{L}(f(X^{(t)}_{\text{adv}}), y)\|_1}
+\]
+\[
+X^{(t+1)}_{\text{adv}} = X^{(t)}_{\text{adv}} + \alpha \cdot \text{sign}(g^{(t+1)})
+\]
+Project $X^{(t+1)}_{\text{adv}}$ onto the $\epsilon$-ball around $X$:
+\[
+X^{(t+1)}_{\text{adv}} = \text{clip}(X^{(t+1)}_{\text{adv}}, X - \epsilon, X + \epsilon)
+\]
+
+After $T$ iterations, $X_{\text{adv}} = X^{(T)}_{\text{adv}}$.
+
+%Explanation
+The momentum term $g^{(t)}$ accumulates gradients across iterations with a decay factor $\mu$, stabilizing the direction of optimization. Gradients are normalized by their $L_1$ norm to balance contributions from different input dimensions. The adversarial example is updated iteratively by moving in the direction of the signed momentum term. The perturbation is clipped to ensure it remains within the $L_\infty$-norm constraint $\epsilon$.

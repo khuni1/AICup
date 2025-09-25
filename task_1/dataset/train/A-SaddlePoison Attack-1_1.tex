@@ -1,0 +1,41 @@
+%Input
+$X_{\text{train}} = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n\}$: Original training data.
+$y_{\text{train}} = \{y_1, y_2, \ldots, y_n\}$: Corresponding labels.
+$f_\theta$: Target model parameterized by $\theta$.
+$\mathcal{L}(\theta; X, y)$: Loss function used by the model.
+$X_p = \{\mathbf{z}_1, \mathbf{z}_2, \ldots, \mathbf{z}_m\}$: Poisoned points to craft.
+$y_p = \{\tilde{y}_1, \tilde{y}_2, \ldots, \tilde{y}_m\}$: Poisoned labels to assign.
+$\epsilon$: Perturbation constraint for poisoned points.
+
+%Output
+- Poisoned dataset $\tilde{X}_{\text{train}} = X_{\text{train}} \cup X_p$.
+- Updated labels $\tilde{y}_{\text{train}} = y_{\text{train}} \cup y_p$.
+
+%Formula
+1.Objective:
+   \[
+   \min_{\{\mathbf{z}_i, \tilde{y}_i\}_{i=1}^m} \quad \mathcal{L}(\theta^*; X_{\text{test}}, y_{\text{test}})
+   \]
+   where $\theta^*$ is obtained by minimizing the poisoned training loss:
+   \[
+   \theta^* = \arg \min_\theta \mathcal{L}(\theta; \tilde{X}_{\text{train}}, \tilde{y}_{\text{train}}).
+   \]
+
+2.Perturbation Constraint:
+   \[
+   \|\mathbf{z}_i - \mathbf{x}_j\|_2 \leq \epsilon \quad \forall \mathbf{z}_i \in X_p, \; \mathbf{x}_j \in X_{\text{train}}
+   \]
+
+3.Saddle Point Refining:
+   - The poisoned points are updated iteratively using a saddle point refinement strategy, where the perturbation $\delta$ is constrained by $-1 < \delta < 1$, and the attack focuses on exploiting the model's vulnerability to saddle points in the loss landscape.
+
+4.Iterative Crafting:
+   - The saddle point refinement is used in conjunction with the gradient-based optimization to iteratively craft poisoned points that maximize their adverse impact.
+
+Key Characteristics:
+- Target: Supervised machine learning models.
+- Effect: Reduces test-time accuracy by strategically modifying the training data.
+- Type: Gradient-based poisoning attack, incorporating saddle point refinement and perturbation constraint.
+
+%Explanation
+The SaddlePoison Attack introduces a novel approach to data poisoning by leveraging saddle point refinement within the optimization process. Unlike traditional poisoning attacks that focus on brute-force data manipulation, this variant strategically crafts poisoned points by exploiting vulnerabilities in the model's loss landscape. The attack utilizes a perturbation constraint to ensure the poisoned data points remain within a specified proximity to the original data, thereby maintaining the illusion of legitimate data while causing significant harm to the model's performance.

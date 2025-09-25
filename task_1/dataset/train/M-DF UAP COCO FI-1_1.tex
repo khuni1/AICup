@@ -1,0 +1,34 @@
+%Input
+Target model \( f \) trained on the COCO dataset.  
+Original input samples \( x_i \) with corresponding true labels \( y_i \).  
+Perturbation budget \( \epsilon \) that constrains the adversarial modification.  
+Number of training samples \( N \) used to compute the universal perturbation.  
+DeepFool-based iterative update mechanism for optimizing \( \delta \).  
+Feature importance scoring mechanism to guide perturbation placement.
+
+
+%Output
+Let \( f \) be the target model, \( x \) be the original input image, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The DF-UAP-COCO attack aims to generate a universal adversarial perturbation \( \delta \) specifically tuned for the COCO dataset.
+
+%Formula
+The DF-UAP-COCO attack can be formulated as follows:
+1. Initialize the universal perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+2. Define the objective function to minimize the loss:
+   $
+   \text{minimize } \sum_{i=1}^{N} L(f(x_i + \delta), y_i) \text{ subject to } \|\delta\| \leq \epsilon,
+   $
+   where \( N \) is the number of images from the COCO dataset.
+3. Update the perturbation using the DeepFool approach:
+   $
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \nabla_{\delta} \left( \sum_{i=1}^{N} L(f(x_i + \delta^{(t)}), y_i) \right).
+   $
+4. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The proposed variant DeepFool Universal Adversarial Perturbation with Feature Importance (DF UAP COCO FI) adds a new constraint to the original DF-UAP-COCO attack. The perturbation is now restricted to only affect regions of the image where the model's features are most active, as determined by a feature importance score calculated from the intermediate layer activations of the target model. This modified approach can potentially improve the stealthiness and effectiveness of the attack by making it more targeted towards the vulnerabilities of the model.

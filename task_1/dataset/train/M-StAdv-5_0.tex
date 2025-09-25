@@ -1,0 +1,25 @@
+%Input:
+Adversarial loss function $\mathcal{L}_{\text{adv}}(x, f)$, flow regularization loss $\mathcal{L}_{\text{flow}}(f)$, trade-off parameter $\tau$.
+
+%Output:
+Optimal function $f^*$.
+
+%Formula
+The Spatial Transformation attack computes the optimal function $f^*$ as follows:
+
+\[
+f^* = \text{argmin}_f \left( \mathcal{L}_{\text{adv}}(x, f) + \tau \mathcal{L}_{\text{flow}}(f) \right)
+\]
+
+%Explanation
+Spatial Transformation Attack StAdv where $f^*$ represents the optimal function that minimizes the combined loss function.
+
+$f$ denotes the space of functions over which the optimization is performed. The goal is to find the function $f^*$ that minimizes the combined loss.
+
+$\mathcal{L}_{\text{adv}}(x, f)$ is the adversarial loss term, measuring the discrepancy between the predictions of the model $f$ and the ground truth or target label $x$. It quantifies how well the model resists adversarial perturbations or generates adversarial examples.
+
+$\mathcal{L}_{\text{flow}}(f)$ is the flow regularization loss, applied to the model $f$ to encourage smoothness or consistency in the predictions. It helps prevent overfitting and improve generalization.
+
+$\tau$ is the trade-off parameter that controls the balance between the adversarial loss and the flow regularization loss. It determines the relative importance of each component in the overall optimization objective.
+
+$\text{argmin}_f$ finds the function $f^*$ that minimizes the combined loss function over the function space $f$.

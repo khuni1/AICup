@@ -1,0 +1,21 @@
+%Input
+The input is the current adversarial example \(x_{\text{adv}}^{(t)}\), the original input \(x\), a step size \(\alpha\), and the gradient of the loss function \(J(\theta, x_{\text{adv}}^{(t)}, y)\) with respect to the input.
+
+%Formula
+$x_{\text{adv}}^{(t+1)} = \text{Clip}(x_{\text{adv}}^{(t)} + \alpha \cdot \text{sign}(\nabla_x J(\theta, x_{\text{adv}}^{(t)}, y)), x - \epsilon, x + \epsilon)$
+
+This equation describes an iterative update step for generating adversarial examples using the LL-FGSM (Least-Likely Class Fast Gradient Sign Method) as presented by \cite{Tramer-2017}. 
+
+Breakdown of the components:
+$x_{\text{adv}}^{(t+1)}: \text{ The adversarial example at iteration } (t+1)$
+$\text{Clip}(\cdot, x - \epsilon, x + \epsilon): \text{ A clipping function that ensures the updated adversarial example remains within an } \epsilon \text{-ball around the original input } x. \text{ This is done by clipping the values to be within the range } [x - \epsilon, x + \epsilon]$
+$x_{\text{adv}}^{(t)}: \text{ The adversarial example at the current iteration } t$
+$\alpha: \text{ A step size parameter controlling the magnitude of the update.}$
+$\text{sign}(\nabla_x J(\theta, x_{\text{adv}}^{(t)}, y)): \text{ The sign of the gradient of the loss function } J \text{ with respect to the input } x, \text{ evaluated at the current adversarial example } x_{\text{adv}}^{(t)}. \text{ Here, } \theta \text{ represents the model parameters and } y \text{ is the true label of the input.}$
+$\text{In essence, this equation updates the adversarial example by taking a step in the direction of the gradient's sign, scaled by } \alpha, \text{ and then clips the resulting value to ensure it remains within the allowable perturbation range around the original input } x$
+
+%Output
+The output is the updated adversarial example \(x_{\text{adv}}^{(t+1)}\), which has been adjusted by a small step in the direction of the gradient's sign and then clipped to stay within an \(\epsilon\)-ball around the original input \(x\).
+
+%Explanation
+Fast Gradient Sign Method Least Likely Class (FGSM-LL) equation describes an iterative method for generating adversarial examples, where each update to the adversarial example \(x_{\text{adv}}^{(t+1)}\) is computed by moving in the direction that increases the model's loss, scaled by the step size \(\alpha\). The `Clip` function ensures that the perturbed example remains within a specified range around the original input \(x\), thus maintaining the perturbation within a controlled limit.

@@ -1,0 +1,20 @@
+%Input
+The input includes the set of training examples $X$, the generator network $g_{f,\theta}$, the discriminator network $f$, and the parameter $\theta$.
+
+%Output
+The output includes the optimized parameters $\theta$, the generated data $g_{f,\theta}(x_i)$, and the discrepancy measure between the generated and original data.
+
+%Formula
+$\text{argmin}_{\theta} \sum_{x_i \in X} \beta L_X(g_{f,\theta}(x_i), x_i) + L_Y(f(g_{f,\theta}(x_i)), f(x_i))$
+
+
+%Explanation
+This equation represents the optimization problem in the context of Adversarial Training Networks (ATN) or Adversarial Autoencoder (AAE). It seeks to minimize the loss function, which is composed of two terms:
+
+The term $\beta L_X(g_{f,\theta}(x_i), x_i)$ measures the reconstruction loss between the generated data $g_{f,\theta}(x_i)$ and the original input $x_i$. This term encourages the generator network $g_{f,\theta}$ to produce outputs that are close to the original inputs, ensuring that the generated data resembles the original data.
+
+The term $L_Y(f(g_{f,\theta}(x_i)), f(x_i))$ measures the discrepancy between the representations of the generated data $g_{f,\theta}(x_i)$ and the original input $x_i$ in the latent space, as represented by the discriminator network $f$. This encourages the generator network to produce outputs that are indistinguishable from the original inputs in the latent space, ensuring that the generator's outputs are similar to the true data in a more abstract feature space.
+
+The parameter $\theta$ represents the trainable parameters of the networks involved (e.g., the generator and discriminator networks), and $X$ represents the set of training examples.
+
+$g_{f,t}(x) : x \in X \rightarrow x$

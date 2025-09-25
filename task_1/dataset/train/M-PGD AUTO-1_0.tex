@@ -1,0 +1,24 @@
+%Input 
+Let $x$ be the original input data or feature vector. Let $\alpha$ be a scalar value that controls the step size for adjusting $x$. It determines the magnitude of the perturbation applied to $x$.
+
+%Output 
+$x'$ is the produced adversary sample.
+
+% Formula 
+$x' = \text{clip}(x + \alpha \cdot \text{sign}(\nabla_x J(\theta, x, y)), x - \epsilon, x + \epsilon)$
+
+%Explanation
+Project Gradient Descent AUTO (PGD) Original Input Data $x$: The initial input or feature vector.
+Scalar Value $\alpha$: Controls the step size for adjusting $x$. It determines the magnitude of the perturbation applied to $x$
+Adversary Sample $x'$: The resulting perturbed sample
+Gradient of the Loss Function $\nabla_x J(\theta, x, y)$: This represents the gradient of the loss function $J$ with respect to the input $x$.
+$J$ is the loss function (e.g., cross-entropy loss in classification tasks).
+$\theta$ denotes the parameters of the model (weights and biases).
+$y$ is the true label or target output corresponding to the input $x$.
+$\nabla_x$ indicates the gradient is taken with respect to $x$.
+Sign Function $\text{sign}(\nabla_x J(\theta, x, y))$: The sign function applied to the gradient, giving the direction of the steepest ascent in the loss function with respect to $x$.
+Perturbation $\alpha \cdot \text{sign}(\nabla_x J(\theta, x, y))$: The gradient sign scaled by $\alpha$, indicating the size of the perturbation in the direction of the gradient.
+Perturbed Input $x + \alpha \cdot \text{sign}(\nabla_x J(\theta, x, y))$: The original input $x$ modified by adding the perturbation.
+Clip Function $\text{clip}(\cdot, x - \epsilon, x + \epsilon)$: Constrains the values of the perturbed input to lie within the range $x - \epsilon$ and $x + \epsilon$:
+$x - \epsilon$ and $x + \epsilon$ define the lower and upper bounds, respectively.
+$\epsilon$ is a small positive scalar that sets the maximum allowable deviation from the original input $x$.

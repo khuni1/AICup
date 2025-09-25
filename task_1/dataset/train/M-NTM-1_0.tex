@@ -1,0 +1,23 @@
+%Input
+The input is \(X\), which undergoes two transformations \(g_{\text{pick}}\) and \(g_{\text{plug}}\).
+
+%Output
+The output is \(X_0\), the final transformed input after applying both transformations.
+
+%Formula
+$T_{\text{pick-n-plug}}(X) = g_{\text{plug}}(g_{\text{pick}}(X)) = X_0$
+
+The pick and plug transformations are defined as follows:
+
+$g_{\text{pick}}(X) = (X, [S_1, \ldots, S_l])$
+$g_{\text{plug}}(X, [S_1, \ldots, S_l]) = X_0$
+
+%Explanation
+JSMA Pick-and-Plug where the pick transformation \(g_{\text{pick}}(X)\) takes an input \(X\) and appends a sequence of elements \(S_1, \ldots, S_l\) to it, resulting in a tuple \((X, [S_1, \ldots, S_l])\). The plug transformation \(g_{\text{plug}}(X, [S_1, \ldots, S_l])\) then takes this tuple and produces the final output \(X_0\). 
+
+Each element \(S_i\) in the sequence is defined as:
+\begin{equation*}
+S_i = [x_{Si1}, x_{Si2}, \ldots, x_{Sij}]
+\end{equation*}
+
+This specifies the structure of the appended elements, where each \(S_i\) is a list of individual elements \(x_{Si1}, x_{Si2}, \ldots, x_{Sij}\).

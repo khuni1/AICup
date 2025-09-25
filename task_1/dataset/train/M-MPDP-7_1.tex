@@ -1,0 +1,43 @@
+%Input
+Let $\mathcal{D}_{\text{original}} = \{(\mathbf{x}_i, y_i)\}_{i=1}^{N}$ be the original dataset, where $\mathbf{x}_i$ represents an input sample and $y_i$ is its corresponding label. Define a modification function $\mathcal{M}$ that introduces perturbations and masking to selected data points.
+
+Define:
+- $\Delta \mathbf{x}_i$ as the perturbation applied to $\mathbf{x}_i$.
+- $\mathcal{M}(\mathbf{x}_i, \epsilon, \mathbf{m}_i)$ as the modification function incorporating a perturbation bound $\epsilon$ and a masking operation $\mathbf{m}_i$.
+
+The attack modifies a subset of $\mathcal{D}_{\text{original}}$ to create a poisoned dataset $\mathcal{D}_{\text{modified}}$ aimed at degrading model performance. 
+
+
+%Output
+Modified dataset $\mathcal{D}_{\text{modified}}$ such that:
+\[
+f(\mathcal{D}_{\text{modified}}) \, \text{leads to degraded performance on legitimate test inputs}.
+\]
+
+%Formula
+1. Define the modification function $\mathcal{M}(\mathbf{x}_i, \epsilon)$:
+   \[
+   \mathbf{x}_i^{\text{modified}} = \mathbf{x}_i + \Delta \mathbf{x}_i, \quad \text{where } \|\Delta \mathbf{x}_i\| \leq \epsilon.
+   \]
+
+2. Apply $\mathcal{M}$ to selected data points in $\mathcal{D}_{\text{original}}$:
+   \[
+   \mathcal{D}_{\text{modified}} = \{(\mathbf{x}_i^{\text{modified}}, y_i) \mid (\mathbf{x}_i, y_i) \in \mathcal{D}_{\text{original}}\}.
+   \]
+
+3. Train the target model $f(\mathbf{x})$ on $\mathcal{D}_{\text{modified}}$:
+   \[
+   \hat{f} = \arg \min_f \mathcal{L}(f, \mathcal{D}_{\text{modified}}).
+   \]
+
+4. Evaluate $\hat{f}$ on legitimate test inputs to assess performance degradation:
+   \[
+   \text{Performance degradation: } \Delta_{\text{performance}} = \mathcal{L}(f, \mathcal{D}_{\text{test}}) - \mathcal{L}(f, \mathcal{D}_{\text{original}}).
+   \]
+
+%Explanation
+This variant Masked Perturbation Data Poisoning (MPDP) Attack introduces a new attack by corrupting the input data using masking and perturbation. The modification function $\mathcal{M}$ applies a random mask to the input data points within a permissible bound $\epsilon$, creating an adversarial sample.
+
+The main difference between this variant and the original method is that it uses masking instead of simple perturbation. This approach can make the attack more robust and effective, as it introduces randomness and uncertainty into the modification process. Additionally, the use of masking allows for more targeted attacks, where specific data points are corrupted to exploit the model's vulnerabilities.
+
+The Data Corruption Attack using Masking and Perturbation is a variant that improves upon the original method by introducing a new constraint (masking) that enhances the attack's effectiveness and stealthiness.

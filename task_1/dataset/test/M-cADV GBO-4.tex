@@ -1,0 +1,22 @@
+%Input
+\begin{align*}
+X_L &\in \mathbb{R}^{H \times W}  \quad \text{(Luminance channel of the input image)} \\
+X_{\text{ab}} &\in \mathbb{R}^{H \times W \times 2} \quad \text{(Chrominance channels of the input image)} \\
+M &\in \mathbb{R}^{H \times W}  \quad \text{(Mask indicating perturbed regions)} \\
+\theta &\in \Theta  \quad \text{(Parameters of the colorisation model)} \\
+t &\in \mathcal{T}  \quad \text{(Targeted adversarial modification)} 
+\end{align*}
+
+%Output
+Optimal parameters $\theta^*$ for the colorisation model that minimize the adversarial loss function $J_{\text{adv}}$:
+
+$\theta^* = \text{argmin}_\theta J_{\text{adv}} \left(F \left(C(X_L, X_{\text{ab}}, M; \theta)\right), t \right)$
+
+%Formula 
+\begin{align*}
+\theta^* &= \arg\min_{\theta} J_{\text{adv}} \left(F \left(C(X_L, X_{\text{ab}}, M; \theta)\right), t \right) \\
+J_{\text{adv}} &= \mathbb{E}_{(X_L, X_{\text{ab}}, M, t)} \left[ \mathcal{L} \left(F \left(C(X_L, X_{\text{ab}}, M; \theta)\right), t \right) + \lambda \|\theta - \theta_0\|^2 \right]
+\end{align*}
+
+%Explanation
+The cADV-Gradient-Based Optimization (cADV GBO), is an improvement over the colorisation model that minimize the adversarial loss function $J_{\text{adv}}$. The new attack uses a gradient-based optimization strategy to find the optimal parameters $\theta^*$ for the colorisation model. This approach can lead to more effective and targeted attacks compared to the original cADV attack.

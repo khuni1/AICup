@@ -1,0 +1,35 @@
+%Input
+\( f \) be the target model
+\( x \) be the original input 
+\( y \) be the true label
+\( \epsilon \) be the maximum allowable perturbation
+\( \delta \) generate adversarial perturbation such that the model is misled by maximizing the loss, while the defender minimizes it.
+
+%Output
+The output is a perturbation \( \delta \) that forms a saddle point of the loss function \( L(f(x + \delta), y) \), satisfying both attack and defense objectives.
+
+%Function
+Define the saddle point optimization problem:
+   \[
+   \max_{\|\delta\| \leq \epsilon} \min_{\theta} L(f_\theta(x + \delta), y),
+   \]
+   where \( \theta \) represents the model parameters.
+
+Update \( \delta \) (adversary's optimization) using gradient ascent:
+   \[
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \nabla_\delta L(f_\theta(x + \delta^{(t)}), y),
+   \]
+   followed by projection to ensure \( \|\delta\| \leq \epsilon \):
+   \[
+   \delta^{(t+1)} = \text{clip}(\delta^{(t+1)}, -\epsilon, \epsilon).
+   \]
+
+Update \( \theta \) (defender's optimization) using gradient descent:
+   \[
+   \theta^{(t+1)} = \theta^{(t)} - \beta \cdot \nabla_\theta L(f_\theta(x + \delta^{(t+1)}), y).
+   \]
+
+Iteratively alternate updates between \( \delta \) and \( \theta \) until convergence.
+
+%Explanation
+The Saddle Point Adversarial Attack exploits the interaction between the adversary and the defender. The adversary maximizes the loss by perturbing the input \( x \) within the allowable range \( \|\delta\| \leq \epsilon \), while the defender minimizes the loss by adjusting the model parameters \( \theta \). This creates a dynamic process that seeks a saddle point in the loss landscape, demonstrating the vulnerabilities of the model when exposed to adversarial perturbations.

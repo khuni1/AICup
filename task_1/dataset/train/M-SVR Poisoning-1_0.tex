@@ -1,0 +1,59 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input vector.
+$f(\mathbf{x})$: SVR model for regression prediction.
+$\epsilon$: Maximum allowed perturbation in $L_p$ norm.
+$y_{\text{target}}$: Desired adversarial target output.
+$\mathcal{L}(f, \mathbf{x}, y_{\text{target}})$: Loss function, typically squared error.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+  \[
+  \|\mathbf{x}_{\text{adv}} - \mathbf{x}_{\text{original}}\|_p \leq \epsilon \quad \text{and} \quad f(\mathbf{x}_{\text{adv}}) \approx y_{\text{target}}.
+  \]
+
+%Formula
+1.Objective:
+   \[
+   \mathbf{x}_{\text{adv}} = \arg \min_{\mathbf{x}} \; \mathcal{L}(f(\mathbf{x}), y_{\text{target}})
+   \]
+   subject to the constraint:
+   \[
+   \|\mathbf{x} - \mathbf{x}_{\text{original}}\|_p \leq \epsilon.
+   \]
+
+2.Loss Function:
+   - The typical loss function for SVR adversarial attacks is:
+     \[
+     \mathcal{L}(f, \mathbf{x}, y_{\text{target}}) = \big(f(\mathbf{x}) - y_{\text{target}}\big)^2.
+     \]
+
+3.Gradient Update:
+   - Update the input iteratively using:
+     \[
+     \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} - \eta \cdot \nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{target}}),
+     \]
+     where $\eta$ is the step size for gradient descent.
+
+4.Projection onto $L_p$ Ball:
+   - Ensure that the perturbation remains bounded:
+     \[
+     \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}_p \big(\mathbf{x}_{\text{adv}}^{(t+1)}, \mathbf{x}_{\text{original}}, \epsilon \big),
+     \]
+     where $\text{clip}_p$ ensures the perturbation is within the $L_p$ norm ball.
+
+%Explanation
+The SVR Adversarial Attack is a gradient-based optimization method where the adversary modifies the input features to force the Support Vector Regression model to predict a target value $y_{\text{target}}$. By leveraging the squared error loss and gradient descent, the attack identifies perturbations while maintaining imperceptibility through the $L_p$ norm constraint which can be formualtes as below:
+1.Objective:
+   - The goal is to perturb the original input $\mathbf{x}_{\text{original}}$ so that the SVR model's prediction $f(\mathbf{x}_{\text{adv}})$ is as close as possible to the target value $y_{\text{target}}$.
+
+2.Gradient-Based Optimization:
+   - The attack leverages gradients of the loss function $\mathcal{L}$ with respect to the input to iteratively find a perturbation that minimizes the prediction error.
+
+3.Perturbation Bound ($\epsilon$):
+   - The $L_p$ norm constraint ensures that the perturbation remains small and does not excessively deviate from the original input.
+
+4.SVR-Specific Characteristics:
+   - Support Vector Regression models have a specific decision boundary structure, which can be exploited to craft adversarial examples by minimizing the squared error loss.
+
+5.Iterative Process:
+   - The adversarial example is constructed in multiple iterations, gradually reducing the loss until the model's output closely matches the target value or the perturbation limit is reached.

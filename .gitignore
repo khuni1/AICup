@@ -1,0 +1,27 @@
+# Python 캐시 / 빌드 파일
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 가상환경
+venv/
+env/
+
+# 데이터 / 로그 / 결과
+*.log
+*.csv
+*.pkl
+results/
+kfold_results_scibert/
+
+# Jupyter Notebook 자동 체크포인트
+.ipynb_checkpoints/
+
+# 시스템/IDE 관련
+.DS_Store
+.vscode/
+.idea/
+
+*.zip
+*.Identifier

@@ -1,0 +1,77 @@
+%Input
+Original input $x$: The clean input sample, such as an image or text representation. \\
+Target model $f_{\theta}$: The neural network classifier or regressor under attack. \\
+True label $y$: The ground-truth label associated with $x$. \\
+Loss function $L(f_{\theta}(x), y)$: The function measuring the classification error. \\
+Perturbation bound $\epsilon$: The maximum allowable perturbation magnitude. \\
+Step size decay $\eta$: The learning rate for iterative updates, decayed exponentially. \\
+Iterations $T$: The number of steps for updating the adversarial example. \\
+Regularization weight $\lambda$: The penalty term controlling the influence of the LPIPS constraint. \\
+Tuning parameter $\gamma$: The newly introduced factor balancing the loss and LPIPS constraint. \\
+LPIPS distance function $d(x_e, x)$: Measures perceptual similarity between the perturbed and original input. \\
+Projection function $\text{PROJECT}(d, x_e, x, \epsilon)$: Ensures that the perturbed input remains within the defined bounds.
+
+
+
+%Output
+The LPA-LPIPS-Tuned Adversarial Attack is a variant of the original LPA-LPIPS Constrained Adversarial Attack that introduces a tuning parameter $\gamma$ to balance the trade-off between the loss and distance functions. This allows for more fine-grained control over the attack's behavior, particularly when the perturbation bound $\epsilon$ is close to the maximum allowed value.
+
+
+%Formula
+1. Initialize the perturbations with random Gaussian noise:
+   \[
+   x_e \leftarrow x + 0.01 \times N(0, 1)
+   \]
+   
+2. For each iteration over $i = 1, \ldots, S$ (where $S$ is the number of iterations to optimize $\lambda$):
+
+    3. For each step $t = 1, \ldots, T$ (where $T$ is the number of steps):
+
+        a. Compute the gradient of the loss function with respect to the perturbed input and regularize it with the LPIPS distance:
+           \[
+           \Delta \leftarrow \nabla_{x_e} L(f(x_e), y) - \lambda \max \left(0, d(x_e, x) - \epsilon \right)
+           \]
+           
+        b. Normalize the gradient:
+           \[
+           \Delta \leftarrow \frac{\Delta}{|\Delta|_2}
+           \]
+           
+        c. Decay the step size exponentially:
+           \[
+           \eta \leftarrow \epsilon \times (0.1)^{t/T}
+           \]
+           
+        d. Approximate the derivative of the LPIPS distance in the direction of the gradient:
+           \[
+           m \leftarrow \frac{d(x_e, x_e + h \Delta)}{h}
+           \]
+           
+        e. Update the perturbed input:
+           \[
+           x_e \leftarrow x_e + \frac{\eta}{m} \Delta
+           \]
+           
+    4. Introduce a new constraint $\gamma$ to balance the loss and distance functions:
+       \[
+       L_{\text{new}}(x_e, y) = L(f(x_e), y) + \gamma (d(x_e, x) - \epsilon)^2
+       \]
+       
+    5. Optimize the new constraint using gradient descent:
+       \[
+       \lambda \leftarrow \lambda + \alpha \nabla_{\lambda} L_{\text{new}}(x_e, y)
+       \]
+       
+3. Project the perturbed input back within the bound:
+   \[
+   x_e \leftarrow \text{PROJECT}(d, x_e, x, \epsilon)
+   \]
+
+4. Return the final adversarial example:
+   \[
+   x_e
+   \]
+
+
+%Explanation
+The LPA-LPIPS-Tuned Adversarial Attack is a modified version of the original LPA-LPIPS Constrained Adversarial Attack that introduces a new constraint to balance the trade-off between the loss and distance functions. By incorporating a tuning parameter $\gamma$, this variant allows for more fine-grained control over the attack's behavior, particularly when the perturbation bound $\epsilon$ is close to the maximum allowed value. The new constraint $\gamma (d(x_e, x) - \epsilon)^2$ penalizes the attack for exceeding the perturbation limit while encouraging it to stay within the allowed range. This modification enables the attacker to fine-tune the attack's behavior and increase its effectiveness in certain scenarios.

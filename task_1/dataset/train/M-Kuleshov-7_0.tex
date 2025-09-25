@@ -1,0 +1,33 @@
+%Input
+Let \( x \) be the original input image, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Kuleshov attack generates adversarial examples by manipulating the input image to exploit the model's vulnerabilities.
+
+%Output
+The output of the Kuleshov attack is a modified image \( x^* \) that aims to mislead the model into making an incorrect prediction.
+
+%Formula
+The Kuleshov adversarial attack can be formulated as follows:
+1. Initialize the input image and true label:
+   $
+   (x, y).
+   $
+2. Define a perturbation \( \delta \) that can be generated using a certain strategy:
+   $
+   \delta = g(x, y, f_{\theta}),
+   $
+   where \( g \) is a function that determines how the perturbation is applied based on the model's behavior.
+3. The modified image is then calculated as:
+   $
+   x^* = x + \delta.
+   $
+4. The goal is to ensure that:
+   $
+   f_{\theta}(x^*) \neq y,
+   $
+   while constraining the perturbation \( \delta \) to be within a predefined limit, such as:
+   $
+   \|\delta\|_p \leq \epsilon,
+   $
+   where \( \|\cdot\|_p \) is a norm and \( \epsilon \) is the maximum allowed perturbation.
+
+%Explanation
+The Kuleshov attack generates adversarial examples by carefully manipulating the input image \( x \) to create a new image \( x^* \) that exploits specific weaknesses in the target model \( f_{\theta} \). The perturbation \( \delta \) is designed to cause the model to misclassify the modified image while keeping the changes imperceptible to human observers. This approach demonstrates the vulnerabilities of image classification models to targeted adversarial attacks and highlights the need for effective defense mechanisms.

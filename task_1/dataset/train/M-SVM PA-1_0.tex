@@ -1,0 +1,37 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( f_{\theta} \) be the target SVM model. The SVM-PA Adversarial Attack generates adversarial examples by projecting perturbations onto the decision boundary of the SVM.
+
+%Output
+The output of the SVM-PA Adversarial Attack is a modified input \( x^* \) that is intended to mislead the SVM model into making an incorrect prediction.
+
+%Formula
+The SVM-PA Adversarial Attack can be formulated as follows:
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Compute the decision function:
+   $
+   d(x) = f_{\theta}(x) = w^T x + b,
+   $
+   where \( w \) is the weight vector and \( b \) is the bias.
+3. Generate a perturbation \( \delta \) using the gradient of the decision function:
+   $
+   \delta = \epsilon \cdot \frac{\nabla_x d(x)}{\|\nabla_x d(x)\|},
+   $
+   where \( \epsilon \) controls the magnitude of the perturbation.
+4. Create the adversarial example:
+   $
+   x' = x + \delta.
+   $
+5. Project \( x' \) onto the decision boundary:
+   $
+   x^* = x' - \frac{d(x')}{\|w\|^2} w.
+   $
+6. Ensure that the modified input causes a misclassification:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The SVM-PA (Support Vector Machine Projection-based Attack) Adversarial Attack aims to generate adversarial examples by first calculating a perturbation \( \delta \) based on the gradient of the decision function. This perturbation is scaled by \( \epsilon \) to control its size. After creating an intermediate perturbed input \( x' \), the attack projects this input onto the decision boundary of the SVM to create the final adversarial example \( x^* \). The goal is to ensure that this new input is classified incorrectly by the SVM model, demonstrating the model's vulnerability to adversarial manipulations.

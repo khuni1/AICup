@@ -1,0 +1,114 @@
+%Input
+$x$: Input sample \\
+$y$: True class label \\
+$d$: Dimension of input sample \\
+$c$: Number of classes \\
+$\delta$: Perturbation \\
+$x^*$: Adversarial example \\
+$\|\cdot\|_p$: $\ell_p$-norm operator \\
+$L$: Loss function \\
+$\theta$: Model parameters
+$y'$: Target class label \\
+$L_t$: Targeted loss function \\
+$f_j(x, \theta)$: Model confidence for class $j$ \\
+$L(x, y, \theta)$: Loss function for untargeted attack \\
+\epsilon$: Upper bound on perturbation norm \\
+$K$: Number of iterations \\
+$t$: Attack type (targeted or untargeted) \\
+$\epsilon$: Upper bound on perturbation norm \\
+$L(x, y, \theta)$: Loss function \\
+$g$: Gradient of loss function \\
+$\gamma_k$: Step size decay factor\\
+$\gamma_0$, $\gamma_K$: Initial and final $\epsilon$-step sizes \\
+$\alpha_0$, $\alpha_K$: Initial and final $\delta$-step sizes \\
+
+Given an input sample $x \in [0, 1]^d$, belonging to class $y \in \{1, \dots, c\}$, the goal of an untargeted attack is to find the minimum-norm perturbation $\delta$ such that the corresponding adversarial example $x^* = x + \delta$ is misclassified. This problem can be formulated as:
+
+%Output
+The output of this section consists of the solutions to the minimization problems described, which provide the minimal adversarial perturbation $\delta_{\text{min},p}$, the projection $z^*$, and the appropriate projection $z_0$ when the original projection is infeasible. Additionally, the output includes the computed decision boundary hyperplane $\pi_l^{(i)}$ and the distance $d_p(x^{(i)}, \pi_l)$ from the current iterate to this hyperplane. Finally, the FAB attack algorithm generates minimally distorted adversarial examples by approximating the decision boundary using linearization, projecting onto the hyperplane, and performing an extrapolation step to obtain adversarial perturbations close to the original input.
+
+%Formula
+$\delta^* \in &\arg \min_{\delta} \|\delta\|_p \tag{1} \\
+&\text{s.t.} \quad L(x + \delta, y, \theta) < 0 \tag{2} \\
+&x + \delta \in [0, 1]^d \tag{3}$
+$L_t(x, y', \theta) = \max_{j \neq y'} f_j(x, \theta) - f_{y'}(x, \theta) = -L(x, y', \theta)$
+$\min_{\epsilon, \delta} & \quad \epsilon \tag{5} \\
+\text{s.t.} & \quad \|\delta\|_p \leq \epsilon, \\
+& \quad L(x + \delta, y, \theta) < 0, \\
+& \quad x + \delta \in [0, 1]^d.$
+$\epsilon_k = \|\delta_{k-1}\|_p + \frac{L(x_{k-1}, y, \theta)}{\|\nabla L(x_{k-1}, y, \theta)\|_q}$
+
+The algorithm for generating the minimum-norm adversarial example can be structured as follows:
+
+\begin{enumerate}
+    \item \textbf{Input Parameters:}  
+    \begin{align*}
+    x &: \text{Original input sample}, \\
+    t &: \text{Attack type, } t = +1 \text{ (targeted) or } t = -1 \text{ (untargeted)}, \\
+    y &: \text{Target or true class label}, \\
+    \gamma_0, \gamma_K &: \text{Initial and final $\epsilon$-step sizes}, \\
+    \alpha_0, \alpha_K &: \text{Initial and final $\delta$-step sizes}, \\
+    K &: \text{Total number of iterations}.
+    \end{align*}
+
+    \item \textbf{Initialization:}  
+    \begin{align*}
+    x_0 &\leftarrow x, \quad \epsilon_0 = 0, \quad \delta_0 \leftarrow 0, \quad \delta^* \leftarrow \infty.
+    \end{align*}
+
+    \item \textbf{Iterative Update for $k = 1, \ldots, K$:}  
+    \begin{enumerate}
+        \item Compute the gradient of the loss:
+        \[
+        g \leftarrow t \cdot \nabla_{\delta} L(x_{k-1} + \delta, y, \theta).
+        \]
+        \item Update $\gamma_k$ for $\epsilon$-step size decay:
+        \[
+        \gamma_k \leftarrow h(\gamma_0, \gamma_K, k, K),
+        \]
+        where $h(\cdot)$ is a predefined decay function.
+        \item Compute the updated $\epsilon_k$:
+        \[
+        \epsilon_k = 
+        \begin{cases} 
+        \|\delta_{k-1}\|_p + \frac{L(x_{k-1}, y, \theta)}{\|g\|_q}, & \text{if } L(x_{k-1}, y, \theta) \geq 0, \\
+        \min(\epsilon_{k-1}(1 - \gamma_k), \|\delta^*\|_p), & \text{otherwise.}
+        \end{cases}
+        \]
+        \item Update $\alpha_k$ for $\delta$-step size decay:
+        \[
+        \alpha_k \leftarrow h(\alpha_0, \alpha_K, k, K).
+        \]
+        \item Perform gradient scaling for $\delta_k$:
+        \[
+        \delta_k \leftarrow \delta_{k-1} + \alpha_k \cdot \frac{g}{\|g\|_2}.
+        \]
+        \item Project $\delta_k$ onto the $\epsilon$-ball:
+        \[
+        \delta_k \leftarrow \Pi_\epsilon(x_0 + \delta_k) - x_0.
+        \]
+        \item Clip $\delta_k$ to ensure valid pixel values:
+        \[
+        \delta_k \leftarrow \text{clip}(x_0 + \delta_k) - x_0.
+        \]
+        \item Update the adversarial sample:
+        \[
+        x_k \leftarrow x_0 + \delta_k.
+        \]
+    \end{enumerate}
+
+    \item \textbf{Output:}  
+    Return the minimum-norm adversarial example:
+    \[
+    x^* \leftarrow x_0 + \delta^*.
+    \]
+\end{enumerate}
+
+
+
+%Explanation
+The goal is to find the perturbation $\delta$ that minimizes its norm $\|\delta\|_p$, while ensuring that the perturbed input $x + \delta$ is misclassified by the model. The loss function $L$ is defined to measure the misclassification, and the constraint ensures that the perturbed input remains within the valid input space $[0, 1]^d$.
+For targeted attacks, the goal is to misclassify the input sample into a specific target class $y'$. The loss function is modified as follows:
+In a targeted attack, the loss function $L_t$ is designed to drive the classifier to assign the input sample to the target class $y'$. It is derived by taking the difference between the confidence scores of the target class and the highest confidence among other classes.
+To solve the problem, we reformulate it using an upper bound $\epsilon$ on $\|\delta\|_p$:
+reformulated to minimize the upper bound $\epsilon$ on the perturbation norm while satisfying the constraints. The solution algorithm updates $\epsilon$ and $\delta$ iteratively, adjusting $\epsilon$ to approach the boundary of the feasible region and using gradient-based updates for $\delta$ to minimize the loss function within the given $\epsilon$-sized constraint. The algorithm iterates to find the optimal perturbation $\delta$ that satisfies the constraints.

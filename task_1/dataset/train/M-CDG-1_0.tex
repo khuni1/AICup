@@ -1,0 +1,38 @@
+%Input
+Original input: $X \in \mathbb{R}^d$
+True label: $y \in \mathcal{Y}$
+Model function: $f(X)$
+Loss function: $\mathcal{L}(f(X), y)$
+Perturbation budget: $\epsilon$
+Number of iterations: $T$
+Step size: $\alpha$
+
+%Output
+Adversarial example $X_{\text{adv}}$ such that $\|X_{\text{adv}} - X\|_\infty \leq \epsilon$.
+
+%Formula
+Initialization Set $X^{(0)}_{\text{adv}} = X$.
+Gradient Update with Curvature Adjustment for $t = 0, \dots, T-1$:
+    \[
+    g^{(t)} = \nabla_X \mathcal{L}(f(X^{(t)}_{\text{adv}}), y)
+    \]
+    Compute curvature-based adjustment using the Hessian-vector product approximation:
+    \[
+    h^{(t)} = \nabla^2_X \mathcal{L}(f(X^{(t)}_{\text{adv}}), y) \cdot g^{(t)}
+    \]
+    Update the adversarial example:
+    \[
+    X^{(t+1)}_{\text{adv}} = X^{(t)}_{\text{adv}} + \alpha \cdot \text{sign}(g^{(t)} + \lambda \cdot h^{(t)})
+    \]
+    where $\lambda$ is a scaling factor controlling the influence of curvature.
+
+Projection after each update, project onto the $\epsilon$-ball around $X$:
+    \[
+    X^{(t+1)}_{\text{adv}} = \text{clip}(X^{(t+1)}_{\text{adv}}, X - \epsilon, X + \epsilon)
+    \]
+
+Final Adversarial Example after $T$ iterations, set $X_{\text{adv}} = X^{(T)}_{\text{adv}}$.
+
+%Explanation
+Curvature-based Decision-guided Gradient (CDG) Adversarial Attack Gradient Component $g^{(t)} = \nabla_X \mathcal{L}(f(X^{(t)}_{\text{adv}}), y)$ represents the first-order gradient, guiding the perturbation toward increasing the loss. Curvature Adjustment term $h^{(t)}$ adjusts the direction of perturbation using second-order information, approximated via the Hessian-vector product. Scaling Factor parameter $\lambda$ balances the contribution of the gradient and curvature terms. Projection of the adversarial perturbation is projected back into the $\epsilon$-ball to ensure compliance with the norm constraint. Iterative Refinement over multiple iterations, the perturbation is refined to maximize the adversarial effect while adhering to constraints.
+

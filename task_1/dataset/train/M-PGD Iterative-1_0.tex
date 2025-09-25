@@ -1,0 +1,19 @@
+%Input
+Given a machine learning model with parameters $\theta$ and an input data point $x$, we aim to generate an adversarial example $x'$ that slightly deviates from $x$ while remaining within an allowable perturbation $\epsilon$. The objective is to maximize the loss function $J(\theta, x, y)$ with respect to the input data $x$, where $y$ is the true label of $x$. The adversarial example $x'$ is obtained using the projected gradient descent (PGD) method.
+
+%Formula
+$x' = \text{clip}(x + \alpha \cdot \text{sign}(\nabla_x J(\theta, x, y)), x - \epsilon, x + \epsilon)$
+
+%Output
+The perturbed input $x^{(t)}$.
+In the query-limited setting with a query limit of $L$, we use $N$ queries to estimate each gradient and perform $\frac{L}{N}$ steps of PGD.
+
+%Explanation
+Project Gradient Descent (PGD) Iterative:
+$x$ is the original input data point,
+$x'$ is the perturbed data point,
+$\alpha$ is the step size of the gradient ascent,
+$\nabla_x J(\theta, x, y)$ is the gradient of the loss function $J$ with respect to the input data $x$,
+$\theta$ represents the parameters of the model being attacked, and
+$\epsilon$ is the maximum allowable perturbation.
+The \texttt{clip} function ensures that the perturbed data point remains within the $\epsilon$-ball around the original data point.

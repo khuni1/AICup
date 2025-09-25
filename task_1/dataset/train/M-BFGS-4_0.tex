@@ -1,0 +1,45 @@
+%Input
+$x^{(k)}$ represents the current iterate,
+$x^{(k+1)}$ represents the next iterate,
+$\alpha_k$ is the step size determined by a line search method,
+$H_k$ is the approximation of the inverse Hessian matrix at iteration $k$, and
+$\nabla f(x^{(k)})$ is the gradient of the objective function with respect to $x$ at iteration $k$.
+
+
+%Output
+$z_{k,i}(\epsilon)$: The $i$-th component of the vector $z_k$ with a dependence on $\epsilon$.
+$\min$: The minimum value.
+$z_{k-1}(\epsilon) \leq z_{k-1} \leq z_{k-1}(\epsilon)$: This indicates the range over which $z_{k-1}$ is considered, presumably with $z_{k-1}(\epsilon)$ representing some bounds.
+$e^T_i$: The $i$-th standard basis vector transposed.
+$h_k(z_{k-1})$: Some function $h_k$ applied to $z_{k-1}$.
+
+%Formula 
+$x^{(k+1)} = x^{(k)} - \alpha_k H_k \nabla f(x^{(k)})$
+
+$z_{k,i}(\epsilon) = \min_{z_{k-1}(\epsilon) \leq z_{k-1} \leq z_{k-1}(\epsilon)} e^T_i h_k(z_{k-1})$
+
+This equation suggests that the $i$-th component of $z_k$ is obtained by finding the minimum value of $e^T_i h_k(z_{k-1})$ over a specified range of $z_{k-1}$.
+
+$z_{k,i}(\epsilon) = \max_{z_{k-1}(\epsilon) \leq z_{k-1} \leq z_{k-1}(\epsilon)} e^T_i h_k(z_{k-1})$
+
+$z_{k,i}(\epsilon)$: The $i$-th component of the vector $z_k$ with a dependence on $\epsilon$.
+$\max$: The maximum value.
+$z_{k-1}(\epsilon) \leq z_{k-1} \leq z_{k-1}(\epsilon)$: This indicates the range over which $z_{k-1}$ is considered, presumably with $z_{k-1}(\epsilon)$ representing some bounds.
+$e^T_i$: The $i$-th standard basis vector transposed.
+$h_k(z_{k-1})$: Some function $h_k$ applied to $z_{k-1}$.
+
+This equation suggests that the $i$-th component of $z_k$ is obtained by finding the maximum value of $e^T_i h_k(z_{k-1})$ over a specified range of $z_{k-1}$.
+
+$(e_y - e_{y_{\text{true}}})^T z_K \leq 0 \quad \forall z_0 \in X(x_0) = \{x \,|\, \|x - x_0\|_{\infty} < \epsilon\}$
+
+%Explanation
+Broyden–Fletcher–Goldfarb–Shanno (BFGS) optimization algorithm, with limited-memory version: 
+This inequality involves several elements and is used to ensure a certain condition holds for all  $z_0$ \text{ in a specified set } $X(x_0)$. Here's a breakdown of the components:
+$e_y$ and $e_{y_{\text{true}}}$: These are presumably standard basis vectors corresponding to the predicted class $y$ and the true class $y_{\text{true}}$, respectively.
+$z_K$: This could be a vector at the final layer $K$ of some iterative process or model.
+$(e_y - e_{y_{\text{true}}})^T z_K$: This represents the dot product (or inner product) of the difference between the basis vectors and the vector $z_K$.
+The inequality $\leq 0$: Indicates that this dot product should be less than or equal to zero.
+$\forall z_0 \in X(x_0)$: Specifies that this condition must hold for all vectors $z_0$ within the set $X(x_0)$.
+$X(x_0) = \{x \,|\, \|x - x_0\|_{\infty} < \epsilon\}$: Defines the set $X(x_0)$ as the set of all vectors $x$ that are within an $\epsilon$-distance (in $\infty$-norm) from $x_0$.
+
+In essence, this inequality ensures that the difference in the predictions for the true class and the other class is non-positive for all perturbed inputs within a certain distance from $x_0$.

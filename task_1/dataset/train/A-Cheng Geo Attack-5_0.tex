@@ -1,0 +1,60 @@
+%Input
+$\mathbf{x} \in \mathbb{R}^d$: Original input example.
+$y_{\text{true}}$: True label of the input example.
+$f(\mathbf{x})$: Classifier function.
+$\epsilon$: Perturbation budget under $L_p$ norm.
+Maximum iterations or convergence criterion.
+
+%Output
+$\mathbf{x}_{\text{adv}}$: Adversarial example satisfying the constraints.
+
+%Formula
+The Cheng Attack aims to solve the following optimization problem:
+
+\[
+\min_{\delta} \|\delta\|_p \quad \text{subject to } f(\mathbf{x} + \delta) \neq y_{\text{true}}, \quad \|\delta\|_p \leq \epsilon.
+\]
+
+To achieve this, it iteratively adjusts the perturbation using a geometric optimization approach:
+
+1.Initialization:
+   \[
+   \delta_0 = \mathbf{0}.
+   \]
+
+2.Iterative Update:
+   At each iteration, the perturbation $\delta_t$ is updated as follows:
+   \[
+   \delta_{t+1} = \delta_t - \eta \cdot \frac{\nabla_{\mathbf{x}} L(f(\mathbf{x} + \delta_t), y_{\text{true}})}{\|\nabla_{\mathbf{x}} L(f(\mathbf{x} + \delta_t), y_{\text{true}})\|_p},
+   \]
+   where $\eta$ is the step size, and the gradient is normalized to ensure stability under the $L_p$ constraint.
+
+3.Projection:
+   After each update, project $\delta_{t+1}$ back into the feasible set:
+   \[
+   \delta_{t+1} \gets \text{Proj}_{\|\delta\|_p \leq \epsilon} (\delta_{t+1}),
+   \]
+   ensuring that the perturbation remains within the $L_p$-norm budget.
+
+%Explanation
+
+1.Initialization: The algorithm starts with no perturbation ($\delta = \mathbf{0}$).
+
+2. Objective: Minimize the perturbation $\|\delta\|_p$ such that the classifier misclassifies the perturbed input $\mathbf{x} + \delta$.
+
+3.Gradient Update:
+   - Use the gradient of the loss function with respect to the input to guide the perturbation toward inducing misclassification. 
+   - Normalize the gradient to prevent excessively large steps in the $L_p$ space.
+
+4.Projection: After each update, ensure the perturbation does not exceed the allowed $L_p$ budget by projecting it back into the feasible region.
+
+5.Termination:
+   - The process continues until:
+     - $f(\mathbf{x} + \delta) \neq y_{\text{true}}$ (successful attack), or
+     - Maximum iterations are reached.
+
+6.Output:
+   - The adversarial example is:
+     \[
+     \mathbf{x}_{\text{adv}} = \mathbf{x} + \delta.
+     \]

@@ -1,0 +1,33 @@
+%Input
+$x' = \text{clip}(x + \epsilon \cdot \text{sign}(\nabla_x J(\theta, x, y)), x - \epsilon, x + \epsilon)$
+
+% Output
+The perturbed data point $x'$ is the produced adversary sample.
+
+%Formula
+$x' = \text{clip}(x + \epsilon \cdot \text{sign}(\nabla_x J(\theta, x, y)), x - \epsilon, x + \epsilon)$
+
+Single Shot Perturbation, Compute the gradient of the loss function:
+\[
+g = \nabla_x J(\theta, x, y)
+\]
+
+Calculate the perturbed data point:
+\[
+x' = \text{clip}(x + \epsilon \cdot \text{sign}(g), x - \epsilon, x + \epsilon)
+\]
+
+\subsection*{Return}
+The final perturbed input is:
+\[
+x'
+\]
+
+%Explanation
+Project Gradient Descent (PGD) single Shot:
+$x$ is the original input data point,
+$x'$ is the perturbed data point,
+$\epsilon$ is the perturbation strength,
+$\nabla_x J(\theta, x, y)$ is the gradient of the loss function $J$ with respect to the input data $x$,
+$\theta$ represents the parameters of the model being attacked.
+The \texttt{clip} function ensures that the perturbed data point remains within a specified range around the original data point.

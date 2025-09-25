@@ -1,0 +1,21 @@
+%Input
+Let $x$ be the original input image, and $y$ be the true label associated with it. The objective is to create an adversarial example $x^*$ by leveraging data augmentation techniques.
+
+%Output
+The output of the Data Augmentation Attack is an adversarial example $x^*$ generated through various augmentations applied to the original input image $x$.
+
+%Formula
+The Data Augmentation Attack can be expressed as:
+$x^* = \text{Augment}(x, \mathcal{A}) + \delta$
+where:
+- $\text{Augment}(x, \mathcal{A})$ represents the application of a set of augmentation transformations $\mathcal{A}$ (e.g., rotation, scaling, translation) to the input $x$,
+- $\delta$ is the perturbation added to the augmented image to enhance the adversarial effect.
+
+The goal can be framed as:
+$\min_{\delta} \; \|x^* - x\|_p \quad \text{subject to} \quad f_\theta(x^*) \neq y$
+where:
+- $\|\cdot\|_p$ is the norm measuring the distance between the original and perturbed images,
+- $f_\theta(x^*)$ is the model's output for the adversarial example.
+
+%Explanation
+In Data Augmentation Attacks, the adversary uses augmentation techniques to manipulate the input image and create adversarial examples. By applying transformations such as rotation, flipping, or color changes, the attack can exploit the model's reliance on certain features, leading to misclassification. The perturbation $\delta$ is then added to the augmented version of the input to ensure the resulting adversarial example $x^*$ effectively misleads the model. This method takes advantage of the model's sensitivity to variations introduced by augmentation, thereby generating adversarial inputs that remain 

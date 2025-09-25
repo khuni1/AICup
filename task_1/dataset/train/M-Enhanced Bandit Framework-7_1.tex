@@ -1,0 +1,26 @@
+%Input
+Classifier $L(x, y)$ for the image $x$ and true label $y$, latent vector $v_t$, search variance $\sigma$, number of samples $n$, perturbation bound $\epsilon$, query limit $L$, step size $\eta$, target class $y_{\text{adv}}$, dimensionality $d$, spherical gradient estimator $\Delta_t$, and Gaussian query vector $u$.
+
+%Output
+The output is an adversarial image $x_{\text{adv}}$ that is misclassified by the classifier $L(x, y)$, and satisfies the given perturbation constraint (e.g., $\ell_2$ or $\ell_\infty$ norm).
+
+%Formula
+The loss function for the bandit framework is:
+$\ell_t(g) = -\left\langle \nabla L(x, y), \frac{g}{\|g\|} \right\rangle$
+where $g$ is a gradient estimate accessed via finite differences. The spherical gradient estimate $\Delta_t$ is calculated as:
+$\Delta = \frac{\ell(v + \delta u) - \ell(v - \delta u)}{\delta} u$
+where $u$ is a Gaussian vector sampled from $\mathcal{N}(0, \frac{1}{d} I)$. The update rule for the latent vector $v_t$ in the bandit framework is then given by $v_t = v_{t-1} + \eta \cdot \Delta_t$
+For the $\ell_\infty$ norm constraint, we employ the exponentiated gradients update, with the transformation $p_{t-1} = \frac{1}{2} (v_{t-1} + 1)$
+$p_t = \frac{1}{Z} p_{t-1} \exp(\eta \cdot \Delta_t)$
+where $Z = p_{t-1} \exp(\eta \cdot \Delta_t) + (1 - p_{t-1}) \exp(-\eta \cdot \Delta_t)$, and $v_t = 2p_t - 1$
+
+%Explanation
+The bandit framework for adversarial example generation is a general method for constructing black-box adversarial examples with any convex constraint set. The latent vector $v_t$ serves as a prior on the gradient for each round $t$. The inner product $\left\langle \nabla L(x, y), \frac{g}{\|g\|} \right\rangle$ is used to compute the search direction.
+The attack aims to generate adversarial examples by iteratively updating the input image $x_t$ based on the estimated gradient $g_t$. In each iteration, the adversarial image is perturbed in the direction of the projected gradient, and the latent vector $v_t$ is updated based on the estimated gradient of the loss function. The process continues until the adversarial example $x_{\text{adv}}$ misleads the classifier into predicting the target class $y_{\text{adv}}$.
+
+This variant Enhanced Bandit Framework introduces a new scoring function that incorporates both the search direction and the perturbation bound. The scoring function is defined as:
+$f_t = \left\langle \nabla L(x, y), \frac{g}{\|g\|} \right\rangle + \delta \cdot \text{bound}$
+where $\delta$ is a hyperparameter that controls the trade-off between exploration and exploitation.
+The new attack uses this scoring function to select the next query point. The variant maintains the core principle of the original attack while improving its behavior by incorporating the perturbation bound into the search direction.
+
+Summary: This variant modifies the original bandit framework by introducing a new scoring function that incorporates both the search direction and the perturbation bound. The resulting attack is more effective at finding adversarial examples that satisfy both the search direction and the perturbation bound.

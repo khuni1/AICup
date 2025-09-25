@@ -1,0 +1,33 @@
+%Input
+The input includes the adversarial attack function, a model $f(\cdot)$ with parameters $\theta$, and the perturbation $p$. 
+The target label is $y_t$ (desired class), and the input space is represented by the set of input data $X$. 
+A self-bounded query budget is introduced to limit the number of queries based on the uncertainty of the model.
+
+%Output
+The output includes the adversarial example $x_{\text{adv}}$ (the perturbed input after applying the attack) and the perturbation $\delta$ (the generated adversarial perturbation).
+Output: The final adversarial example:
+$x_{\text{adv}} = x_N$
+
+%Formula
+1. \textbf{Initialization}:
+   $x_0 = x$
+2. For each iteration $i$ from 0 to $N-1$:
+   \begin{itemize}
+   \item Query Uncertainty: Compute the uncertainty of the model at $x_i$, denoted as $u(x_i)$.
+   \item Query Budget Check: If the query budget $B$ is reached, stop the iteration and proceed to the next input.
+   \item $\delta_i = \text{UpdatePerturbation}(x_i, q_i, \alpha)$
+   \item $x_{i+1} = x_i + \delta_i$
+   \end{itemize}
+3. The final adversarial example:
+$x_{\text{adv}} = x_N$
+
+%Explanation
+The Self-Bounded QeBB attack introduces a self-bounded query budget to limit the number of queries based on the uncertainty of the model. This approach ensures that the attack does not exhaust the query budget and maintains the reliability of the model's predictions. The process works as follows:
+
+1. \textbf{Initialization}: Start with the original input $x_0 = x$.
+2. \textbf{Query Uncertainty}: At each iteration, the uncertainty of the model at the current perturbed input $x_i$ is computed and used to determine if the query budget has been reached.
+3. \textbf{Query Budget Check}: If the query budget $B$ is reached, stop the iteration and proceed to the next input.
+4. \textbf{Perturbation Update}: The perturbation $\delta_i$ is updated based on the query result, and the input $x_i$ is adjusted accordingly. The update rule might involve gradient-free optimization methods to minimize the perturbation while still targeting the desired output.
+5. \textbf{Repeat for N Iterations} or Stop: This process is repeated iteratively for $N$ iterations, where the attack aims to gradually transform the input $x$ into an adversarial example $x_{\text{adv}}$. If the query budget is reached, the attack stops and proceeds to the next input.
+
+The key idea behind Self-Bounded QeBB is to maintain a balance between exploring the input space and not exhausting the query budget. This approach allows for more efficient attacks that are less likely to be detected by the model's defenses.

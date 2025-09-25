@@ -1,0 +1,26 @@
+%Input
+Source image $I_v$, target image $I_t$, target label $t$, weight parameters $\alpha$, $\beta$.
+
+%Output
+Adversarial loss $L_{\text{Adv}}^t$.
+
+%Formula
+The tADV Texture Transfer Attack computes the adversarial loss $L_{\text{Adv}}^t$ as follows:
+
+\[
+L_{\text{Adv}}^t = \alpha L_{\text{Att}}(I_v, I_t) + \beta J_{\text{adv}} \left(F(I_v), t \right)
+\]
+
+%Explanation
+ Texture Transfer Attack tADV, where
+$L_{\text{Adv}}^t$ represents the adversarial loss for the texture transfer attack. It combines the texture similarity loss $L_{\text{Att}}(I_v, I_t)$ and the adversarial loss $J_{\text{adv}} \left(F(I_v), t \right)$.
+
+$L_{\text{Att}}(I_v, I_t)$ measures the similarity between the source image $I_v$ and the target image $I_t$ in terms of their texture characteristics. It quantifies how well the texture of $I_v$ is transferred to $I_t$.
+
+$J_{\text{adv}} \left(F(I_v), t \right)$ is the adversarial loss function, measuring the difference between the model's predictions for the adversarially perturbed source image $F(I_v)$ and the target label $t$. It quantifies the discrepancy between the model's output and the desired output.
+
+$F(I_v)$ represents the output of the colorisation model $F$ when applied to the source image $I_v$, generating the colorised version of the image.
+
+$t$ is the target label for the adversarial attack, specifying the desired output of the colorisation model.
+
+$\alpha$ and $\beta$ are weight parameters that control the relative importance of the texture similarity loss and the adversarial loss in the overall adversarial loss $L_{\text{Adv}}^t$. They balance the contributions of the two components.

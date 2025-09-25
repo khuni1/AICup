@@ -1,0 +1,17 @@
+%Input
+This algorithm can construct black-box adversarial examples with perturbations constrained to any convex set (with $\ell_p$-norm constraints being a special case). The latent vector $v_t \in K$ serves as a prior on the gradient for round $t$. The prediction $g_t$ is simply $v_t$ projected onto the appropriate space, where $K$ extends to valid adversarial perturbations (e.g., $\mathbb{R}^n$ for $\ell_2$ examples, $[-1, 1]^n$ for $\ell_\infty$ examples).
+
+%Output
+The output of the algorithm is the adversarial example $x^*$ generated from the original input $x_{\text{init}}$, which misclassifies the model while adhering to the perturbation constraints.
+
+%Formula
+The loss function $\ell_t$ is defined as
+\[
+\ell_t(g) = -\left\langle \nabla L(x, y), \frac{g}{\|g\|} \right\rangle,
+\]
+where $g$ is the gradient estimate accessed through finite differences, and $L(x, y)$ is the classification loss for image $x$ with true class $y$. The essential aspect of the algorithm is updating the latent vector $v_t$ using an estimator $\Delta_t$ of the gradient $\nabla_v \ell_t(v)$.
+
+%Explanation
+To generate adversarial examples, we alternate between estimating the gradient and updating the latent vector. The update process uses the estimator $\Delta_t$, which represents the gradient of the loss function. Depending on the convex set $K$, the update rule varies. For instance, if $K = \mathbb{R}^n$, we can use a simple gradient ascent method. When $K = [-1, 1]^n$, we apply an exponentiated gradient update.
+
+The method efficiently combines gradient estimation with updates to the input image, resulting in an effective approach for constructing black-box adversarial examples. This framework can adapt to various norm constraints, providing flexibility in how perturbations are applied.

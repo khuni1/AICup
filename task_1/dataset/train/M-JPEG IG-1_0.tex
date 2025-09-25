@@ -1,0 +1,11 @@
+%Input
+Image $\mathbf{x}$, target class $y_{\text{adv}}$, classifier $P$, perturbation bound $\epsilon$, step size $\eta$, epsilon decay $\delta \epsilon$.
+
+%Output
+Adversarial image $\mathbf{x}_{\text{adv}}$ with $P(y_{\text{adv}}|\mathbf{x}_{\text{adv}}) > 0.5$.
+
+%Formula
+$\mathbf{x}_{\text{adv}} = \mathbf{x} - \eta \mathbf{g}, \quad \mathbf{x}_{\text{adv}} \in [\mathbf{x} - \epsilon, \mathbf{x} + \epsilon]$
+
+%Explanation
+Iterative Gradient-JPEG Compression Attack (IG-JPEG) , where the partial information reduces the perturbation by controlling the learning rate $\eta$ and adjusting the gradient $\mathbf{g}$ until the adversarial target class $y_{\text{adv}}$ appears in the top-$k$ predictions.

@@ -1,0 +1,21 @@
+%Input
+\[
+\text{Given:} \quad X \text{ (original input)}, \quad y \text{ (true label)}, \quad \epsilon \text{ (perturbation bound)}, \quad \alpha \text{ (step size)}, \quad T \text{ (number of iterations)}, \quad m, k \text{ (scaling factors)}
+\]
+
+
+%Output
+Adversarial example $X'_{\text{adv}}$ such that $\|X'_{\text{adv}} - X\|_\infty \leq \epsilon$, where the perturbation strategy is modified by incorporating a new constraint inspired by the adversarial examples generated using the M-Objective variant.
+
+%Formula
+Initialize $X^{(0)}_{\text{adv}} = X$. For $t = 0, \dots, T-1$:
+\[
+X^{(t+1)}_{\text{adv}} = X^{(t)}_{\text{adv}} + \alpha \cdot \text{sign}(\nabla_X (m \mathcal{L}(f(X^{(t)}_{\text{adv}}), y) + k \mathcal{R}(X^{(t)}_{\text{adv}})))
+\]
+Project $X^{(t+1)}_{\text{adv}}$ onto the $\epsilon$-ball around $X$:
+\[
+X^{(t+1)}_{\text{adv}} = \text{clip}(X^{(t+1)}_{\text{adv}}, X - \epsilon, X + \epsilon)
+\]
+
+%Explanation
+The Regularized Multi-Objective Projected Gradient Method (R-MO-PGM) variant incorporates a new constraint into the M-PGM attack. The term $k \mathcal{R}(X^{(t)}_{\text{adv}})$ adds an regularization component to the loss function $\mathcal{L}$, which encourages the adversarial example to be closer to the target label $y$. This modification improves the robustness of the attack against defenses that rely on label noise or other forms of regularization. The coefficient $k$ controls the strength of this regularization term, and different values can lead to varying levels of stealthiness or effectiveness.

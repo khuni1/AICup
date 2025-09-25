@@ -1,0 +1,44 @@
+%Input
+$\mathcal{D}_{\text{original}}$: Original training dataset, consisting of $(\mathbf{x}_i, y_i)$ pairs.  
+$f(\mathbf{x})$: Target model for training.  
+$\mathcal{M}$: Modification function applied to the data.  
+$\epsilon$: Maximum allowable perturbation.  
+$\mathcal{L}(f, \mathcal{D})$: Loss function used to train the model.
+
+%Output  
+Modified dataset $\mathcal{D}_{\text{modified}}$ such that:  
+\[
+f(\mathcal{D}_{\text{modified}}) \, \text{leads to degraded performance on legitimate test inputs}.
+\]
+
+%Formula
+1. Define the modification function $\mathcal{M}(\mathbf{x}_i, \epsilon)$:
+   \[
+   \mathbf{x}_i^{\text{modified}} = \mathbf{x}_i + \Delta \mathbf{x}_i, \quad \text{where } \|\Delta \mathbf{x}_i\| \leq \epsilon.
+   \]
+
+2. Apply $\mathcal{M}$ to selected data points in $\mathcal{D}_{\text{original}}$:
+   \[
+   \mathcal{D}_{\text{modified}} = \{(\mathbf{x}_i^{\text{modified}}, y_i) \mid (\mathbf{x}_i, y_i) \in \mathcal{D}_{\text{original}}\}.
+   \]
+
+3. Train the target model $f(\mathbf{x})$ on $\mathcal{D}_{\text{modified}}$:
+   \[
+   \hat{f} = \arg \min_f \mathcal{L}(f, \mathcal{D}_{\text{modified}}).
+   \]
+
+4. Evaluate $\hat{f}$ on legitimate test inputs to assess performance degradation:
+   \[
+   \text{Performance degradation: } \Delta_{\text{performance}} = \mathcal{L}(f, \mathcal{D}_{\text{test}}) - \mathcal{L}(f, \mathcal{D}_{\text{original}}).
+   \]
+
+%Explanation
+Data Modification Adversarial Attack involves introducing subtle, imperceptible changes to the training data to compromise the integrity of the target model. 
+
+1. Objective: The goal is to modify the training dataset in such a way that the trained model performs poorly on test data while appearing normal during training. This can be used to attack the model's generalization ability.
+
+2. Modification Function: A carefully designed function $\mathcal{M}$ perturbs the input data points within a permissible bound $\epsilon$ to create adversarial samples.
+
+3. Effect on the Model: The target model, trained on the poisoned dataset, may develop vulnerabilities, such as misclassifications or poor accuracy on legitimate samples.
+
+4. Non-Gradient Based: This attack does not necessarily rely on gradient-based optimization. Instead, it can use heuristic approaches, domain knowledge, or brute force to identify effective data modifications. In some variations, gradient information may enhance the modification strategy, but it is not essential to the core attack method.

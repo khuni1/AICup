@@ -1,0 +1,28 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Adversarial Noise Attack generates adversarial examples by adding a specific type of noise to the input.
+
+%Output
+The output of the Adversarial Noise Attack is a modified input \( x^* \) that aims to mislead the model into making an incorrect prediction.
+
+%Formula
+The Adversarial Noise Attack can be formulated as follows:
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Generate adversarial noise \( \eta \):
+   $
+   \eta = \epsilon \cdot n,
+   $
+   where \( n \) is the noise vector sampled from a noise distribution (e.g., Gaussian, uniform).
+3. Create the adversarial example by adding the noise to the input:
+   $
+   x^* = x + \eta.
+   $
+4. Ensure that the modified input causes a misclassification:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The Adversarial Noise Attack generates adversarial examples by adding a carefully crafted noise \( \eta \) to the original input \( x \). The noise is typically scaled by a factor \( \epsilon \) to control the perturbation magnitude. The goal is to create a new input \( x^* \) that is sufficiently perturbed to mislead the model into making an incorrect prediction while remaining perceptually similar to the original input. This attack highlights the sensitivity of machine learning models to noise and the importance of developing robust defenses against such adversarial manipulations.

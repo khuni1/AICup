@@ -1,0 +1,25 @@
+%Input
+Original dataset: $\mathcal{D}_{\text{train}} = \{(x_i, y_i)\}_{i=1}^{N}$  
+Poisoned dataset: $\mathcal{D}_{\text{poison}} = \{(x_{\text{poison},j}, y_{\text{target},j})\}_{j=1}^{M}$  
+Perturbation bound: $\epsilon$  
+Step size: $\alpha$  
+Model function: $f_{\theta}(x)$  
+Loss function: $L(f_{\theta}(x), y)$  
+Number of optimization steps: $T$
+
+
+%Output
+$ \mathcal{D}_{\text{train}}^{\text{poisoned}} = \mathcal{D}_{\text{train}} \cup (\mathcal{D}_{\text{poison}}) $
+
+%Formula
+1. Construct Poisoned Instances:  
+   $x_{\text{poison}} = x_{\text{original}} + \delta, \quad \|\delta\| \leq \epsilon$  
+
+2. Compute Gradient of Loss Function:  
+   $\nabla_\delta L(f_\theta(x + \delta), y) = \frac{\partial}{\partial \delta} L(f_\theta(x + \delta), y)$  
+
+3. Update Poisoned Perturbation:  
+   $\delta^{(t+1)} = \text{Clip}_{\mathcal{X}} (\delta^{(t)} + \alpha \cdot \text{sign}(\nabla_\delta L(f_\theta(x + \delta^{(t)}), y)))$
+
+%Explanation
+The Bayes-PGD Poisoning Attack variant of the original perturbation core. The primary difference between this attack and the original PGD Fast-Universal attack lies in its use of gradient-based optimization to update the poisoned perturbation. This approach leverages the model's internal representation to create more effective adversarial examples. Additionally, the incorporation of gradient computation introduces a new layer of complexity, enabling the attack to be more targeted and stealthy.

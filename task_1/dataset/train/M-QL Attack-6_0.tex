@@ -1,0 +1,59 @@
+%Input
+In the query-limited setting, Natural Evolution Strategies (NES) is used as an unbiased and efficient gradient estimator.
+$\text{Hyperparameters:} \ \eta \ \text{(step size)}, \ N \ \text{(number of samples)}$
+$\text{Parameters:} \ \theta \ \text{(initial parameter vector)}$
+$\text{Sampling:} \ \theta_i \sim \mathcal{N}(\theta, \sigma^2 I) \ \text{for} \ i = 1, 2, \ldots, N$
+$\text{Objective function:} \ f(\theta_i) \ \text{(evaluated for each sample)}$
+$\text{Gradient estimation:} \ \nabla_{\theta} J(\theta) = \frac{1}{N} \sum_{i=1}^{N} \left( f(\theta_i) \cdot \frac{\theta_i - \theta}{\sigma^2} \right)$
+$\text{Parameter update:} \ \theta \leftarrow \theta + \eta \cdot \nabla_{\theta} J(\theta)$
+
+%Formula
+1- Input: Hyperparameters $\eta$, number of samples $N$
+2- Initialize: Parameters $\theta$
+3- FOR each iteration:
+    - Sample $\{ \theta_i \}_{i=1}^N$ from the parameter distribution
+    - Evaluate the objective function $f(\theta_i)$ for each sample
+    - Compute the gradient estimate using NES
+    - Update parameters $\theta \leftarrow \theta + \eta \cdot \text{gradient estimate}$ 
+    END FOR
+
+
+%Output
+The expected outcome as a mathematical notational output would primarily include:
+For NES within query limitations combined with projection (our proposed approach), we expect an updated set of parameter estimates $\theta_{t+1}$ after $L/N$ perturbation-based gradient estimations, which can be applied to inputs in subsequent iterations as our perturbed parameters for model vulnerability assessment:
+$\hat{\theta}_{total} = \theta_0 + \frac{L}{n_\mu} \cdot \left( \frac{1}{N} \sum_{i=1}^{m} g(x^{(i)}) \right)$
+where $\mu$ is our adaptive step size, and the perturbations come from NES. 
+Mathematical notation example for a combined perturbed parameter update using both methods:
+$\theta_{t+1}^{combined} = \text{Proj}_{\|\cdot\|_{\epsilon}} \left( \theta_0 + \frac{L}{n_\mu} \cdot \left( \frac{1}{N} \sum_{i=1}^{m} g(x^{(i)}) \right) \right)$
+Mathematical notation for a perturbed input using our combined approach (considering noise):
+$\hat{x}(t+1)^{combined} = \text{Proj}_{\|\cdot\|_{\epsilon}} \left( \theta_0 + \frac{L}{n_\mu} \cdot \left( \frac{1}{N} \sum_{i=1}^{m} g(x^{(i)}) \right) \right)$
+Mathematical notation for a sequence of combined perturbed input updates (not including NES):
+$\hat{x}(t+1)^{combined} = \text{Proj}_{\|\cdot\|_{\epsilon}} \left( \theta_0 + \frac{L}{n_\mu} \cdot \left( \frac{1}{N} \sum_{i=1}^{m} g(x^{(i)}) \right) \right)$
+For the perturbation in NES output using projection (our proposed approach), we would observe a sequence of perturbed parameters after each iteration. Mathematical notation for standalone PGD parameter update with noise and constraints (not including our combined method):
+$\theta_{t+1}^{PGD} = \text{Proj}_{\|\cdot\|_{\epsilon}} \left( \theta_0 - n_\eta g(f) \right)$
+Mathematical notation for a sequence of standalone perturbed input updates using PGD:
+$\hat{x}(t+1)^{PGD} = \text{Proj}_{\|\cdot\|_{\epsilon}} \left( x_0 + \frac{L}{n_\mu} \cdot \left( \frac{1}{N} \sum_{i=1}^{m} g(f) \right) \right)$
+Mathematical notation for a combined perturbed input update (without noise):
+$\hat{x}(t+1)^{combined-PGD} = \text{Proj}_{\|\cdot\|_{\epsilon}} \left( x_0 + \frac{L}{n_\mu} \cdot \left( \frac{1}{N} \sum_{i=1}^{m} g(f) \right) \right)$
+Mathematical notation for a sequence of combined perturbed input updates with noise:
+$\hat{x}(t+1)^{combined-PGD} = \text{Proj}_{\|\cdot\|_{\epsilon}} \left( \theta_0 + \frac{L}{n_\mu} \cdot \left( \frac{1}{N} \sum_{i=1}^{m} g(f) \right) \right)$
+Mathematical notation for the combined approach's expected outcome (noise included):
+$\hat{\text{output}}^{combined-PGD} = f \left( \hat{x}(t+1)^{combined} \right)$
+where $g(f)$ would be our model’s response to perturbed inputs, and $\eta$ is a step size or learning rate.
+Mathematical notation for the perturbation effect in each iteration (considering noise):
+$\hat{x}(t+1) = x_0 + \epsilon g$
+where $g(f)$ denotes gradient ascent/descent and $\text{Proj}_{\|\cdot\|_{\epsilon}}$ is our constraint operation.
+Mathematical notation for a combined perturbation-assisted model evaluation (considering noise):
+$\hat{\theta}_{total} = \theta_0 + \frac{L}{n_\mu} \cdot \left( \frac{1}{N} \sum_{i=1}^{m} g(x^{(i)}) \right)$
+Mathematical notation for a sequence of perturbation-assisted model evaluations:
+$\hat{\text{output}}^{combined} = f \left( \theta_0 + \frac{L}{n_\mu} \cdot \left( \frac{1}{N} \sum_{i=1}^{m} g(x^{(i)}) \right) \right)$
+In Projected Gradient Descent (PGD), we use the sign of the estimated gradient for the update. The update rule is given by:
+$x^{(t)} = \Pi_{[x_0 - \epsilon, x_0 + \epsilon]} \left( x^{(t-1)} - \eta \cdot \text{sign}(g_t) \right)$
+Projection Operator $ \Pi_{[x_0 - \epsilon, x_0 + \epsilon]} $:
+$\Pi_{[x_0 - \epsilon, x_0 + \epsilon]}(x) = \max \left( x_0 - \epsilon, \min \left( x, x_0 + \epsilon \right) \right)$
+This function clips the value of $ x $ to ensure it stays within the specified interval around $ x_0 $.
+Update Rule:
+$x^{(t)} = x^{(t-1)} - \eta \cdot \text{sign}(g_t)$
+
+%Explanation
+Here, $ x^{(t-1)} $ is updated by subtracting the step size $ \eta $ multiplied by the sign of the gradient $ g_t $. The sign function indicates the direction of the gradient, and the step size controls the magnitude of the update.

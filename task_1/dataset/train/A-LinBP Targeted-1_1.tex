@@ -1,0 +1,51 @@
+%Input
+Original input $x$: The clean input sample (e.g., an image or text representation). \\
+Target model $f_{\theta}$: The neural network classifier or regressor. \\
+True label $y$: The ground-truth label corresponding to $x$. \\
+Loss function $L(f_{\theta}(x), y)$: The function used to measure the classification error. \\
+Perturbation bound $\epsilon$: The maximum allowable change to the input. \\
+Maximum iterations $N$: The number of steps for iterative perturbation. \\
+Normalization function $\text{normalize}(\cdot)$: Ensures the gradient direction is unit-scaled. \\
+Clipping function $\text{Clip}_{\mathcal{X}}(\cdot)$: Ensures the adversarial sample remains within valid bounds.
+
+
+%Output
+The output of the LinBP variant is an adversarial example $x^*$ that misclassifies the input by exploiting the linear characteristics of the decision boundary. However, this variant introduces a new constraint, $\alpha < 0$, which makes the perturbation direction opposite to the original attack.
+
+
+%Formula
+1. Initialize the input:
+$
+x^{(0)} = x.
+$
+2. Set parameters for the optimization process:
+- Define the maximum perturbation size $ \epsilon $ and the number of iterations $ N $.
+3. For each iteration $ n = 1 $ to $ N $:
+- Compute the model's prediction:
+$
+\hat{y}^{(n)} = f_{\theta}(x^{(n-1)}).
+$
+- Calculate the gradient of the loss function:
+$
+g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y).
+$
+- Find the direction of the linear decision boundary:
+$
+d_n = \text{normalize}(g_n).
+$
+- Update the input by adding the perturbation with a negative sign:
+$
+x^{(n)} = x^{(n-1)} + -\epsilon \cdot d_n.
+$
+- Apply clipping to ensure the perturbation stays within bounds:
+$
+x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)}).
+$
+
+4. The final adversarial example is:
+$
+x^* = x^{(N)}.
+$
+
+%Explanation
+The LinBP variant introduces a new constraint, $\alpha < 0$, which makes the perturbation direction opposite to the original attack. This modification can be seen as a "targeted" version of the attack, where instead of pushing the input across the decision boundary, it pulls it away from it. The resulting adversarial example $x^*$ has the same characteristics as the original LinBP attack but is effectively targeted at misclassifying the input by exploiting its linear vulnerability.

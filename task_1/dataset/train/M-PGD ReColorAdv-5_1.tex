@@ -1,0 +1,36 @@
+%Input
+Let $x_i = (c_{i,1}, c_{i,2}, c_{i,3})$ be a pixel in an image, where each channel $c_{i,j}$ belongs to the normalized color space $[0,1]$. The goal is to find an adversarial perturbation function $f$ that transforms $x_i$ into $x_i^e = (\hat{c}_{i,1}, \hat{c}_{i,2}, \hat{c}_{i,3})$ such that the perturbed image misleads the classifier.
+
+Given:
+- $C \subseteq [0,1]^3$: The color space of the input.
+- $f$: The perturbation function that modifies the color values.
+- $g(\mathbf{x}^e)$: The classifier's output logits for the perturbed input $\mathbf{x}^e$.
+- $y$: The true class label.
+- $\lambda$: A weighting factor for smoothness regularization.
+- $L_{\text{adv}}$: The adversarial loss ensuring misclassification.
+- $L_{\text{smooth}}$: The smoothness regularization term.
+
+%Output
+The output of the ReColorAdv variant is a perturbed image $\mathbf{x}^e$ that is visually similar to the original input while ensuring misclassification by the target model. The attack optimizes for adversarial effectiveness while incorporating smoothness constraints to maintain color consistency across neighboring pixels.
+
+
+
+%Formula
+\begin{equation}
+x_i = (c_{i,1}, c_{i,2}, c_{i,3}) \in C \subseteq [0, 1]^3 \rightarrow x_i^e = (\hat{c}_{i,1}, \hat{c}_{i,2}, \hat{c}_{i,3}) = f(c_{i,1}, c_{i,2}, c_{i,3})
+\end{equation}
+
+\begin{equation}
+L_{\text{adv}}(f, \mathbf{x}) = \max \left( \max_{i \neq y} (g(\mathbf{x}^e)_i - g(\mathbf{x}^e)_y), 0 \right)
+\end{equation}
+
+\begin{equation}
+\arg\min_{f \in F_{\text{diff-col}}} L_{\text{adv}}(f, \mathbf{x}) + \lambda L_{\text{smooth}}(f)
+\end{equation}
+
+\begin{equation}
+L_{\text{smooth}}(f) = \sum_{g_j \in G} \sum_{g_k \in N(g_j)} \| (f(g_j) - g_j) - (f(g_k) - g_k) \|_2
+\end{equation}
+
+%Explanation
+The PGD-ReColorAdv variant modifies the original ReColorAdv attack by incorporating projected gradient descent into the optimization process. This change ensures that the perturbation function $f$ adheres to the constraints imposed by the smoothness regularization term $L_{\text{smooth}}$, resulting in a more robust and targeted adversarial attack. The use of projected gradient descent maintains the core principle of the original attack while introducing an additional layer of control over the optimization process, making it more effective at generating high-quality adversarial examples.

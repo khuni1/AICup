@@ -1,0 +1,11 @@
+%Input
+Source image $I_v$, target image $I_t$, target label $t$, weight parameters $\alpha$, $\beta$
+
+%Output
+Adversarial loss $L_{\text{Adv}}^t$
+
+%Formula
+$L_{\text{Adv}}^t = \alpha L_{\text{Att}}(I_v, I_t) + \beta (J_{\text{mix}} \left(F(I_v), F(I_t)\right) + J_{\text{adv}} \left(F(I_v), t \right))$
+
+%Explanation
+The proposed Texture-Mixing Adversarial Attack (TMAA) variant is a texture mixing-based optimization. It introduces a new term $J_{\text{mix}}$ that measures the similarity between the colorized source image $F(I_v)$ and the target image $I_t$. This similarity metric encourages the model to mix the textures of the two images, resulting in an adversarial example that is more realistic and difficult to defend against. The mixing term combines with the existing adversarial loss $J_{\text{adv}}$ to form the overall adversarial loss $L_{\text{Adv}}^t$.

@@ -1,0 +1,27 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input data point, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The NAG adversarial attack aims to generate a box of adversarial perturbations around the input.
+
+%Output
+The output of the NAG attack is an adversarial perturbation box \( B \) that can be applied to the original input \( x \) to create multiple adversarial examples.
+Output: The NAG++ attack incorporates a new scoring function that prioritizes perturbations that lead to misclassification on specific, pre-selected classes.
+
+%Formula
+1. Define the perturbation box:
+   $
+   B = \{ x + \delta \mid \|\delta\| \leq \epsilon \}.
+   $
+2. Initialize the perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+3. Update the perturbation using the gradient of the loss function:
+   $
+   \delta^{(t+1)} = \delta^{(t)} - \alpha \cdot \nabla_{\delta} L(f(x + \delta^{(t)}), y).
+   $
+4. Ensure the perturbation remains within the box:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The NAG++ attack is an extension of the original NAG adversarial attack. The new attack incorporates a scoring function that prioritizes perturbations that lead to misclassification on specific, pre-selected classes. This approach aims to improve the targeted nature of the attack by focusing on particular vulnerabilities in the model. By incorporating this scoring function, the NAG++ attack aims to create more effective and targeted adversarial examples.

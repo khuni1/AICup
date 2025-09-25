@@ -1,0 +1,50 @@
+%Input
+$x$: \text{Input sample to be perturbed,} \\
+$y$: \text{Target label for the attack,} \\
+$\gamma$: \text{Scaling constant for the hyperbolic tangent transformation,} \\
+$c_{\text{init}}$: \text{Initial constant for binary search,} \\
+$c_{\text{upper}}$: \text{Upper bound for binary search constant,} \\
+$b_{\text{steps}}$: \text{Number of binary search steps.}
+
+%Output
+Adversarial sample $x_{\text{adv}}$
+
+%Formula
+\begin{algorithm}
+\caption{Carlini \& Wagner's $L_{\infty}$ Attack}
+\begin{algorithmic}[1]
+\REQUIRE Input $x$, maximum perturbation $\epsilon$, constant $\gamma$, loss function $\ell$
+\STATE $x_{\text{scaled}} \leftarrow \frac{x - \max(x - \epsilon, x_{\text{min}})}{\min(x + \epsilon, x_{\text{max}}) - \max(x - \epsilon, x_{\text{min}})}$
+\STATE $x_{\text{transformed}} \leftarrow \text{arctanh}\left( ((2 \cdot x_{\text{scaled}}) - 1) \cdot \gamma \right)$
+\STATE $z \leftarrow x_{\text{transformed}}$
+\STATE $c_{\text{lower}} \leftarrow 0$, $c_{\text{init}} \leftarrow 0.01$, $c_{\text{upper}} \leftarrow 1e10$
+\STATE $b_{\text{steps}} \leftarrow 10$, $l_{\text{min}} \leftarrow \infty$
+\WHILE{$b_{\text{steps}} > 0$ \AND $c_{\text{init}} < c_{\text{upper}}$}
+    \STATE $z_{\text{new}} \leftarrow \text{minimize objective}(c_{\text{init}})$
+    \IF{$\ell(t^{-1}(z_{\text{new}})) = 0$ \AND $\|t^{-1}(z_{\text{new}}) - x\|_{\infty} < l_{\text{min}}$}
+        \STATE $l_{\text{min}} \leftarrow \|t^{-1}(z_{\text{new}}) - x\|_{\infty}$
+        \STATE $z \leftarrow z_{\text{new}}$
+    \ENDIF
+    \STATE $(c_{\text{lower}}, c_{\text{init}}, c_{\text{upper}}) \leftarrow \text{update}(c_{\text{lower}}, c_{\text{init}}, c_{\text{upper}}, \ell(t^{-1}(z_{\text{new}})))$
+    \STATE $b_{\text{steps}} \leftarrow b_{\text{steps}} - 1$
+\ENDWHILE
+\STATE $x_{\text{adv}} \leftarrow t^{-1}(z)$
+\STATE $x_{\text{adv}} \leftarrow x_{\text{adv}} \cdot (x_{\text{max}} - x_{\text{min}}) + x_{\text{min}}$
+\OUTPUT 
+\end{algorithmic}
+\end{algorithm}
+
+
+%Explanation
+\textbf{Step 1:} Scale the input $x$ to ensure that the perturbation constraint $\|x - x_{\text{adv}}\|_{\infty} \leq \epsilon$ is satisfied. \\
+\textbf{Step 2:} Apply the inverse hyperbolic tangent (arctanh) transformation to the scaled input, scaled by $\gamma$ to prevent numerical overflow. \\
+\textbf{Step 3:} Initialize the variable $z$ to store the transformed input. \\
+\textbf{Step 4:} Initialize the binary search parameters for $c$, which controls the trade-off between the attack objective and the perturbation constraint. \\
+\textbf{Step 5:} Set the number of binary search steps and initialize the minimum loss $l_{\text{min}}$ to infinity. \\
+\textbf{Step 6:} Perform a binary search for the best $c$ within the specified number of steps and upper bound.\\
+\textbf{Step 7:} Minimize the attack objective function with respect to $c$ to find a new adversarial example $z_{\text{new}}$. \\
+\textbf{Step 8:} If the new adversarial example successfully fools the classifier and has a smaller $L_{\infty}$ norm perturbation than previously found, update $z$ and $l_{\text{min}}$. \\
+\textbf{Step 9:} Update the binary search parameters based on the loss of $t^{-1}(z_{\text{new}})$. \\
+\textbf{Step 10:} Decrement the number of binary search steps. \\
+\textbf{Step 11:} After completing the binary search, apply the inverse transformation $t^{-1}$ to $z$ to obtain the adversarial example $x_{\text{adv}}$. \\
+\textbf{Step 12:} Scale $x_{\text{adv}}$ back to the original input range.

@@ -1,0 +1,52 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input (e.g., image, text, or data sample). \\
+$f(\mathbf{x})$: Target model for classification or regression. \\
+$y_{\text{true}}$: True label of the input. \\
+$\epsilon$: Perturbation limit controlling the magnitude of changes. \\
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function representing the attack objective. \\
+$T$: Number of optimization iterations. \\
+$\eta$: Learning rate or step size for the attack optimization.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with minimal perturbation and preserved constraints}.
+\]
+
+%Formula
+1. Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Gradient-Based Perturbation Update:
+   For $t = 0, 1, \ldots, T-1$, update the adversarial example:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} - \eta \cdot \nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{true}}),
+   \]
+   where $\nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}, y)$ is the gradient of the loss with respect to the input.
+
+3. Perturbation Projection:
+   Ensure the adversarial example remains within the allowed perturbation limit $\epsilon$:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}(\mathbf{x}_{\text{adv}}^{(t+1)}, \mathbf{x}_{\text{original}} - \epsilon, \mathbf{x}_{\text{original}} + \epsilon).
+   \]
+
+4. Stopping Criterion:
+   Terminate the attack when:
+   \[
+   f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}, \quad \text{or after} \, T \, \text{iterations}.
+   \]
+
+%Explanation
+The Cheng Adversarial Attack is a gradient-based method designed to generate adversarial examples by iteratively perturbing the input data. The attack seeks to maximize the loss function $\mathcal{L}(f, \mathbf{x}, y_{\text{true}})$, forcing the model to misclassify the perturbed input.
+
+1. Objective: The attack aims to create an adversarial input $\mathbf{x}_{\text{adv}}$ that remains close to the original input $\mathbf{x}_{\text{original}}$ while inducing a misclassification in the target model.
+
+2. Gradient Update: The method uses gradient information to guide the perturbations, ensuring efficient and effective changes that maximize the attack's success.
+
+3. Constraint Enforcement: Perturbations are constrained within a limit $\epsilon$, ensuring that the adversarial example remains visually or semantically similar to the original input, minimizing perceptibility.
+
+4. Optimization: The iterative process continues until the attack succeeds (misclassification occurs) or the maximum number of iterations is reached.
+
+This attack is gradient-based, as it heavily relies on the gradients of the loss function to craft adversarial perturbations.

@@ -1,0 +1,22 @@
+%Input
+Let \( \theta \) represent the parameters of the distribution used for perturbation generation. The update process follows a geometric gradient-free approach, leveraging the natural gradient and moment-based adjustments. The objective is to iteratively refine \( \theta \) to optimize the perturbation distribution while ensuring effective adversarial behavior.
+
+%Output
+The optimized parameter \( \theta^* \) that maximizes the adversarial effectiveness of the generated perturbations, ensuring that the search distribution is well-aligned for effective attack execution.
+
+
+%Formula
+$\theta \leftarrow \theta + \eta \nabla_\mu \log \pi (z | \theta)$
+$
+\begin{aligned}
+\nabla_\mu \log \pi (z | \theta) &= \Sigma^{-1} (z - \mu)\\
+&= \frac{\mathbb{E}_{\pi(\theta)}[z]}{\mathbb{E}_{\pi(\theta)}[\mu]} - \mu
+\end{aligned}
+$
+
+%Explanation
+The Geometric Gradient-Free Optimization variant of the NES attack combines the benefits of gradient-free optimization with geometric methods for optimizing the parameter distribution. The update rule uses a modified version of the natural gradient, which is influenced by both the mean and variance of the distribution.
+
+The key difference between this variant and the original NES attack lies in its use of a geometrically-inspired update rule that incorporates both the first and second moments of the distribution into the optimization process. This allows for more efficient and effective exploration of the parameter space, particularly when compared to traditional gradient-based methods.
+
+In essence, this variant provides a more robust and targeted approach to adversarial example generation, leveraging the power of geometric optimization to refine the search distribution and improve overall attack performance.

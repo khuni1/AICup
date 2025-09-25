@@ -1,0 +1,33 @@
+%Input
+Let $x$ be the original input sample, and let $\delta$ be the adversarial perturbation. The attack aims to generate $\delta$ such that the model misclassifies $x$ and causes misclassification for points in the neighborhood $\mathcal{N}(x)$.
+
+Given:
+- $f(\cdot)$: The target model.
+- $L(f(x), y)$: The loss function for input $x$ and true label $y$.
+- $\delta$: The adversarial perturbation.
+- $\mathcal{N}(x)$: A set of points in the neighborhood of $x$.
+- $\epsilon$: A bound on the perturbation magnitude.
+- $\alpha$: The step size for gradient ascent.
+
+The goal is to craft $\delta$ such that the misclassification effect extends beyond $x$ to neighboring inputs in $\mathcal{N}(x)$.
+
+%Output
+The output of the M-Spill Over Attack-Gradient Based Optimization variant is a perturbed input $\tilde{x} = x + \delta$ such that the attack causes misclassification for $x$ and spillover misclassifications for points in $\mathcal{N}(x)$.
+
+%Formula
+Initialize the perturbation:
+   $\delta = 0.$
+
+Define the objective function:
+   $\text{maximize } \sum_{x' \in \mathcal{N}(x)} L(f(x' + \delta), y') \quad \text{subject to } \|\delta\| \leq \epsilon.$
+
+Update the perturbation using gradient ascent:
+   $\delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \nabla_{\delta} \left( \sum_{x' \in \mathcal{N}(x)} L(f(x' + \delta^{(t)}), y') \right).$
+
+Project $\delta$ to ensure it remains within the allowable bounds:
+   $\delta = \text{clip}(\delta, -\epsilon, \epsilon).$
+
+%Explanation
+The Neighborhood Spillover Attack (NSA) variant crafts a perturbation $\delta$ that not only causes misclassification for a specific input $x$ but also manipulates the model's decision boundaries to create spillover effects. These effects result in misclassification of inputs in the neighborhood $\mathcal{N}(x)$, demonstrating the attack's ability to generalize and spread its impact across related inputs.
+
+The variant differs from the main perturbation core in that it focuses on optimizing the cumulative loss over the neighborhood $\mathcal{N}(x)$ rather than solely minimizing the loss function. This approach enhances the attack's ability to create spillover effects, making it more challenging for models to defend against.

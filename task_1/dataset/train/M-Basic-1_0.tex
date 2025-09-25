@@ -1,0 +1,68 @@
+%Input
+The input includes the perturbation $\rho$, the input $I_c$, and the various parameters such as $\epsilon$, $\alpha$, and $s$.
+
+%Output
+The output is the perturbed input after applying the update rules and constraints.
+
+%Formula
+\begin{equation*}
+    \rho = \frac{\epsilon \nabla J(\theta, I_c, `)}{\| \nabla J(\theta, I_c, `) \|_2}
+\end{equation*}
+
+%Explanation
+Clipping Fast Gradient Method with Perturbation Magnitude where,
+$\rho$ This variable represents the magnitude of the perturbation applied to the input $I_c$. It is calculated based on the gradient of the loss function $J$ with respect to the input $I_c$ for the least likely class (`), scaled by $\epsilon$ and normalized.
+
+Gradient of the Loss Function:
+$\nabla J(\theta, I_c, `)$
+This represents the gradient of the loss function $J$ with respect to the input $I_c$ for the least likely class (`). It indicates the direction of steepest ascent of the loss function, providing guidance for updating the input to maximize adversarial effects.
+
+Normalization:
+$\nabla J(\theta, I_c, `) _2$
+This term represents the L2 norm of the gradient, which normalizes the perturbation to ensure that its magnitude does not exceed $\epsilon$. This normalization step helps to control the magnitude of the perturbation and prevents it from becoming too large.
+
+caling Factor:
+$\epsilon$
+This parameter controls the maximum allowable magnitude of the perturbation. It bounds the perturbation to ensure that it remains within a certain range, preventing excessive distortion of the input.
+
+$I_{i+1}^\rho = \text{Clip}_\epsilon \left( I_i^\rho + \alpha \cdot sign \left( \nabla J(\theta, I_i^\rho, `) \right) \right)$
+
+Iterative Update:
+$I_{i+1}^\rho$
+This variable represents the input after $i+1$ iterations of the update rule. It is obtained by applying the update rule to the input $I_i^\rho$ in the $i$-th iteration.
+
+Input Perturbation:
+$I_i^\rho$
+This variable represents the perturbed input in the $i$-th iteration of the update rule. It is perturbed towards misclassification as the least likely class (`), with the magnitude of the perturbation bounded by $\epsilon$.
+
+Update Rule:
+$\text{Clip}_\epsilon \left( I_i^\rho + \alpha \cdot \text{sign} \left( \nabla J(\theta, I_i^\rho, `) \right) \right)$
+This expression represents the update rule applied to the input $I_i^\rho$ in each iteration. It adds a scaled gradient of the loss function $J$ with respect to the input $I_i^\rho$ for the least likely class (`), where the scaling factor $\alpha$ controls the magnitude of the update. The $\text{sign}$ function ensures that the update is in the direction that increases the loss, and the $\text{Clip}_\epsilon$ function bounds the perturbation to ensure that its magnitude does not exceed $\epsilon$.
+
+$I_c \not\approx c \quad \text{such that} \quad C(I_c) \neq C(I_c + \rho) \geq \delta \quad \text{s.t.} \quad \| \rho \|_p \leq \xi$
+
+Original Classification:
+$I_c \not\approx c$
+This condition ensures that the original classification of the input $I_c$ is not approximately equal to the true class $c$. In other words, $I_c$ is misclassified.
+
+Classification Change:
+$C(I_c) \neq C(I_c + \rho)$
+This condition ensures that the classification of the perturbed input $I_c + \rho$ is different from the original classification of $I_c$. It indicates that the perturbation $\rho$ successfully alters the classification of the input.
+
+Adversarial Strength:
+$C(I_c + \rho) \geq \delta$
+This condition specifies a threshold $\delta$ for the strength of the adversarial example. It ensures that the confidence or probability assigned to the new classification $C(I_c + \rho)$ is above or equal to $\delta$, indicating a certain level of confidence in the new classification.
+
+Perturbation Constraint:
+$\| \rho \|_p \leq \xi$
+This condition limits the magnitude of the perturbation $\rho$ to be within a certain norm bound $\xi$. It controls the amount of distortion applied to the input while generating the adversarial example.
+$\rho = \max \left( \min \left( sR(t) + I_c, 1 \right), -1 \right)$
+
+Scaling Factor and Reference Input:
+$s & Scaling factor$
+$R(t)$ & Reference input at time  $t$
+These terms represent the scaling factor $s$ and the reference input $R(t)$, which are used to compute the perturbation $\rho$. The scaling factor adjusts the magnitude of the perturbation relative to the reference input.
+
+Perturbation Calculation:
+$\rho = \max \left( \min \left( sR(t) + I_c, 1 \right), -1 \right)$
+This expression computes the perturbation $\rho$ by adding the scaled reference input $sR(t)$ to the original input $I_c$. The result is then clipped to ensure that the perturbed input remains within the valid input range $[-1, 1]$.

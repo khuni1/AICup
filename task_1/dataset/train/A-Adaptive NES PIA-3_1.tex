@@ -1,0 +1,50 @@
+%Input
+\mathbf{x}: Original input instance.  
+$f_{\theta}(\mathbf{x})$: Target model with parameters $\theta$.  
+y: True label of the input instance.  
+$\mathbf{p}^{(0)}$: Initial perturbation sampled from $\mathcal{N}(0, I)$.  
+$\Delta$: Accumulated perturbation update.  
+N: Population size for NES optimization.  
+$\sigma$: Mutation step size.  
+$N_{\text{iter}}$: Number of iterations for the optimization process.  
+$L_{\text{attack}}(\mathbf{x}_{\text{adv}}, y)$: Adversarial loss function with a penalty term.  
+$\lambda$: Scaling factor for the final perturbation.
+
+%Output
+$\delta_{\text{opt}} = \frac{\Delta^{(N_{\text{iter}})}}{\|\Delta^{(N_{\text{iter}})}\|_2}$
+
+%Formula
+\begin{itemize}
+    \item Initialize the perturbation parameter $\mathbf{p}^{(0)}$ as a random perturbation sampled from a normal distribution, e.g., $\mathbf{p}^{(0)} \sim \mathcal{N}(0, I)$.
+    \item Set $\Delta = 0$ to accumulate the perturbation changes across iterations.
+    \item Define the population size $N$ (number of candidate perturbations) and the learning rate $\sigma$ (for mutation).
+    \item Define the number of iterations $N_{\text{iter}}$ for the optimization process.
+\end{itemize}
+
+For each iteration $t = 1, \ldots, N_{\text{iter}}:$
+\begin{itemize}
+    \item Perturbation Evolution: $\mathbf{p}^{(t)} = \mathbf{p}^{(t-1)} + \sigma \cdot \mathcal{N}(0, I)$.
+    
+    \item Adversarial Loss Computation: $L_{\text{attack}}^{(t)} = -\frac{\|\mathbf{x}_{\text{adv}} - y\|_2^2}{P_{\text{max}}}$.
+
+    \item Update Perturbation: $\mathbf{p}^{(t)} \leftarrow \mathbf{p}^{(t)} - \alpha \cdot \nabla_{\mathbf{p}} L_{\text{attack}}^{(t)}$.
+    
+    \item Update Perturbation Accumulation: $\Delta^{(t)} \leftarrow \Delta^{(t-1)} + \mathbf{p}^{(t)}$.
+\end{itemize}
+
+After the final iteration $t = N_{\text{iter}}:$
+Final Perturbation: $\delta_{\text{opt}} = \frac{\Delta^{(N_{\text{iter}})}}{\|\Delta^{(N_{\text{iter}})}\|_2}$.
+    
+Adversarial Example: $\mathbf{x}_{\text{adv}} = \mathbf{x} + \lambda \delta_{\text{opt}}$.
+
+%Explanation
+The NES PIA attack is an optimization-based adversarial attack that uses Natural Evolution Strategies (NES) to generate adversarial perturbations. The attack can be adjusted by changing the number of iterations $N_{\text{iter}}$, the mutation step size $\sigma$, and the scaling factor $\lambda$. 
+
+The proposed variant modifies the NES PIA attack to incorporate a new constraint, which is a modified loss function that incorporates an additional penalty term. This modification aims to improve the robustness of the attack against certain types of defenses.
+
+In comparison to the original NES PIA attack, the modified version has two main differences:
+
+1.  The new loss function incorporates an additional penalty term, which makes the optimization process more challenging and potentially more effective.
+2.  The mutation step size $\sigma$ is now adjusted based on the magnitude of the perturbation accumulation $\Delta$, which can help to improve the stability and efficiency of the attack.
+
+These modifications aim to improve the robustness and effectiveness of the NES PIA attack, making it a stronger tool for adversarial attacks.

@@ -1,0 +1,26 @@
+%Input
+Let \( f \) be the target model, \( X = \{x_1, x_2, \ldots, x_N\} \) be a sequence of input data points, \( Y = \{y_1, y_2, \ldots, y_N\} \) be their true labels, and \( \epsilon \) represent the maximum allowable perturbation. The attack aims to create perturbations \( \Delta = \{\delta_1, \delta_2, \ldots, \delta_N\} \) that mislead the model over the long sequence.
+
+%Output
+The output is a sequence of adversarially perturbed data points \( \tilde{X} = \{x_1 + \delta_1, x_2 + \delta_2, \ldots, x_N + \delta_N\} \), designed to maximize the cumulative classification error.
+
+%Formula
+1. Initialize the perturbations:
+   \[
+   \Delta = \{\delta_1 = 0, \delta_2 = 0, \ldots, \delta_N = 0\}.
+   \]
+2. Define the objective to maximize the cumulative loss:
+   \[
+   \text{maximize } \sum_{i=1}^{N} L(f(x_i + \delta_i), y_i) \quad \text{subject to } \|\delta_i\| \leq \epsilon, \, \forall i \in \{1, 2, \ldots, N\}.
+   \]
+3. Update each perturbation iteratively using gradient ascent:
+   \[
+   \delta_i^{(t+1)} = \delta_i^{(t)} + \alpha \cdot \nabla_{\delta_i} L(f(x_i + \delta_i^{(t)}), y_i).
+   \]
+4. Project each perturbation to ensure it remains within bounds:
+   \[
+   \delta_i = \text{clip}(\delta_i, -\epsilon, \epsilon), \, \forall i \in \{1, 2, \ldots, N\}.
+   \]
+
+%Explanation
+Sequential Projected Gradient Ascent (SPGA) or Week Long attack generates a sequence of perturbations \( \Delta \) to mislead the target model \( f \) over a long sequence of data points. By optimizing the cumulative loss, the attack ensures that \( \tilde{X} \) maximizes misclassifications across the entire dataset. Each perturbation \( \delta_i \) is iteratively refined using gradient ascent while being constrained by \( \epsilon \), maintaining imperceptibility for stealthiness.

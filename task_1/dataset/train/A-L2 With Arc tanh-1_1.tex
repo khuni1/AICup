@@ -1,0 +1,76 @@
+%Input
+$x$: Input to be adversarially perturbed. \\
+Target label: $y$ \\
+Constant: $\gamma$: Constant to avoid over-/underflow in (arctanh) transformation. \\
+Lower bound for binary search: $c_{\text{lower}}$: Lower bound of the binary search range for the constant $c$. \\
+Upper bound for binary search: $c_{\text{upper}}$: Upper bound of the binary search range for the constant $c$. \\
+Maximum number of binary search steps: $b_{\text{steps}}$: Maximum number of steps for the binary search algorithm. \\
+Perturbation strategy: $\ell(x)$: Attack objective function or scoring function to evaluate the success of an adversarial example.
+
+%Output
+Adversarial sample $x_{\text{adv}}$
+
+%Formula
+\begin{enumerate}
+    \item Normalize the input:
+    \[
+    x \leftarrow \frac{x - x_{\text{min}}}{x_{\text{max}} - x_{\text{min}}}
+    \]
+    \item Transform the input using inverse hyperbolic tangent:
+    \[
+    x \leftarrow \text{arctanh}\left( ((2 \cdot x) - 1) \cdot \gamma \right)
+    \]
+    \item Initialize the adversarial example:
+    \[
+    x_{\text{adv}} \leftarrow x
+    \]
+    \item Initialize binary search variables:
+    \[
+    c_{\text{lower}} \leftarrow 0, \quad c \leftarrow c_{\text{init}}, \quad c_{\text{double}} \leftarrow \text{True}
+    \]
+    \item Initialize minimum loss:
+    \[
+    \ell_{\text{min}} \leftarrow \infty
+    \]
+    \item While $b_{\text{steps}} > 0$ and $c < c_{\text{upper}}$, perform the following:
+    \begin{enumerate}
+        \item Minimize the objective for the current constant $c$:
+        \[
+        x_{\text{new}} \leftarrow \text{minimize objective}(c)
+        \]
+        \item If the loss function is zero and the $L_2$ norm between $x_{\text{new}}$ and $x$ is smaller than the previous minimum loss, update:
+        \[
+        \ell_{\text{min}} \leftarrow \|x_{\text{new}} - x\|_2^2
+        \]
+        \item Update the adversarial example:
+        \[
+        x_{\text{adv}} \leftarrow x_{\text{new}}
+        \]
+        \item Update the binary search constants:
+        \[
+        (c_{\text{lower}}, c, c_{\text{double}}) \leftarrow \text{update}(c, c_{\text{double}}, \ell(x_{\text{new}}))
+        \]
+        \item Decrement the number of binary search steps:
+        \[
+        b_{\text{steps}} \leftarrow b_{\text{steps}} - 1
+        \]
+    \end{enumerate}
+    \item After completing binary search, apply the inverse transformation to get the adversarial example in the original space:
+    \[
+    x_{\text{adv}} \leftarrow \left( \frac{\tanh(x_{\text{adv}})}{\gamma} + 1 \right) / 2
+    \]
+    \item Rescale the adversarial example to the original input range:
+    \[
+    x_{\text{adv}} \leftarrow x_{\text{adv}} \cdot (x_{\text{max}} - x_{\text{min}}) + x_{\text{min}}
+    \]
+\end{enumerate}
+
+
+%Explanation
+AdversarialAttackL2WithArctanh is a modified version of the A-CW-L2 Norm Based Optimization attack. The main difference between this variant and the original perturbation core is that it uses the arctanh transformation scaled by $\gamma$ instead of applying it directly to $x$. This helps to avoid numerical instability issues caused by large inputs.
+
+The new attack maintains the core principle of the original A-CW-L2 Norm Based Optimization, but introduces a more sophisticated binary search strategy. Instead of simply updating the lower bound and upper bound for $c$, this variant uses a combination of bounds from previous iterations to inform its next move in the search space.
+
+Additionally, AdversarialAttackL2WithArctanh incorporates an attack objective function $\ell(x)$ to evaluate the success of adversarial examples. This allows the algorithm to adaptively adjust its search strategy based on the performance of previously generated attacks.
+
+Overall, AdversarialAttackL2WithArctanh is a more refined and effective version of the original A-CW-L2 Norm Based Optimization attack, with improved numerical stability and adaptive search capabilities.

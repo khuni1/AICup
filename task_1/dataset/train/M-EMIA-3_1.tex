@@ -1,0 +1,11 @@
+%Input
+Original input $x$, ground-truth label $y$, total allowed perturbation $\epsilon$, number of iterations $T$, decay factor $\mu$.
+
+%Output
+Adversarial example $x^*_T$.
+
+%Formula
+$x^*_T = x + \sum_{t=0}^{T-1} \alpha \cdot \text{sign} \left( \sum_{i=0}^{t} \frac{\mu^i \nabla_x J(x^*_{t-i}, y)}{\| \nabla_x J(x^*_{t-i}, y) \|_1} \right)$
+
+%Explanation
+The Exponential Momentum Iterative Attack (EMIA) variant is different from the main perturbation core in its use of exponential decay to incorporate momentum into the gradient-based attack. The MIFGM method accumulates gradients with decreasing weights, allowing for more effective and adaptive attacks that can handle a wider range of inputs and outputs. This modification enables the attack to better exploit the vulnerabilities of the model while maintaining the core principle of iteratively updating the adversarial example based on the gradient of the loss function.

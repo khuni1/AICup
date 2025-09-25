@@ -1,0 +1,66 @@
+%Input
+$f(\cdot)$: Classifier network.
+$d(\cdot, \cdot)$: LPIPS distance function.
+$x$: Input data point.
+$y$: True label.
+$\epsilon$: Perturbation bound.
+$\lambda$: Regularization parameter.
+$x_e$: Perturbed input.
+$S$: Number of iterations for finding optimal $\lambda$.
+$T$: Number of steps for the attack..
+
+%Output
+$x_e$: Adversarial example generated.
+
+%Formula
+1. Initialize the perturbations with random Gaussian noise:
+   \[
+   x_e \leftarrow x + 0.01 \times N(0, 1)
+   \]
+   
+2. For each iteration over $i = 1, \ldots, S$ (where $S$ is the number of iterations to optimize $\lambda$):
+
+    3. For each step $t = 1, \ldots, T$ (where $T$ is the number of steps):
+
+        a. Compute the gradient of the loss function with respect to the perturbed input and regularize it with the LPIPS distance:
+           \[
+           \Delta \leftarrow \nabla_{x_e} L(f(x_e), y) - \lambda \max \left(0, d(x_e, x) - \epsilon \right)
+           \]
+           
+        b. Normalize the gradient:
+           \[
+           \Delta \leftarrow \frac{\Delta}{|\Delta|_2}
+           \]
+           
+        c. Decay the step size exponentially:
+           \[
+           \eta \leftarrow \epsilon \times (0.1)^{t/T}
+           \]
+           
+        d. Approximate the derivative of the LPIPS distance in the direction of the gradient:
+           \[
+           m \leftarrow \frac{d(x_e, x_e + h \Delta)}{h}
+           \]
+           
+        e. Update the perturbed input:
+           \[
+           x_e \leftarrow x_e + \frac{\eta}{m} \Delta
+           \]
+           
+    4. If the LPIPS distance exceeds the bound $\epsilon$:
+       \[
+       \lambda \leftarrow 10 \lambda
+       \]
+       
+3. After all iterations, project the perturbed input back within the bound:
+   \[
+   x_e \leftarrow \text{PROJECT}(d, x_e, x, \epsilon)
+   \]
+
+4. Return the final adversarial example:
+   \[
+   x_e
+   \]
+
+%Explanation
+LPA- LPIPS Constrained Adversarial Attack where, $f(\cdot)$ is the classifier network, $d(\cdot, \cdot)$ is the LPIPS distance function, $x$ is the original input image, $y$ is the target label, $\epsilon$ is the perturbation bound, $x_e$ is the perturbed image, $\lambda$ balances the loss and distance, $\Delta$ is the gradient, $\eta$ is the step size, $m$ is the derivative approximation of the LPIPS distance, and $h$ is the small step size for numerical approximation. The $\text{PROJECT}$ function ensures $x_e$ remains within the bound $\epsilon$.

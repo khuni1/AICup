@@ -1,0 +1,41 @@
+%Input
+Let \( f(x) \) be a non-convex objective function defined on a feasible set \( \mathcal{X} \subseteq \mathbb{R}^n \). Assume the function has multiple local minima. 
+
+%Output
+The goal is to find a solution \( x^* \in \mathcal{X} \) that minimizes \( f(x) \), i.e.,
+\[
+x^* = \arg \min_{x \in \mathcal{X}} f(x).
+\]
+
+%Formula
+\[
+\text{minimize } f(x),
+\]
+\[
+\text{subject to } g_i(x) \leq 0, \quad i = 1, 2, \ldots, m,
+\]
+\[
+h_j(x) = 0, \quad j = 1, 2, \ldots, p,
+\]
+where:
+\begin{itemize}
+    \item \( f(x) \): Non-convex objective function with potentially multiple local minima.
+    \item \( g_i(x) \): Inequality constraints.
+    \item \( h_j(x) \): Equality constraints.
+    \item \( \mathcal{X} \): Feasible set defined by the constraints.
+\end{itemize}
+
+
+The Lagrangian for this problem is:
+\[
+\mathcal{L}(x, \lambda, \mu) = f(x) + \sum_{i=1}^{m} \lambda_i g_i(x) + \sum_{j=1}^{p} \mu_j h_j(x),
+\]
+where:
+\begin{itemize}
+    \item \( \lambda_i \geq 0 \): Lagrange multipliers for inequality constraints.
+    \item \( \mu_j \): Lagrange multipliers for equality constraints.
+\end{itemize}
+
+%Explanation
+A non-convex optimization problem arises when the objective function \( f(x) \) or the feasible set \( \mathcal{X} \) is non-convex. Such problems are challenging because they can have multiple local minima and finding the global minimum \( x^* \) is not guaranteed. Techniques like gradient descent, simulated annealing, or evolutionary algorithms are often employed to approximate solutions.
+

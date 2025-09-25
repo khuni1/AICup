@@ -1,0 +1,54 @@
+%Input
+Let \( \mathbf{x} \) be the original input and \( y \) the true label. The attack starts by setting the initial perturbation \( \delta \leftarrow 0 \). The model \( p_h(y | \mathbf{x}) \) returns the initial probability for the true label.
+
+%Output
+The output is the final perturbation \( \delta \) that results in a successful adversarial attack, causing the model to misclassify the input while considering the adversarial scoring function for more targeted and effective perturbations.
+
+%Formula
+1. Initialize the perturbation $\delta \leftarrow 0$.
+
+2. Set the initial probability for the true label: 
+\[
+p \leftarrow p_h(y | \mathbf{x})
+\]
+
+3. While the current predicted label $y$ is the most probable label, i.e., $p_y = \max_{y'} p_{y'}$:
+\[
+\text{Pick a random query vector } q \in Q
+\]
+
+4. For each $\alpha \in \{\epsilon, -\epsilon, \theta\}$ (explore both positive and negative perturbations, with an additional scoring function):
+\[
+p' \leftarrow p_h(y | \mathbf{x} + \delta + \alpha q)
+\]
+
+5. If the new probability for the correct label decreases:
+\[
+\text{if } p'_y < p_y:
+\]
+    - Update the perturbation using an adversarial scoring function: 
+    \[
+    g(\delta, q) = \max_{q'} \left( \|q'\|_2^2 + r(q', q) \right)
+    \]
+    - Update the probability:
+    \[
+    p \leftarrow p'
+    \]
+    - Break the loop as an improvement is found.
+
+6. Compute the adversarial scoring function value for each perturbation update: 
+\[
+g(\delta, q) = g(0, q) + \alpha g'(f_\theta(x + \delta + \epsilon q), y)
+\]
+
+7. Repeat the process until the current label is no longer the most probable label.
+
+Return the final perturbation is:
+\[
+\delta
+\]
+
+%Explanation
+Adversarial Scoring Function (AdvaScor) modifies the original SimBA attack by incorporating an adversarial scoring function that takes into account the model's predictions and confidence scores. The additional scoring function introduces a new layer of complexity, allowing for more targeted and effective attacks. By utilizing the adversarial scoring function, AdvaScor can adapt to the model's behavior and exploit its vulnerabilities in a more nuanced manner. This variant improves upon the original SimBA attack by providing a more sophisticated approach to adversarial perturbation generation.
+
+Summary: AdvaScor is distinct from the main SimBA attack by incorporating an adversarial scoring function that enhances the attack's targeting capabilities. This modification allows for more effective and targeted attacks, making it a valuable variant in the pursuit of developing robust security measures against neural networks.

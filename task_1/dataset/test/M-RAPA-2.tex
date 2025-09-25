@@ -1,0 +1,11 @@
+%Input
+The input includes the generated patch $G$, the adversarially perturbed image $x_{\text{adv}}$, the target label $T$, and the predicted label $y$.
+
+%Output
+This attack add an additional regularization term $\lambda \cdot ||G||_2^2$ to the objective function.
+
+%Formula
+$\arg\min_{G} -LCE(T, x_{\text{adv}}, y) + \lambda \cdot ||G||_2^2$
+
+%Explanation
+The Regularized Adversarial Patch Attack (RAPA) variant modifies the original patch attack by incorporating an additional regularization term that adds a penalty for large generated patches. This is done to prevent overfitting and make the attack more robust to different image sizes and complexities. The regularizer $\lambda$ controls the trade-off between the adversarial loss and the regularization term, allowing for tuning of the balance between the two components.

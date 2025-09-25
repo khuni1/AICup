@@ -1,0 +1,29 @@
+%Input
+$(x, y)$
+
+%Output
+The output of the Alzantot Reinforced Adversarial Attack is a modified text input $x^*$ that is intended to mislead the model while maintaining semantic coherence, with an emphasis on reinforcement learning.
+
+%Formula
+1. Initialize the input text and true label:
+   $
+   (x, y).
+   $
+2. Define the set of possible perturbations $\mathcal{P}$ that can be applied to the input text.
+3. For each perturbation $p \in \mathcal{P}$:
+   - Generate the modified text:
+   $
+   x' = p(x).
+   $
+   - Evaluate the model's prediction:
+   $
+   \hat{y} = f_{\theta}(x').
+   $
+   - If $\hat{y} \neq y$, then $x'$ is a candidate adversarial example.
+4. The objective is to minimize the perturbation while ensuring misclassification, using reinforcement learning:
+   $
+   x^* = \arg\min_{x'} \text{distance}(x, x') + Q(f_{\theta}(x'), \hat{y}) \quad \text{subject to } f_{\theta}(x') \neq y.
+   $
+
+%Explanation
+The Alzantot Reinforced Adversarial Attack modifies the original Alzantot attack by incorporating reinforcement learning into the objective function. This allows for more targeted and effective attacks, as the model's reward function is used to guide the perturbation process. The attack seeks to create a new input $x^*$ that results in a different model prediction while maintaining semantic coherence, making it a powerful method for generating adversarial examples in natural language processing tasks.

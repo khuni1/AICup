@@ -1,0 +1,31 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The DeHiB Adversarial Attack aims to generate adversarial examples that exploit high-bandwidth features to mislead the model.
+
+%Output
+The output of the DeHiB Adversarial Attack is a perturbed input \( \tilde{x} \) that is designed to deceive the classifier.
+
+%Formula
+The DeHiB Adversarial Attack can be formulated as follows:
+1. Initialize the perturbation \( \delta \):
+   $
+   \tilde{x} = x + \delta,
+   $
+   where \( \|\delta\| \leq \epsilon \).
+2. Define the objective function to maximize the loss for a target class \( c \):
+   $
+   \text{maximize } L(f(\tilde{x}), c),
+   $
+   where \( f \) is the model and \( L \) is the loss function.
+3. Use an iterative optimization technique to update \( \delta \):
+   $
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \text{sign}(\nabla_{\delta} L(f(x + \delta^{(t)}), c)),
+   $
+   where \( \alpha \) is the step size.
+4. Apply a high-pass filter to emphasize high-bandwidth features:
+   $
+   \tilde{x} = x + H(\delta^{(t+1)}),
+   $
+   where \( H \) is the high-pass filter function.
+
+%Explanation
+The DeHiB ((Deceptive High-Bandwidth) Adversarial Attack generates adversarial examples by focusing on high-bandwidth features that can significantly influence model predictions. By optimizing the perturbation \( \delta \) to maximize the loss associated with a target class \( c \), the attack leverages high-frequency components to create subtle yet effective adversarial inputs \( \tilde{x} \). This approach demonstrates the vulnerability of machine learning models to adversarial examples that are specifically designed to exploit certain characteristics of the input space, leading to successful deception of the classifier.

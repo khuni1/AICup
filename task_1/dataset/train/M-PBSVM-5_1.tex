@@ -1,0 +1,38 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( f_{\theta} \) be the target SVM model. The SVM-PA Adversarial Attack generates adversarial examples by projecting perturbations onto the decision boundary of the SVM.
+
+%Output
+Adversarial output \( x^* \) that is intended to mislead the SVM model into making an incorrect prediction.
+
+%Formula
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Compute the decision function:
+   $
+   d(x) = f_{\theta}(x) = w^T x + b,
+   $
+   where \( w \) is the weight vector and \( b \) is the bias.
+3. Generate a perturbation \( \delta \) using the gradient of the decision function:
+   $
+   \delta = \epsilon \cdot \frac{\nabla_x d(x)}{\|\nabla_x d(x)\|},
+   $
+   where \( \epsilon \) controls the magnitude of the perturbation.
+4. Create the adversarial example:
+   $
+   x' = x + \delta.
+   $
+5. Project \( x' \) onto the decision boundary:
+   $
+   x^* = x' - \frac{d(x')}{\|w\|^2} w.
+   $
+6. Ensure that the modified input causes a misclassification:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The Projected Boundary SVM Attack (PB-SVM) variant modifies the original attack by directly projecting the perturbed input onto the decision boundary of the SVM. This approach improves the attack's effectiveness by focusing on the most critical regions of the model, thereby increasing its robustness to adversarial manipulations.
+
+This variant differs from the main perturbation core in that it specifically targets the decision boundary of the SVM model, whereas the original attack uses a general perturbation strategy. This modification enhances the attack's ability to generate effective adversarial examples while maintaining its core principle.

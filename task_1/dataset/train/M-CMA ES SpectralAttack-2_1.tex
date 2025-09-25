@@ -1,0 +1,26 @@
+%Input
+Let us consider a classification task \( X \mapsto [K] \) where:
+\begin{itemize}
+    \item \( X \subseteq \mathbb{R}^d \) is the input space (e.g., images or feature vectors),
+    \item \( [K] = \{1, ..., K\} \) is the corresponding set of possible labels, with \( K \) classes.
+\end{itemize}
+
+The classifier \( f : \mathbb{R}^d \to \mathbb{R}^K \) takes an input \( x \in \mathbb{R}^d \) and outputs a vector of logits \( f(x) = (f_1(x), f_2(x), \dots, f_K(x)) \). The predicted label for the input is given by:
+\[
+\hat{y} = \arg \max_{i \in [K]} f_i(x)
+\]
+where \( \hat{y} \) is the predicted label.
+
+%Output
+The goal of the adversarial attack is to compute the perturbation \( \tau \) such that the classifier's prediction changes. For the untargeted attack, the aim is to cause the classifier to misclassify the input, i.e., the predicted label should differ from the true label \( y \). For the targeted attack, the goal is to cause the classifier to predict a specific target label \( y_t \) instead of the true label \( y \).
+
+For the untargeted attack, the adversarial perturbation \( \tau \) is optimized to increase the loss \( L \), which causes the classifier to misclassify the perturbed input. The attack aims to make the classifier choose a label that is not the true label \( y \). For the targeted attack, the adversarial perturbation \( \tau \) is designed to push the classifier's prediction towards a specific target label \( y_t \), making the classifier misclassify the input as \( y_t \) instead of the true label \( y \).
+
+%Formula
+The spectral attack involves optimizing the perturbation \( \tau \) such that it maximizes the loss function for the targeted class and minimizes it for all other classes. This is achieved by computing the spectral norm of the Hessian matrix of the classifier, which is used to guide the search for the optimal perturbation.
+
+%Explanation
+The spectral attack maintains the core principle of the original
+CMA-ES-SpectralAttack introduce a new constraint that takes into account the spectral properties of the Hessian matrix. This allows the attack to be more targeted and effective by leveraging the geometry of the classifier's decision boundary. The spectral norm restriction on \( \tau \) ensures that the perturbation remains small and imperceptible to humans while still effectively altering the model's prediction.
+
+The spectral attack variant is different from the main CMA-ES method in its use of the spectral norm of the Hessian matrix to guide the search for the optimal perturbation. This allows for a more targeted and effective approach to adversarial attacks, while maintaining the core principle of the original method.

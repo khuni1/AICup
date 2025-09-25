@@ -1,0 +1,44 @@
+%Input
+Define the loss function for LBiasGAN with an ensemble approach.
+
+%Output
+The loss function for LBiasGAN is calculated by combining various loss terms with ensemble variations.
+Set \( \lambda_g \) as a dynamic value that increases with training epochs.
+The training strategy involves adjusting \( \lambda_g \) to improve model performance over time.
+
+%Formula
+$\text{LBiasGAN}(G_1, G_2, D_1, D_2, F_1, F_2, \dots, F_n) = \lambda_b \cdot L_{\text{bias}} + \lambda_g \cdot L_{\text{guard}} + \sum_{i=1}^{n} \left[L_{\text{GAN}}^i + L_{\text{identity}}^i + L_{\text{cycle}}^i\right]$
+
+$G_1, G_2$: Generators in the GAN model.
+$D_1, D_2$: Discriminators in the GAN model.
+$F_1, F_2, \dots, F_n$: Ensemble of additional functions or model components involved in the loss calculation.
+$\lambda_b$: Weight for the bias loss term.
+$L_{\text{bias}}$: Bias loss term.
+$\lambda_g$: Weight for the guard loss term.
+$L_{\text{guard}}$: Guard loss term.
+$L_{\text{GAN}}^i$: GAN loss term for the $i$-th component in the ensemble.
+$L_{\text{identity}}^i$: Identity loss term for the $i$-th component in the ensemble.
+$L_{\text{cycle}}^i$: Cycle consistency loss term for the $i$-th component in the ensemble.
+$\lambda_g = \max(\epsilon \cdot \lfloor \text{epoch} / c \rfloor, \lambda_b)$
+$\epsilon$: User-specified scale factor.
+\text{epoch}: The current training epoch.
+$c$: User-specified scale factor to control the rate of increase for \( \lambda_g \).
+$\lfloor \cdot \rfloor$: Floor function, which returns the greatest integer less than or equal to the given value.
+$\max(\cdot, \cdot)$: Function that returns the maximum value between the two arguments.
+
+%Explanation
+The loss function for LBiasGAN with an ensemble approach integrates multiple loss terms to guide the training of the Generative Adversarial Network (GAN). It combines:
+
+\textbf{Bias Loss Term}: Represented by $L_{\text{bias}}$, it is weighted by $\lambda_b$.
+\textbf{Guard Loss Term}: Represented by $L_{\text{guard}}$, it is weighted by $\lambda_g$, which is dynamically adjusted during training.
+\textbf{Ensemble Loss Terms}: For each component in the ensemble, the loss includes:
+   - $L_{\text{GAN}}^i$: The GAN loss term for the $i$-th component.
+   - $L_{\text{identity}}^i$: The identity loss term for the $i$-th component.
+   - $L_{\text{cycle}}^i$: The cycle consistency loss term for the $i$-th component.
+
+The dynamic adjustment of $\lambda_g$ is crucial for improving model performance over time. Specifically, $\lambda_g$ increases with training epochs according to the formula:
+$\lambda_g = \max(\epsilon \cdot \lfloor \text{epoch} / c \rfloor, \lambda_b)$
+
+where $\epsilon$ and $c$ are user-specified factors controlling the rate of increase. This adjustment helps in balancing the loss terms as the training progresses, allowing the model to adapt and improve its performance.
+
+

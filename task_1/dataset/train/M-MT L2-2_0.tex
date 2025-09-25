@@ -1,0 +1,39 @@
+%Input
+Given a model with parameters $\theta$, an input data point $x_0$, and a true class $y_{\text{true}}$, we want to ensure that for any perturbed input $x$ within an $\epsilon$-ball around $x_0$, the prediction does not favor any class $y$ over the true class $y_{\text{true}}$. We do this by applying certain minimization and maximization operations to the vector $z_k$ at different steps of the model's iterative process.
+
+
+%Formula 
+$(e_y - e_{y_{\text{true}}})^T z_K \leq 0 \quad \forall z_0 \in X(x_0) = \{x \,|\, \|x - x_0\|_{\infty} < \epsilon\}$
+
+This inequality involves several elements and is used to ensure a certain condition holds for all  $z_0$ in a specified set $X(x_0)$. 
+$e_y$ and $e_{y_{\text{true}}}$: These are presumably standard basis vectors corresponding to the predicted class $y$ and the true class $y_{\text{true}}$, $z_K$: \text{ This could be a vector at the final layer } $K$ \text{ of some iterative process or model.}
+$(e_y - e_{y_{\text{true}}})^T z_K$: \text{ This represents the dot product (or inner product) of the difference between the basis vectors and the vector } $z_K$.
+The inequality $\leq 0$: Indicates that this dot product should be less than or equal to zero.
+$\forall z_0 \in X(x_0)$: \text{ Specifies that this condition must hold for all vectors } $z_0$ \text{ within the set } $X(x_0)$.
+$X(x_0) = \{x \,|\, \|x - x_0\|_{\infty} < \epsilon\}$: \text{ Defines the set } $X(x_0)$ \text{ as the set of all vectors } $x$ \text{ that are within an } $\epsilon$ \text{-distance (in } $\infty$ \text{-norm) from } $x_0$.
+
+$z_{k,i}(\epsilon) = \min_{z_{k-1}(\epsilon) \leq z_{k-1} \leq z_{k-1}(\epsilon)} e^T_i h_k(z_{k-1})$
+
+This Minimax Traning (MT) formula defines the $i$ \text{-th component of the vector } $z_k$ \text{ at a certain step } $k$ \text{ in terms of a minimization problem. Here's a breakdown:}
+$z_{k,i}(\epsilon)$: \text{ The } $i$ \text{-th component of the vector } $z_k$ \text{ with a dependence on } $\epsilon$.
+$\min$: \text{ The minimum value.}
+$z_{k-1}(\epsilon) \leq z_{k-1} \leq z_{k-1}(\epsilon)$: \text{ This indicates the range over which } $z_{k-1}$ \text{ is considered, presumably with } $z_{k-1}(\epsilon)$ \text{ representing some bounds.}
+$e^T_i$: \text{ The } $i$ \text{-th standard basis vector transposed.}
+$h_k(z_{k-1})$: \text{ Some function } $h_k$ \text{ applied to } $z_{k-1}$.
+\text{This equation suggests that the } $i$ \text{-th component of } $z_k$ \text{ is obtained by finding the minimum value of } $e^T_i h_k(z_{k-1})$ \text{ over a specified range of } $z_{k-1}$.
+$z_{k,i}(\epsilon) = \max_{z_{k-1}(\epsilon) \leq z_{k-1} \leq z_{k-1}(\epsilon)} e^T_i h_k(z_{k-1})$
+
+This formula is similar to the previous one but involves a maximization problem instead. Here's a breakdown:
+$z_{k,i}(\epsilon)$: \text{ The } $i$ \text{-th component of the vector } $z_k$ \text{ with a dependence on } $\epsilon$.
+$\max$: \text{ The maximum value.}
+$z_{k-1}(\epsilon) \leq z_{k-1} \leq z_{k-1}(\epsilon)$: \text{ This indicates the range over which } $z_{k-1}$ \text{ is considered, presumably with } $z_{k-1}(\epsilon)$ \text{ representing some bounds.}
+$e^T_i$: \text{ The } $i$ \text{-th standard basis vector transposed.}
+$h_k(z_{k-1})$: \text{ Some function } $h_k$ \text{ applied to } $z_{k-1}$.
+
+This equation suggests that the $i$ \text{-th component of } $z_k$ \text{ is obtained by finding the maximum value of } $e^T_i h_k(z_{k-1})$ \text{ over a specified range of } $z_{k-1}$.
+
+%Output
+The conditions defined by the inequalities ensure that the prediction for the true class $y_{\text{true}}$ is stronger or at least equal to that for any other class $y$ for all perturbed inputs within the defined range around $x_0$. Specifically, the minimum and maximum operations on the components of $z_k$ control the behavior of the model's predictions under perturbations.
+
+%Explanation
+In essence, this inequality ensures that the difference in the predictions for the true class and the other class is non-positive for all perturbed inputs within a certain distance from $x_0$.

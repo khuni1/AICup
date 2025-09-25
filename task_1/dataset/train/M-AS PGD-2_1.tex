@@ -1,0 +1,11 @@
+%Input
+Let $x$ be the original input data or feature vector. Let $\alpha$ be a scalar value that controls the step size for adjusting $x$. It determines the magnitude of the perturbation applied to $x$.
+
+%Output
+$x'$ is the produced adversary sample.
+
+%Formula 
+$x' = \text{clip}(x + \alpha \cdot \text{sign}(\nabla_x J(\theta, x, y)), x - \epsilon, x + \epsilon)$
+
+%Explanation
+The Adaptive Step-Sized PGD (AS-PGD) variant of the perturbation core that incorporates a learning-based optimization approach. Instead of using fixed step sizes or clipping values, $\alpha$ controls the magnitude of the perturbation applied to $x$. This allows for more adaptive and effective attacks, as $\alpha$ can be adjusted during training or inference to maximize the attack's success rate. The use of the sign function also introduces a form of regularization, which helps prevent overfitting and maintains the generality of the attack across multiple inputs.

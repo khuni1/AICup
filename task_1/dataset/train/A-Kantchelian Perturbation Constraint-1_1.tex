@@ -1,0 +1,39 @@
+%Input
+Original input sequence (e.g., text or image data).
+Target model (e.g., classifier or regressor).
+True label of the input.
+Perturbation limit for adversarial perturbation.
+Loss function to minimize for successful attack.
+Maximum number of iterations.
+
+%Output
+The Kantchelian Gradient-Based Attack is a variant of the original perturbation core. It generates adversarial examples by iteratively perturbing the input data using gradients of the loss function with respect to the input.
+
+%Formula
+1. Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Perturbation Update:
+   Compute the perturbation as the solution to the optimization problem:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} + \alpha \cdot \nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{true}}),
+   \]
+   where $\alpha$ is the step size for each update.
+
+3. Perturbation Constraint:
+   Ensure the perturbation remains within the limit $\epsilon$:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}(\mathbf{x}_{\text{adv}}^{(t+1)}, \mathbf{x}_{\text{original}} - \epsilon, \mathbf{x}_{\text{original}} + \epsilon).
+   \]
+
+4. Stopping Condition:
+   Terminate the attack when:
+   \[
+   f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}, \quad \text{or when} \, t \geq N.
+   \]
+Explanation: The Kantchelian Adversarial Attack is a variant of the original perturbation core. It generates adversarial examples by iteratively perturbing the input data using gradients of the loss function with respect to the input.
+
+%Explanation
+This attack is logically derived from the perturbation core described in the input provided. The main difference between this variant and the original perturbation core is that it uses gradient-based optimization to craft adversarial perturbations, which allows for more efficient and targeted attacks. Additionally, the Kantchelian Attack introduces a new constraint on the perturbation limit, ensuring that the generated adversarial examples are within a specific range of the original input data.

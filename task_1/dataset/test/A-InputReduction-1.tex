@@ -1,0 +1,30 @@
+%Input
+Let \( x \) be the original input data, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Input Reduction attack aims to generate adversarial examples by strategically removing parts of the input to mislead the model.
+
+%Output
+The output of the Input Reduction attack is a modified input \( x^* \) that is crafted to cause a misclassification while minimizing the amount of data removed.
+
+%Formula
+The Input Reduction adversarial attack can be formulated as follows:
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Define a criterion for determining the importance of each component of the input. This can be based on gradients or feature importance.
+3. For each component \( c_i \) in the input \( x \):
+   - Remove the component \( c_i \) to generate a modified input:
+   $
+   x' = x \setminus \{c_i\}.
+   $
+   - Evaluate the model's prediction:
+   $
+   \hat{y} = f_{\theta}(x').
+   $
+   - If \( \hat{y} \neq y \), then \( x' \) is a candidate adversarial example.
+4. The objective is to minimize the amount of input removed while ensuring misclassification:
+   $
+   x^* = \arg\min_{x'} |\text{removed components}| \quad \text{subject to } f_{\theta}(x') \neq y.
+   $
+
+%Explanation
+The Input Reduction attack generates adversarial examples by strategically removing parts of the original input \( x \). By assessing the impact of each component's removal on the model's prediction, the attack aims to produce a new input \( x^* \) that leads to misclassification with minimal loss of information. This method emphasizes the sensitivity of models to input modifications and highlights the importance of robust defenses in machine learning applications.

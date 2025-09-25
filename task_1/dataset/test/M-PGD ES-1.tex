@@ -1,0 +1,11 @@
+%Input
+Given a machine learning model with parameters $\theta$ and an input data point $x$, we aim to generate an adversarial example $x'$ that slightly deviates from $x$ while remaining within an allowable perturbation $\epsilon$. The objective is to maximize the loss function $J(\theta, x, y)$ with respect to the input data $x$, where $y$ is the true label of $x$. We use early stopping to limit the number of iterations.
+
+%Output
+The perturbed input $x^{(t)}$ obtained using the PGD Probing Attack with Early Stopping method.
+
+%Formula
+$x' = \text{clip}(x + \alpha \cdot \text{sign}(\nabla_x J(\theta, x, y)), x - \epsilon, x + \epsilon)$
+
+%Explanation
+The PGD-Early Stopping Attack (PGD-ES) variant with Early Stopping is a variant of the original Projected Gradient Descent (PGD) method. The main difference lies in the addition of early stopping, which limits the number of iterations to prevent over-optimization and make the attack more efficient. This approach reduces the risk of misclassifying clean data points while still generating effective adversarial examples.

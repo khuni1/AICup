@@ -1,0 +1,24 @@
+%Input
+Let \( f \) be the target model, \( \epsilon \) be the maximum allowable perturbation, and \( N \) be the number of iterations. The DF-UAP Attack aims to generate a universal perturbation \( \delta \) without access to the training data.
+
+%Output
+The output of the DF-UAP Attack is a universal adversarial perturbation \( \delta \) that can be applied to various inputs to deceive the classifier.
+
+%Formula
+The DF-UAP Attack can be formulated as follows:
+1. Initialize the universal perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+2. For each iteration \( t \) from 1 to \( N \):
+   $
+   \delta^{(t)} = \delta^{(t-1)} + \alpha \cdot \text{sign} \left( \nabla_{\delta} J(f(x), y) \right),
+   $
+   where \( J \) is the objective function designed to maximize the misclassification probability for a set of generated inputs \( x \) based on the model's predictions.
+3. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The DF-UAP (Data-Free Universal Adversarial Perturbation) Attack generates a universal adversarial perturbation \( \delta \) by optimizing it based on the model's outputs, without requiring access to the original training data. This method relies on creating a set of synthetic inputs or samples generated from the model itself to evaluate the effectiveness of the perturbation. By iteratively updating \( \delta \) to maximize the model's misclassification for these inputs, the attack creates a perturbation that can be universally applied across different inputs, showcasing a significant vulnerability in machine learning models to data-free universal adversarial attacks.

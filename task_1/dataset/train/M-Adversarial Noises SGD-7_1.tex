@@ -1,0 +1,32 @@
+%Input
+$x$: Original input data.
+$y$: True label of the input.
+$f_{\theta}(\cdot)$: Target model with parameters $\theta$.
+$\epsilon$: Perturbation magnitude.
+$N$: Number of iterations for noise generation.
+$n$: Noise vector sampled from a given distribution (e.g., Gaussian, uniform).
+
+%Output
+The output of the M-Adversarial Noises-Stochastic Gradient Descent attack is a modified input $x^*$ that aims to mislead the model into making an incorrect prediction.
+
+%Formula
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Generate adversarial noise $\eta$ using stochastic gradient descent:
+   $
+   \eta = \frac{\epsilon}{\sqrt{N}} \cdot n,
+   $
+   where $n$ is the noise vector sampled from a noise distribution (e.g., Gaussian, uniform) at each iteration of SGD.
+3. Create the adversarial example by adding the noise to the input:
+   $
+   x^* = x + \eta.
+   $
+4. Ensure that the modified input causes a misclassification:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The M-Adversarial Noises-Stochastic Gradient Descent attack modifies the original Adversarial Noise Attack by incorporating stochastic gradient descent into the noise generation process. This approach introduces randomness at each iteration of SGD, which can help improve the stealth and effectiveness of the attack. The new variant aims to create a more robust and adaptable adversarial example that can evade multiple models.

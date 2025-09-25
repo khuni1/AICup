@@ -1,0 +1,11 @@
+%Input
+The input includes the perturbation $v'$, the original input $v$, the norm $p$, and the constraint $\xi$.
+
+%Output
+Generate one adversarial attack variant that is logically derived from the perturbation core described in the uploaded LaTeX input provided.  The variant is called "JigSaw Attack-Projected Gradient Regularized".
+
+%Formula
+$P_{p, \xi}(v) = \text{arg min}_{v'} \| v - v' \|_2^2 \quad \text{subject to} \quad \| v' \|_p \leq \xi$
+
+%Explanation
+The JigSaw Attack - Constrained Gradient Regularized variant is different from the main perturbation core in that it incorporates an additional constraint on the magnitude of the perturbation. This regularized approach can lead to more effective attacks by limiting the perturbation's impact on the input, making it more stealthy and harder to detect.

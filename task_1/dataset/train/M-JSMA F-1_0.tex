@@ -1,0 +1,70 @@
+%Input
+\textbf{$\mathbf{x}$}: Fixed input image. \\
+\textbf{$\delta$}: Perturbation to be found. \\
+\textbf{$D$}: Distance metric (e.g., $L_0$, $L_2$, or $L_\infty$ norm). \\
+\textbf{$C(\mathbf{x} + \delta) = t$}: Constraint requiring the modified image to be classified as target class $t$. \\
+\textbf{$f$}: Reformulated objective function for the constraint. \\
+\textbf{$c$}: Constant used to balance the distance and constraint terms. \\
+\textbf{$\mathbf{x} + \delta \in [0, 1]^n$}: Box constraint ensuring the modified image remains valid.
+
+
+%Formula
+\begin{equation*}
+\begin{aligned}
+\min_{\delta} & \quad D(\mathbf{x}, \mathbf{x} + \delta) \\
+\text{s.t.} & \quad C(\mathbf{x} + \delta) = t, \\
+& \quad \mathbf{x} + \delta \in [0, 1]^n
+\end{aligned}
+\end{equation*}
+
+where $\mathbf{x}$ is fixed, and the goal is to find $\delta$ that minimizes $D(\mathbf{x}, \mathbf{x} + \delta)$. We want to find a small perturbation $\delta$ such that the modified image $\mathbf{x} + \delta$ is still a valid image but changes its classification to the target class $t$. Here, $D$ is a distance metric, which can be $L_0$, $L_2$, or $L_\infty$ norm.
+
+Objective Function:
+The constraint $C(\mathbf{x} + \delta) = t$ is highly non-linear, so we reformulate it using an objective function $f$ such that $C(\mathbf{x} + \delta) = t$ if and only if $f(\mathbf{x} + \delta) \leq 0$. Possible choices for $f$ include:
+
+$f_1(\mathbf{x}') &= -\text{loss}_{F,t}(\mathbf{x}') + 1 $\\
+$f_2(\mathbf{x}') &= \left(\max_{i \neq t} F(\mathbf{x}')_i - F(\mathbf{x}')_t\right)_+ $\\
+$f_3(\mathbf{x}') &= \text{softplus}\left(\max_{i \neq t} F(\mathbf{x}')_i - F(\mathbf{x}')_t\right) - \log(2)$ \\
+$f_4(\mathbf{x}') &= \left(0.5 - F(\mathbf{x}')_t\right)_+$ \\
+$f_5(\mathbf{x}') &= -\log\left(2F(\mathbf{x}')_t - 2\right)$ \\
+$f_6(\mathbf{x}') &= \left(\max_{i \neq t} Z(\mathbf{x}')_i - Z(\mathbf{x}')_t\right)_+ $\\
+$f_7(\mathbf{x}') &= \text{softplus}\left(\max_{i \neq t} Z(\mathbf{x}')_i - Z(\mathbf{x}')_t\right) - \log(2)$
+
+where $(e)_+ = \max(e, 0)$, $\text{softplus}(x) = \log(1 + \exp(x))$, and $\text{loss}_{F,s}(\mathbf{x})$ is the cross-entropy loss for $\mathbf{x}$. We adjust these functions to ensure they respect our definition but this does not impact the final result.
+
+Reformulated Problem Instead of solving:
+
+\begin{equation*}
+\begin{aligned}
+\min_{\delta} & \quad D(\mathbf{x}, \mathbf{x} + \delta) \\
+\text{s.t.} & \quad f(\mathbf{x} + \delta) \leq 0, \\
+& \quad \mathbf{x} + \delta \in [0, 1]^n
+\end{aligned}
+\end{equation*}
+
+we use an alternative formulation:
+
+\begin{equation*}
+\min_{\delta} \quad D(\mathbf{x}, \mathbf{x} + \delta) + c \cdot f(\mathbf{x} + \delta)
+\quad \text{s.t.} \quad \mathbf{x} + \delta \in [0, 1]^n
+\end{equation*}
+
+where $c > 0$ is a constant chosen such that the optimal solution to this problem matches the original. After instantiating $D$ with an $L_p$ norm, the problem becomes:
+
+\begin{equation*}
+\min_{\delta} \quad \|\delta\|_p + c \cdot f(\mathbf{x} + \delta)
+\quad \text{s.t.} \quad \mathbf{x} + \delta \in [0, 1]^n
+\end{equation*}
+
+Choosing the Constant $c$
+
+Empirically, the best way to choose $c$ is to use the smallest value such that the resulting solution $\mathbf{x}^*$ has $f(\mathbf{x}^*) \leq 0$. This allows gradient descent to minimize both terms simultaneously. We verify this by running our $f_6$ formulation on the MNIST dataset for values of $c$ from $0.01$ to $100$.
+
+%Explanation
+JSMA (Jacobian-based Saliency Map Attack) ensure the modification yields a valid image, we must have $0 \leq x_i + \delta_i \leq 1$ for all $i$, known as a "box constraint". We investigate three methods:
+
+1. \textbf{Projected Gradient Descent} clips all coordinates within the box after each gradient descent step.
+2. \textbf{Clipped Gradient Descent} incorporates the clipping into the objective function.
+3. \textbf{Change of Variables} introduces a new variable $\mathbf{w}$ and optimizes over $\mathbf{w}$, setting $\delta_i = \frac{1}{2} (\tanh(w_i) + 1) - x_i$.
+
+We use the Adam optimizer as it converges quickly and effectively finds adversarial examples.

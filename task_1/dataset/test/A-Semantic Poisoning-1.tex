@@ -1,0 +1,25 @@
+%Input
+Let \( x \) be the original input data, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Semantic Poisoning attack aims to inject adversarial examples into the training data to mislead the model during the training process.
+
+%Output
+The output of the Semantic Poisoning attack is a modified dataset that includes adversarial examples designed to cause the model to learn incorrect associations.
+
+%Formula
+The Semantic Poisoning adversarial attack can be formulated as follows:
+1. Initialize the input and target:
+   $
+   D = \{(x_i, y_i)\}_{i=1}^N
+   $
+   where \( D \) is the original dataset.
+2. For each data point \( (x_i, y_i) \) in the dataset, create an adversarial example \( x_i^* \):
+   $
+   x_i^* = x_i + \epsilon \cdot \text{sign}(\nabla_{x_i} L(f_{\theta}(x_i), y_i)).
+   $
+3. Update the dataset with the adversarial examples:
+   $
+   D' = D \cup \{(x_i^*, y_i)\}_{i=1}^M
+   $
+   where \( D' \) is the poisoned dataset and \( M \) is the number of adversarial examples generated.
+
+%Explanation
+The Semantic Poisoning attack modifies the training dataset by injecting adversarial examples that are specifically crafted to manipulate the learning process of the model. By adding these poisoned examples, the attack aims to cause the model to learn incorrect relationships between inputs and outputs. This approach highlights the vulnerabilities of machine learning systems to adversarial influences during training, emphasizing the need for robust defenses against data poisoning attacks.

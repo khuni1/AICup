@@ -1,0 +1,17 @@
+%Input
+Default search space is $\mathbb{R}^d$.
+$L_{\infty}$ bounded adversarial attacks. 
+the search space is $B_{\infty}(\epsilon) = \{\tau : \|\tau\|_{\infty} \leq \epsilon\}$. This requires adapting the problem to this specific setting.
+$\tau$ in $\mathbb{R}^d$ that maximizes the loss $L$.
+
+%Output
+The output is the adversarial perturbation $\tau$ in $\mathbb{R}^d$ that maximizes the loss $L(f(x + \epsilon \tanh(\tau)), y)$.
+Tiled-ES Optimizer: The output is the best pair of parameters $(a, b)$ that minimizes the expected loss $\mathbb{E}_{\tau \sim P_{a,b}} [L(f(x + \epsilon \tau), y)]$.
+
+%Formula
+$B_{\infty}(\epsilon) = \epsilon \tanh(\mathbb{R}^d) $
+$\max_{\tau \in \mathbb{R}^d} L(f(x + \epsilon \tanh(\tau)), y)$
+$\max_{\tau \in \{-\epsilon, +\epsilon\}^d} L(f(x + \tau), y)$
+
+%Explanation
+The new attack variant Tiled Derivative-Free Optimization with Evolutionary Strategies (Tiled-DFO-ES) , Tiled-ES Optimizer, is different from the main perturbation core in that it incorporates a tiling strategy to reduce the dimensionality of the search space and speed up convergence. This approach is inspired by Ilyas et al.'s (2018) suggestion to tile the attack, which reduces the number of queries necessary to fool the network.

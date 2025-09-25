@@ -1,0 +1,11 @@
+%Input
+Original input data $X$, perturbation magnitude $\epsilon$, target label $y_{\text{target}}$, predicted label $\hat{y}$.
+
+%Output
+Perturbed data $\text{TGSA}$ (Targeted Gradient Sign Attack with Adversarial Loss Modification)
+
+%Formula
+$\text{TGSA} = X - \epsilon \cdot \text{sign} \left( \nabla_x (H(y_{\text{target}}, \hat{y}) + \alpha L(f_\theta(X), y)) \right)$
+
+%Explanation
+The Targeted Gradient Sign Attack with Loss Sensitivity (TGSA-LS) variant is different from the main TGSM method in that it incorporates an additional loss modification term into the gradient computation. This new term introduces an adversarial loss function $L$ between the model's prediction and the target label, which helps the attack to generate more realistic perturbations that are not only misclassified but also closely aligned with the target label. The added term $\alpha L(f_\theta(X), y)$ modifies the gradient of the original loss function $H(y_{\text{target}}, \hat{y})$, making it more sensitive to small changes in the input data, and thereby improving the attack's stealthiness and effectiveness.

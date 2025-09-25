@@ -1,0 +1,34 @@
+%Input
+The input includes the adversarial attack function, a model $f(\cdot)$ with parameters $\theta$, and the perturbation $p$. 
+The target label is $y_t$ (desired class), and the input space is represented by the set of input data $X$. 
+The query budget is the maximum number of queries $Q$ allowed, the step size is $\alpha$, and the number of iterations is $N$.
+
+%Output
+The output includes the adversarial example $x_{\text{adv}}$ (the perturbed input after applying the attack) and the perturbation $\delta$ (the generated adversarial perturbation).
+
+%Formula
+1. \textbf{Initialization}: 
+   $x_0 = x$
+   
+2. For each iteration $i$ from $0$ to $N-1$:
+   \begin{itemize}
+   \item $q_i = \text{Query}(f(x_i))$ (query the model for prediction at $x_i$)
+   \item $\delta_i = \text{UpdatePerturbation}(x_i, q_i, \alpha)$
+   \item $x_{i+1} = x_i + \delta_i$
+   \end{itemize}
+
+3. The final adversarial example:
+   \[
+   x_{\text{adv}} = x_N
+   \]
+
+%Explanation
+The QeBB attack aims to generate adversarial examples for black-box models with a limited query budget. The process works as follows:
+
+1. \textbf{Initialization}: Start with the original input $x_0 = x$.
+2. \textbf{Querying}: At each iteration, the model is queried with the current perturbed input $x_i$. The model's prediction is used to update the perturbation.
+3. \textbf{Perturbation Update}: The perturbation $\delta_i$ is updated based on the query result, and the input $x_i$ is adjusted accordingly. The update rule might involve gradient-free optimization methods to minimize the perturbation while still targeting the desired output.
+4. \textbf{Repeat for N Iterations}: This process is repeated iteratively for $N$ iterations, where the attack aims to gradually transform the input $x$ into an adversarial example $x_{\text{adv}}$.
+5. \textbf{Adversarial Example}: After $N$ iterations, the final adversarial example $x_{\text{adv}}$ is obtained, which is expected to mislead the model into making incorrect predictions.
+
+The key idea behind QeBB is to use a query-efficient approach, minimizing the number of times the model is queried while still generating a strong adversarial example. This is particularly useful for black-box attacks, where the model is not accessible for gradient-based methods.

@@ -1,0 +1,28 @@
+%Input
+\( f \) be the target model
+\( x \) be the original input data point
+\( y \) be the true label
+\( \epsilon \) represent the maximum allowable perturbation. The Gaussian Noise Adversarial Attack introduces random noise into the input data to mislead the model.
+
+%Output
+The output is a perturbed data point \( \tilde{x} = x + \delta \), where \( \delta \) is sampled from a Gaussian distribution and scaled to remain within the perturbation bounds.
+
+%Formula
+Sample the perturbation \( \delta \) from a Gaussian distribution:
+   \[
+   \delta \sim \mathcal{N}(0, \sigma^2 I),
+   \]
+   where \( \sigma \) controls the standard deviation of the noise.
+
+Scale the perturbation to ensure it respects the \( \epsilon \)-bound:
+   \[
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   \]
+
+Add the perturbation to the original input:
+   \[
+   \tilde{x} = x + \delta.
+   \]
+
+%Explanation
+The Gaussian Noise Adversarial Attack generates random perturbations \( \delta \) sampled from a Gaussian distribution. By adding this noise to the original input \( x \), the attack creates adversarial examples \( \tilde{x} \) that may mislead the model \( f \). The perturbations are constrained by \( \epsilon \) to ensure imperceptibility, making the attack both simple and effective for testing model robustness against noise.

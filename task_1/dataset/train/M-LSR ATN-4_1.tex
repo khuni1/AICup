@@ -1,0 +1,18 @@
+%Input
+\begin{itemize}
+    \item A dataset $X = \{x_i\}_{i=1}^{n}$ consisting of training samples.
+    \item A function $g_{f,\theta}$ parameterized by $\theta$ that generates adversarial examples.
+    \item A classifier function $f$ that maps inputs to their corresponding latent-space representations.
+    \item A reconstruction loss function $L_X$ measuring the similarity between generated and original data.
+    \item A latent-space discrepancy function $L_Y$ measuring the divergence between latent representations.
+    \item A weighting factor $\beta$ balancing the two loss terms.
+\end{itemize}
+
+%Output
+The output of the Adversarial Training Network (ATN) optimization problem is a set of optimized parameters $\theta$, generated data $g_{f,\theta}(x_i)$, and a discrepancy measure between the generated and original data. This approach improves upon traditional adversarial training methods by incorporating both reconstruction loss and latent space discrepancy, resulting in more robust and realistic generated data.
+
+%Formula
+$\text{argmin}_{\theta} \sum_{x_i \in X} \beta L_X(g_{f,\theta}(x_i), x_i) + L_Y(f(g_{f,\theta}(x_i)), f(x_i))$
+
+%Explanation
+Latent-Space Regularized Adversarial Training (LSR-ATN) formula represents the optimization problem in the context of Adversarial Training Networks (ATN) or Adversarial Autoencoder (AAE). It seeks to minimize the loss function, which is composed of two terms: the reconstruction loss between the generated data $g_{f,\theta}(x_i)$ and the original input $x_i$, and the discrepancy between the representations of the generated data $g_{f,\theta}(x_i)$ and the original input $x_i$ in the latent space.

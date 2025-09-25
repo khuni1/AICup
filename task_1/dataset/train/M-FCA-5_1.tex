@@ -1,0 +1,14 @@
+%Input
+Let $x$ be the original input, $x_t$ be the target example, and $f_\theta(\cdot)$ be the feature representation function of the model parameterized by $\theta$. The goal is to generate an adversarial example $x^*$ such that it is misclassified while remaining close to $x_t$ in the feature space.
+
+
+%Output
+The output of the Collision Attack is an adversarial example $x^*$ that is misclassified by the model while being close to a target example $x_t$ in the feature space.
+
+%Formula
+$x^* = \arg\min_{x'} \left( \|f_\theta(x') - f_\theta(x_t)\|^2 + \lambda \|x' - x\|^2 \right)$
+
+%Explanation
+The Feature Collision Attack (FCA) leverages the concept of feature space representation to create adversarial examples. By minimizing the distance between the feature representations of the original input and a target example, the attack aims to generate an adversarial example $x^*$ that is close to the target in feature space but misclassified by the model. This approach can exploit the nonlinearities and complexities of the model's decision boundaries, allowing for successful evasion while preserving perceptual similarity to the original input. The trade-off parameter $\lambda$ is crucial in controlling the extent of the perturbation, ensuring that the resulting adversarial example is both effective and minimally intrusive.
+
+This variant introduces a feature collision-based optimization method to generate adversarial examples by minimizing the distance between the target's feature representation and the original input's. This approach improves upon the original perturbation core by targeting specific features in the model's decision boundaries, making it more targeted and stealthy.

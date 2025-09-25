@@ -1,0 +1,46 @@
+%Input
+$\mathbf{X}_{\text{original}}$: Original binary input vector.  
+$f(\mathbf{X})$: Target model for classification.  
+$y_{\text{true}}$: True label of the input instance.  
+$\alpha$: Temperature parameter controlling the perturbation distribution shape.  
+$\epsilon$: Maximum allowed perturbation budget.  
+d: Dimensionality of the binary vector.  
+$P_i$: Perturbation probability distribution over input bits.  
+$i_{\text{sample}}$: Index of the bit chosen for flipping.
+
+%Output
+Output: $\mathbf{X}_{\text{adv}}$ such that: 
+\[
+f(\mathbf{X}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with perturbations following a non-sparse distribution}.
+\]
+
+%Formula
+1. Initialization:  
+   \[
+   \mathbf{X}_{\text{adv}} = \mathbf{X}_{\text{original}}.
+   \]
+
+2. Perturbation Distribution Scoring:  
+   Compute the perturbation distribution score based on the gradient of the loss function with respect to the binary input, weighted by a non-sparse distribution kernel:
+   \[
+   P_i = \frac{\exp\left(-\alpha \cdot I(i)\right)}{Z}, \quad i \in \{1, 2, \ldots, d\},
+   \]
+   where $d$ is the dimension of the binary vector, $\alpha$ is a temperature parameter controlling the distribution shape, and $Z$ is the partition function.
+
+3. Bit Sampling:  
+   Sample bits based on the perturbation distribution:
+   \[
+   i_{\text{sample}} = \arg\max_{i} P_i.
+   \]
+
+4. Bit Flipping:  
+   Flip the sampled bit value:
+   \[
+   \mathbf{X}_{\text{adv}}^{(i)} = 1 - \mathbf{X}_{\text{adv}}^{(i)}, \quad \text{if } i = i_{\text{sample}}.
+   \]
+
+5. Stopping Condition:  
+   Stop if $f(\mathbf{X}_{\text{adv}}) \neq y_{\text{true}}$ or if the perturbation budget $\epsilon$ is exhausted.
+
+%Explanation
+Non-Sparse Perturbation Distribution Attack (NS-PDA), the Perturbation Distribution Based Optimization variant is a modification of the Non-Sparse Binary Vector Adversarial Attack. Instead of relying solely on gradient-based optimization, this variant uses a non-sparse distribution to guide the sampling of bits to flip, allowing for more flexibility in the perturbation budget and potentially leading to more effective adversarial examples. The temperature parameter $\alpha$ controls the shape of the distribution, enabling trade-offs between robustness and accuracy.

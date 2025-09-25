@@ -1,0 +1,56 @@
+%Input 
+$\mathbf{x}_{\text{original}}$: Original input sample.  
+$f(\mathbf{x})$: Target model for attack.  
+$\epsilon$: Perturbation budget defining allowed modifications.  
+$N$: Number of particles in the swarm.  
+$T_{\text{max}}$: Maximum number of iterations.  
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function.  
+$\mathbf{v}_i$: Velocity vector for particle $i$.  
+$\mathbf{p}_i$: Current position of particle $i$.  
+$\mathbf{p}_{\text{best}, i}$: Best position of particle $i$.  
+$\mathbf{p}_{\text{global}}$: Global best position among all particles.  
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:  
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{while maintaining $\|\mathbf{x}_{\text{adv}} - \mathbf{x}_{\text{original}}\| \leq \epsilon$}.
+\]
+
+%Formula
+1.Initialization:  
+   Initialize particles' positions $\mathbf{p}_i$ and velocities $\mathbf{v}_i$ randomly within the perturbation budget $\epsilon$.  
+   Set $\mathbf{p}_{\text{best}, i} = \mathbf{p}_i$ and $\mathbf{p}_{\text{global}} = \arg\min_{\mathbf{p}_i} \mathcal{L}(f, \mathbf{p}_i, y_{\text{true}})$.  
+
+2. Update Velocity and Position: For each particle $i$:  
+   Update the velocity:  
+   \[
+   \mathbf{v}_i = w \mathbf{v}_i + c_1 r_1 (\mathbf{p}_{\text{best}, i} - \mathbf{p}_i) + c_2 r_2 (\mathbf{p}_{\text{global}} - \mathbf{p}_i),
+   \]  
+   where $w$ is the inertia weight, $c_1$ and $c_2$ are acceleration constants, and $r_1, r_2$ are random values in $[0, 1]$.  
+
+   Update the position:  
+   \[
+   \mathbf{p}_i = \mathbf{p}_i + \mathbf{v}_i.  
+   \]
+
+3. Check Bounds:  
+   Ensure $\mathbf{p}_i$ lies within the allowed perturbation budget $\epsilon$.  
+
+4. Update Personal and Global Bests:  
+   If $\mathcal{L}(f, \mathbf{p}_i, y_{\text{true}}) < \mathcal{L}(f, \mathbf{p}_{\text{best}, i}, y_{\text{true}})$, set $\mathbf{p}_{\text{best}, i} = \mathbf{p}_i$.  
+   If $\mathcal{L}(f, \mathbf{p}_i, y_{\text{true}}) < \mathcal{L}(f, \mathbf{p}_{\text{global}}, y_{\text{true}})$, set $\mathbf{p}_{\text{global}} = \mathbf{p}_i$.  
+
+5. Stopping Condition:  
+   Repeat until $T_{\text{max}}$ is reached or a misclassification is achieved:  
+   \[
+   f(\mathbf{p}_{\text{global}}) \neq y_{\text{true}}.  
+   \]  
+
+%Explanation  
+Practical Swarm PT Adversarial Attack leverages Particle Swarm Optimization (PSO) for adversarial example generation. It operates in the following manner:  
+
+1.Objective: The goal is to minimize the loss function of the target model by iteratively updating particles' positions in the perturbation space.  
+2.Swarm Dynamics: Each particle represents a candidate adversarial example, and its movement is guided by its personal best solution and the global best solution found by the swarm.  
+3.Black-box Approach: Since PSO does not rely on gradient information, this attack is effective in black-box settings.  
+4.Iterative Refinement: The algorithm refines perturbations iteratively until the model is fooled or the maximum iterations are reached.  
+5. Control of Perturbation: By bounding particle positions within $\epsilon$, the attack ensures imperceptibility of adversarial examples.

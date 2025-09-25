@@ -1,0 +1,33 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( f_{\theta} \) be the target model. The GA generates adversarial examples by exploiting the gradient of the loss function.
+
+%Output
+The output of the GA is a modified input \( x^* \) that aims to mislead the model into making an incorrect prediction.
+
+%Formula
+The GA can be formulated as follows:
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Compute the gradient of the loss function with respect to the input:
+   $
+   g = \nabla_x J(f_{\theta}(x), y),
+   $
+   where \( J \) is the loss function.
+3. Create the perturbation based on the gradient:
+   $
+   \delta = \epsilon \cdot \text{sign}(g),
+   $
+   where \( \epsilon \) is the perturbation magnitude.
+4. Update the input to obtain the adversarial example:
+   $
+   x^* = x + \delta.
+   $
+5. Ensure that the modified input causes a misclassification:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The Gradient Attack (GA) generates adversarial examples by applying a perturbation \( \delta \) to the original input \( x \), leveraging the gradient information of the loss function. The perturbation is computed to maximize the loss, effectively guiding the model towards misclassifying the input. By adjusting \( \epsilon \), the attack maintains a balance between perceptibility and effectiveness, creating an adversarial input \( x^* \) that highlights the vulnerabilities of machine learning models to adversarial manipulations. This underscores the importance of developing robust defenses against such attacks.

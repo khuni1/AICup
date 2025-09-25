@@ -1,0 +1,54 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input text sequence.  
+$f(\mathbf{x})$: Target model (e.g., classifier).  
+$y_{\text{true}}$: True label of the input sequence.  
+$\mathcal{S}_{WN}(w)$: Set of synonyms for word $w$ obtained from WordNet.  
+$\epsilon$: Perturbation limit (maximum allowed word replacements).  
+$N$: Maximum number of iterations.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:  
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with minimal semantic distortion}.
+\]
+
+%Formula
+1. Initialization:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Word Importance Scoring:  
+   - For each word $w_i$ in $\mathbf{x}_{\text{adv}}$, compute the impact on the model's prediction:  
+     \[
+     I(w_i) = |f(\mathbf{x}_{\text{adv}}^{(-i)}) - f(\mathbf{x}_{\text{adv}})|,
+     \]  
+     where $\mathbf{x}_{\text{adv}}^{(-i)}$ represents $\mathbf{x}_{\text{adv}}$ with $w_i$ removed or masked.
+
+3. Synonym Replacement:  
+   - For the most important word $w_i$ (highest $I(w_i)$):  
+     \[
+     w_i' = \underset{w' \in \mathcal{S}_{WN}(w_i)}{\arg \min} \, d(w_i, w'),
+     \]  
+     where $d(w_i, w')$ is a semantic similarity metric ensuring minimal distortion.
+
+4. Update the Input:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} \, \text{with } w_i \text{ replaced by } w_i'.
+   \]
+
+5. Stopping Condition:  
+   - If $f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}$, or if the number of replacements exceeds $\epsilon$, terminate the attack.
+
+%Explanation
+The WordNet-based synonym swap attack is a heuristic approach designed for adversarial attacks on text classifiers.
+
+1. Objective: To subtly alter the text input by replacing words with their synonyms, causing the model to misclassify while preserving the original semantic meaning.  
+
+2. Word Importance Scoring: Identifies the most influential words for the model's prediction by analyzing their impact on the prediction score.  
+
+3. Synonym Selection: Uses WordNet to find semantically similar synonyms. A similarity metric ensures minimal semantic distortion, maintaining the human readability of the adversarial text.  
+
+4. Iterative Refinement: Iteratively modifies the input by replacing important words with their synonyms until the attack succeeds or the perturbation budget ($\epsilon$) is exhausted.  
+
+5. Advantage: This attack is non-gradient-based and operates in a black-box setting, making it suitable for scenarios where the target model's gradients or parameters are inaccessible.

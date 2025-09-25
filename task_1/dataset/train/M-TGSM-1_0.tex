@@ -1,0 +1,25 @@
+%Input
+Original input data $X$, perturbation magnitude $\epsilon$, target label $y_{\text{target}}$, predicted label $\hat{y}$.
+
+%Output
+Perturbed data $\text{XTGSM}$.
+
+%Formula
+The TGSM method generates an adversarial example by perturbing the original input data $X$ as follows:
+
+$\text{XTGSM} = X - \epsilon \cdot \text{sign} \left( \nabla_x H(y_{\text{target}}, \hat{y}) \right)$
+
+%Explanation
+ Targeted Gradient Sign Method (TGSM) where $X$ represents the original input data that we aim to perturb in order to create an adversarial example.
+
+$\text{XTGSM}$ denotes the adversarial example generated using the TGSM method.
+
+The parameter $\epsilon$ controls the magnitude of the perturbation added to the input data. It determines the maximum amount by which the original data $X$ is altered.
+
+The sign function $\text{sign} \left( \cdot \right)$ returns the sign of its argument. In this context, it is used to determine the direction of the perturbation.
+
+$\nabla_x H(y_{\text{target}}, \hat{y})$ is the gradient of the loss function $H$ with respect to the input data $x$. The loss function $H$ is computed using the target label $y_{\text{target}}$ and the predicted label $\hat{y}$. This gradient indicates how the loss changes with respect to small changes in the input data and guides the direction of the perturbation to make the model predict the target label $y_{\text{target}}$.
+
+$y_{\text{target}}$ is the label that we want the adversarial example to be classified as. The attack aims to mislead the model into predicting this target label.
+
+$\hat{y}$ represents the predicted label of the original input data $X$.

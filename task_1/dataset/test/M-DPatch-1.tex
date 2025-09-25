@@ -1,0 +1,16 @@
+%Input
+The input includes the attack function $A$, the predicted label $\hat{y}$, the target label $\hat{B}$, the true label $y_t$, the target label $B_t$, and the parameters $P$. The expectation $\mathbb{E}_{x,s}$ averages over all possible inputs $x$ and contexts $s$.
+
+%Output
+The output includes the optimal parameters $\hat{p}_u$ and $\hat{p}_t$.
+
+%Formula
+$\hat{p}_u = \text{arg max}_P \mathbb{E}_{x,s}[L(A(x, s, P); \hat{y}, \hat{B})]$
+
+%Explanation
+where:
+This equation represents an optimization problem where $\hat{p}_u$ is the optimal parameter $P$ that maximizes the expected loss $L$ over all possible inputs $x$ and contexts $s$. The loss function $L$ takes as input the output of the attack function $A$ applied to $x$ and $s$, and compares it to the predicted label $\hat{y}$ and the target label $\hat{B}$. The expectation $\mathbb{E}_{x,s}$ denotes averaging over all possible inputs $x$ and contexts $s$.
+
+$\hat{p}_t = \text{arg min}_P \mathbb{E}_{x,s}[L(A(x, s, P); y_t, B_t)]$
+
+This equation represents an optimization problem where $\hat{p}_t$ is the optimal parameter $P$ that minimizes the expected loss $L$ over all possible inputs $x$ and contexts $s$. The loss function $L$ takes as input the output of the attack function $A$ applied to $x$ and $s$, and compares it to the true label $y_t$ and the target label $B_t$. The expectation $\mathbb{E}_{x,s}$ denotes averaging over all possible inputs $x$ and contexts $s$.

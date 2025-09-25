@@ -1,0 +1,16 @@
+%Input
+Let  $z_{k-1}$ be the input variable at step $k-1$, with bounds defined by $z_{k-1}(\epsilon)$. 
+Define $h_k(z_{k-1})$ as a transformation function, and $e_i$ as the unit vector selecting the $i-th$ component.
+
+%Output
+The output consists of two possible updates for $z_{k,i}(\epsilon)$: 
+one obtained through a maximization process and another through a minimization process, allowing for an adaptive perturbation strategy.
+
+
+%Formula
+$z_{k,i}(\epsilon) = \max_{z_{k-1}(\epsilon) \leq z_{k-1} \leq z_{k-1}(\epsilon)} e^T_i h_k(z_{k-1})$
+
+$z_{k,i}(\epsilon) = \min_{z_{k-1}(\epsilon) \geq z_{k-1} \geq z_{k-1}(\epsilon)} e^T_i h_k(z_{k-1})$
+
+%Explanation
+This Adaptive Minimax Perturbation (AMP) variant is different from the main perturbation core in that it uses a maximization problem instead of minimization to update the components of the $z_k$ vector. The AMP formula allows for a more aggressive update, which can potentially improve the effectiveness of the adversarial attack. However, the choice of using maximization or minimization depends on the specific application and desired behavior of the attack.

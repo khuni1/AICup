@@ -1,0 +1,58 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input sequence (e.g., text or time-series data). \\
+$f(\mathbf{x})$: Target LSTM model for classification or prediction. \\
+$y_{\text{true}}$: True label of the input sequence. \\
+$\epsilon$: Perturbation limit to control adversarial changes. \\
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function to minimize for successful attack. \\
+$N$: Maximum number of iterations. \\
+$\eta$: Learning rate for gradient updates.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{while ensuring minimal perturbation to the input sequence}.
+\]
+
+%Formula
+1. Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Gradient Computation:
+   Compute the gradient of the loss with respect to the input:
+   \[
+   \mathbf{g}^{(t)} = \nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{true}}).
+   \]
+
+3. Perturbation Update:
+   Apply the perturbation to maximize the loss:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} + \eta \cdot \text{sign}(\mathbf{g}^{(t)}),
+   \]
+   where $\text{sign}(\mathbf{g})$ applies the sign of each gradient component.
+
+4. Perturbation Constraint:
+   Ensure the perturbation does not exceed $\epsilon$:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}(\mathbf{x}_{\text{adv}}^{(t+1)}, \mathbf{x}_{\text{original}} - \epsilon, \mathbf{x}_{\text{original}} + \epsilon).
+   \]
+
+5. Stopping Condition:
+   Terminate the attack if:
+   \[
+   f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}, \quad \text{or if } t \geq N.
+   \]
+
+%Explanation
+The LSTM Adversarial Attack targets recurrent neural networks, specifically LSTM-based models, by introducing small, imperceptible perturbations to input sequences. The process involves:
+
+1. Objective: The goal is to craft an adversarial input $\mathbf{x}_{\text{adv}}$ that misleads the LSTM model while keeping the perturbation within an acceptable limit, ensuring the adversarial input remains similar to the original.
+
+2. Gradient Computation: Gradients of the loss function with respect to the input sequence are computed to identify the direction of perturbation that maximizes the loss.
+
+3. Iterative Perturbation: Using the sign of the gradient, small perturbations are iteratively applied to the input. The step size is controlled by a learning rate $\eta$, and the total perturbation is constrained by $\epsilon$.
+
+4. Stopping Criteria: The attack stops when the model misclassifies the adversarial example or when the maximum number of iterations is reached.
+
+This attack is gradient-based, leveraging the model's differentiable structure to efficiently generate adversarial examples for LSTM models.

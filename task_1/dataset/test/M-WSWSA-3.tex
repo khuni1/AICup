@@ -1,0 +1,17 @@
+%Input
+$\hat{x}(t+1)^{combined-PGD} = \text{Proj}_{\|\cdot\|_{\epsilon}} \left( \theta_0 + \frac{L}{n_\mu} \cdot \left( \frac{1}{N} \sum_{i=1}^{m} g(f) \right) \right)$
+
+%Output
+$\hat{\text{output}}^{combined-PGD} = f \left( \hat{x}(t+1)^{combined-PGD} \right)$
+
+%Formula
+$\hat{x}(t+1)^{combined-PGD} = x_0 + \epsilon g$
+
+%Explanation
+The new variant Weighted Saliency Word Substitution Attack (WSWSA), is derived from the original perturbation core. Instead of projecting the gradient onto a constraint set, this variant uses an inverse projection to adjust the input. This allows for more precise control over the perturbation and can lead to more effective attacks.
+
+The update rule is modified to:
+$x^{(t)} = \text{Proj}_{[x_0 - \epsilon, x_0 + \epsilon]} \left( x^{(t-1)} + \eta \cdot \frac{\text{sign}(g_t)}{\|g_t\|} \right)$
+This modification introduces a new scaling factor that adjusts the magnitude of the perturbation based on the norm of the gradient. This can lead to more targeted and effective attacks.
+
+This variant improves upon the original perturbation core by introducing an inverse projection step, allowing for more precise control over the perturbation. This modification enables the creation of more targeted and effective adversarial attacks.

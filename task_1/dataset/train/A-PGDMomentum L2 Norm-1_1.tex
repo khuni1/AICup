@@ -1,0 +1,33 @@
+%Input
+Let $x$ be the original input data point.
+\( \epsilon \) represents the magnitude of the perturbation applied to the input.
+\( \nabla_x J(\theta, x, y) \) is the gradient of the loss function \( J \) with respect to the input \( x \), where \( \theta \) denotes the model parameters and \( y \) is the true label.
+\( \alpha \) is the step size parameter that controls the magnitude of the update.
+\( N_{\text{iter}} \) is the total number of iterations.
+
+%Output
+\( x_{\text{adv}} \) is the final adversarial example generated after $N_{\text{iter}}$ iterations.
+
+%Formula
+\begin{algorithm}
+    \( x_{\text{adv}} \)
+
+    \[
+    x^{(1)} \leftarrow \text{Clip}\left(x^{(0)} + \epsilon \cdot \nabla_x J(\theta, x^{(0)}, y), x - \epsilon, x + \epsilon\right)
+    \]
+
+    \For{\( t = 1 \) \KwTo \( N_{\text{iter}} \)}{
+        \[
+        x^{(t+1)} \leftarrow \text{Clip}\left(x^{(t)} + \alpha \cdot \nabla_x J(\theta, x^{(t)}, y), x - \epsilon, x + \epsilon\right)
+        \]
+    }
+
+    \[
+    x_{\text{adv}} \leftarrow x^{(N_{\text{iter}})}
+    \]
+\end{algorithm}
+
+%Explanation
+Momentum-based PGD (PGDMomentum) perturbation core is an iterative method designed to generate a universal adversarial perturbation that can effectively mislead a model across a wide range of inputs. The attack starts with an initial perturbation and iteratively updates it using the momentum term, which controls the magnitude of the update. Each update is clipped to ensure the perturbation remains within the allowable limits.
+
+Note: This variant is different from the main PGD Fast-Universal attack in that it incorporates a momentum term, which allows for more effective control over the magnitude of the perturbation. The added momentum term helps the attack converge faster and generates more robust adversarial examples.

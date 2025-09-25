@@ -1,0 +1,33 @@
+%Input
+Let \( x \) be the original input image, and let's assume we want to generate adversarial examples that preserve certain perceptual characteristics. Our goal is to create an attack that adjusts the input based on a scoring function that measures the similarity between the input and a reference image.
+
+%Output
+The output of the "Perceptual Scoring" attack is an adversarial example \( x^* \) that successfully deceives the model while preserving the perceptual characteristics of the original input.
+
+%Formula
+
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Define a scoring function:
+   - Choose a reference image \( r \)
+   - Compute the similarity score between the input and the reference image: 
+     $\text{score}(x) = \frac{\|x - r\|_p}{\|r\|_p}$
+3. Set parameters for the optimization process:
+   - Define the maximum perturbation size \( \epsilon \), the number of iterations \( N \), and the strength of the perturbation \( \alpha \).
+4. For each iteration \( n = 1 \) to \( N \):
+   - Compute the model's prediction:
+   $\hat{y}^{(n)} = f_{\theta}(x^{(n-1)})$
+   - Calculate the gradient of the loss function with respect to the input:
+   $g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y)$
+   - Update the input using a weighted combination of the gradient and the scoring function:
+   $x^{(n)} = x^{(n-1)} + \alpha \cdot \text{sign}(g_n) + \beta \cdot (\text{score}(x) - \text{score}(r))$
+   - Apply clipping to ensure the perturbation stays within bounds:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)})$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+5. The final adversarial example is:
+   $x^* = x^{(N)}$
+
+%Explanation
+The "Perceptual Scoring" attack adjusts the input based on a scoring function that measures the similarity between the input and a reference image. This allows the attack to preserve certain perceptual characteristics while still generating effective adversarial examples. The addition of the scoring function to the optimization process introduces a new layer of complexity, as the attacker must now balance the trade-off between maximizing the model's loss and preserving the structure of the input.

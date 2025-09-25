@@ -1,0 +1,27 @@
+%Input
+\begin{align*}
+    & x_0: \text{Initial random input.} \\
+    & y: \text{Target output.} \\
+    & f(x): \text{Model function mapping input to output.} \\
+    & L(f(x), y): \text{Loss function measuring similarity between model output and target.} \\
+    & \alpha: \text{Step size for gradient update.} \\
+    & \epsilon: \text{Perturbation constraint ensuring proximity to initial input.} \\
+    & \delta^{(t)}: \text{Adversarial perturbation at iteration } t. \\
+    & \text{clip}(\cdot): \text{Function ensuring input remains within valid bounds.} \\
+    & \text{Clip}_{\mathcal{X}}(\cdot): \text{Function ensuring perturbation is constrained.}
+\end{align*}
+
+%Output
+Output: The output of the MIA with adversarial perturbation is an inferred input $x^*$ such that $f(x^*) \approx y$ and a universal adversarial example $x^*_a$ that misleads the model across multiple inputs.
+
+%Formula
+1. Initialize the input $x^* = x_0, \quad \text{where } x_0 \text{ is a random initialization}$
+2. Define the optimization objective to minimize the distance between the model's output and the target output:
+   $\text{minimize } L(f(x^*), y) \quad \text{subject to } \|x^* - x_0\| \leq \epsilon.$
+3. Update the inferred input iteratively using gradient descent with an adversarial perturbation:
+   $x^{*(t+1)} = x^{*(t)} + \alpha \cdot \text{sign}(\nabla_{x^*} L(f(x^*), y)) \odot \delta^{(t)}$
+4. Optionally, project $x^*$ to ensure it remains within valid bounds and update the perturbation:
+   $x^* = \text{clip}(x^*, \text{valid bounds})$, $\delta^{(t+1)} = \text{Clip}_{\mathcal{X}} (\delta^{(t)} + \alpha \cdot \text{sign}(\nabla_{x^*} L(f(x^*), y)) )$
+
+%Explanation
+The MIA with adversarial perturbation is a variant of the original Model Inversion Attack that incorporates an additional component to generate universal adversarial examples. This approach leverages the model's gradients and outputs to reconstruct the input $x$ that matches the output $y$, while also creating a perturbation $\delta$ that can deceive the model across multiple inputs. The incorporation of the adversarial perturbation improves the attack's ability to generalize and makes it more effective in generating targeted attacks.

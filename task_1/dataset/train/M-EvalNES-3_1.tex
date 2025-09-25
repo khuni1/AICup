@@ -1,0 +1,25 @@
+%Input
+Let \( x \) be the original input, and \( y \) the corresponding true label. Define \( f_{\theta_s} \) as the surrogate model used to evaluate perturbations. The adversarial perturbation set is initialized as \( \{\delta_i\}_{i=1}^N \), where \( \delta_i \) represents the perturbation applied to the input. The goal is to find the optimal perturbation \( \delta^* \) such that the adversarial example \( x^* = x + \delta^* \) maximizes the attack success rate while satisfying the constraint \( \|x^* - x\|_p \leq \epsilon \).
+
+%Output
+The final adversarial example \( x^* \) that maximizes the attack success rate while satisfying the constraint \( \|x^* - x\|_p \leq \epsilon \). The selected perturbation \( \delta^* \) is the one that optimizes the modified fitness function incorporating both loss minimization and gradient magnitude.
+
+
+%Formula
+The M-EvalNES adversarial attack variant can be formulated as follows:
+1. Initialize a population of perturbations $\{\delta_i\}_{i=1}^N$.
+2. For each perturbation, evaluate the fitness using a surrogate model:
+   $\text{fitness}(\delta_i) = -L(f_{\theta_s}(x + \delta_i), y)$
+   where $f_{\theta_s}$ is the surrogate model's output and $L$ is the loss function.
+3. Update the perturbations using:
+   $\delta_{i+1} = \delta_i + \sigma \cdot z$
+   where $z \sim \mathcal{N}(0, I)$ is a random vector, and $\sigma$ is the step size.
+4. However, in this variant, we incorporate an additional term to the fitness function:
+   $\text{fitness}(\delta_i) = -L(f_{\theta_s}(x + \delta_i), y) + C \cdot (\|\nabla_\delta L(f_\theta(x + \delta_i), y)\|_2)^2$
+5. After a fixed number of iterations, select the best perturbation:
+   $\delta^* = \arg\max_{i} \text{fitness}(\delta_i)$
+6. The final adversarial example is then:
+   $x^* = x + \delta^* \quad \text{with the constraint that} \quad \|x^* - x\|_p \leq \epsilon$
+
+%Explanation
+The M-EvalNES adversarial attack variant introduces an additional term to the fitness function, which encourages the surrogate model to identify perturbations with high gradient magnitude. This modification aims to improve the attack's ability to detect models with large gradients, making it more effective against certain architectures. The incorporation of the squared L2 norm of the gradient magnitude adds a new layer of complexity to the optimization process, allowing for more nuanced exploration of the perturbation space.

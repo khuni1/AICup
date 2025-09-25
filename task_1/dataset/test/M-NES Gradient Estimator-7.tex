@@ -1,0 +1,13 @@
+%Input
+Image $\mathbf{x}$, classifier $P(y|\mathbf{x})$, search variance $\sigma$, number of samples $n$, image dimensionality $N$, perturbation bound $\epsilon$, learning rates $\eta_{\text{min}}$ and $\eta_{\text{max}}$
+
+%Output
+Adversarial image $\mathbf{x}_{\text{adv}}$, satisfying $\|\mathbf{x}_{\text{adv}} - \mathbf{x}\|_\infty \leq \epsilon$, misclassified by the classifier $P$. 
+
+%Formula
+$\mathbf{g} = \frac{1}{2n\sigma} \sum_{i=1}^{n} \left( P(y|\mathbf{x} + \sigma \mathbf{u}_i) - P(y|\mathbf{x} - \sigma \mathbf{u}_i) \right) \mathbf{u}_i$
+
+%Explanation
+The Natural Evolution Strategies (NES) Gradient Estimator $\mathbf{g}$ uses the query-limited method to estimate the gradient of $P(y|\mathbf{x})$. It samples perturbations from a Gaussian distribution and computes their influence on the classifier, resulting in an efficient estimation for gradient-based attacks.
+
+The variant is different from the main perturbation core as it incorporates a search variance $\sigma$ into the perturbation strategy, allowing for more controlled exploration of the input space. This modification enables the attack to adapt its perturbations based on the classifier's sensitivity to small changes in the input image, potentially leading to more effective adversarial examples.

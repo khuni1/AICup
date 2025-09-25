@@ -1,0 +1,58 @@
+%Input
+$\mathbf{X} \in {0,1}^{n \times d}$: Original sparse binary dataset, where $n$ is the number of samples and $d$ is the feature dimension.
+$y \in {0,1}^n$: Corresponding labels for the samples in $\mathbf{X}$.
+Target model $f(\mathbf{X})$: Classifier trained on the dataset.
+$\mathcal{L}(f, \mathbf{X}, y)$: Loss function of the target model.
+$\mathbf{X}_{\text{poisoned}}$: Set of poisoned samples to add.
+$k$: Sparsity constraint for binary vectors (maximum number of non-zero elements).
+$\eta$: Learning rate for optimization.
+$N$: Maximum number of iterations.
+
+%Output  
+Adversarial poisoned dataset $\mathbf{X}'$ such that:
+\[
+f(\mathbf{X}') \text{ misclassifies the target label or degrades model performance}.
+\]
+
+%Formula  
+Initialization:
+    \[
+    \mathbf{X}' = \mathbf{X}, \quad \mathbf{X}_{\text{poisoned}}^{(0)} = \emptyset.
+    \]
+    
+    Optimization Objective: Minimize the classification accuracy or maximize the loss:
+    \[
+    \arg \max_{\mathbf{X}_{\text{poisoned}}} \mathcal{L}(f, \mathbf{X}' \cup \mathbf{X}_{\text{poisoned}}, y),
+    \]
+    subject to the constraint $\|\mathbf{x}_{\text{poisoned}}^i\|_0 \leq k$, $\forall i \in [1, |\mathbf{X}_{\text{poisoned}}|]$.
+    
+    Gradient Computation: Compute gradients for generating poisoned samples:
+    \[
+    \nabla \mathcal{L}(f, \mathbf{X}, y) \approx \frac{\partial \mathcal{L}}{\partial \mathbf{X}}.
+    \]
+    
+    Sparse Binary Update: For each poisoned sample $\mathbf{x}_{\text{poisoned}}^i$:
+    \[
+    \mathbf{x}_{\text{poisoned}}^{i,(t+1)} = \mathbf{x}_{\text{poisoned}}^{i,(t)} + \eta \cdot \text{sign}\left(\nabla \mathcal{L}(f, \mathbf{x}_{\text{poisoned}}^i, y)\right).
+    \]
+    
+    Sparsity Projection: Project updated vectors back to the sparse binary space:
+    \[
+    \mathbf{x}_{\text{poisoned}}^{i,(t+1)} = \text{Top}_k\left(\mathbf{x}_{\text{poisoned}}^{i,(t+1)}\right),
+    \]
+    where $\text{Top}_k(\cdot)$ retains only the $k$ largest values and binarizes them to $\{0,1\}$.
+    
+    Stopping Condition: Stop when either $N$ iterations are completed or $\mathcal{L}$ reaches a threshold:
+    \[
+    \text{if } \mathcal{L}(f, \mathbf{X}' \cup \mathbf{X}_{\text{poisoned}}, y) \geq \epsilon, \text{ then terminate.}
+    \]
+
+%Explanation
+The Poison Sparse Binary Vectors Adversarial Attack targets models trained on high-dimensional sparse binary datasets (e.g., text, recommendation systems). The goal is to introduce poisoned samples into the training data to degrade the model's performance.
+
+Objective: By iteratively optimizing the poisoned vectors, the attack increases the target model's loss.
+Sparsity Constraint: The poisoned samples are kept sparse to mimic natural data distributions and evade detection.
+Gradient Optimization: The attack leverages gradients to identify impactful changes while projecting modifications to maintain sparsity.
+Applications: Suitable for adversarial poisoning in applications like spam filters, intrusion detection systems, and recommendation systems.
+
+

@@ -1,0 +1,32 @@
+%Input
+Let $\mathcal{D}_{\text{original}} = \{(\mathbf{x}_i, y_i)\}_{i=1}^{N}$ be the original dataset, where $\mathbf{x}_i$ represents an input data point and $y_i$ is its corresponding label. Define $\mathcal{M}(\mathbf{x}_i, \epsilon)$ as a modification function that introduces subtle perturbations to $\mathbf{x}_i$ within a bound $\epsilon$. The modified dataset $\mathcal{D}_{\text{modified}}$ consists of perturbed samples used for training an adversarially influenced model.
+
+
+%Output
+$\mathcal{D}_{\text{modified}}$: Modified dataset with subtle perturbations.
+
+%Formula
+1. Define the modification function $\mathcal{M}(\mathbf{x}_i, \epsilon)$:
+   \[
+   \mathbf{x}_i^{\text{modified}} = \mathbf{x}_i + \Delta \mathbf{x}_i, \quad \text{where } \|\Delta \mathbf{x}_i\| \leq \epsilon.
+   \]
+
+2. Apply $\mathcal{M}$ to selected data points in $\mathcal{D}_{\text{original}}$:
+   \[
+   \mathcal{D}_{\text{modified}} = \{(\mathbf{x}_i^{\text{modified}}, y_i) \mid (\mathbf{x}_i, y_i) \in \mathcal{D}_{\text{original}}\}.
+   \]
+
+3. Train the target model $f(\mathbf{x})$ on $\mathcal{D}_{\text{modified}}$:
+   \[
+   \hat{f} = \arg \min_f \mathcal{L}(f, \mathcal{D}_{\text{modified}}).
+   \]
+
+4. Evaluate $\hat{f}$ on legitimate test inputs to assess performance degradation:
+   \[
+   \text{Performance degradation: } \Delta_{\text{performance}} = \mathcal{L}(f, \mathcal{D}_{\text{test}}) - \mathcal{L}(f, \mathcal{D}_{\text{original}}).
+   \]
+
+%Explanation
+This variant Subtle Data Poisoning Attack (SDPA) of the Data Modification Adversarial Attack introduces subtle perturbations to the training dataset. Instead of introducing large and obvious changes, this attack modifies the data points within a permissible bound $\epsilon$ to create adversarial samples. The goal is to compromise the model's generalization ability without making it apparent during training.
+
+This variant differs from the main perturbation core by using subtle perturbations instead of large changes. It maintains the core principle of attacking the model's generalization ability but improves its stealthiness.

@@ -1,0 +1,44 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input (e.g., biometric features, voice, or text).
+$f(\mathbf{x})$: Target model (e.g., biometric recognition system).
+$\mathbf{t}$: Target identity or feature vector for impersonation.
+$\epsilon$: Perturbation budget for generating the spoofed input.
+$\mathcal{L}(f, \mathbf{x}, \mathbf{t})$: Loss function for similarity to the target.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+\[
+f(\mathbf{x}_{\text{adv}}) \approx \mathbf{t}, \quad \text{and } ||\mathbf{x}_{\text{adv}} - \mathbf{x}_{\text{original}}|| \leq \epsilon.
+\]
+
+%Formula
+Initialization:
+    \[
+    \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+    \]
+Iterative Update:
+    At each iteration $t$, update the adversarial example by minimizing the loss $\mathcal{L}$:
+    \[
+    \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} - \alpha \cdot \nabla_{\mathbf{x}} \mathcal{L}(f(\mathbf{x}_{\text{adv}}^{(t)}), \mathbf{t}),
+    \]
+    where $\alpha$ is the step size.
+
+Projection (if needed):
+    Ensure the perturbation remains within the budget:
+    \[
+    \mathbf{x}_{\text{adv}}^{(t+1)} = \text{Proj}_\epsilon(\mathbf{x}_{\text{adv}}^{(t+1)}).
+    \]
+
+Stopping Criterion:
+    Terminate the iterations when:
+    \[
+    f(\mathbf{x}_{\text{adv}}^{(t)}) \approx \mathbf{t}, \quad \text{or } t \geq T_{\text{max}}.
+    \]
+
+%Explanation
+The Spoofing Adversarial Attack is aimed at impersonating a specific identity or target in systems like biometric authentication, voice recognition, or text classifiers. The attack works as follows:
+
+Objective: The attack generates inputs that mimic the target identity $\mathbf{t}$, fooling the model into misclassifying $\mathbf{x}_{\text{adv}}$ as belonging to the target.
+Gradient-Based Optimization: Gradients guide the generation of adversarial examples toward the target $\mathbf{t}$, while keeping perturbations imperceptible.
+Use Cases: Applications include attacking facial recognition systems, spoofing voice assistants, or faking identity in text-based models.
+Constraints: Perturbations are kept minimal to evade detection by humans or auxiliary security mechanisms.

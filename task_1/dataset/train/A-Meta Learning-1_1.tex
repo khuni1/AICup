@@ -1,0 +1,34 @@
+%Input
+$\mathbf{r}_{tr}$: Input representation. \\
+$E$: Total number of iterations. \\
+$P_{\text{max}}$: Power constraint limit for the attack. \\
+$y_{\text{true}}$: Ground truth class label for the input. \\
+Model of the classifier: The target model.
+
+%Output: 
+$\delta_{\text{meta}} = \frac{\nabla_{\mathbf{x}} L(\theta, \mathbf{x}, y_{\text{true}})}{\|\nabla_{\mathbf{x}} L(\theta, \mathbf{x}, y_{\text{true}})\|_2}$
+$\mathbf{x} \leftarrow \mathbf{x} + \sqrt{\frac{P_{\text{max}}}{E}} H_{ar} \delta_{\text{meta}}$
+$\Delta \leftarrow \Delta + \sqrt{\frac{P_{\text{max}}}{E}} \delta_{\text{meta}}$
+$\delta_{\text{meta}} = \sqrt{P_{\text{max}}} \frac{\Delta}{\|\Delta\|_2}$
+
+%Formula: 
+The Meta-Learning Based Perturbation Variant is formulated as follows:
+
+1. Initialize the sum of gradients and input:
+   $ \Delta \leftarrow 0 $, $ \mathbf{x} \leftarrow \mathbf{r}_{tr} $
+
+2. For each iteration $ e = 1, \ldots, E $ (where $ E $ is the total number of iterations):
+   - Compute the normalized gradient:
+     $ \delta_{\text{meta}} = \frac{\nabla_{\mathbf{x}} L(\theta, \mathbf{x}, y_{\text{true}})}{\|\nabla_{\mathbf{x}} L(\theta, \mathbf{x}, y_{\text{true}})\|_2} $
+   - Update the input:
+     $ \mathbf{x} \leftarrow \mathbf{x} + \sqrt{\frac{P_{\text{max}}}{E}} H_{ar} \delta_{\text{meta}} $
+   - Accumulate the gradient:
+     $ \Delta \leftarrow \Delta + \sqrt{\frac{P_{\text{max}}}{E}} \delta_{\text{meta}} $
+
+3. After all iterations, compute the meta perturbation:
+   $ \delta_{\text{meta}} = \sqrt{P_{\text{max}}} \frac{\Delta}{\|\Delta\|_2} $
+
+%Explanation
+The algorithm iterates over $E$ steps, updating the input $\mathbf{x}$ at each iteration based on the normalized gradient. However, this variant introduces a meta-learning component by storing and reusing the accumulated gradients $\Delta$. This allows the attack to adapt to the model's behavior and improve its effectiveness across multiple iterations.
+
+Summary: The Meta-Learning Based Perturbation Variant is distinct from the original Naive Non-Targeted Attack in that it incorporates meta-learning capabilities, which enable the attack to learn from its previous attacks and improve its performance over time. This variant introduces a new layer of adaptability to the perturbation strategy, making it more effective against evolving models.

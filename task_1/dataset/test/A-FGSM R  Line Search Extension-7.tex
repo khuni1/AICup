@@ -1,0 +1,61 @@
+%Input
+\begin{align*}
+d &: \text{Dimensionality of the input space} \
+x &: \text{Initial input sample} \
+\epsilon &: \text{Perturbation bound for line search} \
+P &: \text{Set of explored leaves with corresponding predicates} \
+Q &: \text{Set of queries for unprocessed leaves}
+\end{align*}
+
+%Output
+Output: \text{The output of the extended FGSM Recursive (R) path finding decision tree based attack variant is a set $P$ of explored leaves with their corresponding predicates, which defines the paths leading to each leaf node visited by the algorithm. Additionally, the algorithm produces a set $Q$ of new queries for unprocessed and unvisited leaves of the decision tree. The main difference between this variant and the original FGSM R-Path Finding Tree Based Attack is the introduction of line search intervals in categorical features, which allows the algorithm to explore more subtleties in the data distribution.}
+
+%Formula
+Formula:
+\[
+x_{\text{init}} \leftarrow \{x_1, \ldots, x_d\}
+\]
+\[
+Q \leftarrow \{x_{\text{init}}\}, \quad P \leftarrow \{\}
+\]
+\[
+\text{For each } i = 1 \text{ to } d:
+\]
+\[
+\text{if } O(x) \in P \text{ then continue}
+\]
+\[
+\text{If feature } i \text{ is continuous, perform line search: }
+\]
+\[
+\text{for each interval } (\alpha, \beta] \in \text{LINE\_SEARCH}(x, i, \epsilon):
+\]
+\[
+\text{if } x_i \in (\alpha, \beta] \text{ then } P[\text{id}].\text{ADD}('x_i \in (\alpha, \beta]')
+\]
+\[
+\text{else } Q.\text{PUSH}(x[i] \Rightarrow \beta)
+\]
+\[
+\text{If feature } i \text{ is categorical, split the category: }
+\]
+\[
+S, V \leftarrow \text{CATEGORY\_SPLIT}(x, i, \text{id})
+\]
+\[
+\text{Add current split values to predicates: }
+\]
+\[
+P[\text{id}].\text{ADD}('x_i \in S')
+\]
+\[
+\text{For each value } v \in V, \text{ push new query leaf: }
+\]
+\[
+Q.\text{PUSH}(x[i] \Rightarrow v)
+\]
+
+%Explanation
+Explanation: This variant is an extension of the original FGSM R-Path Finding Tree Based Attack by incorporating line search intervals in categorical features. The main goal is to explore more subtleties in the data distribution and improve the accuracy of the attack. The new attack maintains the core principle of the original attack while introducing a more nuanced approach to handling categorical features, which can lead to improved performance in certain scenarios.
+
+Summary: This variant is different from the original FGSM R-Path Finding Tree Based Attack because it introduces line search intervals in categorical features, allowing for a more detailed exploration of the data distribution.

@@ -1,0 +1,32 @@
+%Input
+Input: Let \( x \) be the original input data point, \( y \) be the true label, and \( f_{\theta} \) be the target model. The M-Max attack generates adversarial examples by scaling the perturbation magnitude based on the maximum gradient value.
+
+%Output
+The output of the M-Max attack is a modified input \( x^* \) that aims to mislead the model into making an incorrect prediction.
+
+%Formula
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Compute the gradient of the loss function with respect to the input:
+   $
+   g = \nabla_x J(f_{\theta}(x), y),
+   $
+   where \( J \) is the loss function.
+3. Scale the perturbation magnitude based on the maximum gradient value:
+   $
+   \delta = \max(\epsilon, \frac{\|\text{sign}(g)\|_2}{\sqrt{n}}) \cdot \text{sign}(g),
+   $
+   where \( n \) is the number of input dimensions.
+4. Update the input to obtain the adversarial example:
+   $
+   x^* = x + \delta.
+   $
+5. Ensure that the modified input causes a misclassification:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+Maximum Gradient-Scaled Attack (M-GSA) attack scales the perturbation magnitude based on the maximum gradient value, which ensures that larger gradients result in larger perturbations, effectively maximizing the loss. This modification improves the effectiveness of the attack by targeting the most vulnerable regions of the model. The use of the L2 norm of the sign vector also helps to maintain a balance between perceptibility and effectiveness, making the M-Max attack a more robust variant of the Gradient Attack.

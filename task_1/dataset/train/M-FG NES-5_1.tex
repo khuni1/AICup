@@ -1,0 +1,11 @@
+%Input
+Let $\theta$ represent the parameter set, $\eta$ the learning rate, and $J(\theta)$ the expected reward function. The Fisher information matrix $F$ is introduced to refine the update step.
+
+%Output
+An updated parameter set $\theta_{t+1}$ after incorporating the inverse of the Fisher matrix into the optimization process, leading to a more efficient adversarial perturbation strategy.
+
+%Formula
+$\theta \leftarrow \theta + \eta F^{-1} \nabla_\theta J(\theta)$
+
+%Explanation
+The variant Fisher-Guided NES Attack (FG-NES) modifies the original perturbation core by incorporating the inverse of the Fisher matrix into the optimization process. This modification allows for more efficient computation and better exploration in the search space, potentially leading to more effective adversarial attacks. The NES method is used to compute the inverse of the Fisher matrix, which replaces the standard gradient update step.

@@ -1,0 +1,27 @@
+%Input
+Let $x \in \mathbb{R}^d$ be an input image, and let $f_\theta$ be a neural network classifier with parameters $\theta$. The objective is to find a universal adversarial perturbation $\delta$ that, when applied to multiple inputs, misleads the model into making incorrect predictions. 
+
+The optimization problem can be formulated as:
+
+\[
+\min_{\delta} \mathbb{E}_{x \sim \mathcal{D}} \left[ L(f_\theta(x + \delta), y) \right]
+\]
+
+subject to the constraint:
+
+\[
+\|\delta\|_p \leq \epsilon
+\]
+
+where $L$ is the loss function, $y$ is the true label, $\mathcal{D}$ is the data distribution, and $\epsilon$ is the maximum allowed perturbation norm.
+
+
+%Output
+The output of the PGD Fast-Universal attack with adaptive perturbation is a universal adversarial perturbation added to multiple images, resulting in adversarial examples that can deceive the model.
+
+%Formula
+$\delta^{(0)} = 0$
+for $n = 1 \text{ to } N: \quad\n\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y) \right) \right)$
+
+%Explanation
+The PGD Fast-Universal attack (PGD UAP) with adaptive perturbation is an iterative method designed to generate a universal adversarial perturbation that can effectively mislead the model. The adaptive perturbation strategy adjusts the perturbation magnitude based on the current epoch and user-specified scale factors, ensuring a gradual and effective balance between the different components of the loss function. This variant maintains the core principle of the original attack while improving its adaptability and stealthiness.

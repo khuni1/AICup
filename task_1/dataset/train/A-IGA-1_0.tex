@@ -1,0 +1,39 @@
+%Input    
+$\mathbf{x}_{\text{original}}$: Original input instance.  
+$f(\mathbf{x})$: Target model (e.g., classifier).  
+$y_{\text{true}}$: True label associated with the input.  
+$\alpha$: Step size for gradient updates.  
+$\epsilon$: Maximum perturbation limit.  
+$k$: Number of iterations for gradient ascent.  
+
+%Output    
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:  
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \|\mathbf{x}_{\text{adv}} - \mathbf{x}_{\text{original}}\|_{\infty} \leq \epsilon.
+\]
+
+%Formula  
+1. Initialization:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Iterative Gradient Ascent:  
+   For $t = 0, 1, \dots, k-1$:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} + \alpha \cdot \text{sign}\left(\nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{true}})\right).
+   \]
+
+3. Projection Step: Ensure the perturbation remains within the $L_\infty$ norm bound:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}\left(\mathbf{x}_{\text{adv}}^{(t+1)}, \mathbf{x}_{\text{original}} - \epsilon, \mathbf{x}_{\text{original}} + \epsilon\right).
+   \]
+
+4. Stopping Condition: Terminate the iteration if $f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}$.  
+
+%Explanation  
+The Iterative Gradient Ascent (IGA) attack is a targeted adversarial attack that incrementally updates the input to maximize the loss function and mislead the model. 
+Gradient Ascent: At each step, the sign of the gradient of the loss function is used to perturb the input in a direction that increases the loss.  
+Projection: The adversarial perturbation is constrained within an $L_\infty$ norm bound to ensure it remains imperceptible.  
+Iterative Process: Multiple small steps are taken, allowing the attack to gradually refine the adversarial example.
+The iterative nature of IGA makes it more effective than single-step attacks like FGSM, while the $L_\infty$ norm ensures imperceptibility to humans.

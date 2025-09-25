@@ -1,0 +1,28 @@
+%Input
+Let \( f \) be a specific target model, \( x \) be an original input data point, \( y \) be a true label associated with it, and \( \epsilon \) be the maximum allowable perturbation. The Ask Aqurie Attack aims to generate an adversarial perturbation \( \delta \) by querying the model's predictions to minimize the loss between the queried predictions and the true label.
+
+%Output
+The output of the Ask Aqurie Attack is an adversarial example \( \tilde{x} = x + \delta \) that causes the model to misclassify.
+Output: The variant, called "AqQuery++", introduces a new constraint by limiting the number of allowed queries. This modification aims to improve efficiency while maintaining the core principle of the original attack.
+
+%Formula
+1. Initialize the perturbation \( \delta = 0 \).
+2. Define the querying process to evaluate the model:
+   $
+   q(x + \delta) = f(x + \delta).
+   $
+3. Optimize the perturbation based on the feedback from the queries, with a limited number of allowed queries (K):
+   $
+   \text{minimize } L(q(x + \delta), y) \text{ subject to } \|\delta\| \leq \epsilon \text{ and } t \leq K.
+   $
+4. Update the perturbation using gradient descent:
+   $
+   \delta^{(t+1)} = \delta^{(t)} - \alpha \cdot \nabla_{\delta} L(q(x + \delta^{(t)}), y).
+   $
+5. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The AqQuery++ variant modifies the Ask Aqurie Attack by introducing a limited number of allowed queries (K). This constraint aims to improve efficiency while maintaining the core principle of the original attack. By limiting the number of queries, AqQuery++ encourages the attacker to focus on identifying the most critical perturbations that can mislead the model, rather than exploring the entire search space.

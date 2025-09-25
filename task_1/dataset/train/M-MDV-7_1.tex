@@ -1,0 +1,18 @@
+%Input
+Let  $z_{k-1}$ be the input variable at step  $k-1$, with bounds $z_{k-1}^{min}$ and  $z_{k-1}^{max}$. 
+Define $h_k(z_{k-1})$ as a transformation function, and  $e_i$ as the unit vector selecting the $i$ -th component.
+
+%Output
+The output is  $z_k^{MDV}(\epsilon)$, the optimized variable at step $k$,  computed by solving a constrained maximization problem within the specified bounds.
+
+
+
+%Formula
+$z_k^{MDV}(\epsilon) = \max_{z_{k-1}^{min} \leq z_{k-1} \leq z_{k-1}^{max}} e^T_i h_k(z_{k-1})$
+
+This formula defines the $i$-th component of the vector $z_k$ at a certain step $k$ in terms of a maximization problem. The range over which $z_{k-1}$ is considered is now bounded by the minimum and maximum values, $z_{k-1}^{min}$ and $z_{k-1}^{max}$, respectively.
+
+%Explanation
+The proposed Minimax Defense Variant (MDV) variant modifies the original Minimax Training framework to create a defense mechanism that can learn to mitigate PGD-generated attacks. By introducing new bounds for the range over which $z_{k-1}$ is considered, the MDV variant aims to reduce the effectiveness of PGD-generated adversarial examples. This approach maintains the core principle of the original attack while improving its robustness against PGD-based defense mechanisms.
+
+Summary: The proposed Minimax Defense Variant (MDV) is a defense mechanism that utilizes the Minimax Training framework to create a robust and adaptive defender against PGD-generated attacks. It introduces new bounds for the range over which $z_{k-1}$ is considered, aiming to reduce the effectiveness of PGD-generated adversarial examples.

@@ -1,0 +1,42 @@
+%Input  
+$\mathcal{D}_{\text{train}}$: Original training dataset.  
+$\mathcal{D}_{\text{poison}}$: Poisoned data to be inserted.  
+$f$: Target machine learning model.  
+$\mathcal{L}(f, \mathcal{D}_{\text{train}})$: Loss function of the target model.  
+$\epsilon$: Perturbation constraint to ensure imperceptibility.  
+
+%Output  
+$\mathcal{D}_{\text{train}}^{\text{poisoned}}$: The modified training dataset such that:  
+\[
+f(\mathcal{D}_{\text{train}}^{\text{poisoned}}) \neq f(\mathcal{D}_{\text{train}})
+\]
+
+%Formula
+1. Construct Poisoned Instances:  
+   Create $\mathcal{D}_{\text{poison}}$ such that its samples satisfy a specific target objective, e.g., misclassification, by manipulating input features:  
+   \[
+   x_{\text{poison}} = x_{\text{original}} + \delta, \quad \|\delta\| \leq \epsilon
+   \]  
+
+2. Poison Data Insertion:  
+   Combine the poisoned data with the original training set:  
+   \[
+   \mathcal{D}_{\text{train}}^{\text{poisoned}} = \mathcal{D}_{\text{train}} \cup \mathcal{D}_{\text{poison}}
+   \]
+
+3. Retrain the Model:  
+   Optimize the target model on the poisoned dataset:  
+   \[
+   f_{\text{poisoned}} = \arg \min_f \mathcal{L}(f, \mathcal{D}_{\text{train}}^{\text{poisoned}})
+   \]  
+
+%Explanation
+The Poison Insertion Attack is a data poisoning method where carefully crafted poisoned samples are added to the training dataset. The primary goals include:  
+
+1. Objective: Induce specific model behavior, such as misclassification or incorrect predictions, by retraining the model on the modified dataset.  
+
+2. Perturbation Control: The added poison samples are constrained by a perturbation limit $\epsilon$ to ensure that they are indistinguishable from legitimate samples and evade detection.  
+
+3. Impact: Poisoning can degrade model performance or achieve targeted manipulation, depending on the crafted poison samples.  
+
+4. Practical Considerations: Requires access to the training pipeline and knowledge of the model’s dataset to inject poisons effectively.

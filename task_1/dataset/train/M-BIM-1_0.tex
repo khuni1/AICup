@@ -1,0 +1,25 @@
+%Input
+Number of clean examples $m$, number of adversarial examples $k$, weighting factors $\lambda_k$ and $\lambda$.
+
+%Output
+Total loss $\text{Loss}$.
+
+% Formula:
+The BIM (Iterative FGSM) computes the total loss as follows:
+
+\[
+\text{Loss} = \frac{1}{{(m - k)} + \lambda_k } \left( \sum_{i \in \text{CLEAN}} L(X_i | y_i) + \lambda \sum_{i \in \text{ADV}} L(X_{\text{adv}_i} | y_i) \right)
+\]
+
+%Explanation
+$\text{Loss}$ represents the overall loss computed by the function.
+
+$m$ is the total number of clean examples.
+
+$k$ is the total number of adversarial examples.
+
+$\lambda_k$ and $\lambda$ are weighting factors that control the contribution of the clean and adversarial examples to the overall loss. They determine the relative importance of clean and adversarial examples in the training process.
+
+$L(X_i | y_i)$ is the loss function applied to each clean example $X_i$ with its corresponding true label $y_i$. It measures the discrepancy between the predicted output and the true label for clean examples.
+
+$L(X_{\text{adv}_i} | y_i)$ is the loss function applied to each adversarial example $X_{\text{adv}_i}$ with its corresponding true label $y_i$. It measures the discrepancy between the predicted output and the true label for adversarial examples.

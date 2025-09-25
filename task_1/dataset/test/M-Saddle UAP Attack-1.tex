@@ -1,0 +1,26 @@
+%Input
+Let \( x_i \) be the input images, \( y_i \) be their corresponding true labels, and \( f(x) \) be the model function. The attack seeks to find a universal adversarial perturbation \( \delta \) that generalizes across multiple inputs. The perturbation magnitude is constrained by \( \epsilon \), ensuring that the adversarial example remains within an allowable perturbation bound.
+
+
+%Output
+The output of the Jigsaw-Saddle Point Gradient Based Attack is a universal adversarial perturbation $ \delta $ that can be applied to multiple images to mislead the model.
+
+%Formula
+1. Initialize the universal perturbation \( \delta = 0. \)
+2. Define the objective function to maximize the saddle point loss:
+   $
+   \text{maximize } \sum_{i=1}^{N} L(f(x_i + \delta), y_i) - L(f(x_i), y_i) \text{ subject to } \|\delta\| \leq \epsilon,
+   $
+3. Update the perturbation using gradient ascent:
+   $
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \nabla_{\delta} L(f(x_i + \delta), y_i).
+   $
+4. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The Saddle-UAP Gradient Based Attack generates a universal adversarial perturbation $ \delta $ by maximizing the saddle point loss between the original input image and the perturbed version. This attack iteratively refines the perturbation based on the gradients of the loss function across multiple images, creating a universal adversarial example that can deceive the model when applied to different Jigsaw puzzle images.
+
+Summary: The proposed variant is different from the Cos-UAP-Jigsaw attack in its objective function and optimization approach. Instead of maximizing the cosine similarity between the perturbation and gradients, this attack maximizes the saddle point loss, which provides a more robust and effective method for generating universal adversarial examples.

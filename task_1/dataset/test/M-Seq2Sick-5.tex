@@ -1,0 +1,36 @@
+%Input
+Let \( x \) be the original input sequence (e.g., a sentence or a sequence of tokens), \( y \) be the true label, and \( f_{\theta} \) be the target model. The Seq2Sick attack aims to generate adversarial examples by modifying the input sequence while preserving its overall meaning.
+
+%Output
+The output of the Seq2Sick attack is a modified sequence \( x^* \) that is designed to mislead the model into making an incorrect prediction.
+
+%Formula
+The Seq2Sick adversarial attack can be formulated as follows:
+1. Initialize the input sequence and true label:
+   $
+   (x, y).
+   $
+2. Define a set of candidate modifications \( M \) for each token in the input sequence:
+   $
+   M = \{m_1, m_2, \ldots, m_n\},
+   $
+   where each \( m_i \) represents a potential modification for the token \( w_i \) in \( x \).
+3. For each token \( w_i \) in the sequence:
+   - For each modification \( m_j \in M \):
+     - Construct a modified sequence:
+     $
+     x' = (w_1, \ldots, w_{i-1}, m_j, w_{i+1}, \ldots, w_n).
+     $
+     - Evaluate the model's prediction:
+     $
+     \hat{y} = f_{\theta}(x').
+     $
+     - If \( \hat{y} \neq y \), then \( x' \) is a candidate adversarial example.
+4. The goal is to find:
+   $
+   x^* = \arg\max_{x'} \text{Prob}(f_{\theta}(x') \neq y),
+   $
+   while ensuring that the semantic integrity of the original sequence is maintained.
+
+%Explanation
+The Seq2Sick attack generates adversarial examples by strategically modifying tokens in the input sequence \( x \). By assessing the impact of these modifications on the model's predictions, the attack seeks to craft a new sequence \( x^* \) that misleads the model while retaining the original meaning. This method demonstrates the vulnerabilities of sequence-based models to subtle changes and highlights the need for robust defenses against such adversarial attacks.

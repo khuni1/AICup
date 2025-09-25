@@ -1,0 +1,27 @@
+%Input
+Original input data $x$, target class $t$, model output $F(x)$, margin parameter $\kappa$.
+
+%Output
+Adversarial loss function value $f(x, t)$.
+
+%Formula
+The ZOO method generates an adversarial example by optimizing the loss function $f(x, t)$, which is defined as:
+
+\[
+f(x, t) = \max \left\{ \max_{i, t} \left( \log[F(x)]_i - \log[F(x)]_t \right), -\kappa \right\}
+\]
+
+%Explanation
+Zeroth Order Optimization (ZOO), where $x$ represents the input data that we aim to perturb in order to create an adversarial example.
+
+$t$ is the target class that the adversarial example is intended to be misclassified as.
+
+$F(x)$ denotes the output of the model for the input $x$. The output $F(x)$ typically represents the probabilities assigned by the model to each class.
+
+$\log[F(x)]$ is the logarithm of the model's output probabilities, used to compute the loss function for numerical stability and to work in the log-probability space.
+
+The term $\max_{i, t} \left( \log[F(x)]_i - \log[F(x)]_t \right)$ calculates the difference between the log-probability of the predicted class $i$ and the log-probability of the target class $t$, taking the maximum over all classes $i$. This represents the confidence gap between the most likely class and the target class.
+
+The margin parameter $\kappa$ controls the confidence of the adversarial example. If $\kappa$ is positive, the adversarial example is required to be classified as the target class with at least $\kappa$ confidence margin. A negative value ensures the function does not exceed $-\kappa$.
+
+Finally, the max operation $\max \left\{ \cdot, -\kappa \right\}$ ensures that the value of the function $f(x, t)$ is at least $-\kappa$, providing a lower bound to the computed loss and ensuring the adversarial example has sufficient confidence.

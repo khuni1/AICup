@@ -1,0 +1,11 @@
+%Input
+Let \( x \) be the original input data point, and let \( k \) be the transformation operator applied to \( x \). Define \( x^k_p \) as the \( k \)-th projection of \( x \). The objective is to generate an adversarial example \( \tilde{x} \) that maximizes the \( k \)-norm distance from \( x^k_p \), while ensuring that the perturbation remains within a bounded region \( \epsilon \).
+
+%Output
+Generate one adversarial attack variant that is logically derived from the perturbation core described in the uploaded LaTeX input provided.
+
+%Formula
+$\tilde{x} = \text{argmax}_{\tilde{x}} \quad \| k\tilde{x} - x^k_p \|_k \leq \epsilon$
+
+%Explanation
+This variant Projected k-Norm Attack (PkNA) of the adversarial example generation method uses projection-based optimization to find the perturbation $\tilde{x}$ that maximizes the $k$-norm distance from the $k$-th projection of the original input $x$, subject to the constraint that this distance is no more than $\epsilon$. This approach maintains the core principle of the original attack while introducing a new optimization strategy that can potentially improve its effectiveness.

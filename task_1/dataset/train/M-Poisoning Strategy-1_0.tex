@@ -1,0 +1,12 @@
+%Input
+$\theta$: Network parameters \ $x$: Clean input data points \ $A$: Set of adversarial poisoning samples \ $f_D$: Clustering function applied to dataset $D'$ \ $d_c$: Distance measure between clusterings \ $D$: Original dataset \ $D'$: Contaminated dataset $D \cup A$ \ $m$: Maximum number of poisoning samples \ $x_{lb}, x_{ub}$: Lower and upper bounds on feature values of attack samples \ $\Omega_p$: Set of valid attack samples constrained by $x_{lb} \leq a \leq x_{ub}$
+
+%Output
+An optimal adversarial poisoning strategy $A^*$ that maximizes the distance between clean and contaminated clustering.
+
+%Formula
+\begin{equation} \max_{A \in \Omega_p} g(A) = d_c(C, f_D(D \cup A)) \end{equation}
+$C$: Clustering from original dataset $D$ \ $f_D(D \cup A)$: Clustering result on contaminated data $D'$ \ $d_c(C, f_D(D \cup A))$: Distance between clean clustering $C$ and contaminated clustering $f_D(D \cup A)$.
+
+%Explanation
+The adversary's goal is to corrupt the clustering assignment of data points by inserting malicious samples $A$ into the input data. By maximizing the distance $d_c$ between the clean clustering $C$ and the contaminated clustering $f_D(D \cup A)$, the attack induces significant disruption. The attack strategy is constrained by the number of poisoning samples $|A| \leq m$, and the feature values of these samples are bounded by the constraints $x_{lb} \leq a \leq x_{ub}$.

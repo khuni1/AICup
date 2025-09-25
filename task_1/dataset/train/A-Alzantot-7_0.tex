@@ -1,0 +1,31 @@
+%Input
+Let \( x \) be the original input data, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Alzantot attack aims to generate adversarial examples for natural language processing tasks by strategically modifying the input text.
+
+%Output
+The output of the Alzantot attack is a modified text input \( x^* \) that is intended to mislead the model while maintaining semantic coherence.
+
+%Formula
+The Alzantot adversarial attack can be formulated as follows:
+1. Initialize the input text and true label:
+   $
+   (x, y).
+   $
+2. Define the set of possible perturbations \( \mathcal{P} \) that can be applied to the input text, such as word substitutions.
+3. For each perturbation \( p \in \mathcal{P} \):
+   - Generate the modified text:
+   $
+   x' = p(x).
+   $
+   - Evaluate the model's prediction:
+   $
+   \hat{y} = f_{\theta}(x').
+   $
+   - If \( \hat{y} \neq y \), then \( x' \) is a candidate adversarial example.
+4. The objective is to minimize the perturbation while ensuring misclassification:
+   $
+   x^* = \arg\min_{x'} \text{distance}(x, x') \quad \text{subject to } f_{\theta}(x') \neq y.
+   $
+
+%Explanation
+The Alzantot attack generates adversarial examples by leveraging a targeted approach to modify the input text \( x \). By applying strategic perturbations that alter specific words while preserving the overall meaning, the attack seeks to create a new input \( x^* \) that results in a different model prediction. This method emphasizes the vulnerabilities of NLP models to subtle adversarial manipulations and the need for effective defenses against such attacks.
+

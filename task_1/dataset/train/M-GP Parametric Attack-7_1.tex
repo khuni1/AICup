@@ -1,0 +1,31 @@
+%Input
+Let \( f_{\theta} \) be the target model with parameters \( \theta \), \( x \) be the original input data point, and \( y \) be the true label. The Gaussian Perturbation attack aims to generate adversarial examples by adding a Gaussian noise perturbation \( \eta \) sampled from a normal distribution.
+
+
+%Output
+Let $x$ be the original input data point, $y$ be the true label, and $\theta$ be the model's parameters. The Gaussian Perturbation attack generates adversarial examples by adding noise to the input data.
+Output: The output of the Gaussian Perturbation attack is a modified input $x^*$ that aims to mislead the model into making an incorrect prediction.
+
+%Formula
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Sample Gaussian perturbation:
+   $
+   \eta \sim \mathcal{N}(0, \sigma^2 I),
+   $
+   where $\sigma$ is the standard deviation and $I$ is the identity matrix.
+3. Create the adversarial example by adding the perturbation to the input:
+   $
+   x^* = x + \eta.
+   $
+4. Ensure that the modified input causes a misclassification:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The GP-Parametric Attack (Gaussian Perturbation with Model Parameters) attack generates adversarial examples by adding randomly sampled Gaussian perturbation to the original input data. This method effectively creates a new input that may deceive the model into misclassifying it while maintaining some level of perceptibility. The main difference between this variant and the original M-Gaussian Noise-Gradient Based Optimization is that this approach uses the model's parameters instead of using noise directly.
+
+The proposed Gaussian Perturbation attack maintains the core principle of adding noise to the input data but introduces a new constraint by incorporating the model's parameters. This allows for more targeted attacks, as the perturbation can be tailored to specific vulnerabilities in the model. The use of the model's parameters also enables the development of more sophisticated scoring functions and optimization strategies, potentially leading to more effective adversarial examples.

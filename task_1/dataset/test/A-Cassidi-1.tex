@@ -1,0 +1,29 @@
+%Input
+Let \( x \) be the original input, \( y \) be the true label, and \( f_{\theta} \) be the target model. The goal is to generate an adversarial example \( x^* \) that misclassifies the input while maintaining certain perceptual characteristics.
+
+%Output
+The output of the Cassidi attack is an adversarial example \( x^* \) that successfully deceives the model while preserving the semantic integrity of the original input.
+
+%Formula
+The Cassidi adversarial attack can be formulated as follows:
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size \( \epsilon \), the number of iterations \( N \), and the strength of the perturbation \( \alpha \).
+3. For each iteration \( n = 1 \) to \( N \):
+   - Compute the model's prediction:
+   $\hat{y}^{(n)} = f_{\theta}(x^{(n-1)})$
+   - Calculate the gradient of the loss function:
+   $g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y)$
+   - Update the input using a weighted combination of the gradient:
+   $x^{(n)} = x^{(n-1)} + \alpha \cdot \text{sign}(g_n)$
+   - Apply clipping to ensure the perturbation stays within bounds:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)})$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+   
+4. The final adversarial example is:
+   $x^* = x^{(N)}$
+
+%Explanation
+The Cassidi adversarial attack generates adversarial examples by iteratively adjusting the input based on the gradients of the loss function. By focusing on the directions that maximize the model's loss while preserving the structure of the input, the attack is able to produce effective perturbations that mislead the model. The resulting adversarial example \( x^* \) demonstrates the challenges faced by models in distinguishing between subtly modified inputs and the original data, highlighting the need for robust defenses against such adversarial strategies.

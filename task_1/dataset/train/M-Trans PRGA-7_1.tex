@@ -1,0 +1,28 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, and $f_{\theta}$ be the target model. The goal is to create a transferable adversarial example $x^*$ that can deceive multiple models.
+
+%Output
+The output of the Trans-P-RGF attack is a transferable adversarial example $x^*$ generated through randomized perturbations.
+
+%Formula
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size $\epsilon$, the number of iterations $N$, and the number of target models $M$.
+3. For each iteration $n = 1$ to $N$:
+   - Generate a random perturbation:
+   $\delta_n = \text{Random}(-\epsilon, \epsilon)$
+   ensuring the perturbation remains within the allowed range.
+   - Create the perturbed input:
+   $x^{(n)} = x^{(n-1)} + \delta_n$
+   - Evaluate on multiple models:
+   $\text{for each model } f_{\theta_j}, \text{ where } j = 1, \ldots, M$:
+   - Check the model's prediction:
+   $\text{if } f_{\theta_j}(x^{(n)}) \neq y, \text{ then accept } x^{(n)} \text{ as } x^*$
+4. The final transferable adversarial example is:
+   $x^* = x^{(n)} \text{ (if found)}$
+
+%Explanation
+The Transferable Probabilistic Random Gradient Attack (Trans-P-RGA) variant enhances the traditional RGF approach by focusing on creating transferable adversarial examples that can successfully mislead multiple models. By incorporating random perturbations within a specified budget, the attack seeks to generate inputs that not only deceive the target model but also have a high chance of transferring to other models.
+
+The proposed variant introduces a multiplier parameter to adjust the strength of the random perturbation. This allows for more fine-grained control over the attack's effectiveness and stealthiness, making it more suitable for specific applications where varying levels of adversarial robustness are required.

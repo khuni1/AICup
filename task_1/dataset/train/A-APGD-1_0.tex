@@ -1,0 +1,65 @@
+%Input
+\textbf{APGD (Adversarial Projected Gradient Descent)} is an iterative algorithm designed to maximize an objective function $f$ within a projection set $S$. The inputs include the initial input $x^{(0)}$, step size $\eta$, number of iterations $N_{\text{iter}}$, and a set of specific iterations $W = \{w_0, \ldots, w_n\}$ for checking conditions. 
+
+%Output
+The algorithm outputs $x_{\text{max}}$, the input that maximizes the objective function, and $f_{\text{max}}$, the maximum value of the objective function.
+
+%Formula
+The algorithm for generating adversarial examples using gradient-based optimization can be expressed as follows:
+
+\begin{enumerate}
+    \item \textbf{Initialize} the input data and associated parameters:  
+    $x^{(0)}$ as the initial input, learning rate $\eta$, maximum iterations $N_{\text{iter}}$, and momentum factor $\alpha$.
+
+    \item \textbf{Iterative Update of Input}:  
+    For each iteration $k = 0, \dots, N_{\text{iter}} - 1$, perform the following:  
+    \begin{enumerate}
+        \item Compute the gradient of the loss function with respect to the input:  
+        \[
+        g^{(k)} = \nabla f(x^{(k)}).
+        \]
+        \item Apply the projection operator $\mathcal{P}_S$ to ensure the perturbation stays within a permissible set $\mathcal{S}$:  
+        \[
+        z^{(k+1)} = \mathcal{P}_S \left( x^{(k)} + \eta g^{(k)} \right).
+        \]
+        \item Incorporate momentum to refine the updated input:  
+        \[
+        x^{(k+1)} = \mathcal{P}_S \left( \alpha (z^{(k+1)} - x^{(k)}) + (1 - \alpha)(x^{(k)} - x^{(k-1)}) \right).
+        \]
+    \end{enumerate}
+
+    \item \textbf{Evaluate Objective}:  
+    At each step, evaluate the updated input's loss function:  
+    \[
+    f_{\text{max}} = \max \{ f(x^{(k)}), f(x^{(k+1)}) \}.
+    \]
+    If $f(x^{(k+1)}) > f_{\text{max}}$, update the maximum loss and corresponding input:  
+    \[
+    x_{\text{max}} \gets x^{(k+1)}.
+    \]
+
+    \item \textbf{Adjust Learning Rate (Optional)}:  
+    If iteration $k$ belongs to a predefined set of steps $W$ and specific conditions (e.g., stagnation in loss increase) are met:  
+    \begin{enumerate}
+        \item Reduce the learning rate:  
+        \[
+        \eta \gets \eta / 2.
+        \]
+        \item Reset the input to the most successful adversarial example so far:  
+        \[
+        x^{(k+1)} \gets x_{\text{max}}.
+        \]
+    \end{enumerate}
+
+    \item \textbf{Output the Result}:  
+    After completing all iterations, return the input with the maximum loss:  
+    \[
+    (x_{\text{max}}, f_{\text{max}}).
+    \]
+\end{enumerate}
+
+%Explanation
+Adversarial Projected Gradient Descent (APGD) where, the objective function $f$ is the function to be maximized. $S$ is the projection set within which the updates occur. The initial input is denoted by $x^{(0)}$, and $\eta$ is the step size used for updates. The algorithm runs for $N_{\text{iter}}$ iterations. During specific iterations, determined by the set $W = \{w_0, \ldots, w_n\}$, conditions are checked. The function $\mathcal{P}_S(\cdot)$ represents the projection onto the set $S$. The gradient of the objective function $f$ with respect to $x$ is denoted by $\nabla f(x)$. The parameter $\alpha$ controls the combination of directions from previous updates. Condition 1 and Condition 2 are user-defined conditions for adjusting the step size $\eta$.
+In Step 3, the first update is computed and projected onto the set $S$. In Step 4, the algorithm determines the maximum of the objective function between the initial input and the first update. In Step 5, the input corresponding to the maximum objective value is assigned to $x_{\text{max}}$. Steps 6-8 involve iterating through the updates, computing new updates, and projecting them onto the set $S$ using the combined direction of the previous updates. In Steps 9-10, $x_{\text{max}}$ and $f_{\text{max}}$ are updated if the new update yields a higher objective function value. Finally, in Steps 12-16, conditions are checked at specific iterations, and the step size $\eta$ is adjusted if necessary.
+
+

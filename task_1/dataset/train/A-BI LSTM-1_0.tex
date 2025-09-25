@@ -1,0 +1,60 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input sequence (e.g., text or time-series data). \\
+$f(\mathbf{x})$: Target BI-LSTM model for classification or prediction. \\
+$y_{\text{true}}$: True label of the input sequence. \\
+$\epsilon$: Perturbation limit to control adversarial changes. \\
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function to minimize for successful attack. \\
+$N$: Maximum number of iterations. \\
+$\eta$: Learning rate for gradient updates.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{while ensuring minimal perturbation to the input sequence}.
+\]
+
+%Formula
+1. Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Gradient Computation:
+   Compute the gradient of the loss with respect to the input:
+   \[
+   \mathbf{g}^{(t)} = \nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{true}}).
+   \]
+
+3. Perturbation Update:
+   Apply the perturbation to maximize the loss:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} + \eta \cdot \text{sign}(\mathbf{g}^{(t)}),
+   \]
+   where $\text{sign}(\mathbf{g})$ applies the sign of each gradient component.
+
+4. Perturbation Constraint:
+   Ensure the perturbation does not exceed $\epsilon$:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}(\mathbf{x}_{\text{adv}}^{(t+1)}, \mathbf{x}_{\text{original}} - \epsilon, \mathbf{x}_{\text{original}} + \epsilon).
+   \]
+
+5. Stopping Condition:
+   Terminate the attack if:
+   \[
+   f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}, \quad \text{or if } t \geq N.
+   \]
+
+%Explanation
+The BI-LSTM Adversarial Attack targets bidirectional LSTM models by introducing small, imperceptible perturbations to input sequences. The process involves:
+
+1. Objective: Craft an adversarial example $\mathbf{x}_{\text{adv}}$ that induces the BI-LSTM model to make incorrect predictions while maintaining the original sequence's semantic meaning.
+
+2. Bidirectional Structure: BI-LSTMs process input sequences in both forward and backward directions, making them robust to certain noise. This attack exploits the gradient-based sensitivity of BI-LSTM models to find perturbations that maximize the loss function.
+
+3. Gradient-Based Perturbation: Gradients of the loss function with respect to the input are calculated, and small iterative perturbations are applied using the sign of the gradient.
+
+4. Constraint Enforcement: To ensure the adversarial example remains realistic and imperceptible, the total perturbation is clipped within a limit $\epsilon$.
+
+5. Stopping Criteria: The attack ends when the model misclassifies the adversarial example or when the maximum number of iterations is reached.
+
+This attack is gradient-based, leveraging the differentiability of BI-LSTM models to craft adversarial examples effectively.

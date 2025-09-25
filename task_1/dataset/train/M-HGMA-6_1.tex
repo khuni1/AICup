@@ -1,0 +1,19 @@
+%Input
+\[
+\begin{aligned}
+J_k & : \text{Current objective function value at iteration } k. \\
+\alpha_k & : \text{Step size at iteration } k. \\
+V(J) & : \text{Loss function dependent on } J.
+\end{aligned}
+\]
+
+%Output
+\[
+\phi(\alpha_k J) : \text{Updated function value after applying the constraint.}
+\]
+
+%Formula
+$\phi(\alpha_k J) = \text{argmin}_{V(J_k - \alpha J)} \frac{\partial}{\partial J_k} V(J)$
+
+%Explanation
+The Hessian-Guided Momentum Attack (HGMA) variant of the original Momentum Attack. The new attack introduces a new constraint that ensures the perturbation remains within a specific subspace, making it more targeted and stealthy. This variant maintains the core principle of the original attack while introducing a new constraint to make the attack more targeted and effective.

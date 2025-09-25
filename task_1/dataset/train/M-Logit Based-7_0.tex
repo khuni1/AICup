@@ -1,0 +1,23 @@
+%input
+The input is the adversarial perturbation $\delta$ and the feature probabilities $\overline{l}_i(\delta)$ for each class.
+
+%output
+The output is the loss value computed for the adversarial perturbation $\delta$.
+
+%formula
+The loss function is given by:
+$
+\text{Loss} = -\log \left( \prod_{i=1}^{K} \overline{l}_i(\delta) \right)
+\text{ such that } \| \delta \|_8 < \xi$
+
+where:
+\begin{equation*}
+\text{Loss} = -\log \left( \prod_{i=1}^{K} \overline{l}_i(\delta) \right)
+\end{equation*}
+
+is the negative log-likelihood of the modified feature probabilities, and $\| \delta \|_8 < \xi$
+
+is the constraint on the $L_8$ norm of the perturbation $\delta$.
+
+%Explanation
+Logit Space where the loss function aims to maximize the likelihood of incorrect classifications by minimizing the negative log-likelihood of the modified feature probabilities. The constraint $\| \delta \|_8 < \xi$ ensures that the perturbation $\delta$ remains within a bounded magnitude to keep the adversarial attack imperceptible. The parameter $\xi$ represents the maximum allowable perturbation magnitude, controlling the strength of the attack.

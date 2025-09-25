@@ -1,0 +1,33 @@
+%Input
+The input consists of:
+- Original input sample $x$
+- True label $y$
+- Probability parameter $p$ controlling the Bernoulli noise distribution
+- Perturbation scaling factor $\epsilon$
+
+%Output
+Output: The output of the Bernoulli Adversarial Attack is a modified input $x*$ that aims to mislead the model into making an incorrect prediction.
+
+%Formula
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Sample noise from a Bernoulli distribution:
+   $
+   \eta \sim \text{Bernoulli}(p),
+   $
+   where p is the probability of flipping each bit (or pixel) of the input.
+3. Create the adversarial example by applying the noise to the input:
+   $
+   x^* = x + \eta,
+   $
+   where η is scaled by a factor ε:
+   $
+   x^* = x + \epsilon \cdot \eta.
+   $
+
+%Explanation
+The Bernoulli Adversarial Attack generates adversarial examples by adding noise drawn from a Bernoulli distribution to the original input x. Each element of the input has a probability p of being flipped or altered, controlled by the parameter ε to manage the magnitude of the perturbation. This stochastic approach creates a new input x* that is designed to deceive the model into misclassifying it.
+
+Summary: The variant Selective Bernoulli Adversarial introduces a new constraint where the Bernoulli distribution is combined with a scoring function, which assigns higher weights to certain bits or pixels in the input. This modification enhances the stealthiness of the attack by targeting specific vulnerabilities in the model.

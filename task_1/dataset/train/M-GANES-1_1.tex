@@ -1,0 +1,28 @@
+%Input
+Let \( x \) be the original input and \( y \) the corresponding true label. Define \( f_{\theta_s} \) as the surrogate model used to compute gradients for adversarial perturbation. The perturbation is denoted as \( \delta \), initialized at \( 0 \). The goal is to iteratively update \( \delta \) to generate an adversarial example \( x^* \) while ensuring that the perturbation remains within the constraint \( \|x^* - x\|_p \leq \epsilon \).
+
+%Output
+The final adversarial example \( x^* \) obtained after \( N \) iterations of perturbation updates. The adversarial example is designed to maximize model misclassification while satisfying the constraint \( \|x^* - x\|_p \leq \epsilon \).
+
+
+%Formula
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Initialize the perturbation:
+   $\delta^{(0)} = 0$
+3. For each iteration $n = 1$ to $N$:
+   - Compute the gradient using the surrogate model:
+   $g_n = \nabla_x L(f_{\theta_s}(x^{(n-1)} + \delta^{(n-1)}), y)$
+   where $L$ is the loss function.
+   - Update the perturbation quickly using NES:
+   $\delta_n = \delta_{n-1} + \alpha \cdot \text{sign}(g_n)$
+   - Apply clipping to ensure the perturbed input remains within the allowable space:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x + \delta_n)$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+4. The final adversarial example is:
+   $x^* = x^{(N)} + \delta^{(N)} \quad \text{with the constraint that} \quad \|x^* - x\|_p \leq \epsilon$
+
+%Explanation
+The  Gradient-Aligned NES (GA-NES) Attack variant introduces a subtle modification to the perturbation update step by using the surrogate model's computed gradient. This change does not significantly alter the attack's behavior but enhances its efficiency and speed, making it more suitable for large-scale adversarial machine learning applications. The core principle of the original attack remains intact, ensuring that the generated adversarial examples remain effective in deceiving the target model.

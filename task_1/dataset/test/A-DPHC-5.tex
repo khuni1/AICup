@@ -1,0 +1,46 @@
+%Input
+$X = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n\} \subset \mathbb{R}^d$: Original dataset.
+$m$: Number of poisoned points to add.
+Distance metric $d(\mathbf{x}_i, \mathbf{x}_j)$: Typically Euclidean distance.
+Clustering function $C$: Complete-linkage clustering algorithm.
+
+%Output
+$X_{\text{poisoned}}$: Modified dataset including poisoned points $\{\mathbf{z}_1, \mathbf{z}_2, \ldots, \mathbf{z}_m\}$.
+
+%Formula:
+1.Objective:
+   Maximize the disruption in the clustering process by solving:
+   \[
+   \max_{\{\mathbf{z}_i\}_{i=1}^m} \quad D(C(X_{\text{poisoned}}), C(X)),
+   \]
+   where $D(\cdot, \cdot)$ measures the distance between the dendrograms of the poisoned dataset $X_{\text{poisoned}}$ and the original dataset $X$.
+2.Perturbation Strategy:
+   Poisoned points $\{\mathbf{z}_i\}_{i=1}^m$ are crafted to manipulate the maximum inter-cluster distances:
+   \[
+   \mathbf{z}_i = \arg \max_{\mathbf{z}} \left[ \max_{\mathbf{x} \in X} d(\mathbf{z}, \mathbf{x}) \right],
+   \]
+   ensuring they create large linkage distances to delay or disrupt desired merges.
+Explanation: 1.Complete-Linkage Clustering:
+   - In complete-linkage clustering, the distance between two clusters is defined as:
+     \[
+     d(C_i, C_j) = \max_{\mathbf{x} \in C_i, \mathbf{y} \in C_j} d(\mathbf{x}, \mathbf{y}).
+     \]
+   - Clusters are iteratively merged based on the largest inter-cluster distances.
+2.Attack Strategy:
+   - Poisoned points $\{\mathbf{z}_i\}_{i=1}^m$ are designed to manipulate the largest distances between clusters.
+   - This delays certain cluster merges or forces undesired merges, disrupting the clustering hierarchy.
+3.Optimization:
+   - For each poisoned point $\mathbf{z}_i$, solve:
+     \[
+     \mathbf{z}_i = \arg \max_{\mathbf{z}} \left[ \max_{\mathbf{x} \in X} d(\mathbf{z}, \mathbf{x}) \right].
+     \]
+   - This ensures the poisoned points affect the maximum distance metric in complete-linkage clustering.
+4.Output:
+   - The poisoned dataset is:
+     \[
+     X_{\text{poisoned}} = X \cup \{\mathbf{z}_1, \mathbf{z}_2, \ldots, \mathbf{z}_m\}.
+     \]
+
+
+%Explanation
+Distance-Based Poisoning for Hierarchical Clustering (DPHC) variant is different from the main perturbation core because it introduces a new distance-based strategy for poisoning hierarchical clustering. Instead of directly manipulating the maximum distances between clusters, this variant crafts poisoned points that specifically target the largest distances in complete-linkage clustering. This approach maintains the core principle of the original attack while improving its effectiveness by exploiting the sensitivity of complete-linkage to maximum distances.

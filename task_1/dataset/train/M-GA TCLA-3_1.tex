@@ -1,0 +1,43 @@
+%Input
+Let:  
+\[
+x \in \mathbb{R}^d
+\]
+be the original clean sample,  
+\[
+t \in \mathbb{R}^d
+\]
+be the target feature representation,  
+\[
+b \in \mathbb{R}^d
+\]
+be the base sample for perturbation,  
+\[
+f: \mathbb{R}^d \to \mathbb{R}^k
+\]
+be the feature extractor,  
+\[
+L(f_\theta(x), t)
+\]
+be the loss function parameterized by \(\theta\),  
+and  
+\[
+\beta, \gamma \in \mathbb{R}
+\]
+be weighting parameters.  
+
+%Output
+The adversarial example \( p \) such that:  
+\[
+p = \arg\min_x \left\{ \|f(x) - f(t)\|_2^2 + \beta \|x - b\|_2^2 + \gamma \text{sign}(\nabla_\delta L(f_\theta(x), t)) \right\}
+\]
+where \( p \) is optimized to mislead the classifier by modifying the feature representation while maintaining clean label constraints.
+
+
+
+%Formula
+The objective of the clean label attack can be formulated as:
+$p = \arg\min_x \left\{ \|f(x) - f(t)\|_2^2 + \beta \|x - b\|_2^2 + \gamma \text{sign}(\nabla_\delta L(f_\theta(x), t)) \right\}$
+
+%Explanation
+Gradient-Aligned Targeted Clean Label Attack (GA-TCLA) is a variant of the original clean label attack, with an additional term that targets the specific feature representation $t$ in the penultimate layer. This adds an extra layer of specificity to the attack, making it more effective at misleading the classifier on target classes. The new term $\gamma \text{sign}(\nabla_\delta L(f_\theta(x), t))$ introduces a targeting component that enhances the effectiveness of the clean label attack by aligning with the gradient of the loss function specific to the target class $t$.

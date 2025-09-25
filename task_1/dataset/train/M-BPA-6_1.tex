@@ -1,0 +1,33 @@
+%Input: 
+$X \in \mathbb{R}^{d \times d \times c}$ (image with $d \times d$ pixels and $c$ channels)
+True label: $y \in \mathcal{Y}$
+Target class (optional for targeted attack): $y_{\text{target}}$
+Model function: $f(X)$
+Perturbation budget: $\epsilon$ (maximum number of pixel changes)
+Maximum iterations: $T$
+
+%Output
+Adversarial example $X_{\text{adv}}^*$ such that the number of modified pixels satisfies $\|X_{\text{adv}}^* - X\|_0 \leq \epsilon$ and the model is misled:
+\[
+f(X_{\text{adv}}^*) \neq y \quad \text{(untargeted)}
+\]
+or
+\[
+f(X_{\text{adv}}^*) = y_{\text{target}} \quad \text{(targeted)}.
+\]
+
+
+%Formula
+1.Initialization:
+   \[
+   X_{\text{adv}}^{(0)} = X.
+   \]
+2.Bayesian Optimization:
+For each iteration $t = 0, 1, \dots, T-1$, compute the expected improvement of modifying a randomly selected pixel using Bayesian optimization. Select pixels based on their posterior probability of improving the model's misclassification rate.
+
+3.Perturbation Constraint: The $L_0$ norm constraint ensures that the total number of modified pixels does not exceed the budget $\epsilon$.
+
+4.Stopping Criteria: The iteration stops if  $f(X_{\text{adv}}^{(t)}) \neq y$ (untargeted) or $f(X_{\text{adv}}^{(t)}) = y_{\text{target}}$ (targeted), or $\|X_{\text{adv}}^{(t)} - X\|_0 > \epsilon$, or $t = T-1$.
+
+%Explanation
+The variant builds upon the original attack's pixel selection strategy by incorporating Bayesian optimization to adaptively select pixels for modification. This approach aims to improve the attack's effectiveness by refining its pixel selection strategy based on the expected impact of modifying each pixel on the model's output. The use of Bayesian optimization allows the attack to efficiently explore the search space and identify the most effective pixels to modify, leading to improved adversarial example generation.

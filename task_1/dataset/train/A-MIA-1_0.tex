@@ -1,0 +1,26 @@
+%Input
+Let \( f \) be the target model, \( y \) be the known output label, and \( \epsilon \) represent the maximum allowable perturbation. The goal is to reconstruct an input \( x \) that matches the output \( y \), leveraging the model's gradients or outputs.
+
+%Output
+The output of the MIA is an inferred input \( x^* \) such that \( f(x^*) \approx y \).
+
+%Formula
+1. Initialize the input \( x^* \):
+   \[
+   x^* = x_0, \quad \text{where } x_0 \text{ is a random initialization.}
+   \]
+2. Define the optimization objective to minimize the distance between the model's output and the target output:
+   \[
+   \text{minimize } L(f(x^*), y) \quad \text{subject to } \|x^* - x_0\| \leq \epsilon.
+   \]
+3. Update the inferred input iteratively using gradient descent:
+   \[
+   x^{*(t+1)} = x^{*(t)} - \alpha \cdot \nabla_{x^*} L(f(x^*), y).
+   \]
+4. Optionally, project \( x^* \) to ensure it remains within valid bounds:
+   \[
+   x^* = \text{clip}(x^*, \text{valid bounds}).
+   \]
+
+%Explanation
+The Model Inversion Attack reconstructs an input \( x^* \) by optimizing the loss \( L(f(x^*), y) \), which measures the discrepancy between the model's prediction and the known target output \( y \). Starting from a random initialization, \( x^* \) is iteratively updated using gradient descent to minimize this loss. The reconstructed input can reveal sensitive information about the training data, posing a significant privacy risk.

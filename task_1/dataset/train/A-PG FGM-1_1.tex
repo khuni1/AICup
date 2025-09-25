@@ -1,0 +1,18 @@
+%Input
+x: Original input image  
+$\epsilon$: Perturbation size  
+$\nabla_x J(\theta, x, y)$: Gradient of the loss function with respect to the input image  
+
+
+%Output
+The output of the \textbf{Projected Gradient FGM (PG-FGM)} attack is the adversarial example $x'$ such that:
+
+\[
+x' = \text{clip}(x + \epsilon \cdot \text{sign}(\nabla_x J(\theta, x, y)), x - \epsilon, x + \epsilon)
+\]
+
+%Formula
+$ x' = \text{clip}(x + \epsilon \cdot \text{sign}(\nabla_x J(\theta, x, y)), x - \epsilon, x + \epsilon)$
+
+%Explanation
+The Projected Gradient FGM (PG-FGM) variant is different from the main PGD single shot method in its use of a projected gradient descent approach. Instead of using the entire gradient direction, it only projects the first gradient point onto the unit sphere to obtain the direction of the attack. This modification reduces the computational cost and increases the attack's robustness against defenses that detect attacks based on the full gradient magnitude.

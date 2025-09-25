@@ -1,0 +1,32 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Bernoulli Adversarial Attack generates adversarial examples by adding noise based on a Bernoulli distribution.
+
+%Output
+The output of the Bernoulli Adversarial Attack is a modified input \( x^* \) that aims to mislead the model into making an incorrect prediction.
+
+%Formula
+The Bernoulli Adversarial Attack can be formulated as follows:
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Sample noise from a Bernoulli distribution:
+   $
+   \eta \sim \text{Bernoulli}(p),
+   $
+   where \( p \) is the probability of flipping each bit (or pixel) of the input.
+3. Create the adversarial example by applying the noise to the input:
+   $
+   x^* = x + \eta,
+   $
+   where \( \eta \) is scaled by a factor \( \epsilon \):
+   $
+   x^* = x + \epsilon \cdot \eta.
+   $
+4. Ensure that the modified input causes a misclassification:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The Bernoulli Adversarial Attack generates adversarial examples by adding noise drawn from a Bernoulli distribution to the original input \( x \). Each element of the input has a probability \( p \) of being flipped or altered, controlled by the parameter \( \epsilon \) to manage the magnitude of the perturbation. This stochastic approach creates a new input \( x^* \) that is designed to deceive the model into misclassifying it.

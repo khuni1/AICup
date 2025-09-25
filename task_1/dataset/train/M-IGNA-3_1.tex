@@ -1,0 +1,29 @@
+%Input
+The input data is $X$, and the true label is $y_{\text{true}}$.
+
+%Output 
+The output is the adversarial example $X_{\text{adv}}$ and the total loss value.
+
+%Formula
+The Perturbation Strategy Derived from FGSM for adversarial example generation involves iteratively updating the input $X$ using the formula:
+
+$X_{\text{adv}} = X + \beta \frac{\nabla_X J(X, y_{\text{true}})} {||\nabla_X J(X, y_{\text{true}})||_2}$
+
+where:
+$\beta$ is a hyperparameter that controls the perturbation magnitude.
+The loss function for BIM-A is given by:
+$\text{Loss} = \frac{1}{{(m - k)} + \lambda_k } \left( \sum_{i \in \text{CLEAN}} L(X_i | y_i) + \lambda \sum_{i \in \text{ADV}} L(X_{\text{adv}_i} | y_i) \right)$
+
+where:
+$m$ is the number of clean examples.
+$k$ is the number of adversarial examples.
+$\lambda_k$ and $\lambda$ are weighting factors for clean and adversarial examples.
+$L(X_i | y_i)$ is the loss for each clean example.
+$L(X_{\text{adv}_i} | y_i)$ is the loss for each adversarial example.
+
+%Explanation
+The Perturbation Strategy Derived from FGSM is a variant of the Fast Gradient Sign Method (FGSM) that iteratively applies small perturbations to the input data to create adversarial examples. The perturbations are applied in the direction of the gradient of the loss function, which is computed with respect to the true label $y_{\text{true}}$. This iterative process helps in generating adversarial examples that are more effective in misleading the model compared to a single-step attack.
+
+The introduction of hyperparameter $\beta$ allows for tuning of the perturbation magnitude, enabling the control over the level of distortion introduced into the input data. By adjusting this value, it is possible to improve the efficiency and effectiveness of the adversarial example generation process.
+
+Summary: The variant Iterative Gradient Normalized Attack (IGNA) differs from the main perturbation core in that it introduces a hyperparameter $\beta$ that controls the magnitude of the perturbations applied to the input data. This allows for greater flexibility and control over the generated adversarial examples, enabling more efficient and effective attacks against machine learning models.

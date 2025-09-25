@@ -1,0 +1,26 @@
+%Input
+The input consists of:
+- Initial input sample $x^{(0)}$
+- Learning rate sequence $\alpha_k$
+- Approximate Hessian inverse $H_k$
+- Gradient $\nabla f(x^{(k)})$
+- Perturbation constraint $\epsilon$
+- Projection function $h_k(z)$
+
+%Output
+The output is the adversarial example $x^*$, which satisfies the perturbation constraint while maximizing the attack effectiveness:
+
+\[
+x^* = \arg\max_{x \in S} f(x)
+\]
+
+where $S$ is the constrained search space defined by the bounded perturbation strategy.
+
+%Formula
+$x^{(k+1)} = x^{(k)} - \alpha_k H_k \nabla f(x^{(k)})$
+$z_{k,i}(\epsilon) = \max_{z_{k-1}(\epsilon) \leq z_{k-1} \leq z_{k-1}(\epsilon)} e^T_i h_k(z_{k-1})$
+
+%Explanation
+This variant L-BFGS Bounded Perturbation Attack is derived from the BFGS optimization algorithm with limited-memory version. It introduces a bounded perturbation strategy that incorporates an additional constraint to ensure the attacks remain within a specific range of perturbations. This approach maintains the core principle of the original attack while improving its stealthiness and targetedness.
+
+The key difference between this variant and the main perturbation core is the introduction of a bounded perturbation strategy, which ensures that the attacks remain within a specific range of perturbations. This constraint is represented by the formula $z_{k,i}(\epsilon) = \max_{z_{k-1}(\epsilon) \leq z_{k-1} \leq z_{k-1}(\epsilon)} e^T_i h_k(z_{k-1})$. This additional constraint makes the attack variant more targeted and stealthy, while maintaining its effectiveness.

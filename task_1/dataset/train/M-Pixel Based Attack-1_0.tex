@@ -1,0 +1,51 @@
+%Input
+Original input: $X \in \mathbb{R}^{d \times d \times c}$ (image with $d \times d$ pixels and $c$ channels)
+True label: $y \in \mathcal{Y}$
+Target class (optional for targeted attack): $y_{\text{target}}$
+Model function: $f(X)$
+Perturbation budget: $\epsilon$ (maximum number of pixel changes)
+Maximum iterations: $T$
+
+
+%Output
+Adversarial example $X_{\text{adv}}$ such that:
+\[
+f(X_{\text{adv}}) \neq y \quad \text{(untargeted)} \quad \text{or} \quad f(X_{\text{adv}}) = y_{\text{target}} \quad \text{(targeted)},
+\]
+and the number of modified pixels satisfies:
+\[
+\|X_{\text{adv}} - X\|_0 \leq \epsilon.
+\]
+
+%Formula
+1.Initialization:
+   \[
+   X_{\text{adv}}^{(0)} = X.
+   \]
+
+2.Pixel Selection:
+For each iteration $t = 0, 1, \dots, T-1$, select a set of pixels to modify. The pixel selection criterion may depend on:
+Gradient-based importance:
+       \[
+       i^* = \arg\max_i \left| \frac{\partial \mathcal{L}(f(X_{\text{adv}}^{(t)}), y_{\text{target}})}{\partial X_i} \right|,
+       \]
+where $i$ is a pixel index, and $\mathcal{L}$ is the loss function. Random selection of pixels.
+
+3.Pixel Perturbation: Modify the selected pixels
+   \[
+   X_{\text{adv}, i^*}^{(t+1)} = \text{clip} \left( X_{\text{adv}, i^*}^{(t)} + \delta_{i^*} \right),
+   \]
+   where $\delta_{i^*}$ is the perturbation value and $\text{clip}$ ensures that pixel values remain within valid bounds (e.g., $[0, 1]$ for normalized images).
+
+4.Stopping Criteria: The iteration stops if  $f(X_{\text{adv}}^{(t)}) \neq y$ (untargeted) or $f(X_{\text{adv}}^{(t)}) = y_{\text{target}}$ (targeted), or $\|X_{\text{adv}}^{(t)} - X\|_0 > \epsilon$, or $t = T-1$.
+
+%Explanation
+1.Sparse Perturbations: The attack modifies only a few pixels to minimize the perceptual difference between the adversarial example and the original input.
+
+2.Pixel Selection: Pixels can be selected based on their gradient-based saliency, which indicates how much changing a pixel will affect the model's output, or by random sampling for simplicity.
+
+3.Perturbation Constraint: The $L_0$ norm constraint ensures that the total number of modified pixels does not exceed the budget $\epsilon$.
+
+4.Iterative Optimization: The attack iteratively refines the adversarial example by modifying selected pixels until the desired misclassification is achieved.
+
+5.Targeted or Untargeted: The attack can be targeted (forcing the model to classify the input into a specific class) or untargeted (causing misclassification into any incorrect class).

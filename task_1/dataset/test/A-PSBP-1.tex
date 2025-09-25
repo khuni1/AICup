@@ -1,0 +1,47 @@
+%Input
+$\mathbf{X}$: Original training dataset  
+$\mathbf{X}'$: Modified input dataset with adversarially added data  
+$\mathbf{X}_{\text{poisoned}}$: Set of poisoned samples  
+$\mathbf{x}_{\text{poisoned}}^i$: Individual poisoned sample  
+$k$: Sparsity parameter, limiting the number of non-zero entries in each poisoned sample  
+$\mathcal{L}(f, \mathbf{X}, y)$: Loss function with respect to the model and dataset  
+$\eta$: Learning rate for gradient updates  
+$\epsilon$: Stopping threshold for the loss function  
+$N$: Maximum number of iterations  
+
+%Output
+Poisoned dataset: $\tilde{X}_{\text{train}} = X_{\text{train}} \cup \mathbf{X}_{\text{poisoned}}$  
+Updated labels: $\tilde{y}_{\text{train}} = y_{\text{train}} \cup y_{\text{poisoned}}$  
+
+%Formula
+Initialization:
+\[
+\mathbf{X}' = \mathbf{X}, \quad \mathbf{X}_{\text{poisoned}}^{(0)} = \emptyset.
+\]
+Optimization Objective: Minimize the classification accuracy or maximize the loss:
+\[
+\arg \max_{\mathbf{X}_{\text{poisoned}}} \mathcal{L}(f, \mathbf{X}' \cup \mathbf{X}_{\text{poisoned}}, y),
+\]
+subject to the constraint $\|\mathbf{x}_{\text{poisoned}}^i\|_0 \leq k$, $\forall i \in [1, |\mathbf{X}_{\text{poisoned}}|]$.
+Gradient Computation: Compute gradients for generating poisoned samples:
+\[
+\nabla \mathcal{L}(f, \mathbf{X}, y) \approx \frac{\partial \mathcal{L}}{\partial \mathbf{X}}.
+\]
+Sparse Binary Update: For each poisoned sample $\mathbf{x}_{\text{poisoned}}^i$:
+\[
+\mathbf{x}_{\text{poisoned}}^{i,(t+1)} = \mathbf{x}_{\text{poisoned}}^{i,(t)} + \eta \cdot \text{sign}\left(\nabla \mathcal{L}(f, \mathbf{x}_{\text{poisoned}}^i, y)\right).
+\]
+Sparsity Projection: Project updated vectors back to the sparse binary space:
+\[
+\mathbf{x}_{\text{poisoned}}^{i,(t+1)} = \text{Top}_k\left(\mathbf{x}_{\text{poisoned}}^{i,(t+1)}\right),
+\]
+where $\text{Top}_k(\cdot)$ retains only the $k$ largest values and binarizes them to $\{0,1\}$.
+Stopping Condition: Stop when either $N$ iterations are completed or $\mathcal{L}$ reaches a threshold:
+\[
+\text{if } \mathcal{L}(f, \mathbf{X}' \cup \mathbf{X}_{\text{poisoned}}, y) \geq \epsilon, \text{ then terminate.}
+\]
+
+%Explanation
+Poisson Sparse Binary Perturbation (PSBP) Attack Variant is a variation of the Poison Sparse Binary Vectors Adversarial Attack. It maintains the core principle of introducing poisoned samples into the training data to degrade the model's performance while improving its sparsity and stealthiness.
+
+Summary: The variant introduces a new stopping condition that terminates the attack when the target model's loss reaches a threshold, making it more targeted and effective in degrading the model's performance.

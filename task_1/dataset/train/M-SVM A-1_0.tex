@@ -1,0 +1,46 @@
+%Input
+$D = \{(\mathbf{x}_i, y_i)\}_{i=1}^n$: Original training dataset.
+$f(\mathbf{w}; \mathbf{x})$: SVM model with parameter $\mathbf{w}$.
+$\mathcal{L}(f, \mathbf{w}; D)$: SVM loss function (e.g., hinge loss).
+$\epsilon$: Poisoning budget (fraction of data that can be poisoned).
+$\eta$: Step size for optimization.
+$T$: Maximum number of iterations.
+
+%Output
+Poisoned dataset $D_{\text{adv}} = \{(\mathbf{x}_i', y_i)\}_{i=1}^n$ such that:
+\[
+\mathbf{w}_{\text{adv}} = \arg \min_{\mathbf{w}} \mathcal{L}(f, \mathbf{w}; D_{\text{adv}})
+\quad \text{induces misclassification or performance degradation.}
+\]
+
+%Formula
+1. Initialization:
+   \[
+   D_{\text{adv}}^{(0)} = D.
+   \]
+
+2. Compute Gradient of Loss w.r.t Poisoned Inputs:
+   \[
+   \nabla_{\mathbf{x}_i'} \mathcal{L}(f, \mathbf{w}; D_{\text{adv}}) = \frac{\partial \mathcal{L}}{\partial \mathbf{w}} \cdot \frac{\partial \mathbf{w}}{\partial \mathbf{x}_i'}.
+   \]
+
+3. Update Poisoned Inputs:
+   \[
+   \mathbf{x}_i'^{(t+1)} = \mathbf{x}_i'^{(t)} - \eta \nabla_{\mathbf{x}_i'} \mathcal{L}(f, \mathbf{w}; D_{\text{adv}}).
+   \]
+
+4. Projection (if necessary):
+   \[
+   \mathbf{x}_i'^{(t+1)} = \text{Proj}_{\|\mathbf{x}_i' - \mathbf{x}_i\| \leq \epsilon} (\mathbf{x}_i'^{(t+1)}).
+   \]
+
+5. Iterative Optimization:
+   - Repeat steps 2–4 for $T$ iterations or until convergence.
+
+%Explanation
+The SVM Poisoning Attack (PA) targets support vector machines by injecting carefully crafted poisoned data into the training set. This attack leverages the gradient of the SVM loss function to identify and apply perturbations to the most influential training points, thereby degrading the model's decision boundary.
+
+1. Objective: The attack maximizes the model's classification error by optimizing the loss with respect to the poisoned points.
+2. Gradient-Based Optimization: The gradient of the loss with respect to the poisoned inputs is computed and used to iteratively adjust the training points.
+3. Constraints: The perturbations are bounded by $\epsilon$ to ensure that the poisoned points remain within a feasible region and are not easily detected.
+4. Impact: The poisoned dataset $D_{\text{adv}}$ leads the SVM model to make incorrect predictions or fail to generalize on the test set.

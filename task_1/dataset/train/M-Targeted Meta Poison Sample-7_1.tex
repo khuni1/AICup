@@ -1,0 +1,38 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( D \) be the training dataset. The Poison SBV Adversarial Attack aims to manipulate the training process of a Support Vector Machine (SVM) by introducing adversarial examples into the dataset.
+
+%Output
+The output is a modified training dataset \( D' \) that includes poisoned samples designed to degrade the model's performance.
+
+%Formula
+1. Initialize the training dataset and true labels:
+   $
+   D = \{(x_i, y_i)\}_{i=1}^N.
+   $
+
+2. Identify a target class \( c \) and generate a poisoned sample \( x_{\text{poison}} \) for that class:
+   $
+   x_{\text{poisson}} = x + \delta,
+   $
+   where \( \delta \) is a carefully crafted perturbation designed to mislead the SVM.
+
+3. Update the training dataset to include the poisoned sample:
+   $
+   D' = D \cup \{(x_{\text{poison}}, c)\}.
+   $
+
+4. Train the SVM on the poisoned dataset:
+   $
+   f_{\theta}(x) = \text{SVM}(D').
+   $
+
+5. Evaluate the model on a clean test set to assess performance degradation:
+   $
+   \text{Accuracy} = \frac{\sum_{(x_j, y_j) \in \text{test set}} \mathbb{I}(f_{\theta}(x_j) \neq y_j)}{|\text{test set}|},
+   $
+   where \( \mathbb{I} \) is an indicator function.
+
+%Explanation
+The Targeted Meta-Poison Sample-Based variant aims to undermine the integrity of a Support Vector Machine by injecting malicious samples into the training dataset. The attack begins by generating a poisoned sample \( x_{\text{poison}} \) that is designed to confuse the model during training. This poisoned sample is added to the original dataset \( D \) to create \( D' \). When the SVM is trained on this compromised dataset, it may learn incorrect decision boundaries, leading to a decline in classification accuracy on clean test examples.
+
+The new variant of the Poison SBV Adversarial Attack is called "Targeted M-Poison." This variant aims to improve upon the original attack by introducing a new constraint: the poisoned sample must be specifically designed to mislead the model for only one particular class, rather than a broad range of classes.

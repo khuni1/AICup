@@ -1,0 +1,59 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input text sequence.  
+$f(\mathbf{x})$: Target model (e.g., classifier).  
+$y_{\text{true}}$: True label of the input sequence.  
+$\mathcal{E}(w)$: Counter-fitted word embedding vector for word $w$.  
+$\epsilon$: Perturbation limit (maximum number of allowed word replacements).  
+$N$: Maximum number of iterations.  
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:  
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with minimal semantic distortion}.
+\]
+
+%Formula
+1. Initialization:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Word Importance Scoring: For each word $w_i$ in $\mathbf{x}_{\text{adv}}$, compute the impact on the model's prediction:  
+     \[
+     I(w_i) = |f(\mathbf{x}_{\text{adv}}^{(-i)}) - f(\mathbf{x}_{\text{adv}})|,
+     \]  
+     where $\mathbf{x}_{\text{adv}}^{(-i)}$ represents $\mathbf{x}_{\text{adv}}$ with $w_i$ masked or removed.
+
+3. Candidate Synonym Generation: Use the counter-fitted word embedding $\mathcal{E}(w_i)$ to find candidate synonyms for $w_i$:  
+     \[
+     \mathcal{S}_{CF}(w_i) = \{w' \,|\, \text{cosine similarity}(\mathcal{E}(w_i), \mathcal{E}(w')) \geq \tau, w' \neq w_i\},
+     \]  
+     where $\tau$ is a similarity threshold.
+
+4. Replacement Selection: Replace $w_i$ with the synonym $w_i'$ that maximizes the model loss:  
+     \[
+     w_i' = \underset{w' \in \mathcal{S}_{CF}(w_i)}{\arg \max} \, \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(i \rightarrow w')}, y_{\text{true}}),
+     \]  
+     where $\mathbf{x}_{\text{adv}}^{(i \rightarrow w')}$ is the input with $w_i$ replaced by $w_i'$.
+
+5. Update the Input:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} \, \text{with the replaced word}.
+   \]
+
+6. Stopping Condition: If $f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}$, or if the number of replaced words exceeds $\epsilon$, terminate the attack.
+
+%Explanation
+The Counter-Fitted Word Embedding Swap attack generates adversarial examples for text classifiers by substituting words with semantically similar alternatives identified using counter-fitted word embeddings.
+
+1.Objective: The attack aims to mislead the model by subtly replacing words while preserving the original semantic meaning.  
+
+2.Word Importance Scoring: Words that contribute the most to the model's prediction are identified through heuristic importance scores.  
+
+3.Synonym Selection: Counter-fitted word embeddings are used to ensure replacements are semantically similar. These embeddings are specifically designed to reduce distances between synonyms and increase distances between antonyms, ensuring meaningful perturbations.  
+
+4.Iterative Refinement: Words are replaced iteratively based on their importance and the effect of their replacement on the model's output.  
+
+5.Semantic Preservation: By using counter-fitted embeddings and cosine similarity, the attack maintains the semantic integrity of the original text, ensuring human readability of the adversarial examples.  
+
+6.Advantages: This method is a black-box attack as it does not require access to the model’s gradients, making it effective for scenarios where the model's internal workings are unknown.

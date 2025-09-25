@@ -1,0 +1,36 @@
+%Input
+$x \in \mathbb{R}^{m \times n \times c}$: Original image. \\
+$\rho$: Noise density (fraction of pixels to alter). \\
+$I_{\text{max}}$: Maximum intensity (salt). \\
+$I_{\text{min}}$: Minimum intensity (pepper).
+
+%Output:
+$x_{\text{adv}}$: Adversarial image.
+
+%Formula
+1. Randomly select a set of pixels $P \subseteq \{1, 2, \ldots, m\} \times \{1, 2, \ldots, n\}$ such that $|P| = \rho \cdot m \cdot n$.
+
+2. For each pixel $(i, j) \in P$, randomly set the pixel intensity to either $I_{\text{max}}$ (salt) or $I_{\text{min}}$ (pepper).
+
+The transformation of the image $x$ to the adversarial image $x_{\text{adv}}$ is given by:
+\[
+x_{\text{adv}}(i, j, k) = 
+\begin{cases} 
+I_{\text{max}}, & \text{with probability } \frac{1}{2} \\
+I_{\text{min}}, & \text{with probability } \frac{1}{2}
+\end{cases}
+\quad \forall (i, j) \in P, \forall k \in \{1, 2, \ldots, c\}
+\]
+
+Return the final adversarial image is:
+\[
+x_{\text{adv}}
+\]
+
+%Explanation
+The salt and pepper adversarial attack involves the following steps:
+\textbf{Initialization:} The adversarial image $x_{\text{adv}}$ is initialized as a copy of the original image $x$.
+\textbf{Pixel Selection:} Determine the number of pixels $N$ to alter based on the noise density $\rho$. Randomly select $N$ pixel locations $P$.
+\textbf{Noise Addition:} For each selected pixel, randomly set its intensity to either the maximum value $I_{\text{max}}$ (salt) or the minimum value $I_{\text{min}}$ (pepper) with equal probability.
+\textbf{Output:} The modified image $x_{\text{adv}}$ is returned as the adversarial image.
+This attack is simple yet effective in many scenarios, as it introduces high-frequency noise that can disrupt the model's learned patterns.

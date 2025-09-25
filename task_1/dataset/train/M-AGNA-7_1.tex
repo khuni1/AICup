@@ -1,0 +1,66 @@
+%Input
+\( f \) be the target model
+\( x \) be the original input data point
+\( y \) be the true label
+\( \epsilon \) represent the maximum allowable perturbation. The Gaussian Noise Adversarial Attack introduces random noise into the input data to mislead the model.
+
+%Output
+Output: The output is a perturbed data point \( \tilde{x} = x + \delta \), where \( \delta \) is sampled from a Gaussian distribution and scaled to remain within the perturbation bounds.
+
+sample the perturbation $\delta$ from a Gaussian distribution:
+\[
+\delta \sim \mathcal{N}(0, \sigma^2 I),
+\]
+where $\sigma$ controls the standard deviation of the noise.
+
+Scale the perturbation to ensure it respects the $\epsilon$-bound:
+\[
+\delta = clip(\delta, -\epsilon, \epsilon).
+\]
+Add the perturbation to the original input:
+
+\[
+\tilde{x} = x + \delta.
+\]
+
+%Formula
+
+1. **Initialize the input and true label:**  
+   \[
+   (x, y).
+   \]
+
+2. **Sample Gaussian perturbation:**  
+   \[
+   \delta \sim \mathcal{N}(0, \sigma^2 I),
+   \]
+   where \( \sigma \) controls the standard deviation of the noise.
+
+3. **Scale the perturbation to ensure it respects the \( \epsilon \)-bound:**  
+   \[
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   \]
+
+4. **Generate the adversarial example:**  
+   \[
+   \tilde{x} = x + \delta.
+   \]
+
+5. **Compute the confidence score of the model's prediction:**  
+   \[
+   S(\tilde{x}) = f(\tilde{x})_{y} - \max\limits_{j \neq y} f(\tilde{x})_j.
+   \]
+
+6. **Ensure misclassification by adjusting \( \sigma \) iteratively (if needed):**  
+   \[
+   \sigma \leftarrow \sigma + \eta \cdot \mathbb{1} \left( S(\tilde{x}) > \tau \right),
+   \]
+   where \( \eta \) is the step size, and \( \tau \) is the misclassification threshold.
+
+This version introduces an adaptive scoring function \( S(\tilde{x}) \) to evaluate the model's confidence, adjusting \( \sigma \) dynamically to improve attack effectiveness.
+
+
+
+%Explanation 
+The Adaptive Gaussian Noise Attack (AGNA) generates random perturbations $ \delta $ sampled from a Gaussian distribution. By adding this noise to the original input $ x $, the attack creates adversarial examples $ \tilde{x} $ that may mislead the model $ f $. The perturbations are constrained by $\epsilon$ to ensure imperceptibility, making the attack both simple and effective for testing model robustness against noise.
+The proposed variant is different from the main perturbation core as it introduces a new scoring function to evaluate the model's confidence, making it more targeted and effective at identifying vulnerabilities.

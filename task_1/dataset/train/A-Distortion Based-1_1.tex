@@ -1,0 +1,19 @@
+%Input
+$X$: Original dataset  
+$C(X)$: Clustering result of the original dataset  
+$X_{\text{distorted}}$: Modified dataset including distorted points  
+$\{\mathbf{z}_1, \mathbf{z}_2, \ldots, \mathbf{z}_m\}$: Set of adversarially crafted distorted points  
+$D(C(X_{\text{distorted}}), C(X))$: Distance measure between the clustering results of the distorted and original datasets  
+$m$: Number of distorted points to be added  
+
+
+%Output
+$X_{\text{distorted}}$: Modified dataset including distorted points $\{\mathbf{z}_1, \mathbf{z}_2, \ldots, \mathbf{z}_m\}$.
+
+%Formula
+$\max_{\{\mathbf{z}_i\}_{i=1}^m} \quad D(C(X_{\text{distorted}}), C(X))$
+
+%Explanation
+This variant is different from the original perturbation core in that it uses distortion instead of distance to craft poisoned points. The distorted points $\{\mathbf{z}_i\}_{i=1}^m$ are designed to minimize the maximum distance to any point in the dataset, which can disrupt the hierarchical clustering structure by creating an imbalance between the distances and the number of clusters.
+
+Summary: This variant modifies the perturbation strategy by using distortion instead of Euclidean distance. The goal is to create a more targeted attack that exploits the sensitivity of single-linkage clustering to maximum distances rather than just proximity.

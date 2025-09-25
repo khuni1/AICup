@@ -1,0 +1,26 @@
+%Input
+Original input: $X \in \mathbb{R}^d$
+True label: $y \in \mathcal{Y}$
+Target class: $y_{\text{target}}$
+Model function: $f(X)$
+Loss function: $\mathcal{L}(f(X), y_{\text{target}})$
+Perturbation budget: $\epsilon$
+Number of iterations: $T$
+Output: Adversarial example $X_{\text{adv}}$ such that $\|X_{\text{adv}} - X\|_\infty \leq \epsilon$ and $f(X_{\text{adv}}) = y_{\text{target}}$
+
+%Formula
+1.Initialization:
+   \[
+   X^{(0)}_{\text{adv}} = X.
+   \]
+
+2.Iterative Update:
+   For each iteration $t = 0, 1, \dots, T-1$, update the adversarial example as:
+   \[
+   X^{(t+1)}_{\text{adv}} = \text{clip}_{X, \epsilon} \left( X^{(t)}_{\text{adv}} - \alpha' \cdot \text{sign} \left( \nabla_X \mathcal{L}(f(X^{(t)}_{\text{adv}}), y_{\text{target}}) \right) \right),
+   \]
+where:
+$\alpha'$ is a fixed step size, different from the variable $\alpha$ in the original method.
+
+%Explanation
+This variant ITGSM-Fixed Step Size of ITGSM maintains the core principle of the original attack but introduces a fixed step size $\alpha'$ instead of the variable step size $\alpha$. This can lead to more predictable and controlled attacks, as the same amount of perturbation is added at each iteration. However, it may also reduce the effectiveness of the attack if the fixed step size is too small.

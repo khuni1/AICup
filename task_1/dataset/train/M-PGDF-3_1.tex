@@ -1,0 +1,13 @@
+%Input
+Let \( x \) be the original input, \( \hat{x} \) be the perturbed input, and \( t \) be the target class. The goal is to generate an adversarial example \( \hat{x} \) that misleads the classifier while maintaining similarity to \( x \).
+
+%Output
+The output is an adversarial example \( \hat{x} \) that minimizes the classification loss while preserving the structure of the original input through a fidelity loss term.
+
+%Formula: 
+$L(x, \hat{x}, t) = L_C(\hat{x}, t) + L_F(x, \hat{x}) = -\sum_{i=1}^{m} \log(C_i(\hat{x})[t]) + w \cdot \| \hat{x} - x \|_k$
+
+%Explanation
+The PGD-Fidelity Attack (PGD-F) variant combines the classification loss and fidelity loss into a single total loss function. The classification loss measures the discrepancy between predicted class probabilities and target classes, while the fidelity loss measures the difference between original and perturbed inputs. This approach balances the importance of correct prediction with the need to maintain structural characteristics of the input image.
+
+This variant is different from the main PGD Fast-Universal attack in that it incorporates both classification and fidelity losses into a single total loss function, allowing for more targeted attacks that balance predictability with structural preservation.

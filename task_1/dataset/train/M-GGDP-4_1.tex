@@ -1,0 +1,25 @@
+%Input
+Let \( D \) be the original dataset consisting of input-label pairs \( (x, y) \). Define \( f \) as the model, and \( L \) as the loss function. The goal is to generate adversarial examples \( \tilde{x} \) such that the perturbed dataset \( D' \) leads to misclassification. Let \( \delta \) be the perturbation applied to \( x \), constrained by \( \|\delta\| \leq \epsilon \). The adversarial labels \( y' \) are selected to maximize the model’s error.
+
+%Output
+The output updated dataset $D'$ that includes the original data and the adversarial examples, leading to a misclassification of the model.
+
+%Formula
+1. Generate adversarial examples $\tilde{x}$ from the original input $x$:
+   $
+   \tilde{x} = x + \delta,
+   $
+   where $\delta$ is the perturbation designed to mislead the model.
+2. Update the dataset by adding the adversarial example:
+   $
+   D' = D \cup \{(\tilde{x}, y')\},
+   $
+   where $y'$ is a label chosen to deceive the model.
+3. Define the objective function to minimize the loss on the poisoned dataset:
+   $
+   \text{minimize } L(f(D'), y),
+   $
+   where $f$ is the model being trained and $L$ is the loss function.
+
+%Explanation
+The  Gradient-Guided Data Poisoning (GGDP) variant builds upon the original attack by incorporating a gradient-based optimization component. This variant aims to improve the effectiveness of the attack by leveraging the gradients of the loss function to guide the perturbation process. The use of gradient-based optimization enables the attack to adapt more finely to the model's behavior, making it potentially more stealthy and targeted.

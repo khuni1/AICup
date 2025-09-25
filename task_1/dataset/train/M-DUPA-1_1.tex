@@ -1,0 +1,41 @@
+%Input
+
+
+%Output
+The output of the Dual Perturbation Attack is a universal adversarial perturbation $\delta$ that can be applied to multiple inputs to cause misclassification.
+
+%Formula
+1. Initialize two separate perturbations $u$ and $v$:
+   $
+   u = 0,
+   v = 0.
+   $
+2. Define the objective function to minimize the average loss over a set of inputs:
+   $
+   \text{minimize } \frac{1}{N} \sum_{i=1}^{N} L(f(x_i + u), y_i) \text{ subject to } \|u\| \leq \epsilon,
+   $
+   and
+   $
+   \text{minimize } \frac{1}{N} \sum_{i=1}^{N} L(f(x_i + v), y_i) \text{ subject to } \|v\| \leq \epsilon,
+   $
+3. Update the perturbations using projected gradient descent:
+   $
+   u^{(t+1)} = u^{(t)} - \alpha \cdot \nabla_{u} \left( \frac{1}{N} \sum_{i=1}^{N} L(f(x_i + u^{(t)}), y_i) \right),
+   $
+   and
+   $
+   v^{(t+1)} = v^{(t)} - \alpha \cdot \nabla_{v} \left( \frac{1}{N} \sum_{i=1}^{N} L(f(x_i + v^{(t)}), y_i) \right).
+   $
+4. Project $u$ and $v$ to ensure they remain within the allowable perturbation bounds:
+   $
+   u = \text{clip}(u, -\epsilon, \epsilon),
+   $
+   and
+   $
+   v = \text{clip}(v, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The Dual Universal Perturbation Attack (DUPA) variant generates two universal adversarial perturbations $u$ and $v$, which are iteratively updated using projected gradient descent. The attack crafts a perturbation that is effective across multiple inputs by minimizing the average loss over a set of input samples while ensuring each perturbation remains within its allowable bounds. This approach demonstrates a significant vulnerability in machine learning models to universal adversarial examples, as it can exploit the model's vulnerabilities by crafting two separate perturbations that can generalize across multiple instances.
+
+Summary: The Dual Perturbation Attack is different from the original PD-UAP Attack in that it introduces two separate perturbations ($u$ and $v$) instead of a single one. This allows the attack to explore different directions of the input space, potentially making the generated adversarial examples more robust and effective across multiple inputs.

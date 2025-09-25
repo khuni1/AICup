@@ -1,0 +1,46 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input text sequence.  
+$f(\mathbf{x})$: Target model (e.g., classifier).  
+$y_{\text{true}}$: True label of the input sequence.  
+$\epsilon$: Perturbation budget (maximum allowed semantic distortion).  
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function to maximize.  
+$\mathcal{S}(w)$: Synonym set for word $w$, based on semantic similarity (e.g., WordNet, embedding-based).  
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{while preserving semantic similarity.}
+\]
+
+%Formula
+1. Gradient Computation for Word Importance:
+   Compute the gradient of the loss with respect to the word embeddings:
+   \[
+   \nabla_w \mathcal{L}(f, \mathbf{x}, y_{\text{true}})
+   \]
+   For each word $w_i$ in $\mathbf{x}_{\text{original}}$, compute its importance score:
+   \[
+   I(w_i) = \|\nabla_{w_i} \mathcal{L}(f, \mathbf{x}, y_{\text{true}})\|_2.
+   \]
+
+2. Word Selection:
+   Identify the word $w_{\text{max}}$ with the highest importance:
+   \[
+   w_{\text{max}} = \underset{w_i}{\arg \max} \, I(w_i).
+   \]
+
+3. Gradient-Based Synonym Replacement:
+   Replace $w_{\text{max}}$ with a synonym $w'$ from $\mathcal{S}(w_{\text{max}})$ that maximizes the model loss:
+   \[
+   w' = \underset{w' \in \mathcal{S}(w_{\text{max}})}{\arg \max} \, \mathcal{L}(f, \mathbf{x}_{\text{adv}}, y_{\text{true}}),
+   \]
+   where $\mathbf{x}_{\text{adv}}$ is the modified sequence.
+
+4. Iterative Update:
+   Replace $w_{\text{max}}$ in $\mathbf{x}$ with $w'$, and repeat until:
+   \[
+   f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}} \quad \text{or the semantic similarity threshold is exceeded.}
+   \]
+
+%Explanation
+This gradient-based word swap attack exploits the gradients of the model's loss function to identify and modify the most influential words. By iteratively replacing these words with semantically similar synonyms, it forces the model to misclassify while keeping the text coherent and meaningful. Unlike heuristic methods, this approach uses the model's gradients to guide the attack, making it more effective against gradient-accessible models.

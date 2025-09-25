@@ -1,0 +1,30 @@
+%Input
+\textbf{$\mathbf{x}$}: Original input image. \\
+\textbf{$\delta$}: Perturbation to be found. \\
+\textbf{$C(\mathbf{x} + \delta)$}: Constraint requiring the modified image to be classified as a specific class. \\
+\textbf{$\epsilon$}: Perturbation bound. \\
+\textbf{$\text{model}$}: The target model for the attack.
+
+%Formula
+The ZOO attack Targeted One-shot Optimization optimizes the perturbation $\delta$ as follows:
+\begin{equation*}
+\begin{aligned}
+\min_{\delta} & \quad \mathcal{L}(\mathbf{x} + \delta) \\
+\text{s.t.} & \quad \|\delta\|_p \leq \epsilon
+\end{aligned}
+\end{equation*}
+
+where $\mathcal{L}$ is the loss function based on the model's output.
+
+The perturbation $\delta$ can be estimated using the zeroth-order optimization:
+\begin{equation*}
+\delta_i \approx \frac{f(\mathbf{x} + \epsilon \mathbf{e}_i) - f(\mathbf{x} - \epsilon \mathbf{e}_i)}{2 \epsilon} \mathbf{e}_i
+\end{equation*}
+
+where $f$ is the output of the classifier, and $\mathbf{e}_i$ is the unit vector in the direction of the $i$-th dimension.
+
+%Output
+The optimized perturbation $\delta_{\text{opt}}$ that minimizes the loss function while adhering to the perturbation constraint.
+
+%Explanation
+The ZOO attack uses a zeroth-order optimization method to estimate gradients, allowing it to generate adversarial examples without requiring access to the model's gradients. This makes it effective against black-box models while ensuring the perturbation stays within the specified bound.

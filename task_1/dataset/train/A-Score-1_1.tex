@@ -1,0 +1,37 @@
+%Input
+Let \( x \) be the original input, \( y \) be the true label, and \( f_{\theta} \) be the target model. The goal is to generate an adversarial example \( x^* \) by introducing a perturbation \( \delta \) that maximizes the perturbation score while causing misclassification. The perturbation is iteratively updated using a gradient-based approach guided by a scoring function.
+
+
+
+%Output
+The output of the Adversarial Perturbation Score-based Gradient attack is a modified input $x^*$ that is crafted to cause a misclassification while maximizing the perturbation score.
+
+%Formula
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Compute the gradient of the loss function with respect to the input $x$:
+   $
+   \nabla_\delta L(f_{\theta}(x), y) = \frac{\partial L}{\partial x}.
+   $
+3. Define a scoring function based on the gradient, e.g.,:
+   $
+   s(x, \delta) = \frac{1}{\|\delta\|_2^2} ||\nabla_\delta L(f_{\theta}(x + \delta), y)||_2.
+   $
+4. Initialize the perturbation $\delta$ to zero and iterate for $N$ steps:
+   - Compute the gradient of the loss function with respect to the perturbation:
+     $
+     \nabla_\delta L(f_{\theta}(x + \delta), y) = \frac{\partial L}{\partial \delta}.
+     $
+   - Update the perturbation using the scoring function and gradient:
+     $
+     \delta^{(n+1)} = \text{Clip}_{\mathcal{X}} (\delta^{(n)} + \alpha \cdot s(x, \delta^{(n)}) \cdot \text{sign}(\nabla_\delta L(f_{\theta}(x + \delta^{(n)}), y))).
+     $
+5. Add the final perturbation to the original input to obtain the adversarial example $x^*$:
+   $
+   x^* = x + \delta^{(N)}.
+   $
+
+%Explanation 
+The Adversarial Perturbation Score-based Gradient attack modifies the original PGD Fast-Universal attack by incorporating a scoring function that rewards perturbations with higher gradients of the loss function. This approach enhances the ability of the attack to identify and exploit the vulnerabilities of the model, leading to more effective adversarial examples.

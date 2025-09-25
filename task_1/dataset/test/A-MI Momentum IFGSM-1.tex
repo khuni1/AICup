@@ -1,0 +1,23 @@
+%Input
+Let \( x \) be the original input, \( y \) be the true label, and \( \theta \) be the parameters of the target model. The objective is to generate an adversarial example \( x_{\text{adv}} \) that maximizes the model's loss while staying within an \(\ell_{\infty}\) bounded perturbation \(\epsilon\).
+
+%Output
+The output is the adversarial example \( x_{\text{adv}} \), which is crafted using an iterative gradient-based approach incorporating a momentum term. The attack ensures that the perturbation remains within the constraint \( \|x_{\text{adv}} - x\|_{\infty} \leq \epsilon \) while maintaining an effective adversarial misclassification.
+
+%Formula
+\[
+x^{(1)} \leftarrow \text{Clip}\left(x^{(0)} + \epsilon \cdot \text{sign}(\nabla_x J(\theta, x^{(0)}, y)), x - \epsilon, x + \epsilon\right)
+\]
+
+\[
+x^{(t+1)} \leftarrow \text{Clip}\left(x^{(t)} + \alpha \cdot \nu \cdot \text{sign}(\nabla_x J(\theta, x^{(t)}, y)), x - \beta \epsilon, x + \beta \epsilon\right)
+\]
+
+\[
+x_{\text{adv}} \leftarrow x^{(N_{\text{iter}})}
+\]
+
+%Explanation
+This variant of the MI-Momentum IFGSM attack incorporates a momentum term into the update rule. The new perturbation strategy, denoted by $\nu$ and $\beta$, introduces a bias towards the previous updates, creating a smoother and more stable trajectory towards the adversarial example.
+
+In this modified version, the step size is no longer solely dependent on the gradient's sign but also incorporates the momentum term to balance between exploration and exploitation. This results in a more efficient search for the optimal perturbation that can effectively mislead the model across multiple inputs.

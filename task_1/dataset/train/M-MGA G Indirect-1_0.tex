@@ -1,0 +1,35 @@
+%Input
+$\hat{A}$: The variable being optimized over, representing a matrix or parameter to be estimated.
+$L_t(\hat{A})$: The objective function that depends on $\hat{A}$, which is to be maximized.
+$\mathbf{A}$: The original matrix or parameter.
+$\hat{\mathbf{A}}$: The estimated matrix or parameter.
+$\rho$: A given threshold value that constrains the sum of absolute differences.
+$\sum_{i<j}$: Summation operator over all pairs $(i, j)$ where $i < j$.
+$|\mathbf{A}_{ij} - \hat{\mathbf{A}}_{ij}|$: The absolute difference between the elements of matrices $\mathbf{A}$ and $\hat{\mathbf{A}}$ at position $(i, j)$.
+
+%Output:
+$\hat{A}^*$: The optimal solution for the matrix or parameter that maximizes the objective function $L_t(\hat{A})$ while satisfying the constraint.
+
+$L_t(\hat{A}^*)$: The maximum value of the objective function $L_t(\hat{A})$ achieved with the optimal $\hat{A}^*$.
+
+$\sum_{i<j} |\mathbf{A}_{ij} - \hat{\mathbf{A}}_{ij}|$: The sum of the absolute differences between the elements of the original matrix $\mathbf{A}$ and the estimated matrix $\hat{\mathbf{A}}$ at position $(i, j)$, constrained to be less than or equal to $\rho$.
+
+%Formula
+The optimization problem can be expressed as:
+$\arg \max_{\hat{A}} L_t(\hat{A}) \quad \text{subject to} \quad \sum_{i<j} |\mathbf{A}_{ij} - \hat{\mathbf{A}}_{ij}| \leq \rho$
+
+%Explanation
+$ \arg \max_{\hat{A}} L_t(\hat{A})$
+\textbf{arg max}: This operator finds the argument \( \hat{A} \) that maximizes the function $ L_t(\hat{A})$
+$\hat{A}$ The variable being optimized over.
+$L_t(\hat{A})$ The objective function to be maximized, which depends on $\hat{A}$
+\textbf{subject to}:
+Indicates that the optimization is performed under certain constraints.
+$ \sum_{i<j} |\mathbf{A}_{ij} - \hat{\mathbf{A}}_{ij}| \leq \rho $
+$ \sum_{i<j}$ Summation over all pairs $ (i, j) $ where $ i < j $
+$ |\mathbf{A}_{ij} - \hat{\mathbf{A}}_{ij}| $ 
+The absolute difference between the elements of the matrices $ \mathbf{A} $ 
+and $ \hat{\mathbf{A}} $ at position $ (i, j)$
+$ \leq \rho $ 
+The sum of the absolute differences is constrained to be less than or equal to $ \rho$, where $\rho $ is a given threshold.
+Indirect Attack: The attack is located on a link that is not connected to the target node to make the attack more covert.

@@ -1,0 +1,29 @@
+%Input
+Let \( \mathcal{D} = \{(x_i, y_i)\}_{i=1}^{N} \) be the clean training dataset, where \( x_i \) are the input samples and \( y_i \) are the corresponding labels. The adversarial goal is to modify the dataset by introducing a perturbation \( \Delta \) that maximizes the loss on a separate test set. The poisoned dataset is denoted as \( \mathcal{D}_{\text{poison}} \), which includes adversarially modified samples.
+
+%Output
+The output of the attack is a modified training dataset \( \mathcal{D}_{\text{poison}} \) containing poisoned samples that, when used to train the model, result in degraded performance on a clean test set \( \mathcal{D}_{\text{test}} \).
+
+
+%Formula
+1. Define the optimization objective to maximize the loss on a test set:
+\[
+\max_{\Delta} \, \mathcal{L}(f(\theta^*), \mathcal{D}_{\text{test}})
+\]
+where $\theta^*$ is obtained by training the model on the poisoned dataset:
+\[
+\theta^* = \underset{\theta}{\arg \min} \, \mathcal{L}(f(\theta), \mathcal{D}_{\text{poison}})
+\]
+
+2. Constraints on the poisoning:
+\[
+\|\Delta\| \leq \epsilon
+\]
+
+3. Iteratively solve for $\Delta$ using a bilevel optimization approach:
+\[
+\Delta^{(t+1)} = \Delta^{(t)} - \eta \nabla_\Delta \mathcal{L}(f(\theta^*), \mathcal{D}_{\text{test}})
+\]
+
+%Explanation
+This Bilevel Poisoning Attack (BPA) variant of the Poisoning Adaptation attack uses a bilevel optimization approach to iteratively refine the adversarial modifications $\Delta$. This approach is different from the original method, which only updates the model parameters on the poisoned training set. The addition of the outer loop maximizes the loss on the test set makes the attack more targeted and effective.

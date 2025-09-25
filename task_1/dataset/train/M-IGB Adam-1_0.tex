@@ -1,0 +1,25 @@
+%Input
+Let $x$ be the original input image and $y$ be the true label associated with it. The goal is to generate an adversarial example $x^*$ that can mislead the model while remaining visually similar to $x$.
+- $x^n$ is the current iteration of the input,
+- $\alpha$ is the learning rate,
+- $L$ is the loss function (commonly the cross-entropy loss),
+- $f_\theta(x^n)$ is the model's output for input $x^n$.
+
+%Output
+The output of the IGB Adam attack is an adversarial example $x^*$ that is generated through iterative updates using the Adam optimizer.
+
+%Formula
+$x^{n+1} = x^n - \alpha \cdot \nabla_x L(f_\theta(x^n), y)$
+
+In addition, the Adam optimizer is used to adaptively adjust the learning rate based on the first and second moments of the gradients:
+$m_t = \beta_1 m_{t-1} + (1 - \beta_1) \nabla_x L(f_\theta(x^n), y)$
+$v_t = \beta_2 v_{t-1} + (1 - \beta_2) (\nabla_x L(f_\theta(x^n), y))^2$
+$\hat{m}_t = \frac{m_t}{1 - \beta_1^t}, \quad \hat{v}_t = \frac{v_t}{1 - \beta_2^t}$
+
+and the update rule becomes:
+$x^{n+1} = x^n - \frac{\alpha}{\sqrt{\hat{v}_t} + \epsilon} \hat{m}_t$
+
+where $\beta_1$, $\beta_2$ are the decay rates for the moments, and $\epsilon$ is a small constant for numerical stability.
+
+%Explanation
+In the  Iterative Gradient-Based (IGB) Adam attack, the objective is to generate an adversarial example $x^*$ by iteratively updating the input $x$ using the gradients of the loss function with respect to the input. The Adam optimizer is employed to efficiently manage the learning rate, which helps in converging to an effective adversarial perturbation. By utilizing the first and second moments of the gradients, IGB Adam can adaptively modify the updates, allowing for potentially stronger adversarial examples that can evade defenses more effectively. This method leverages the power of gradient-based optimization to create adversarial samples while maintaining control over the perturbation size.

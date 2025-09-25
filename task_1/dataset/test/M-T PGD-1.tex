@@ -1,0 +1,40 @@
+%Input
+\section*{Input}
+The input consists of:
+\begin{itemize}
+    \item The original input $x$.
+    \item The target class $c$.
+    \item The model function $f$.
+    \item The loss function $L$.
+    \item The step size $\alpha$.
+    \item The perturbation bound $\epsilon$.
+\end{itemize}
+
+%Output
+The output of the APG Adversarial Attack is a perturbed input $x^* = \tilde{x}$ that is designed to mislead the model.
+
+%Formula
+1. Initialize the perturbation $\delta$:
+   $
+   x^* = x + \delta,
+   $
+   where $\|\delta\| \leq \epsilon$.
+2. Define the objective function to minimize the loss with respect to the target class $c$:
+   $
+   \text{minimize } L(f(x^*, c),
+   $
+   where $f$ is the model and $L$ is the loss function.
+3. Use projected gradient descent to iteratively update $\delta$:
+   $
+   \delta^{(t+1)} = \text{proj}_{\epsilon} \left( \delta^{(t)} - \alpha \nabla_{\delta} L(f(x^* + \delta^{(t)}), c) \right),
+   $
+   where $\alpha$ is the step size and $\text{proj}_{\epsilon}$ projects the perturbation back onto the $\epsilon$-ball.
+4. Update the perturbed input:
+   $
+   x^* = x + \delta^{(t+1)}.
+   $
+
+%Explanation
+ Targeted Projected Gradient Descent (T-PGD) Attack generates adversarial examples by applying iterative optimization techniques to find a perturbation $\delta$ that misleads the model. Starting with an initial perturbation, the method utilizes projected gradient descent to adjust $\delta$ in the direction that minimizes the loss associated with a target class $c$. The projection step ensures that the perturbation remains within a specified limit $\epsilon$, maintaining the integrity of the input. This approach effectively crafts adversarial examples that are resilient against defenses, demonstrating the vulnerabilities of machine learning models to adaptive attacks.
+
+Summary: This variant introduces a new constraint by using projected gradient descent with an added optimization step for minimizing the loss associated with the target class $c$. This modification improves the attack's effectiveness by ensuring that the perturbation is tailored to mislead the model in a specific direction, making it more targeted and stealthy.

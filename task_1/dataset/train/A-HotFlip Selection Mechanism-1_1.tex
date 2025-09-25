@@ -1,0 +1,30 @@
+%Input
+Let $x$ be the original input text, $y$ be the true label associated with it, and $f_{\theta}$ be the target model. The goal is to generate an adversarial example $x^*$ that misclassifies the input by flipping characters.
+
+%Output
+Output: The output of the gradient-based HotFlip attack is a set of adversarial text examples $x^*$. This variant modifies the HotFlip attack by incorporating gradients into its character flipping mechanism. Instead of simply identifying the character with the largest magnitude of the gradient, it uses the gradient itself to determine which characters need to be flipped.
+
+%Formula
+Formula:
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum number of flips $k$ and the learning rate $\alpha$.
+3. For each iteration $n = 1$ to $k$:
+   - Compute the model's prediction:
+   $\hat{y}^{(n)} = f_{\theta}(x^{(n-1)})$
+   - Calculate the gradient of the loss function with respect to the input:
+   $g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y)$
+   - Identify the character to flip using a weighted sum of gradients:
+   $i = \arg\max_{j} \sum_{l=1}^L |g_n[j,l]|$
+   where $j$ indexes characters, and $l$ indexes features in the gradient.
+   - Flip the character at index $i$:
+   $x^{(n)} = \text{Flip}(x^{(n-1)}, i)$
+   where $\text{Flip}$ is a function that changes the character at position $i$ to its adversarial counterpart.
+   - Check if the new prediction differs from the original:
+   $\text{if } f_{\theta}(x^{(n)}) \neq y, \text{ then accept } x^{(n)} \text{ as } x^*$
+4. The final adversarial example is:
+   $x^* = x^{(n)} \text{ (if found)}$
+
+%Explanation
+The gradient-based HotFlip attack modifies the original method by incorporating gradients into its character flipping mechanism. This allows for a more targeted and effective approach, as the model's vulnerability to input changes can be precisely identified through gradient analysis. The weighted sum of gradients used in the identification step introduces an additional layer of sophistication, enabling the attack to adapt to different types of models and data distributions.

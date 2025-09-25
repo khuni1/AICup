@@ -1,0 +1,47 @@
+%Input
+Objective function: $x_1 + x_2$
+
+Constraints:
+$x_1^2 + x_2^2 &\leq 4$ \\
+$x_1 &\geq 0$ \\
+$x_2 &\geq 0$
+
+%Output: 
+\[
+(x_1, x_2) = (2, 0), \quad f(x_1, x_2) = 2
+\]
+
+%Formula: 
+We use the method of Lagrange multipliers to solve the optimization problem.
+
+Define the Lagrangian function:
+\[
+\mathcal{L}(x_1, x_2, \lambda, \mu_1, \mu_2) = x_1 + x_2 + \lambda(x_1^2 + x_2^2 - 4) - \mu_1 x_1 - \mu_2 x_2
+\]
+Taking the partial derivatives of $\mathcal{L}$ and setting them equal to zero, we obtain the following system of equations:
+\[
+\frac{\partial \mathcal{L}}{\partial x_1} = 1 + 2\lambda x_1 - \mu_1 = 0, \quad
+\frac{\partial \mathcal{L}}{\partial x_2} = 1 + 2\lambda x_2 - \mu_2 = 0
+\]
+\[
+\frac{\partial \mathcal{L}}{\partial \lambda} = x_1^2 + x_2^2 - 4 = 0, \quad
+\frac{\partial \mathcal{L}}{\partial \mu_1} = -x_1 = 0, \quad
+\frac{\partial \mathcal{L}}{\partial \mu_2} = -x_2 = 0
+\]
+From these conditions, we derive:
+\[
+x_1 = 0 \quad \text{and} \quad x_2 = 0
+\]
+However, this does not satisfy the constraint $x_1^2 + x_2^2 = 4$. Therefore, we consider the case when $\mu_1 = 0$ and $\mu_2 = 0$, leading to:
+\[
+\lambda = -\frac{1}{2x_1} = -\frac{1}{2x_2}
+\]
+Since $x_2=0$, $\lambda$ is undefined. However, if we set $x_2=2$, we can solve for $x_1$. Thus, the optimal solution is $x_1 = 2$ and $x_2 = 2$, yielding:
+\[
+f(2, 2) = 2
+\]
+
+%Explanation
+Lagrange-Constrained Optimization Attack (LCOA) Variant of ZOO where the problem involves minimizing $x_1 + x_2$ subject to the constraint that the variables lie inside a circle of radius $\sqrt{4}$ and are non-negative. The Lagrangian function incorporates the constraints using Lagrange multipliers. After solving the system of partial derivatives, we found that the optimal solution occurs at $x_1 = 2$ and $x_2 = 0$, yielding a minimum objective function value of $f(x_1, x_2) = 2$. This solution satisfies the given constraints.
+
+This variant introduces an additional constraint that makes the problem more constrained, effectively reducing the search space for optimal solutions.

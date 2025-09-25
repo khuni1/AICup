@@ -1,0 +1,23 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, and $\epsilon$ be the maximum allowed perturbation. The goal is to create a universal adversarial example $x^*$ that misleads the model across multiple inputs.
+
+%Output
+The output of the PGD Fast-Universal attack is a universal adversarial perturbation $\delta$ added to multiple images, resulting in adversarial examples that can deceive the model.
+
+%Formula
+The PGD Fast-Universal attack can be expressed as:
+$\delta^{(0)} = 0$
+$\text{for } n = 1 \text{ to } N: \quad
+\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y) \right) \right)$
+where:
+- $L$ is the loss function,
+- $f_\theta(x + \delta^{(n-1)})$ is the model's output for the input perturbed by $\delta^{(n-1)}$,
+- $\alpha$ is the step size,
+- $\text{Clip}_{\mathcal{X}}(\delta)$ projects the perturbation back into the allowable input space.
+
+The universal adversarial example can then be generated as:
+$x^* = x + \delta^{(N)}$
+with the constraint that $\|\delta^{(N)}\|_p \leq \epsilon$.
+
+%Explanation
+The PGD Fast-Universal attack is an iterative method designed to generate a universal adversarial perturbation that can effectively mislead a model across a wide range of inputs. The attack starts with an initial perturbation of zero and iteratively updates it using the sign of the gradient of the loss function. Each update is clipped to ensure the perturbation remains within the allowable limits. After $N$ iterations, the resulting perturbation $\delta^{(N)}$ is added to the original input image $x$ to create a universal adversarial example $x^*$. This approach exploits the model's vulnerabilities by crafting a single perturbation that can generalize across multiple instances, making it a powerful method for generating adversarial examples that are difficult to defend against.

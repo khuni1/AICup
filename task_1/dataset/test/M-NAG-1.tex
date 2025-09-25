@@ -1,0 +1,27 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input data point, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The NAG adversarial attack aims to generate a box of adversarial perturbations around the input.
+
+%Output
+The output of the NAG attack is an adversarial perturbation box \( B \) that can be applied to the original input \( x \) to create multiple adversarial examples.
+
+%Formula
+The NAG attack can be formulated as follows:
+1. Define the perturbation box:
+   $
+   B = \{ x + \delta \mid \|\delta\| \leq \epsilon \}.
+   $
+2. Initialize the perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+3. Update the perturbation using the gradient of the loss function:
+   $
+   \delta^{(t+1)} = \delta^{(t)} - \alpha \cdot \nabla_{\delta} L(f(x + \delta^{(t)}), y).
+   $
+4. Ensure the perturbation remains within the box:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The Nesterov Accelerated Gradient (NAG) Adversarial Attack adversarial attack generates a box of adversarial perturbations around the original input \( x \). By defining a set of possible perturbations \( B \), the attack crafts a range of adversarial examples that can mislead the model. This approach emphasizes the vulnerability of machine learning models to adversarial perturbations and highlights the importance of robust defenses.

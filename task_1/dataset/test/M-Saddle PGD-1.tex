@@ -1,0 +1,16 @@
+%Input
+\( f \) be the target model
+\( x \) be the original input 
+\( y \) be the true label
+\( \epsilon \) be the maximum allowable perturbation
+
+%Output 
+The output is a perturbation \( \delta \) that forms a saddle point of the loss function \( L(f(x + \delta), y) \), satisfying both attack and defense objectives.
+
+%Formula:
+$\delta = \text{Clip}_{\mathcal{X}} \left( -\gamma \nabla_\delta L(f_\theta(x), y) \right)$
+
+%Explanation
+This Saddle-PGD variant exploits the interaction between the adversary and the defender. The main difference with the original PGD Fast-Universal attack is that this variant focuses on creating a saddle point in the loss landscape, rather than iteratively updating a perturbation across multiple iterations. Additionally, this approach uses gradient descent to minimize the loss function while maximizing it for the attacker, whereas the PGD Fast-Universal attack updates the perturbation using the sign of the gradient. This variant introduces a new hyperparameter \( \gamma \) that controls the step size in the gradient direction and can be used to adjust the stealthiness of the generated adversarial examples.
+
+The variant differs from the original PGD Fast-Universal attack by focusing on creating a saddle point in the loss landscape. This approach uses gradient descent to minimize the loss function while maximizing it for the attacker, resulting in a more targeted and stealthy adversarial example.

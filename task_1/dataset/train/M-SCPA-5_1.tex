@@ -1,0 +1,23 @@
+%Input
+Original input: $ \mathbf{x} $, \quad Target class: $ y_{\text{adv}} $, \quad Perturbation:  $ \delta $, \quad Classifier: $ f $, \quad Step size: $ \eta $.
+
+%Output
+Adversarial example: $ \mathbf{x}^* = \mathbf{x} + \delta $, \quad such that $ f(\mathbf{x}^*) = y_{\text{adv}} $, \quad with minimal perturbation $ \|\delta\| $.
+
+
+%Formula
+   $\min_{\delta} \quad D(\mathbf{x}, \mathbf{x} + \delta) + c \cdot f(\mathbf{x} + \delta)$ \\
+    subject to $\quad f(\mathbf{x} + \delta) \leq 0, \quad \mathbf{x} + \delta \in [0,1]^n$
+
+%Explanation
+Saliency-Constrained Projected Attack (SCPA) involves finding an adversarial example for a neural network using the Jacobian-based saliency map attack (JSMA). The original formulation of JSMA involves computing the gradient of the loss function with respect to the input and then applying a perturbation to the input that is in the direction of this gradient.
+
+To reformulate the problem, we introduce a new constraint $f(\mathbf{x} + \delta) \leq 0$ and adjust the objective function accordingly. This allows us to incorporate a scoring function into the attack, which can help guide the perturbation towards the desired outcome.
+
+We also consider three different methods for incorporating this constraint:
+
+1. Projected Gradient Descent: clips all coordinates within the box after each gradient descent step.
+2. Clipped Gradient Descent: incorporates the clipping into the objective function.
+3. Change of Variables: introduces a new variable $\mathbf{w}$ and optimizes over $\mathbf{w}$, setting $\delta_i = \frac{1}{2} (\tanh(w_i) + 1) - x_i$.
+
+We choose to use Projected Gradient Descent as it converges quickly and effectively finds adversarial examples.

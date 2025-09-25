@@ -1,0 +1,31 @@
+%Input
+Let $G = (V, E)$ be a graph where $V$ represents the set of nodes and $E$ represents the edges. Let $x \in \mathbb{R}^{|V| \times d}$ be the feature matrix of the nodes, $y$ be the true label associated with the graph, and $f_{\theta}(G)$ be the Graph Convolutional Network (GCN) model. The goal is to generate an adversarial example $G^*$ that misclassifies the input graph.
+
+%Output
+The output of the GB-GCN attack is a modified graph $G^*$ that successfully misclassifies the original input while maintaining structural integrity.
+
+%Formula
+The GB-GCN adversarial attack can be formulated as follows:
+1. Initialize the graph:
+   $G^{(0)} = G$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size $\epsilon$ and the number of iterations $N$.
+3. For each iteration $n = 1$ to $N$:
+   - Compute the model's prediction:
+   $\hat{y}^{(n)} = f_{\theta}(G^{(n-1)})$
+   - Calculate the gradient of the loss function with respect to the node features:
+   $g_n = \nabla_x L(f_{\theta}(G^{(n-1)}), y)$
+   - Update the node features using the calculated gradient:
+   $x^{(n)} = x^{(n-1)} + \delta_n$
+   where:
+   $\delta_n = -\alpha \cdot \text{sign}(g_n)$
+   - Ensure the perturbation stays within the allowed range:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)})$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+4. The final adversarial graph is:
+   $G^* = G^{(N)}$
+
+% Explanation
+The GB-GCN (Graph-Based Graph Convolutional Network) adversarial attack is designed to generate adversarial graphs that can mislead a Graph Convolutional Network model by carefully perturbing the node features. By iteratively calculating gradients and updating the features in the direction that maximizes the loss, this attack aims to produce inputs that not only deceive the model but also maintain the structural properties of the original graph. The final adversarial graph $G^*$ highlights the vulnerabilities of graph-based models to adversarial perturbations, emphasizing the need for robust defenses in graph machine learning applications.

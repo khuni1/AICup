@@ -1,0 +1,28 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, and $f_{\theta}$ be the target model. The objective is to create an adversarial example $x^*$ that misleads the model while minimizing perturbations.
+
+%Output
+The output of the GenAttack is an adversarial example $x^*$ generated through a generalized optimization process.
+
+%Formula
+The GenAttack adversarial attack can be formulated as follows:
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the step size $\alpha$ and the maximum perturbation size $\epsilon$.
+3. For each iteration $n = 1$ to $N$:
+   - Compute the gradient of the loss function:
+   $g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y)$
+   where $L$ is the loss function.
+   - Update the input with a generalized perturbation:
+   $x^{(n)} = x^{(n-1)} - \alpha \cdot g_n$
+   - Apply a projection to keep the perturbation within bounds:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)})$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+4. The final adversarial example is:
+   $x^* = x^{(N)}$
+
+%Explanation
+The GenAttack adversarial attack is a powerful technique designed to generate adversarial examples by employing a generalized optimization strategy. By iteratively refining the input through the use of gradients, GenAttack focuses on minimizing the loss associated with the target label while keeping the perturbations within a specified limit. The attack's efficiency stems from its ability to adaptively adjust the perturbations based on the model's responses, making it effective against a variety of neural network architectures. The resulting adversarial example $x^*$ can successfully mislead the target model, demonstrating the attack's potency in the realm of adversarial machine learning.

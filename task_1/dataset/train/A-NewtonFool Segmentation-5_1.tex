@@ -1,0 +1,40 @@
+%Input
+$x$: The original input image or data point.
+$y$: The true class label of the input $x$.
+$F(x)$: The output of the classifier for input $x$ (typically the logits or class probabilities).
+$\nabla F(x)$: The gradient of the classifier's output with respect to $x$.
+$x_{\text{adv}}$: The adversarial sample, initialized to $x$.
+$\eta$: The step size for the perturbation.
+$i_{\text{max}}$: The maximum number of iterations.
+$\text{clip}(x_{\text{adv}})$: A function to clip $x_{\text{adv}}$ to the valid image space.
+
+%Output
+The NewtonFool-Segmentation attack is a variant of the original Newton-Fool adversarial attack, tailored for segmentation tasks. The main difference between this variant and the original perturbation core lies in the use of segmentation masks to guide the optimization process. In each iteration, instead of directly updating the input image $x$, the algorithm uses a segmentation mask $\phi$ to define the region of interest where the adversarial perturbation should be applied.
+
+%Formula
+Initialize the adversarial sample:
+\( x_{\text{adv}} \leftarrow x \).
+
+For each iteration \( i = 1, \ldots, i_{\text{max}} \):
+\[
+\nabla F(x_{\text{adv}})
+\]
+Solve segmentation-guided Newton's method update step:
+\[
+\delta = - (\nabla^2 F(x_{\text{adv}}))^{-1} \nabla F(x_{\text{adv}}) \cdot \phi
+\]
+Update the adversarial sample:
+\[
+x_{\text{adv}} \leftarrow x_{\text{adv}} + \eta \cdot \delta
+\]
+Apply the segmentation mask to ensure the perturbation is applied only within the region of interest:
+\[
+x_{\text{adv}} \leftarrow x_{\text{adv}} \wedge \phi
+\]
+Increment the iteration counter:
+\[
+i \leftarrow i + 1
+\]
+
+%Explanation
+The NewtonFool-Segmentation attack maintains the core principle of the original Newton-Fool adversarial attack while incorporating segmentation masks to guide the optimization process. By applying the perturbation only within the region of interest, this variant can effectively target specific objects or regions in images, making it suitable for applications such as object detection and segmentation. The use of segmentation masks also allows for more precise control over the placement and magnitude of the adversarial perturbation, potentially leading to improved robustness and effectiveness.

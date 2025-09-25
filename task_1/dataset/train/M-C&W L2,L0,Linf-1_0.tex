@@ -1,0 +1,71 @@
+%Input
+$f(\mathbf{x})$: Target model with logits as output.
+$\mathbf{x}_{\text{original}}$: Original input to be perturbed.
+$y_{\text{true}}$: True label of $\mathbf{x}_{\text{original}}$.
+$y_{\text{target}}$: Target class for adversarial attack.
+$c$: Trade-off constant between distance minimization and adversarial objective.
+$d(\mathbf{x}, \mathbf{x}_{\text{original}})$: Distance metric (e.g., $L_2$, $L_0$, or $L_\infty$).
+$\epsilon$: Perturbation constraint (optional for $L_\infty$).
+$\kappa$: Confidence parameter to control attack strength.
+$\text{max\_iterations}$: Maximum number of optimization steps.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$.
+
+%Formula
+1.Objective:
+   \[
+   \mathbf{x}_{\text{adv}} = \arg \min_{\mathbf{x}} \; d(\mathbf{x}, \mathbf{x}_{\text{original}}) + c \cdot g(\mathbf{x}),
+   \]
+   where $g(\mathbf{x})$ ensures misclassification:
+   \[
+   g(\mathbf{x}) = \max \big( f(\mathbf{x})_{y_{\text{true}}} - f(\mathbf{x})_{y_{\text{target}}} + \kappa, 0 \big).
+   \]
+
+2.$L_2$ Attack:
+   - Distance metric:
+     \[
+     d(\mathbf{x}, \mathbf{x}_{\text{original}}) = \|\mathbf{x} - \mathbf{x}_{\text{original}}\|_2^2.
+     \]
+   - Solve via gradient-based optimization to minimize the objective.
+
+3.$L_0$ Attack:
+   - Distance metric:
+     \[
+     d(\mathbf{x}, \mathbf{x}_{\text{original}}) = \|\mathbf{x} - \mathbf{x}_{\text{original}}\|_0.
+     \]
+   - Use iterative optimization:
+     - Minimize the number of modified pixels while ensuring $g(\mathbf{x}) \leq 0$.
+     - Gradually reduce the allowed perturbation region.
+
+4.$L_\infty$ Attack:
+   - Distance metric:
+     \[
+     d(\mathbf{x}, \mathbf{x}_{\text{original}}) = \|\mathbf{x} - \mathbf{x}_{\text{original}}\|_\infty.
+     \]
+   - Constrain each pixel perturbation:
+     \[
+     |\mathbf{x}_i - \mathbf{x}_{\text{original}, i}| \leq \epsilon.
+     \]
+   - Solve via projected gradient descent to ensure $L_\infty$ constraints.
+
+%Explanation
+Carlini & Wagner (C&W) Attack for $L_2$, $L_0$, and $L_\infty$ norms, described and can be developed as listed below:
+1.Objective:
+   - The C\&W attack is designed to craft adversarial examples by minimizing the distance between $\mathbf{x}_{\text{adv}}$ and $\mathbf{x}_{\text{original}}$ while ensuring the adversarial example misclassifies to the target label.
+
+2.Trade-Off Parameter ($c$):
+   - Controls the balance between minimizing the distance and achieving adversarial success.
+
+3.Confidence Parameter ($\kappa$):
+   - Higher $\kappa$ ensures stronger adversarial perturbations, forcing the model to classify with high confidence into the target class.
+
+4.Optimization:
+   - For $L_2$: Gradient-based optimization is used directly.
+   - For $L_0$: Iterative feature selection with a focus on minimal pixel modification.
+   - For $L_\infty$: Projected gradient descent enforces the perturbation bounds.
+
+5.Norm-Specific Behavior:
+   - $L_2$: Produces smooth perturbations with minimal energy.
+   - $L_0$: Focuses on sparse perturbations, altering as few features as possible.
+   - $L_\infty$: Limits the maximum deviation per pixel, creating uniform constraints.

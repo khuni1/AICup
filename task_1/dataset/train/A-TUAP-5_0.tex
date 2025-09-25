@@ -1,0 +1,55 @@
+%Input
+\textbf{Input:} \\
+$ X $: The set of data points. \\
+$ \hat{k} $: The classifier function. \\
+$ \xi $: The desired $\ell_p$ norm of the perturbation. \\
+$ t $: The target class for the perturbation. \\
+$ \delta $: The desired accuracy on perturbed samples. \\
+$ v $: The targeted universal perturbation vector. \\
+$ \text{Err}(Xv) $: The error rate on the perturbed data points $ Xv $. \\
+$ x_i $: A data point in $ X $. \\
+$ \Delta v_i $: The minimal perturbation required to change the classification of $ x_i + v $ to the target class $ t $. \\
+$ \| \cdot \|_2 $: The $\ell_2$ norm. \\
+$ P_{p, \xi} $: The projection operator that projects $ v $ onto the $\ell_p$ ball of radius $ \xi $. \\
+
+%Output
+Targeted universal perturbation vector $ v $. \\
+
+%Formula
+Computation of Targeted Universal Adversarial Perturbations (TUAP):
+
+1. Initialize the perturbation vector $v \leftarrow 0$.
+
+2. While the error rate on the perturbed data is less than or equal to $1 - \delta$:
+\[
+\text{Err}(Xv) \leq 1 - \delta
+\]
+
+3. For each data point $x_i \in X$, do:
+    - If the classifier's prediction for $x_i + v$ is not the target class $t$:
+    \[
+    \hat{k}(x_i + v) \neq t
+    \]
+        - Compute the minimal perturbation $\Delta v_i$ that sends $x_i + v$ to the target class $t$:
+        \[
+        \Delta v_i \leftarrow \arg \min_{r} \|r\|_2 \quad \text{s.t.} \quad \hat{k}(x_i + v + r) = t
+        \]
+        - Update the perturbation:
+        \[
+        v \leftarrow P_{p, \xi}(v + \Delta v_i)
+        \]
+
+4. Repeat the process until the error rate condition is no longer met.
+
+\subsection*{Return}
+The final targeted universal perturbation vector is:
+\[
+v
+\]
+
+
+%Explanation
+Targeted Universal Adversarial Perturbation (TUAP), the goal of this attack is to create a single perturbation vector $v$ that can be applied to multiple data points $x_i$ in a dataset, causing the classifier to misclassify all of these points to a specific target class $t$. The perturbation vector is universal because it works across the entire dataset, and it is targeted because the goal is to force the classifier to predict a specific class for the perturbed inputs.
+Initialization: Initialize the targeted universal perturbation vector $ v $ to 0. \\
+Iteration Loop: Continue iterating while the error rate on the perturbed data points $ \text{Err}(Xv) $ is less than or equal to $ 1 - \delta $. \\
+Perturbation Update for Each Data Point: For each data point $ x_i $ in the set $ X $, if the classifier's prediction for $ x_i + v $ is not equal to the target class $ t $, compute the minimal perturbation $ \Delta v_i $ required to change the classification of $ x_i + v $ to the target class $ t $. This is done by finding the smallest perturbation $ r $ such that the classifier's prediction for $ x_i + v + r $ equals the target class $ t $. Update the perturbation $ v $ by adding $ \Delta v_i $ and then projecting the result onto the $ \ell_p $ ball of radius $ \xi $ using the projection operator $ P_{p, \xi} $.

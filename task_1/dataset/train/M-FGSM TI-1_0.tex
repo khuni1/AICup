@@ -1,0 +1,34 @@
+%Input
+The loss function for LBiasGAN is defined as:
+$
+\text{LBiasGAN}(G_1, G_2, D_1, D_2, F) = \lambda_b \cdot L_{\text{bias}} + \lambda_g \cdot L_{\text{guard}} + [L_{\text{GAN}} + L_{\text{identity}} + L_{\text{cycle}}]
+$
+
+%Output
+where $\lambda_b$ and $\lambda_g$ control the weights of the proposed items.
+- $G_1, G_2$: Generators in the GAN model.
+- $D_1, D_2$: Discriminators in the GAN model.
+- $F$: Additional function or model component involved in the loss calculation.
+- $\lambda_b$: Weight for the bias loss term $L_{\text{bias}}$.
+- $\lambda_g$: Weight for the guard loss term $L_{\text{guard}}$.
+- $L_{\text{GAN}}$: GAN loss term.
+- $L_{\text{identity}}$: Identity loss term.
+- $L_{\text{cycle}}$: Cycle consistency loss term.
+
+%Formula
+The training strategy involves setting $\lambda_g$ as a dynamic value that increases with the training epoch and reaches its maximum value $\lambda_b$. The formula for $\lambda_g$ is:
+$
+\lambda_g = \max(\epsilon \cdot \lfloor \text{epoch} / c \rfloor, \lambda_b)
+$
+- Initially focuses on generating positives.
+- The identity consistency problem does not arise initially because the bias loss effect is weak.
+- $\lambda_g$ is a dynamic value that increases with training epochs and reaches its maximum value $\lambda_b$.
+
+%Explanation
+Fast Sign Method with Targeted Input (FGSM TI) where,
+- $\epsilon$: User-specified scale factor.
+- $\text{epoch}$: The current training epoch.
+- $c$: User-specified scale factor to control the rate of increase for $\lambda_g$.
+- $\lfloor \cdot \rfloor$: Floor function, which returns the greatest integer less than or equal to the given value.
+- $\max(\cdot, \cdot)$: Function that returns the maximum value between the two arguments.
+- $\epsilon$, $\text{epoch}$, and $c$ are user-specified scales.

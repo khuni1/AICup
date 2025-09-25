@@ -1,0 +1,15 @@
+%Input
+Let $x$ be the original input data point, and $y$ be the corresponding true label. The target model is parameterized by $\theta$, and $J(\theta, x, y)$ represents the loss function. The attack aims to generate a perturbed data point $\tilde{x}$ by iteratively updating a perturbation $\delta$ within the constraint set $\mathcal{X}$. The parameters $\alpha$ and $\beta$ control the step size and decay factor, respectively.
+
+
+%Output: 
+$\tilde{x}$ represents the perturbed data point, which is the result of adding a perturbation to the original input $x$.
+
+%Formula
+$\delta^{(0)} = 0$
+
+for n = 1 to N:
+$\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( -\beta \cdot \nabla_x J(\theta, x, y) \right) \right)$
+
+%Explanation
+This variant Adaptive Exponential Gradient Attack (AEGA) is different from the main perturbation core in that it incorporates an adaptive exponential decay term $\exp(-\beta \cdot \| \nabla_x J(\theta, x, y) \|_2)$ that reduces the influence of the gradient magnitude. This approach makes the attack more robust and adaptive to the input data, allowing for a more effective perturbation that can generalize across multiple instances.

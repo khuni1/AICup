@@ -1,0 +1,11 @@
+%Input
+Image $\mathbf{x}$, query limit $L$, perturbation bound $\epsilon$
+
+%Output
+Adversarial image $\mathbf{\hat{x}}$ with a confidence boost or misdirection in the classification score.
+
+%Formula
+$\mathbf{\hat{x}} = \Pi_{[\mathbf{x} - \epsilon, \mathbf{x} + \epsilon]}\left(\mathbf{x} - \frac{1}{L}\sum_{i=1}^{L}\text{sign}(\nabla_\delta L(f_\theta(\mathbf{x} + \delta_i), y))\right)$
+
+%Explanation
+The proposed attack is a variant of the PGD attack, incorporating an additional query-based optimization step. The new attack uses $L$ queries to estimate the gradient of the loss function and incorporates this into the update rule. This allows the attack to exploit multiple sources of uncertainty in the model's predictions, potentially leading to more effective adversarial examples.

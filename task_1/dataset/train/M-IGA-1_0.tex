@@ -1,0 +1,33 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( f_{\theta} \) be the target model. The IGA generates adversarial examples through iterative updates based on the gradient of the loss function.
+
+%Output
+The output of the IGA is a modified input \( x^* \) that aims to mislead the model into making an incorrect prediction.
+
+%Formula
+The IGA can be formulated as follows:
+1. Initialize the input, true label, and number of iterations \( N \):
+   $
+   (x, y, N).
+   $
+2. For \( n = 1 \) to \( N \):
+   - Compute the gradient of the loss function:
+   $
+   g_n = \nabla_x J(f_{\theta}(x), y).
+   $
+   - Update the input using the gradient:
+   $
+   x = x + \epsilon \cdot \text{sign}(g_n),
+   $
+   where \( \epsilon \) is the perturbation magnitude.
+3. The final modified input is:
+   $
+   x^* = x.
+   $
+4. The goal is to ensure that:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The Iterative Gradient Attack (IGA) generates adversarial examples by iteratively applying small perturbations to the original input \( x \) based on the gradient of the loss function. In each iteration, the attack updates the input by moving in the direction of the gradient, which indicates how to maximize the loss with respect to the input. This iterative process enhances the effectiveness of the perturbation, resulting in a modified input \( x^* \) that is likely to fool the model into misclassifying it. The IGA highlights the vulnerability of machine learning models to adversarial attacks and emphasizes the need for robust defenses.

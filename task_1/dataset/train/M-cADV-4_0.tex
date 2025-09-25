@@ -1,0 +1,29 @@
+%Input
+Luminance channel $X_L$, predicted chrominance channel $X_{\text{ab}}$, mask $M$, target label $t$.
+
+%Output
+Optimal parameters $\theta^*$.
+
+%Formula
+The cADV Colorisation attack finds the optimal parameters $\theta^*$ for the colorisation model that minimize the adversarial loss function $J_{\text{adv}}$:
+
+\[
+\theta^* = \text{argmin}_\theta J_{\text{adv}} \left(F \left(C(X_L, X_{\text{ab}}, M; \theta)\right), t \right)
+\]
+
+%Explanation
+Colorisation attack cADV where $\theta^*$ represents the optimal parameters of the colorisation model $F$ that minimize the adversarial loss.
+
+$J_{\text{adv}}$ is the adversarial loss function, measuring the difference between the model's predictions and the target label $t$. It quantifies the discrepancy between the model's output and the desired output.
+
+$F(C(X_L, X_{\text{ab}}, M; \theta))$ is the colorisation model $F$, which takes as input the luminance channel $X_L$, the predicted chrominance channel $X_{\text{ab}}$, and the mask $M$, parameterized by $\theta$. The model outputs the colorised image.
+
+$X_L$ is the input luminance channel of the image, representing brightness information.
+
+$X_{\text{ab}}$ represents the predicted chrominance channels of the image, encoding color information.
+
+$M$ is the mask representing the perturbation applied to the image during the colorisation attack. It may be used to control the regions of the image affected by the attack.
+
+$t$ is the target label for the adversarial attack, specifying the desired output of the colorisation model.
+
+$\text{argmin}_\theta$ finds the values of the parameter $\theta$ that minimize the adversarial loss $J_{\text{adv}}$, searching for the optimal parameters for the colorisation model.

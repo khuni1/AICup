@@ -1,0 +1,38 @@
+%Input
+Let \( f \) represent the target model, \( x \) denote the original input data point, and \( y \) be the true label. Define \( \epsilon \) as the maximum allowable perturbation. Let \( \mathcal{E} \) be the dataset, and \( P(x) \) denote the prior probability distribution of inputs.
+
+%Output
+The output is a perturbed input \( \bar{x} = x + \delta \), where \( \delta \) is crafted to mislead the model while remaining close to the input distribution \( P(x) \). A new attack variant called "IPA-Targeted" combines the IPA stealthy attack with a targeted adversarial example approach.
+
+%Formula
+**Initialization:**  
+\[
+\delta = 0
+\]
+
+**Objective Function:**  
+Minimize the distance to the original input under a prior distribution while maximizing classification loss:
+\[
+\min_{\delta} \left( D(P(x), P(x + \delta)) - \lambda \cdot L(f(x + \delta), y) \right)
+\]
+where \( D(\cdot, \cdot) \) measures the distance between distributions, and \( \lambda \) controls the trade-off.
+
+**Update Rule:**  
+Update the perturbation iteratively using a targeted gradient ascent approach:
+\[
+\delta^{(t+1)} = \delta^{(t)} - \alpha \cdot \nabla_{\delta} \left[ D(P(x), P(x + \delta)) - \lambda \cdot L(f(x + \delta), y) \right]
+\]
+with an additional term to target specific classes:
+\[
+\delta^{(t+1)} = \delta^{(t)} - \alpha \cdot \nabla_{\delta} \left[ D(P(x), P(x + \delta)) - \lambda \cdot L(f(x + \delta), y) + \delta^{(t)} \cdot \tau(y) \right]
+\]
+where \( \tau(y) \) is a binary indicator function for class \( y \).
+
+**Projection:**  
+Ensure the perturbation remains within the allowable bounds:
+\[
+\delta = \text{clip}(\delta, -\epsilon, \epsilon)
+\]
+
+%Explanation
+The IPA-Targeted attack combines the original IPA stealthy approach with a targeted gradient ascent method to create adversarial examples that not only deceive the model but also target specific classes. This approach improves upon the original by incorporating additional terms to enhance the attack's effectiveness and stealthiness.

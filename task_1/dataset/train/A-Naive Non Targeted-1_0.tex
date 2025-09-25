@@ -1,0 +1,33 @@
+%Input
+$\mathbf{r}_{tr}$: Input representation. \\
+$E$: Total number of iterations. \\
+$P_{\text{max}}$: Power constraint limit for the attack. \\
+$y_{\text{true}}$: Ground truth class label for the input. \\
+Model of the classifier: The target model.
+
+%Output
+$\delta_{\text{norm}} = \frac{\nabla_{\mathbf{x}} L(\theta, \mathbf{x}, y_{\text{true}})}{\|\nabla_{\mathbf{x}} L(\theta, \mathbf{x}, y_{\text{true}})\|_2}$
+$\mathbf{x} \leftarrow \mathbf{x} + \sqrt{\frac{P_{\text{max}}}{E}} H_{ar} \delta_{\text{norm}}$
+$\Delta \leftarrow \Delta + \sqrt{\frac{P_{\text{max}}}{E}} \delta_{\text{norm}}$
+$\delta_{\text{naive}} = \sqrt{P_{\text{max}}} \frac{\Delta}{\|\Delta\|_2}$
+
+%Formula
+The Naive Non-Targeted Attack is formulated as follows:
+
+1. Initialize the sum of gradients and input:
+   $ \Delta \leftarrow 0 $, $ \mathbf{x} \leftarrow \mathbf{r}_{tr} $
+
+2. For each iteration $ e = 1, \ldots, E $ (where $ E $ is the total number of iterations):
+   - Compute the normalized gradient:
+     $ \delta_{\text{norm}} = \frac{\nabla_{\mathbf{x}} L(\theta, \mathbf{x}, y_{\text{true}})}{\|\nabla_{\mathbf{x}} L(\theta, \mathbf{x}, y_{\text{true}})\|_2} $
+   - Update the input:
+     $ \mathbf{x} \leftarrow \mathbf{x} + \sqrt{\frac{P_{\text{max}}}{E}} H_{ar} \delta_{\text{norm}} $
+   - Accumulate the gradient:
+     $ \Delta \leftarrow \Delta + \sqrt{\frac{P_{\text{max}}}{E}} \delta_{\text{norm}} $
+
+3. After all iterations, compute the naive perturbation:
+   $ \delta_{\text{naive}} = \sqrt{P_{\text{max}}} \frac{\Delta}{\|\Delta\|_2} $
+
+
+%Explanation
+The algorithm iterates over $E$ steps, updating the input $ \mathbf{x} $ at each iteration based on the normalized gradient. The sum of the gradients $\Delta$ is accumulated, and the final perturbation $\delta_{\text{naive}}$ is computed after all iterations. The power constraint $P_{\text{max}}$ is used to scale the updates, ensuring that the attack adheres to the power limit.

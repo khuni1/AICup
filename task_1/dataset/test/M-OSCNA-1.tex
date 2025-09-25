@@ -1,0 +1,28 @@
+%Input
+Let \( x \) be the original input and \( f_\theta \) be a classifier with parameters \( \theta \). The goal is to find an adversarial example \( x^* \) such that \( f_\theta(x^*) \neq y \), where \( y \) is the true label of \( x \).
+
+%Output
+The perturbed input \( x^* \) satisfying the adversarial condition:
+\[
+x^* = x + \delta
+\]
+where the perturbation \( \delta \) is determined as:
+\[
+\delta = \arg\max_{\|\delta\|_p \leq \epsilon} \left( L(f_\theta(x + \delta), y) \right)
+\]
+subject to:
+\[
+f_\theta(x^*) \neq y.
+\]
+
+%Formula
+$x^* = x + \delta$
+where the perturbation $\delta$ is determined by:
+$\delta = \arg\max_{\|\delta\|_p \leq \epsilon} \left( L(f_\theta(x + \delta), y) \right)$
+subject to the constraint that:
+$f_\theta(x^*) \neq y$
+where:
+- $L$ is the loss function that measures the difference between the model's prediction and the true label.
+
+%Explanation
+The One-Shot Constrained Norm Attack (OS-CNA) is a variant of the original method. The key difference lies in incorporating a new constraint, $\|\delta\|_p \leq \epsilon$, which limits the magnitude of the perturbation $\delta$. This modification makes the attack more robust and stealthy by reducing the likelihood of detection.

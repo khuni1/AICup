@@ -1,0 +1,11 @@
+%Input
+Let $x$ be an input image, and let $y$ be its true class label. The goal is to generate an adversarial example $x_{\text{adv}}$ by applying a perturbation that maximizes the loss function $J(\theta, x, y)$ while keeping the perturbation within an $\epsilon$-ball around the original input.
+
+%Output
+The output of the FGSM-LL variant is updated adversarial example $x_{\text{adv}}^{(t+1)}$, which has been adjusted by a small step in the direction of the gradient's sign and then clipped to stay within an $\epsilon$-ball around the original input $x$.
+
+%Formula
+$x_{\text{adv}}^{(t+1)} = \text{Clip}(x_{\text{adv}}^{(t)} + \alpha \cdot \text{sign}(\nabla_x J(\theta, x_{\text{adv}}^{(t)}, y)), x - \epsilon, x + \epsilon)$
+
+%Explanation
+This variant Feature-Constrained FGSM (FC FGSM) introduces a new constraint to the FGSM-LL method by minimizing the feature distance between the perturbed input and a reference image. This is achieved by adding an additional term to the loss function that penalizes large differences in feature space. The resulting attack maintains the core principle of the original method while improving its ability to generate targeted attacks.

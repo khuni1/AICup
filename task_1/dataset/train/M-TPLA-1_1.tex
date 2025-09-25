@@ -1,0 +1,44 @@
+%Input
+Let $x$ be the original input, and let $\tilde{x}$ represent the perturbed input. The adversarial perturbation $\delta$ is optimized to maximize the likelihood of a target class $c$ while ensuring that the perturbation remains within a predefined bound $\epsilon$.
+
+Given:
+- $x$: Original input.
+- $\tilde{x} = x + \delta$: Perturbed input.
+- $\delta$: Perturbation vector.
+- $\epsilon$: Maximum allowable perturbation magnitude.
+- $L(\tilde{x}, c)$: Likelihood of class $c$ given the perturbed input.
+- $\alpha$: Step size for gradient ascent.
+
+The goal is to iteratively update $\delta$ to maximize the likelihood of the target class while maintaining the perturbation within the constraint $\|\delta\| \leq \epsilon$.
+
+%Output
+The output is a perturbed input $\tilde{x}$ that is misclassified by the model.
+
+%Formula
+1. Initialize the original input and the perturbation magnitude $\epsilon$:
+   $
+   \tilde{x} = x + \delta,
+   $
+   where $\delta$ is the perturbation to be optimized.
+2. Define the objective function to maximize the likelihood of the target class $c$:
+   $
+   \text{maximize } L(\tilde{x}, c) = P(y = c | \tilde{x}),
+   $
+   subject to the constraint:
+   $
+   \|\delta\| \leq \epsilon.
+   $
+3. The optimization problem can be solved using gradient ascent:
+   $
+   \delta \leftarrow \delta + \alpha \nabla_{\delta} L(\tilde{x}, c),
+   $
+   where $\alpha$ is the learning rate.
+4. Update the perturbed input:
+   $
+   \tilde{x} = x + \delta.
+   $
+
+%Explanation
+The Targeted Pseudo-Likelihood Attack (TPLA) variant generates adversarial examples by modifying the original input $x$ to create a perturbed input $\tilde{x}$. The objective is to maximize the likelihood of a specified target class $c$ while ensuring that the perturbation remains within a predefined bound $\epsilon$. The attack iteratively updates the perturbation $\delta$ using gradient ascent on the likelihood function. This method effectively crafts adversarial examples that are likely to be misclassified by the model, demonstrating the potential vulnerabilities in classification systems to targeted attacks.
+
+This variant is different from the main PGD Fast-Universal attack in its approach to maximize the likelihood of a target class using pseudo-likelihood. Unlike PGD, which relies on clipping and gradient descent, M-Ps LHC uses gradient ascent and a constraint on the perturbation magnitude to ensure a more targeted and effective attack.

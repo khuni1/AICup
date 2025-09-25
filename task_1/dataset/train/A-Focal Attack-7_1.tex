@@ -1,0 +1,46 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input sample  
+$y_{\text{true}}$: True label of the input sample  
+$f(\mathbf{x})$: Target model's prediction function  
+$\epsilon$: Maximum allowable perturbation magnitude  
+$L_f$: Focal loss function used to guide the attack  
+$T_{\text{max}}$: Maximum number of iterations  
+$\mathbf{p}_i$: Position of the $i$-th particle in the search space  
+$\mathbf{v}_i$: Velocity of the $i$-th particle  
+$\mathbf{p}_{\text{best}, i}$: Best-known position of the $i$-th particle  
+$\mathbf{p}_{\text{global}}$: Best-known position among all particles  
+$w$: Inertia weight controlling the impact of previous velocities  
+$c_1, c_2$: Acceleration coefficients for local and global best positions  
+$r_1, r_2$: Random factors for stochastic updates  
+$\gamma$: Focal loss threshold for stopping criterion  
+
+
+%Output
+The output of the Focal Attack is a targeted adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+$f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{while maintaining $\|\mathbf{x}_{\text{adv}} - \mathbf{x}_{\text{original}}\| \leq \epsilon$}$
+
+%Formula
+1. Initialize: 
+   Initialize particles' positions $\mathbf{p}_i$ and velocities $\mathbf{v}_i$ randomly within the perturbation budget $\epsilon$.  
+   Set $\mathbf{p}_{\text{best}, i} = \mathbf{p}_i$ and $\mathbf{p}_{\text{global}} = \arg\min_{\mathbf{p}_i} L_f(\mathbf{p}_i)$, where $L_f$ is the focal loss function.
+
+2. Update Velocity and Position: For each particle $i$:  
+   Update the velocity:  
+   \[
+   \mathbf{v}_i = w \mathbf{v}_i + c_1 r_1 (\mathbf{p}_{\text{best}, i} - \mathbf{p}_i) + c_2 r_2 (\mathbf{p}_{\text{global}} - \mathbf{p}_i),
+   \]  
+   where $w$ is the inertia weight, $c_1$ and $c_2$ are hyperparameters of the focal loss function, and $r_1$ and $r_2$ are randomization factors.
+
+3. Update Personal and Global Bests:  
+   If $\mathcal{L}(f, \mathbf{p}_i, y_{\text{true}}) < \mathcal{L}(f, \mathbf{p}_{\text{best}, i}, y_{\text{true}})$, set $\mathbf{p}_{\text{best}, i} = \mathbf{p}_i$.  
+   If $\mathcal{L}(f, \mathbf{p}_i, y_{\text{true}}) < \mathcal{L}(f, \mathbf{p}_{\text{global}}, y_{\text{true}})$, set $\mathbf{p}_{\text{global}} = \mathbf{p}_i$.  
+
+4. Stopping Condition:  
+   Repeat until $T_{\text{max}}$ is reached or a misclassification is achieved:  
+   \[
+   f(\mathbf{p}_{\text{global}}) < \gamma,
+   \] 
+   where $\gamma$ is the focal loss threshold.
+
+%Explanation: 
+The Focal Attack modifies the original perturbation core by incorporating a targeted approach with the focal loss function, which selectively emphasizes hard examples. This variant improves the attack's effectiveness in black-box settings and refines perturbations iteratively until the model is fooled or the maximum iterations are reached.

@@ -1,0 +1,20 @@
+%Input
+Let $\delta^T$ be the final perturbation after $T$ iterations, where each update is determined by an adaptive step size $\alpha_t$ and a direction vector $q_t$. The attack iteratively refines $\delta$ by summing weighted update steps over multiple iterations.
+
+Given:
+- $T$: Total number of iterations.
+- $\alpha_t$: Step size at iteration $t$.
+- $q_t$: Update direction at iteration $t$.
+- $\delta^T$: Final accumulated perturbation.
+
+The objective is to iteratively refine the perturbation $\delta$ using an accumulation process over $T$ iterations.
+
+
+%Output
+The output is the final perturbation $\delta^T$ after $T$ iterations.
+
+%Formula
+$\delta^T = \sum_{t=1}^{T} \alpha_t q_t$
+
+%Explanation
+The Iterative Gradient Accumulation Attack (IGAA) variant accumulates updates from each iteration to refine the perturbation. This variant differs from the main PGD Fast-Universal attack by using an iterative summation of step sizes and gradients, rather than updating the perturbation at each step in a single direction. This variant maintains the core principle of adapting the perturbation based on the model's gradient but introduces an accumulation process that refines the perturbation over multiple iterations.

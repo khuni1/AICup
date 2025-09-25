@@ -1,0 +1,25 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input data point, \( \epsilon \) be the maximum allowable perturbation, and \( \mathcal{D} \) be the dataset. The DBSCAN adversarial attack utilizes clustering techniques to identify and manipulate data points.
+
+%Output
+The output of the DBSCAN adversarial attack is a perturbed data point \( \tilde{x} \) that is crafted to mislead the model while remaining close to the original input.
+
+%Formula
+The DBSCAN adversarial attack can be formulated as follows:
+1. Apply the DBSCAN clustering algorithm on the dataset \( \mathcal{D} \) to identify clusters:
+   $
+   \text{Clusters} = \text{DBSCAN}(\mathcal{D}, \epsilon, \text{minPts}),
+   $
+   where \( \epsilon \) is the radius for neighborhood consideration and \( \text{minPts} \) is the minimum number of points to form a dense region.
+2. Select a target cluster \( C_t \) containing points similar to the original input \( x \).
+3. Compute the perturbation \( \delta \) as follows:
+   $
+   \delta = \text{argmin}_{\delta'} \| x + \delta' - C_t \|^2 \text{ subject to } \|\delta'\| \leq \epsilon.
+   $
+4. Generate the adversarial example:
+   $
+   \tilde{x} = x + \delta.
+   $
+
+%Explanation
+The DBSCAN (Density-Based Spatial Clustering of Applications with Noise) adversarial attack uses the DBSCAN clustering algorithm to identify clusters of data points similar to the original input. By selecting a target cluster and minimizing the distance between the original input and the points in that cluster, the attack crafts a perturbation \( \delta \) that, when added to the original input \( x \), results in a new input \( \tilde{x} \) designed to mislead the model. This method leverages the structure of the dataset to create adversarial examples that are effective while remaining within a specified perturbation limit.

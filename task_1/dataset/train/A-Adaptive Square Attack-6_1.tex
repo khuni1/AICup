@@ -1,0 +1,17 @@
+%Input
+$l_{\text{new}} = 0.5, i = 1$
+
+
+%Output
+$\hat{x} = [0.3, 0.2, 0.1]$
+
+
+%Formula
+\begin{align*}
+\delta &\sim P(\epsilon, h(i), w, c, x, \hat{x}), \\
+\hat{x}_{\text{new}} &= \min_{h}\left[\max\left[1 - \|z - x\|_p, 0\right] + \epsilon\right], \\
+l_{\text{new}} &= L(f(z), c) = L(f(\hat{x} + \delta), c).
+\end{align*}
+
+%Explanation
+The variant is called "Perturbation-Adaptive Square Attack". It modifies the perturbation strategy to adaptively adjust the step size based on the loss decrease at each iteration, improving the attack's effectiveness. The new attack iteratively samples a new perturbation, projects it onto the feasible set, and updates the input image with the new perturbation until a stopping criterion is met.

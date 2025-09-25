@@ -1,0 +1,23 @@
+%Input
+Let $x$ be the original input image and $y$ be the true label associated with it. The goal is to create an adversarial example $x^*$ that misleads the model.
+
+%Output
+The output of the Momentum Gradient Based Attack is a targeted adversarial example $x^*$ generated through iterative updates using momentum-based perturbation.
+
+%Formula
+$\text{initialize } & m_0 = 0, \\
+    \text{for } n = 1 \text{ to } N: & \\
+    & g_n = \nabla_x L(f_\theta(x^n), y), \\
+    & m_n = \beta m_{n-1} + g_n, \\
+    & x^{n+1} = x^n + \epsilon \cdot \text{sign}(m_n)$
+where:
+- $L$ is the loss function,
+- $f_\theta(x^n)$ is the model's output for input $x^n$,
+- $\beta$ is the momentum factor (typically close to 1),
+- $\epsilon$ controls the magnitude of the perturbation,
+- $N$ is the total number of iterations.
+
+%Explanation
+In the Momentum Iterative Attack (MIA), the perturbation is updated iteratively using a momentum term that accumulates past gradients. This approach helps to enhance the attack's effectiveness by allowing the adversarial perturbation to build momentum over iterations, which can result in stronger adversarial examples.
+
+The MIA Attack differs from the original PGD Fast-Universal attack by incorporating momentum into its iterative update rule. This modification allows for a more targeted and effective adversarial attack, making it well-suited for situations where the model's predictions are sensitive to specific input features.

@@ -1,0 +1,13 @@
+%Input
+Randomly select a set of pixels $P \subseteq \{1, 2, \ldots, m\} \times \{1, 2, \ldots, n\}$ such that $|P| = \rho \cdot m \cdot n$.
+For each pixel $(i, j) \in P$, randomly set the pixel intensity to either $I_{\text{max}}$ (salt) or $I_{\text{min}}$ (pepper).
+
+%Output
+The output is a perturbed image $I_{\text{adv}}$ where a randomly selected subset of pixels has been modified to either $I_{\text{max}}$ (salt) or $I_{\text{min}}$ (pepper), disrupting the original structure while preserving overall perceptual characteristics.
+
+%Formula
+1. Randomly select a set of pixels $P \subseteq \{1, 2, \ldots, m\} \times \{1, 2, \ldots, n\}$ such that $|P| = \rho \cdot m \cdot n$.
+2. For each pixel $(i, j) \in P$, randomly set the pixel intensity to either $I_{\text{max}}$ (salt) or $I_{\text{min}}$ (pepper).
+
+%Explanation
+This variant Stochastic Salt-and-Pepper Attack (SSP-Attack) introduces a new strategy for selecting pixels to alter. Instead of using a fixed number of pixels as in the original method, it selects a random subset of pixels based on the noise density $\rho$. This allows the attack to potentially introduce more noise and disrupt the model's learned patterns even further. The rest of the attack remains the same, with each selected pixel being randomly set to either $I_{\text{max}}$ or $I_{\text{min}}$.

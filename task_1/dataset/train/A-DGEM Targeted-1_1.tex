@@ -1,0 +1,40 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input instance.  
+$f(\mathbf{x})$: Target model (e.g., classifier).  
+$y_{\text{true}}$: True label associated with the input.  
+$\alpha$: Step size for gradient updates.  
+$k$: Number of iterations for gradient ascent.
+
+%Output:
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:  
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \|\mathbf{x}_{\text{adv}} - \mathbf{x}_{\text{original}}\|_{\infty} \leq \epsilon.
+\]
+
+%Formula 
+1. Initialization:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Iterative Gradient Ascent:  
+   For $t = 0, 1, \dots, k-1$:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} + \alpha \cdot \text{sign}\left(\nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{true}})\right).
+   \]
+
+3. Targeted Perturbation:  
+   Use a more aggressive targeting strategy by iteratively updating the input to maximize the loss function with respect to a specific target label rather than the true label.
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} + \alpha \cdot \text{sign}\left(\nabla_{\mathbf{x}} \mathcal{L}(f, y_{\text{target}}, \mathbf{x}_{\text{adv}}^{(t)})\right).
+   \]
+
+4. Projection Step: Ensure the perturbation remains within the $L_\infty$ norm bound:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}\left(\mathbf{x}_{\text{adv}}^{(t+1)}, \mathbf{x}_{\text{original}} - \epsilon, \mathbf{x}_{\text{original}} + \epsilon\right).
+   \]
+
+5. Stopping Condition: Terminate the iteration if $f(\mathbf{x}_{\text{adv}}^{(t+1)}) = y_{\text{target}}$.
+
+%Explanation: 
+The DGE-M Targeted Perturbation attack is a variant of the Iterative Gradient Ascent (IGA) attack that incorporates a more aggressive targeting strategy. By iteratively updating the input to maximize the loss function with respect to a specific target label, this attack can generate more targeted adversarial examples that are effective against the model.

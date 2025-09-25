@@ -1,0 +1,23 @@
+%Input
+The input includes the perturbation $\delta$, the original input $x$, and the scaling parameter $c$.
+
+%Output
+Modified the C-W optimization to incorporate a weighted sum of L1 and L2 norms:
+
+$\min_{\delta} \left\| \delta \right\|_p + c \cdot f(\text{clip}(x + \delta))$
+
+where
+
+$f(x) = w_1 \cdot \left\| x \right\|_1 + w_2 \cdot \left\| x \right\|_2$
+
+and $w_1$ and $w_2$ are weights controlling the importance of L1 and L2 norms respectively.
+
+%Formula
+$\min_{\delta} \left\| \delta \right\|_p + c \cdot f(\text{clip}(x + \delta))$
+
+where
+
+$f(x) = w_1 \cdot \left\| x \right\|_1 + w_2 \cdot \left\| x \right\|_2$
+
+%Explanation
+This variant Weighted Norm C-W Attack (WN-CW) introduces a weighted combination of the $L_1$ and $L_2$ norms into the Carlini & Wagner (C-W) adversarial attack framework. The objective function remains similar to the original C-W attack but modifies the loss function to incorporate a balance between sparsity and smoothness through a weighted sum of the $L_1$ and $L_2$ norms.

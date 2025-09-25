@@ -1,0 +1,26 @@
+%Input
+$\mathbf{x} \in [0, 1]^n$: Original input image.
+ $t \in \mathbb{N}$: Target class for adversarial attack.
+ $D$: Distance metric (e.g., $L_0$, $L_2$, or $L_\infty$ norm).
+$c > 0$: Constant to balance the terms in the reformulated problem.
+$f$: Non-linear constraint reformulated as an objective function.
+
+%Output
+$\delta$: Perturbation vector that is added to the original image.
+$\mathbf{x} + \delta$: Adversarial example that misclassifies to class $t$.
+
+
+%Formula
+The perturbation is defined under the optimization problem:
+
+\[
+\begin{aligned}
+\min_{\delta} & \quad D(\mathbf{x}, \mathbf{x} + \delta) + c \cdot f(\mathbf{x} + \delta) \\
+\text{s.t.} & \quad \mathbf{x} + \delta \in [0, 1]^n
+\end{aligned}
+\]
+
+where \( f(\mathbf{x} + \delta) \leq 0 \) ensures that the adversarial example is classified as the target class \( t \).
+
+%Explanation
+Jacobian-based Saliency Map Attack Z (Zero-classification constraint) formulation aims to find a perturbation \( \delta \) that minimizes the distance \( D \) between the original and perturbed images while satisfying the constraint imposed by the function \( f \). The constant \( c \) is selected to ensure that the adversarial example is effective in changing the classification. The distance metric \( D \) determines how the perturbation is quantified, and the constraint \( \mathbf{x} + \delta \in [0, 1]^n \) ensures that the modified image remains valid within the pixel value range.

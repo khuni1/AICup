@@ -1,0 +1,26 @@
+%Input
+Let \( x_1 \) and \( x_2 \) be the decision variables, and \( \lambda \) be the Lagrange multiplier. The objective is to minimize \( x_1 + x_2 \) subject to the constraint \( x_1^2 + x_2^2 = 2 \).
+
+%Output
+The optimal solution is:
+\[
+(x_1, x_2) = (1, 1), \quad f(x_1, x_2) = 2.
+\]
+
+
+%Formula
+Define the NES Lagrangian:
+$\mathcal{L}(x_1, x_2, \lambda) = x_1 + x_2 + \lambda(x_1^2 + x_2^2 - 2)$
+
+Taking the partial derivatives and setting them equal to zero:
+ $\frac{\partial \mathcal{L}}{\partial x_1} = 1 + 2\lambda x_1 = 0, \quad 
+ \frac{\partial \mathcal{L}}{\partial x_2} = 1 + 2\lambda x_2 = 0$
+ $\frac{\partial \mathcal{L}}{\partial \lambda} = x_1^2 + x_2^2 - 2 = 0$
+
+From the conditions, we solve:
+$x_1 = x_2 \quad \Rightarrow \quad 2x_1^2 = 2 \quad \Rightarrow \quad x_1 = x_2 = 1$
+Thus, the optimal solution is $x_1 = 1$ and $x_2 = 1$, yielding:
+$f(1, 1) = 1 + 1 = 2$
+
+%Explanation
+The Lagrangian NES variant differs from the original method by introducing a new Lagrangian that still uses only two variables (x1 and x2) but modifies the constraint equation. This allows for a more focused optimization process while maintaining the core principle of minimizing the objective function within the given constraints. The result is an attack that can effectively generate adversarial examples while being more efficient in terms of computational resources.

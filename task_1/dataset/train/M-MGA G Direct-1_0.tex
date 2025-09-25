@@ -1,0 +1,53 @@
+%Input
+In the Momentum Gradient Attack method, the goal is to generate adversarial perturbations using a gradient-based approach, with a focus on optimizing the perturbations to maximize their impact. This approach involves calculating gradients, updating the parameters, and fitting functions to determine the optimal perturbations.
+$\alpha_k$: Step size for the $k$-th iteration, controlling the magnitude of the gradient update.
+$J$: Represents the input variables $X$ and $Y$ in the gradient calculation.
+$V(J)$: A function to be minimized or optimized, depending on the input variables $X$ and $Y$.
+$X_k, Y_k$: Current values of the coordinates or parameters at the $k$-th iteration.
+$X_{k+1}, Y_{k+1}$: Updated coordinates after applying the gradient descent step.
+$\text{Value}_{\text{max}}$: Maximum value used for calculating the new value after perturbation.
+$a_0, a_1, \ldots, a_k$: Coefficients for the polynomial fitting function.
+$f(x, y)$: The fitting function that models the relationship between $x$ and $y$.
+$O_i$: Coordinates of the obstacle points, which are points of interest for perturbations.
+$G_{xk}, G_{yk}$: Gradient components in the $x$ and $y$ directions.
+$U, L$: Upper and lower bounds used in defining the boundary functions for the gradient band.
+$XL, X_{\text{max}}, YL, Y_{\text{max}}$: Boundary limits for the $x$ and $y$ coordinates, defining the range for perturbations.
+
+
+%Output
+The expected outcome from using the Momentum Gradient method includes:
+Obstacle Set: The set of coordinates representing points of interest for adversarial perturbations.
+Gradient Band: The range or band in which the gradient function is applied to determine the optimal perturbations. 
+Gradient Calculation: The gradient function $\phi(\alpha_k J)$ is used to find the optimal perturbations by minimizing the change in a certain function $V(J)$, where $J$ represents the input variables $X$ and $Y$.
+Value Processing: This step involves calculating the new value by subtracting the original value from the maximum value. This adjustment helps in refining the perturbation effect.
+Gradient Descent Update: The update rules for $X$ and $Y$ are applied using the gradient descent algorithm. The gradients of the function $V$ are used to iteratively update the coordinates $X$ and $Y$ to find the optimal perturbations.
+Fitting Function: The least squares method is used to fit a function to the data points, and the residuals $R^2$ measure the goodness of fit. The fitting function $f(x, y)$ helps in determining the deviation from the target function.
+Distance Calculation: The distance between the obstacle edge points and the gradient function is calculated to find the closest obstacle points. This helps in determining how the perturbations affect the model.
+Boundary Functions: The gradient band function $FGB(x, y)$ is computed to define the upper and lower boundaries of the perturbations. This ensures that the perturbations are within the feasible range and effectively influence the model.
+
+%Formula
+The calculations for the Momentum Gradient method involve the following formulas:
+Gradient Calculation:
+$\phi(\alpha_k J) = \text{argmin}_{V(J_k - \alpha J)} \frac{\partial}{\partial J_k} V(J)$
+where $J = X, Y$ and $\phi(\alpha_k J)$ is the result of the gradient calculation.
+Value Processing:
+$(X, Y)_{\text{new}} = \text{Value}_{\text{max}} - \text{Value}(X, Y)_{\text{original}}$
+Gradient Descent Update:
+$X_{k+1} = X_k - \alpha_k^x \frac{\partial}{\partial X_k} V(X_k, Y_k)$
+$Y_{k+1} = Y_k - \alpha_k^y \frac{\partial}{\partial Y_k} V(X_k, Y_k)$
+Fitting Function:
+$R^2 = \sum_{i=1}^n [y_i - (a_0 + a_1x_i + \ldots + a_kx_i^k)]^2$
+$f(x, y) = y - (a_0 + a_1x + \ldots + a_kx^k)$
+Distance Calculation:
+$\text{Distance}(f(x, y), O_i) = \sqrt{(O_{xi} - G_{xk})^2 + (O_{yi} - G_{yk})^2}$
+Boundary Functions:
+$f(x, y)_{\text{upper}} = y - (U + a_0 + a_1x + \ldots + a_kx^k)$
+$f(x, y)_{\text{lower}} = y - (L + a_0 + a_1x + \ldots + a_kx^k)$
+for $XL < x < X_{\text{max}}, YL < y < Y_{\text{max}}$.
+$f(x, y)_{\text{upper}} = \min\{f(X_{\text{max}}, 0), f(0, Y_{\text{max}})\}$
+$f(x, y)_{\text{lower}} = y - (L + a_0 + a_1x + \ldots + a_kx^k)$
+for $XL < x < X_{\text{max}}, YL < y < Y_{\text{max}}$.
+
+%Explanation
+MGA Momentum Gradient Direct Adversarial attacks against machine learning models are intentional manipulations of input data aimed at causing models to make incorrect predictions or classifications. These attacks exploit vulnerabilities in the models, typically by introducing small but carefully crafted perturbations to the input data. The Momentum Gradient Attack is a specific type of adversarial attack that leverages gradient-based optimization techniques to generate these perturbations. By iteratively adjusting the input variables using calculated gradients, the attack seeks to maximize the impact on the model's output while adhering to constraints that ensure the perturbations remain subtle and difficult to detect. This method is particularly effective in fooling models without significantly altering the original input, making it a potent strategy in the adversarial landscape.
+

@@ -1,0 +1,11 @@
+%Input
+The input is an image dataset and a perturbation magnitude \(\epsilon\). A constraint-based optimization method is used to determine the direction of the perturbation.
+
+%Output
+The perturbed image dataset \(\tilde{x}\), which is the original input image modified by a small perturbation in the direction of the gradient, constrained within the bounds of the image space.
+
+%Formula
+${x}_{\text{constrained}} = x + \epsilon \cdot \text{sign}(\nabla_x J(\theta, x, y)) \quad\text{where}\quad {x}_\text{constrained} \in \mathcal{X}$
+
+%Explanation
+The variant Constrained Fast Gradient Sign Method (CFGSM) is different from the main perturbation core in that it introduces a constraint on the perturbation. The new attack modifies the original input image $x$ by adding a small perturbation $\epsilon \cdot \text{sign}(\nabla_x J(\theta, x, y))$, but this perturbation is constrained within the bounds of the image space $\mathcal{X}$, making it more realistic and stealthy. This approach can be used to create more convincing adversarial examples that are difficult to detect.

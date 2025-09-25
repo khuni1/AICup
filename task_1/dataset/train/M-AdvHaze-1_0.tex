@@ -1,0 +1,32 @@
+%Input
+Let \( x \) be the original image input, \( y \) be the true label, and \( f_{\theta} \) be the target model. The goal of the AdvHaze attack is to generate an adversarial example \( x^* \) that is obscured by a haze-like perturbation, thereby misclassifying the image while maintaining some visual coherence.
+
+%Output
+The output of the AdvHaze attack is an adversarial example \( x^* \) that successfully misleads the model while resembling the original image in a hazy manner.
+
+%Formula
+The AdvHaze adversarial attack can be formulated as follows:
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size \( \epsilon \), the haze strength \( \alpha \), and the number of iterations \( N \).
+3. For each iteration \( n = 1 \) to \( N \):
+   - Compute the model's prediction:
+   $\hat{y}^{(n)} = f_{\theta}(x^{(n-1)})$
+   - Calculate the gradient of the loss function:
+   $g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y)$
+   - Create a haze effect on the image:
+   $\text{haze}(x) = x + \alpha \cdot \text{noise}$
+   where \(\text{noise}\) is a perturbation that simulates haze.
+   - Update the input:
+   $x^{(n)} = x^{(n-1)} + \text{haze}(x^{(n-1)}) - x^{(n-1)}$
+   - Apply clipping to ensure the perturbation stays within bounds:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)})$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+4. The final adversarial example is:
+   $x^* = x^{(N)}$
+
+%Explanation
+The AdvHaze adversarial attack generates adversarial examples by introducing a haze-like perturbation to the original image. By iteratively adjusting the input based on the gradients of the loss function, while also incorporating a haze effect, the attack aims to produce an image that misleads the model while remaining visually plausible. The resulting adversarial example \( x^* \) showcases the difficulties models face in distinguishing between normal and hazy images, underscoring the importance of robust defenses against such adversarial manipulations.

@@ -1,0 +1,83 @@
+%Input
+\textbf{Input:} $x$: Input to be adversarially perturbed. \\
+\textbf{Target label:} $y$ \\
+\textbf{Constant:} $\gamma$: Constant to avoid over-/underflow in (arc)tanh computations. \\
+\textbf{Binary Search Constants:} $c_{\text{init}}$: Initialization of the binary search constant. \\
+$c_{\text{upper}}$: Upper bound for the binary search constant. \\
+\textbf{Steps:} $b_{\text{steps}}$: Number of binary search steps to be performed. \\
+\textbf{Input Range:} $x_{\text{min}}$: Minimum value of input range. \\
+$x_{\text{max}}$: Maximum value of input range. \\
+\textbf{Loss Function:} $\ell(x)$: Loss function. \\
+\textbf{Norm:} $\| \cdot \|_2$: $L_2$ norm.
+
+%Output
+Adversarial sample $x_{\text{adv}}$
+
+%Formula
+For each binary search step in $b_{\text{steps}}$, perform the following:
+    \begin{enumerate}
+        \item Normalize the input:
+        \[
+        x \leftarrow \frac{x - x_{\text{min}}}{x_{\text{max}} - x_{\text{min}}}
+        \]
+        \item Transform the input using inverse hyperbolic tangent:
+        \[
+        x \leftarrow \text{arctanh}\left( ((2 \cdot x) - 1) \cdot \gamma \right)
+        \]
+        \item Initialize the adversarial example:
+        \[
+        x_{\text{adv}} \leftarrow x
+        \]
+        \item Initialize binary search variables:
+        \[
+        c_{\text{lower}} \leftarrow 0, \quad c \leftarrow c_{\text{init}}, \quad c_{\text{double}} \leftarrow \text{True}
+        \]
+        \item Initialize minimum loss:
+        \[
+        \ell_{\text{min}} \leftarrow \infty
+        \]
+        \item While $b_{\text{steps}} > 0$ and $c < c_{\text{upper}}$, perform the following:
+        \begin{enumerate}
+            \item Minimize the objective for the current constant $c$:
+            \[
+            x_{\text{new}} \leftarrow \text{minimize objective}(c)
+            \]
+            \item If the loss function is zero and the $L_2$ norm between $x_{\text{new}}$ and $x$ is smaller than the previous minimum loss, update:
+            \[
+            \ell_{\text{min}} \leftarrow \|x_{\text{new}} - x\|_2^2
+            \]
+            \item Update the adversarial example:
+            \[
+            x_{\text{adv}} \leftarrow x_{\text{new}}
+            \]
+            \item Update the binary search constants:
+            \[
+            (c_{\text{lower}}, c, c_{\text{double}}) \leftarrow \text{update}(c, c_{\text{double}}, \ell(x_{\text{new}}))
+            \]
+            \item Decrement the number of binary search steps:
+            \[
+            b_{\text{steps}} \leftarrow b_{\text{steps}} - 1
+            \]
+        \end{enumerate}
+        \item After completing binary search, apply the inverse transformation to get the adversarial example in the original space:
+        \[
+        x_{\text{adv}} \leftarrow \left( \frac{\tanh(x_{\text{adv}})}{\gamma} + 1 \right) / 2
+        \]
+        \item Rescale the adversarial example to the original input range:
+        \[
+        x_{\text{adv}} \leftarrow x_{\text{adv}} \cdot (x_{\text{max}} - x_{\text{min}}) + x_{\text{min}}
+        \]
+    \end{enumerate}
+
+%Explanation
+\textbf{Step 1:} Normalize the input $x$ to the range [0, 1].
+\textbf{Step 2:} Apply the inverse hyperbolic tangent (arctanh) transformation to $x$, scaled by the constant $\gamma$.
+\textbf{Step 3:} Initialize the adversarial example $x_{\text{adv}}$ to the transformed input $x$.
+\textbf{Step 4:} Initialize the lower bound $c_{\text{lower}}$, the binary search constant $c$, and a flag $c_{\text{double}}$ to track doubling of $c$.
+\textbf{Step 5:} Set the minimum loss $\ell_{\text{min}}$ to infinity.
+\textbf{Step 6:} Perform a binary search for the best $c$ within the specified number of steps and upper bound.
+\textbf{Step 7:} Minimize the attack objective function with respect to $c$ to obtain a new adversarial example $x_{\text{new}}$.
+\textbf{Step 8:} If the new adversarial example successfully fools the classifier and has a smaller $L_2$ norm perturbation than previously found, update $x_{\text{adv}}$ and $\ell_{\text{min}}$.
+\textbf{Step 9:} Update the binary search bounds and constant based on the loss of $x_{\text{new}}$.
+\textbf{Step 10:} Decrement the binary search steps.
+\textbf{Step 11:} After completing the binary search, apply the hyperbolic tangent (tanh) transformation to the adversarial example and scale it back to the original input range.

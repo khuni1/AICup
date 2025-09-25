@@ -1,0 +1,14 @@
+%Input
+$\delta^* = \eta \frac{\left( J^+J \right)^{-1} \nabla \hat{f}}{\| (J^+)^{\top} \nabla \hat{f} \|^2}$
+
+%Output
+$\delta^*$ represents the optimal perturbation vector that maximizes the objective function under the given constraints. $\eta$ is a scaling factor that adjusts the magnitude of the perturbation.
+
+%Formula
+$\left( J^+J \right)^{-1}$ is the inverse of the product of the Moore-Penrose pseudoinverse of the matrix $J$ and $J$. This term is used to adjust the perturbation vector in the direction that maximizes the loss.
+$\nabla \hat{f}$ denotes the gradient of the function $\hat{f}$ with respect to the input variables, providing the direction in which the function $\hat{f}$ increases the most.
+$(J^+)^{\top}$ represents the transpose of the pseudoinverse matrix $J^+$.
+$\| (J^+)^{\top} \nabla \hat{f} \|^2$ is the squared norm of the vector $(J^+)^{\top} \nabla \hat{f}$. The norm $\| \cdot \|$ measures the length or magnitude of the vector, and squaring it ensures a non-negative scalar value, providing a normalization factor for the perturbation.
+
+%Explanation
+Pseudoinverse Projected Gradient Descent (PPGD) where, $\delta^*$ is the optimal perturbation vector. $\eta$ is the scaling factor for the perturbation. $J^+$ is the Moore-Penrose pseudoinverse of the matrix $J$. $J$ is the Jacobian matrix, which consists of first-order partial derivatives of a vector-valued function. $\left( J^+J \right)^{-1}$ is the inverse of the product of the pseudoinverse and the Jacobian matrix. $\nabla \hat{f}$ is the gradient of the function $\hat{f}$. $(J^+)^{\top}$ is the transpose of the pseudoinverse matrix $J^+$. $\| \cdot \|$ is the norm of a vector, which measures the vector's magnitude. $\| (J^+)^{\top} \nabla \hat{f} \|^2$ is the squared norm of the vector $(J^+)^{\top} \nabla \hat{f}$.

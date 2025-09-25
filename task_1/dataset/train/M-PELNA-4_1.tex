@@ -1,0 +1,27 @@
+%Input
+\[
+\begin{aligned}
+\mathcal{D} & : \text{Dataset with samples } \{(\mathbf{x}_i, y_i)\}_{i=1}^N, \text{ where } y_i \in \{0, 1\}. \\
+f(\mathbf{x}) & : \text{Target model to be trained on } \mathcal{D}. \\
+\alpha & : \text{Proportion of dataset samples subjected to label noise.} \\
+\epsilon & : \text{Small perturbation applied to the modified labels.} \\
+\mathcal{D}_{\text{modify}} & : \text{Subset of } \mathcal{D} \text{ with modified labels, } |\mathcal{D}_{\text{modify}}| = \alpha \cdot N.
+\end{aligned}
+\]
+
+%Output
+Adversarially trained model $\hat{f}$ that performs poorly on clean test data due to label manipulation.
+
+%Formula
+1.Label Noise Enhancement:
+   - Randomly perturb the true labels of a fraction $\alpha$ of the dataset, such that:
+     \[
+     |\mathcal{D}_{\text{modify}}| = \alpha \cdot N.
+     \]
+   - For each sample $(\mathbf{x}_i, y_i) \in \mathcal{D}_{\text{modify}}$, enhance the label noise by adding a small perturbation $\epsilon$ to $y_i$:
+     \[
+     \mathcal{M}(\mathcal{D}) = \{(\mathbf{x}_i, y_{i+\epsilon}) \; \forall \; (\mathbf{x}_i, y_i) \in \mathcal{D}_{\text{modify}}\}.
+     \]
+
+%Explanation
+Perturbation-Enhanced Label Noise Attack (PELNA) variant modifies the original label modification attack by introducing a perturbation to the true labels of a fraction $\alpha$ of the dataset. This approach exploits the model's vulnerability to noisy supervision and enhances the degradation in performance on clean test data, making it more effective than the original attack. The new variant differs from the main perturbation core by incorporating label noise with a small perturbation, allowing for more robust attacks that can generalize across multiple instances.

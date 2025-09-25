@@ -1,0 +1,55 @@
+%Input
+Input sample: $X \in \mathbb{R}^d$
+True label: $y \in \mathcal{Y}$
+Model function: $f(X)$, a differentiable classifier
+Maximum iterations: $T$
+Tolerance threshold: $\eta > 0$
+
+%Output
+Adversarial example $X_{\text{adv}}$ such that $f(X_{\text{adv}}) \neq y$, with minimal perturbation $\delta = X_{\text{adv}} - X$.
+
+%Formula
+1.Initialization:
+   \[
+   X^{(0)}_{\text{adv}} = X, \quad t = 0.
+   \]
+
+2.Iterative Update:
+At each iteration $t$, approximate the classifier $f(X)$ locally as a linear model:
+   \[
+   f(X) \approx \langle \nabla f_i(X^{(t)}_{\text{adv}}), X - X^{(t)}_{\text{adv}} \rangle + f_i(X^{(t)}_{\text{adv}}), \quad \forall i \neq y,
+   \]
+where $\nabla f_i(X)$ is the gradient of the logits for class $i$ with respect to the input $X$.
+Compute the perturbation to move $X^{(t)}_{\text{adv}}$ closer to the decision boundary:
+   \[
+   \delta^{(t)} = \arg\min_{\delta} \frac{|f_y(X^{(t)}_{\text{adv}}) - f_{i^*}(X^{(t)}_{\text{adv}})|}{\|\nabla f_y(X^{(t)}_{\text{adv}}) - \nabla f_{i^*}(X^{(t)}_{\text{adv}})\|_2^2},
+   \]
+where $i^*$ is the closest decision boundary index:
+   \[
+   i^* = \arg\min_{i \neq y} \frac{|f_y(X^{(t)}_{\text{adv}}) - f_i(X^{(t)}_{\text{adv}})|}{\|\nabla f_y(X^{(t)}_{\text{adv}}) - \nabla f_i(X^{(t)}_{\text{adv}})\|_2}.
+   \]
+Update the adversarial example:
+   \[
+   X^{(t+1)}_{\text{adv}} = X^{(t)}_{\text{adv}} + \delta^{(t)}.
+   \]
+
+3.Stopping Criteria:
+   The iteration stops if:
+   \[
+   f(X^{(t+1)}_{\text{adv}}) \neq y \quad \text{or} \quad t = T \quad \text{or} \quad \|\delta^{(t)}\|_2 < \eta.
+   \]
+
+4.Final Output:
+Set $X_{\text{adv}} = X^{(t+1)}_{\text{adv}}$.
+
+%Explanation
+1.Linear Approximation: DeepFool assumes that the classifier is approximately linear near the input and uses this approximation to estimate the decision boundary.
+
+2.Small Perturbations: By iteratively computing the smallest perturbation required to cross the decision boundary, DeepFool minimizes the total perturbation.
+
+3.Untargeted Attack: DeepFool is untargeted and focuses on moving the input just beyond the boundary of the correct class, leading to misclassification.
+
+4.Efficient and Minimal: DeepFool is computationally efficient and often generates smaller perturbations compared to other methods like FGSM.
+
+5.Generalization: While the attack is designed for differentiable classifiers, it can be adapted for non-differentiable models using approximations.
+

@@ -1,0 +1,43 @@
+%Input
+Let \( x \) be the original input image, \( y \) be the true label, and \( f_{\theta} \) be the target model. The LinBP attack aims to generate an adversarial example \( x^* \) by perturbing the input along the direction of the linear decision boundary of the model.
+
+%Output
+The output of the LinBP attack is an adversarial example \( x^* \) that misclassifies the input by exploiting the linear characteristics of the decision boundary.
+
+%Formula
+The LinBP adversarial attack can be formulated as follows:
+1. Initialize the input:
+   $
+   x^{(0)} = x.
+   $
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size \( \epsilon \) and the number of iterations \( N \).
+3. For each iteration \( n = 1 \) to \( N \):
+   - Compute the model's prediction:
+   $
+   \hat{y}^{(n)} = f_{\theta}(x^{(n-1)}).
+   $
+   - Calculate the gradient of the loss function:
+   $
+   g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y).
+   $
+   - Find the direction of the linear decision boundary:
+   $
+   d_n = \text{normalize}(g_n).
+   $
+   - Update the input by adding the perturbation:
+   $
+   x^{(n)} = x^{(n-1)} + \epsilon \cdot d_n.
+   $
+   - Apply clipping to ensure the perturbation stays within bounds:
+   $
+   x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)}).
+   $
+
+4. The final adversarial example is:
+   $
+   x^* = x^{(N)}.
+   $
+
+%Explanation
+The Linear Backward Propagation (LinBP) attack generates adversarial examples by perturbing the original input along the direction of the model's linear decision boundary. By exploiting the gradients of the loss function, the attack modifies the input to push it across the decision boundary, resulting in an adversarial example \( x^* \). This approach highlights the vulnerabilities of models to linear boundary manipulations and underscores the importance of robust defense mechanisms against such attacks.

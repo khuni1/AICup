@@ -1,0 +1,24 @@
+%Input
+\[
+\text{Given problem: Minimize } f(x_1, x_2) = x_1 + x_2 \text{ subject to } x_1^2 + x_2^2 \leq 2
+\]
+
+%Output
+Optimal solution: 
+\[
+(x_1, x_2) = (0.9, 0.1)
+\]
+Objective value: 
+\[
+f(0.9, 0.1) = 1.0
+\]
+
+%Formula:
+\[
+\mathcal{L}(x_1, x_2, \lambda, \mu_1, \mu_2) = x_1 + x_2 + \lambda (x_1^2 + x_2^2 - 2) - \mu_1 x_1 - \mu_2 x_2
+\]
+
+%Explanation
+This Constrained Exploration Perturbation (CEP) modified perturbation core is an adaptation of the original Lagrange multiplier method. The new constraints are given by $0.9 \leq x_1, 0.1 \leq x_2$, representing a reduced solution space while maintaining feasibility and non-negativity conditions for both variables. By reducing the constraint values, we introduce some infeasibility into our initial guesses to increase exploration of more optimal regions of the objective function $f(x_1,x_2) = x_1 + x_2$.
+
+The variant differs from the main perturbation core by introducing reduced constraint values, allowing for slightly infeasible solutions and potentially increasing the effectiveness of the attack.

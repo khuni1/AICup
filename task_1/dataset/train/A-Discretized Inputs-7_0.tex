@@ -1,0 +1,28 @@
+%Input
+Let $x$ be the original continuous input image, $y$ be the true label associated with it, and $f_{\theta}$ be the target model. The objective is to generate an adversarial example $x^*$ that can successfully mislead the model while accounting for discretization.
+
+%Output
+The output of the Discretized Inputs attack is an adversarial example $x^*$ that is crafted to deceive the model, taking into account the effects of discretization.
+
+%Formula
+The Discretized Inputs adversarial attack can be formulated as follows:
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size $\epsilon$ and the number of iterations $N$.
+3. For each iteration $n = 1$ to $N$:
+   - Compute the continuous adversarial example:
+   $x_{cont}^{(n)} = x^{(n-1)} + \delta_n$
+   where $\delta_n$ is a perturbation computed based on the loss function:
+   $\delta_n = -\alpha \cdot \nabla_x L(f_{\theta}(x^{(n-1)}), y)$
+   - Discretize the continuous adversarial example:
+   $x^{(n)} = \text{Round}(x_{cont}^{(n)})$
+   where $\text{Round}$ is the discretization function applied to transform the continuous input into a valid discrete representation.
+   - Check the model's prediction:
+   $\text{if } f_{\theta}(x^{(n)}) \neq y, \text{ then accept } x^{(n)} \text{ as } x^*$
+
+4. The final adversarial example is:
+   $x^* = x^{(n)} \text{ (if found)}$
+
+%Explanation
+The Discretized Inputs adversarial attack focuses on generating adversarial examples that account for the discretization of input data, which is common in many machine learning applications, especially those dealing with images. By first computing a continuous perturbation and then discretizing the result, the attack aims to produce inputs that effectively mislead the model while adhering to the constraints of the input space. This method highlights the challenges posed by discretization in adversarial machine learning, emphasizing the need for models to be robust against both continuous and discrete perturbations. The resulting adversarial example $x^*$ illustrates the complexities involved in crafting inputs that exploit model vulnerabilities.

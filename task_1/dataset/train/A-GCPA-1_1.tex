@@ -1,0 +1,44 @@
+%Input
+$X_{\text{train}}$: Original training dataset.
+$y_{\text{train}}$: Labels for the training dataset.
+$\mathcal{A}$: Target learning algorithm.
+$f_{\theta}$: Target model parameterized by $\theta$.
+$\epsilon$: Perturbation budget for poisoning.
+$z_p$: Poisoned data points added to the training set.
+$\mathcal{L}(f_{\theta}, X, y)$: Loss function for model training.
+
+%Output
+$X'_{\text{poisoned}}$: Modified training dataset containing poisoned data with a new constraint on $z_p$.
+Adversarially trained model $f'_{\theta^{\ast}}$ that behaves as intended by the adversary, with a focus on targeted misclassification.
+
+%Formula
+1. Objective of Poisoning Attack
+Maximize the adversarial loss by introducing $z_p$ into the training set:
+\[
+\max_{z_p \in \mathcal{Z}} \mathcal{L}(f'_{\theta^{\ast}}, X'_{\text{test}}, y'_{\text{test}})
+\]
+subject to:
+\[
+\theta'^{\ast} = \arg \min_{\theta} \mathcal{L}(f'_{\theta}, X'_{\text{train}} \cup z_p, y'_{\text{train}} \cup y_p),
+\]
+where $\mathcal{Z}$ defines the new constraint on the poisoned data $z_p$.
+
+2. Gradient-based Optimization
+Poisoned data $z_p$ is computed iteratively using gradient updates:
+\[
+z_p^{(t+1)} = z_p^{(t)} - \alpha \nabla_{z_p} \mathcal{L}(f'_{\theta^{(t)}}(X'_{\text{test}}), y'_{\text{test}})
+\]
+with the additional constraint that $z_p$ must be drawn from a specific distribution, e.g., $\mathcal{N}(0, \sigma^2)$.
+
+3. Model Retraining
+Incorporate $z_p$ into the training set:
+\[
+X'_{\text{poisoned}} = X'_{\text{train}} \cup z_p, \quad y'_{\text{poisoned}} = y'_{\text{train}} \cup y_p.
+\]
+Retrain the model with the new poisoned dataset:
+\[
+\theta'^{\ast} = \arg \min_{\theta} \mathcal{L}(f'_{\theta}, X'_{\text{poisoned}}, y'_{\text{poisoned}}).
+\]
+
+%Explanation
+The new variant Gaussian-Constrained Poisoning Attack (GCPA) introduces a targeted adversarial attack that focuses on misclassifying specific classes. The additional constraint ensures that the poisoned data $z_p$ is drawn from a Gaussian distribution, which improves the accuracy of the model on the clean validation set while maintaining its effectiveness on the test set. This approach can be particularly useful in situations where certain classes are more prone to errors or require special attention.

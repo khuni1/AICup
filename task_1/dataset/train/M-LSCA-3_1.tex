@@ -1,0 +1,12 @@
+%Input
+Logit Space where the loss function aims to maximize the likelihood of incorrect classifications by minimizing the negative log-likelihood of the modified feature probabilities. The constraint $\| \delta \|_8 < \xi$ ensures that the perturbation $\delta$ remains within a bounded magnitude to keep the adversarial attack imperceptible. The parameter $\xi$ represents the maximum allowable perturbation magnitude, controlling the strength of the attack.
+
+%Output
+The adversarial example $X^*$ that maximizes the likelihood of incorrect classifications while satisfying the constraint $\| \delta \|_8 < \xi$, ensuring the perturbation remains imperceptible. The attack generates adversarial samples by modifying feature probabilities in the logit space while maintaining a bounded perturbation magnitude $\xi$ to control the attack strength.
+
+%Formula
+$\delta^{(0)} = 0$
+$\text{for } n = 1 \text{ to } N: \quad\n\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( -\frac{\nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y) - \xi \text{sign}(\nabla_\delta L(f_\theta(x), y))}{|\nabla_\delta L(f_\theta(x), y)|} \right) \right)$
+
+%Explanation
+The Logit-Space Constrained Attack (LSCA) variant of the original perturbation core that incorporates gradient-free optimization and a modified loss function. The additional constraint $\| \delta \|_8 < \xi$ helps to ensure that the perturbation remains within a bounded magnitude, making the attack more imperceptible. The use of negative sign in the gradient calculation introduces an asymmetry that can help the attack generalize better across multiple instances.

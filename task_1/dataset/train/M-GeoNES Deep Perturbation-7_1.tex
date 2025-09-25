@@ -1,0 +1,16 @@
+%Input
+The key input elements include the learning rate parameter $\eta$, initial parameters $\theta_{init}$, fitness function $f$, and sample size $\lambda$. Output: The output of the DPA-A-NES algorithm is an updated parameter set $\theta_{t+1} = (\mu_{t+1}, \Sigma_{t+1})$ after several iterations. This adversarial perturbation can be optimized within defined norm constraints, making it suitable for constrained adversarial attack generation.
+
+%Output
+The output is an updated parameter set $\theta_{t+1} = (\mu_{t+1}, \Sigma_{t+1})$ after several iterations. This adversarial perturbation can be optimized within defined norm constraints, making it suitable for constrained adversarial attack generation.
+
+%Formula
+$\theta \leftarrow \theta + \eta \nabla_\theta J(\theta)$
+where $\nabla_\theta J(\theta)$ is the gradient of the expected reward $J(\theta)$ with respect to the parameter $\theta$. For Gaussian distributions:
+$\pi(z | \theta) = \frac{1}{\sqrt{(2\pi)^d \det(\Sigma)}} \exp \left( -\frac{1}{2} (z - \mu)^\top \Sigma^{-1} (z - \mu) \right)$
+with $\theta = (\mu, \Sigma)$. The log-derivatives are:
+$\nabla_\mu \log \pi (z | \theta) = \Sigma^{-1} (z - \mu)$
+$\nabla_\Sigma \log \pi (z | \theta) = \frac{1}{2} \Sigma^{-1} (z - \mu) (z - \mu)^\top \Sigma^{-1} - \frac{1}{2} \Sigma^{-1}$
+
+%Explanation
+The variant Geometric Natural Evolution Strategies for Deep Perturbation Attack (GeoNES-Deep Perturbation) combines the NES algorithm with the Deep Perturbation Attack framework to generate adversarial examples. The NES algorithm performs a gradient ascent search using the natural gradient, while the DPA framework optimizes the perturbation within defined norm constraints. This combination allows for efficient and targeted adversarial attack generation.

@@ -1,0 +1,29 @@
+%Input
+$x$: Original image \\
+$r$: Perturbation applied to $x$ \\
+$f(x + r)$: Objective function to minimize \\
+$O$: Oracle that outputs a candidate list \\
+$\text{score}_{\text{top}}$: Confidence score of the top-ranked item in the candidate list \\
+$\text{score}_{\text{target}}$: Confidence score of the target in the candidate list \\
+$\text{rank}$: Rank of the target in the candidate list \\
+$\text{maxObjective}$: A large value when the target is not in the top three candidates. \\
+$\text{image}_{\text{original}}$: Original image \\
+$candidates$: Candidate list returned by oracle $O$ \\
+$target$: Target to be impersonated \\
+$numParticles$: Number of particles in the PSO swarm \\
+$epochmax$: Maximum number of PSO iterations \\
+$seed$: Set of particles providing an initial solution.
+
+%Output
+Movement of the particle swarm to minimize the objective function based on candidates provided by the oracle, or optimal perturbation for impersonation.
+
+
+%Formula
+$f(x) = 
+\begin{cases}
+\min(f(x + r)) & \text{if } target \in candidates \\
+\max(f(x + r)) + \text{maxObjective} & \text{otherwise}
+\end{cases}$
+
+%Explanation
+This variant Oracle-Guided PSO Attack (OG-PSO) is different from the main perturbation core in that it incorporates an additional constraint. The new objective function $f(x)$ now favors the minimum value when the target appears among the candidates, while applying a maximum penalty when the target is not present. This modification introduces a more nuanced scoring system, encouraging particles to converge on successful impersonations while discouraging non-optimal solutions.

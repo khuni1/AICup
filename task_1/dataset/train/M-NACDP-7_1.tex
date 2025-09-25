@@ -1,0 +1,36 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( D \) be the training dataset. The CDP Adversarial Attack aims to inject adversarial examples into the dataset to mislead the classifier in a class-dependent manner.
+
+%Output
+The output of the M-CDP Adversarial Attack is an updated dataset \( D' \) that includes adversarial examples, potentially resulting in misclassification.
+
+%Formula
+1. Generate an adversarial example \( \tilde{x} \) from the original input \( x \):
+   $
+   \tilde{x} = x + \delta,
+   $
+   where \( \delta \) is a perturbation specifically crafted for class \( y \).
+2. For each data point \( z \in D' \), find its k-nearest neighbors:
+   $
+   N(z) = \{z_i | z_i \text{ is a neighbor of } z\}
+   $
+   where the distance metric used is the Euclidean norm.
+3. Calculate a perturbation score for each data point \( z \in D' \):
+   $
+   S(z) = \sum_{z_i \in N(z)} ||z - z_i||^2
+   $
+   This score represents the overall sensitivity of the model to adversarial examples around point \( z \).
+4. Update the dataset by adding the adversarial example:
+   $
+   D' = D \cup \{(\tilde{x}, y')\},
+   $
+   where \( y' \) is a target label designed to mislead the model.
+5. Define the objective function to minimize the loss on the poisoned dataset:
+   $
+   \text{minimize } L(f(D'), y),
+   $
+   where \( f \) is the model being trained and \( L \) is the loss function.
+
+%Explanation
+Neighbor-Aware Class-Dependent Poisoning (NACDP) Attack incorporates a new perturbation strategy based on k-nearest neighbors. By calculating a perturbation score for each data point in the dataset, this approach can identify regions where the model is particularly vulnerable to adversarial examples. This allows for more targeted and effective attacks against specific classes.
+This strategy improves upon the original CDP Adversarial Attack by providing a more targeted and effective approach to injecting adversarial examples into the dataset.

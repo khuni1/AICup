@@ -1,0 +1,49 @@
+%Input  
+\[
+\text{Given:} \quad x \text{ (original input)}, \quad y \text{ (true label)}, \quad \epsilon \text{ (perturbation bound)}, \quad \alpha \text{ (step size)}, \quad N \text{ (number of iterations)}, \quad \beta, \sigma, \mu_n \text{ (diffusion parameters)}
+\]
+
+%Output  
+Adversarial example \( x^* \) such that \( \|x^* - x\|_p \leq \epsilon \), incorporating an adversarial diffusion process to enhance the perturbation strategy.
+
+
+%Formula
+1. Initialize the input:
+   $
+   x^{(0)} = x.
+   $
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size $ \epsilon $, the number of iterations $ N $, and the step size $ \alpha $.
+3. For each iteration $ n = 1 $ to $ N $:
+   - Compute the model's prediction:
+     $
+     \hat{y}^{(n)} = f_{\theta}(x^{(n-1)}).
+     $
+   - Calculate the gradient of the loss function:
+     $
+     g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y).
+     $
+   - Update the input by adding a perturbation that is modified using an adversarial diffusion process:
+     $
+     x^{(n)} = x^{(n-1)} + \alpha \cdot \text{sign}(\delta_n),
+     $
+     where $ \delta_n $ is a random noise vector that is modified using the following diffusion equation:
+     $
+     \delta_{n+1} = \beta \delta_n + \sigma (w_n - \mu_n \delta_n).
+     $
+   - Project the updated input back into the feasible region:
+     $
+     x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)}, \epsilon),
+     $
+     ensuring:
+     $
+     \|x^{(n)} - x\|_p \leq \epsilon.
+     $
+
+4. The final adversarial example is:
+   $
+   x^* = x^{(N)}.
+   $
+
+%Explanation
+The Adversarial Diffusion Attack (ADA) variant builds upon the original PIA attack by incorporating an additional diffusion step into the optimization process. This modification helps to improve the stability and quality of the generated adversarial examples while maintaining the core principle of the original attack. By modifying the perturbation using an adversarial diffusion process able to create more effective adversarial examples that are better suited for attacking robust models.

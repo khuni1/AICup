@@ -1,0 +1,41 @@
+%Input
+Original dataset: $D = \{(x_i, y_i)\}_{i=1}^{N}$  
+Poisoned dataset: $D_{\text{poison}} = \{(x_{\text{poison},j}, y_{\text{target},j})\}_{j=1}^{M}$  
+Target class: $c$  
+Perturbation function: $\text{Perturbation}(\text{class } c, j)$  
+Model function: $f_{\theta}(x)$  
+Loss function: $L(f_{\theta}(x), y)$  
+Number of poisoned samples: $M$  
+Clean test set: $\{(x_j, y_j)\}_{j=1}^{T}$ 
+
+%Output
+The output provide a modified training dataset $D'$ that includes poisoned samples designed to affect the decision boundary of the SVM.
+
+%Formula
+1. Initialize the training dataset and true labels:
+   $
+   D = \{(x_i, y_i)\}_{i=1}^N.
+   $
+2. Identify a target class $c$ and generate a set of non-sample-specific poisoned samples $\{x_{\text{poison}}^j\}_{j=1}^M$:
+   $
+   x_{\text{poison}}^j = \text{Perturbation}(\text{class } c, j),
+   $
+   where each poisoned sample is generated based on characteristics of class $c$.
+3. Update the training dataset to include the non-sample-specific poisoned samples:
+   $
+   D' = D \cup \{(x_{\text{poison}}^j, c)\}_{j=1}^M.
+   $
+4. Train the SVM on the poisoned dataset:
+   $
+   f_{\theta}(x) = \text{SVM}(D').
+   $
+5. Evaluate the model on a clean test set to assess performance degradation:
+   $
+   \text{Accuracy} = \frac{\sum_{(x_j, y_j) \in \text{test set}} \mathbb{I}(f_{\theta}(x_j) \neq y_j)}{|\text{test set}|},
+   $
+   where $ \mathbb{I} $ is an indicator function.
+
+%Explanation
+The Meta-Poison Non-Sample-Based variant affects the integrity of a Support Vector Machine by injecting non-sample-specific poisoned data into the training dataset. The variant differs from the main perturbation core by using a gradient-free optimization method, making it more efficient and stealthy than the original approach. This modification allows for the creation of poisoned samples that are not tied to specific inputs but designed to affect the decision boundary of the SVM, highlighting the vulnerability of machine learning systems to adversarial data during the training process.
+
+The variant of the Poison NSBV attack that uses gradient-free optimization to generate poisoned samples. This modification makes the attack more efficient and stealthy while maintaining its core principle of injecting non-sample-specific poisoned data into the training dataset.

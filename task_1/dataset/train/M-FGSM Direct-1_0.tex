@@ -1,0 +1,45 @@
+%Input
+The loss function for LBiasGAN is defined as:
+$ \text{LBiasGAN}(G_1, G_2, D_1, D_2, F) = \lambda_b \cdot L_{\text{bias}} + \lambda_g \cdot L_{\text{guard}} + [L_{\text{GAN}} + L_{\text{identity}} + L_{\text{cycle}}] $
+where $ \lambda_b $ and $ \lambda_g $ control the weights of the proposed items.
+The training strategy involves setting $ \lambda_g $ as a dynamic value that increases with the training epoch and reaches its maximum value $ \lambda_b $. The formula for $ \lambda_g $ is:
+$ \lambda_g = \max(\epsilon \cdot \lfloor \text{epoch} / c \rfloor, \lambda_b) $
+
+%Output
+The expected outcome includes:
+Bias Term Control: The $ \lambda_b \cdot L_{\text{bias}} $ term adjusts the model's response to bias.
+Guard Mechanism: The $ \lambda_g \cdot L_{\text{guard}} $ term introduces a guard mechanism, dynamically adjusting its influence as the training progresses.
+GAN Performance: The combined $ L_{\text{GAN}} + L_{\text{identity}} + L_{\text{cycle}} $ terms focus on improving GAN performance and maintaining identity consistency and cycle consistency.
+
+%Formula
+The key formulas include:
+Loss Function:
+$ \text{LBiasGAN}(G_1, G_2, D_1, D_2, F) = \lambda_b \cdot L_{\text{bias}} + \lambda_g \cdot L_{\text{guard}} + [L_{\text{GAN}} + L_{\text{identity}} + L_{\text{cycle}}] $
+Dynamic Weight Adjustment:
+$ \lambda_g = \max(\epsilon \cdot \lfloor \text{epoch} / c \rfloor, \lambda_b) $
+where:
+$ \text{LBiasGAN}(G_1, G_2, D_1, D_2, F) $ is the loss function for the GAN model, combining bias, guard, GAN, identity, and cycle loss terms.
+$ \lambda_b $ is the weight for the bias loss term $ L_{\text{bias}} $.
+$ \lambda_g $ is the weight for the guard loss term $ L_{\text{guard}} $, dynamically adjusted during training.
+$ L_{\text{GAN}}, L_{\text{identity}}, L_{\text{cycle}} $ represent the GAN loss, identity loss, and cycle consistency loss, respectively.
+$ \epsilon $ is a user-specified scale factor for adjusting $ \lambda_g $.
+$ \text{epoch} $ refers to the current training epoch.
+$ c $ is a user-specified scale factor controlling the rate of increase for $ \lambda_g $.
+$ \lfloor \cdot \rfloor $ denotes the floor function, returning the greatest integer less than or equal to the given value.
+$ \max(\cdot, \cdot) $ returns the maximum value between the two arguments.
+
+%Explanation
+The loss function for LBiasGAN integrates several key components, each contributing to the model's overall performance and behavior.
+\textbf{Bias Term Control:} The term $\lambda_b \cdot L_{\text{bias}}$ is responsible for adjusting the model’s response to bias. The weight $\lambda_b$ controls the influence of the bias loss term $L_{\text{bias}}$, helping to manage and correct any bias present in the model.
+\textbf{Guard Mechanism:} The term $\lambda_g \cdot L_{\text{guard}}$ introduces a guard mechanism that helps control the model's stability and robustness. The weight $\lambda_g$ is dynamically adjusted based on the training epoch, which means its influence grows over time. Initially, the effect of this term is subtle, but it becomes more significant as $\lambda_g$ increases, thereby enhancing the model’s performance as training progresses.
+\textbf{GAN Performance:} The combined terms $L_{\text{GAN}} + L_{\text{identity}} + L_{\text{cycle}}$ focus on various aspects of GAN performance. The $L_{\text{GAN}}$ term helps in generating realistic outputs, while $L_{\text{identity}}$ ensures that the generated outputs preserve their identity, and $L_{\text{cycle}}$ maintains cycle consistency. Together, these terms work towards improving the overall quality of the GAN outputs while ensuring consistency and fidelity.
+
+The dynamic adjustment of $\lambda_g$ is given by:
+$\lambda_g = \max(\epsilon \cdot \lfloor \text{epoch} / c \rfloor, \lambda_b)$
+where:
+- $\epsilon$ is a user-specified scale factor that controls how $\lambda_g$ changes over time.
+- $\text{epoch}$ is the current training epoch.
+- $c$ is a user-specified scale factor that influences the rate at which $\lambda_g$ increases.
+- $\lfloor \cdot \rfloor$ denotes the floor function, which rounds down to the nearest integer.
+- $\max(\cdot, \cdot)$ selects the maximum value between $\epsilon \cdot \lfloor \text{epoch} / c \rfloor$ and $\lambda_b$.
+This approach ensures that $\lambda_g$ starts from a lower value and gradually increases, enhancing the model’s performance progressively as training advances.

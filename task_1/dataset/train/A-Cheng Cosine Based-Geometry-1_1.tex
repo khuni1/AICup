@@ -1,0 +1,36 @@
+%Input
+$\mathbf{x} \in \mathbb{R}^d$: Original input example.
+$y_{\text{true}}$: True label of the input example.
+$f(\mathbf{x})$: Classifier function.
+$\epsilon$: Perturbation budget under $L_p$ norm.
+Maximum iterations or convergence criterion.
+
+%Output 
+$\mathbf{x}_{\text{adv}}$: Adversarial example satisfying the constraints.
+
+%Formula
+The output of the Cheng Attack with a cosine-based optimization approach is achieved by modifying the gradient update step as follows:
+
+1.Initialization:
+   \[
+   \delta_0 = \mathbf{0}.
+   \]
+
+2.Iterative Update:
+   At each iteration, the perturbation $\delta_t$ is updated as follows:
+   \[
+   \delta_{t+1} = \delta_t - \eta \cdot \frac{\nabla_{\mathbf{x}} L(f(\mathbf{x} + \delta_t), y_{\text{true}})}{\|\nabla_{\mathbf{x}} L(f(\mathbf{x} + \delta_t), y_{\text{true}})\|_p \cdot \cos(\theta)},
+   \]
+   where $\eta$ is the step size, and the cosine of the angle between the gradient and the $L_p$ norm is used to reduce the magnitude of the update.
+
+3.Projection:
+   After each update, project $\delta_{t+1}$ back into the feasible set:
+   \[
+   \delta_{t+1} \gets \text{Proj}_{\|\delta\|_p \leq \epsilon} (\delta_{t+1}),
+   \]
+   ensuring that the perturbation remains within the $L_p$-norm budget.
+
+%Explanation
+The cosine-based optimization approach modifies the gradient update step by introducing a cosine term, $\cos(\theta)$, which reduces the magnitude of the update. This is done to improve the stability and effectiveness of the attack while maintaining the core principle of the original Cheng Attack. The introduction of the cosine term introduces an additional layer of complexity to the attack, but it also allows for more targeted and stealthy adversarial examples.
+
+Summary: This variant is different from the main perturbation core because it incorporates a cosine-based optimization approach to reduce the magnitude of the update step while maintaining stability and effectiveness.

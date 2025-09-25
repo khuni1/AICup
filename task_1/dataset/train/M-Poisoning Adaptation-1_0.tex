@@ -1,0 +1,35 @@
+%Input  
+ $\mathcal{D}_{\text{train}}$: Original training dataset.  
+$f(\theta, \mathbf{x})$: Target machine learning model parameterized by $\theta$.  
+$y_{\text{true}}$: True labels for the clean dataset.  
+$\epsilon$: Perturbation budget.  
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function used for model training.  
+
+%Output
+\[
+\mathcal{D}_{\text{poison}} = \mathcal{D}_{\text{train}} \cup \Delta, \quad \text{where } \Delta \text{ represents adversarial modifications to maximize model error}.
+\]
+
+%Formula  
+1. Define the optimization objective to maximize the loss on a test set:  
+\[
+\max_{\Delta} \, \mathcal{L}(f(\theta^*), \mathcal{D}_{\text{test}})
+\]
+where $\theta^*$ is obtained by training the model on the poisoned dataset:
+\[
+\theta^* = \underset{\theta}{\arg \min} \, \mathcal{L}(f(\theta), \mathcal{D}_{\text{poison}})
+\]
+
+2. Constraints on the poisoning:
+\[
+\|\Delta\| \leq \epsilon
+\]
+
+3. Iteratively solve for $\Delta$ using a bilevel optimization approach:
+\[
+\Delta^{(t+1)} = \Delta^{(t)} - \eta \nabla_\Delta \mathcal{L}(f(\theta^*), \mathcal{D}_{\text{test}})
+\]
+
+%Explanation
+Poisoning Adaptation is an adversarial attack targeting the training phase of a machine learning model. By injecting carefully crafted adversarial examples $\Delta$ into the training dataset, the attacker aims to degrade the model's performance on a clean test set. The attack uses a bilevel optimization approach: the inner loop updates model parameters $\theta$ on the poisoned training set, while the outer loop maximizes the loss on the test set by updating the poison samples. The perturbation budget $\epsilon$ limits the magnitude of changes, ensuring the poisoning is subtle yet effective. This attack is often used to study vulnerabilities in machine learning systems against data integrity attacks.
+

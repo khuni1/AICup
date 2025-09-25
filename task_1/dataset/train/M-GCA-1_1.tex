@@ -1,0 +1,31 @@
+%Input
+Targeted Perturbation Based on Gradient Descent with $L_p$ Norm Constraint
+
+%Output
+\begin{align*}
+\mathbf{x}_{\text{adv}} &= \arg \min_{\mathbf{x}} \; \mathcal{L}(f(\mathbf{x}), y_{\text{target}}) \\
+&\quad \text{subject to} \\
+&\quad \|\mathbf{x} - \mathbf{x}_{\text{original}}\|_p \leq \epsilon
+\end{align*}
+
+%Formula
+1.Objective:
+   $\mathbf{x}_{\text{adv}} = \arg \min_{\mathbf{x}} \; \mathcal{L}(f(\mathbf{x}), y_{\text{target}})$
+
+2.Loss Function:
+   - The typical loss function for SVR targeted adversarial attacks is:
+     $\mathcal{L}(f, \mathbf{x}, y_{\text{target}}) = \big(f(\mathbf{x}) - y_{\text{target}}\big)^2$
+
+3.Gradient Update:
+   - Update the input iteratively using:
+     $\mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} - \eta \cdot \nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{target}})$
+
+4.Perturbation Bound ($\epsilon$):
+   - The $L_p$ norm constraint ensures that the perturbation remains small and does not excessively deviate from the original input.
+
+5.Targeted Characteristics:
+   - This variant focuses on creating targeted adversarial examples, where the attack aims to mislead the model by manipulating the input features towards a specific target value $y_{\text{target}}$.
+
+
+%Formula
+The Targeted Gradient Constrained Attack (TGCA) variant Based on Gradient Descent with $L_p$ Norm Constraint is different from the main perturbation core because it introduces a targeted approach, where the attack aims to manipulate the input features towards a specific target value $y_{\text{target}}$, rather than simply reducing the prediction error. This modification allows for more precise control over the adversarial example generation process and can lead to improved stealthiness in the generated attacks.

@@ -1,0 +1,30 @@
+%iInput
+The input includes the perturbation $e(x)$, the input $x$, the classifier $f_{\text{adv}}$, and the constraints $L$ and $d$.
+
+%Output
+The output is the perturbed input that maximizes the misclassification by the classifier subject to the given constraints.
+
+%Formula
+\begin{equation*}
+  \text{maximize} \quad e(x) \cdot f_{\text{adv}}(x + e(x))
+  \quad \text{subject to} \quad \| e(x) \|_2 \leq L
+\end{equation*}
+
+%Explanation
+One Pixel Space Adversarial where, the Objective Function:
+$e(x) \cdot f_{\text{adv}}(x + e(x))$
+This term represents the objective of the optimization problem, which is to maximize the misclassification by the classifier $f_{\text{adv}}$ when the input $x$ is perturbed by $e(x)$. It measures the effectiveness of the perturbation in deceiving the classifier.
+
+Constraint:
+$\| e(x) \|_2 \leq L$
+This constraint limits the magnitude of the perturbation $e(x)$ applied to each pixel $x$ in the input image. The perturbation is bounded by the Euclidean norm $\| \cdot \|_2$ such that its magnitude does not exceed $L$.
+$\text{maximize} \quad e(x) \cdot f_{\text{adv}}(x + e(x))
+  \quad \text{subject to} \quad \| e(x) \|_0 \leq d$
+
+Objective Function:
+$e(x) \cdot f_{\text{adv}}(x + e(x))$
+This term represents the objective of the optimization problem, which is to maximize the misclassification by the classifier $f_{\text{adv}}$ when the input $x$ is perturbed by $e(x)$. It measures the effectiveness of the perturbation in deceiving the classifier.
+
+Constraint:
+$\| e(x) \|_0 \leq d$
+This constraint limits the number of non-zero elements in the perturbation $e(x)$ applied to the input $x$. The perturbation is bounded by the $\ell_0$-norm such that the number of non-zero elements does not exceed $d$.

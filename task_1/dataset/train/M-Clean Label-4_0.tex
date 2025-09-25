@@ -1,0 +1,18 @@
+%Input
+Let $x$ be the input image, $b$ be the base instance, and $t$ be the target class representation in feature space.
+
+%Output
+The output of the clean label attack is an adversarial example $p$ that is both close to the base instance $b$ in input space and collides with the target $t$ in feature space.
+
+%Formula
+The objective of the clean label attack can be formulated as:
+$p = \arg\min_x \left\{ \|f(x) - f(t)\|_2^2 + \beta \|x - b\|_2^2 \right\}$
+where:
+- $f(x)$ is the function that propagates the input $x$ through the network to the penultimate layer.
+- $\| \cdot \|_2$ denotes the L2 norm.
+- $\beta$ is a trade-off parameter that balances the two terms.
+
+%Explanation
+- The function $f(x)$ generates a feature space representation of the input $x$, capturing its high-level semantic features.
+- The goal is to find an input $p$ such that its feature representation $f(p)$ is close to the feature representation of the target $t$ while ensuring that $p$ remains similar to the base instance $b$ in the original input space.
+- The optimization problem minimizes the sum of the squared differences in feature space and the squared difference in input space, effectively allowing for the creation of adversarial examples that can mislead the classifier without significantly altering the input.

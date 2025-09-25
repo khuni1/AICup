@@ -1,0 +1,21 @@
+%Input
+Let \( t \) be the target instance that the attack aims to misclassify, and let \( b \) be the base instance from which the poisoned sample is generated. The attack constructs a poison instance \( p \) such that it is close to \( t \) in feature space while remaining similar to \( b \) in input space. The feature representation of an input \( x \) is given by \( f(x) \), where \( f \) is the feature extractor of the model.
+
+The optimization problem for generating the poisoned instance is formulated as follows:
+
+\[
+p = \arg\min_x \|f(x) - f(t)\|_2^2 + \beta \|x - b\|_2^2
+\]
+
+where \( \beta \) is a hyperparameter controlling the trade-off between feature similarity to the target and input similarity to the base instance.
+
+%Output
+The output of the Poisoning Frogs Feature Collision attack is a poison instance $p$ that minimizes the distance to the target in feature space while staying close to the base instance $b$ in input space.
+
+%Formula
+\begin{equation}
+p = \arg\min_x \|f(x) - f(t)\|_2^2 + \beta \|x - b\|_2^2
+\end{equation}
+
+%Explanation
+The Feature Collision Poisoning (FCP) Attack variant of the perturbation core that introduces a feature collision mechanism to force the network to misclassify the target after retraining. The attack crafts a poison instance $p$ by minimizing the distance to the target in feature space while staying close to the base instance $b$ in input space. This approach takes advantage of transfer learning setups, where only the final softmax layer is trained, and uses a poisoning strategy to craft a poison instance that induces misclassification of the target. The attack is highly effective with success rates of 100\% in such scenarios, making it a valuable addition to the perturbation core family.

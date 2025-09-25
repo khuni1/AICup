@@ -1,0 +1,27 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( D \) be the training dataset. The CDP Adversarial Attack aims to inject adversarial examples into the dataset to mislead the classifier in a class-dependent manner.
+
+%Output
+The output of the CDP Adversarial Attack is an updated dataset \( D' \) that includes adversarial examples, potentially resulting in misclassification.
+
+%Formula
+The CDP Adversarial Attack can be formulated as follows:
+1. Generate an adversarial example \( \tilde{x} \) from the original input \( x \):
+   $
+   \tilde{x} = x + \delta,
+   $
+   where \( \delta \) is a perturbation specifically crafted for class \( y \).
+2. Update the dataset by adding the adversarial example:
+   $
+   D' = D \cup \{(\tilde{x}, y')\},
+   $
+   where \( y' \) is a target label designed to mislead the model.
+3. Define the objective function to minimize the loss on the poisoned dataset:
+   $
+   \text{minimize } L(f(D'), y),
+   $
+   where \( f \) is the model being trained and \( L \) is the loss function.
+4. Iteratively retrain the model using the updated dataset \( D' \).
+
+%Explanation
+The CDP (Class Dependent Poisonign) Adversarial Attack focuses on creating and injecting adversarial examples into the training dataset in a manner that is specific to the target class. By generating adversarial inputs \( \tilde{x} \) that are particularly effective against the model's understanding of class \( y \), the attack aims to degrade the model's performance on that class. This method underscores the susceptibility of machine learning systems to targeted data poisoning, demonstrating how class-specific perturbations can be used to manipulate model behavior during training.

@@ -1,0 +1,30 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The APG Adversarial Attack aims to generate adversarial examples by iteratively optimizing the perturbation while ensuring it remains within a specified norm ball.
+
+%Output
+The output of the APG Adversarial Attack is a perturbed input \( \tilde{x} \) that is designed to mislead the model.
+
+%Formula
+The APG Adversarial Attack can be formulated as follows:
+1. Initialize the perturbation \( \delta \):
+   $
+   \tilde{x} = x + \delta,
+   $
+   where \( \|\delta\| \leq \epsilon \).
+2. Define the objective function to minimize the loss with respect to the target class \( c \):
+   $
+   \text{minimize } L(f(\tilde{x}), c),
+   $
+   where \( f \) is the model and \( L \) is the loss function.
+3. Use projected gradient descent to iteratively update \( \delta \):
+   $
+   \delta^{(t+1)} = \text{proj}_{\epsilon} \left( \delta^{(t)} - \alpha \nabla_{\delta} L(f(x + \delta^{(t)}), c) \right),
+   $
+   where \( \alpha \) is the step size and \( \text{proj}_{\epsilon} \) projects the perturbation back onto the \( \epsilon \)-ball.
+4. Update the perturbed input:
+   $
+   \tilde{x} = x + \delta^{(t+1)}.
+   $
+
+%Explanation
+The Auto Projected Gradient (APG) Adversarial Attack generates adversarial examples by applying iterative optimization techniques to find a perturbation \( \delta \) that misleads the model. Starting with an initial perturbation, the method utilizes projected gradient descent to adjust \( \delta \) in the direction that minimizes the loss associated with a target class \( c \). The projection step ensures that the perturbation remains within a specified limit \( \epsilon \), maintaining the integrity of the input. This approach effectively crafts adversarial examples that are resilient against defenses, demonstrating the vulnerabilities of machine learning models to adaptive attacks.

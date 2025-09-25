@@ -1,0 +1,30 @@
+%Input
+Let \( x \) be the original input text, \( y \) be the true label, and \( f_{\theta} \) be the target model.
+%Output
+The output of the modified DeepWordBug attack is a text input \( x^* \) with added character-level constraints to ensure readability while maintaining adversarial properties.
+
+%Formula
+1. Initialize the input text and true label:
+$
+(x, y).
+$
+2. Define a set of possible character-level modifications \( \mathcal{M} \), such as character substitutions, insertions, or deletions.
+3. For each character \( c \) in the input \( x \):
+   - Apply a modification \( m(c) \) from \( \mathcal{M} \):
+   $
+   x' = x \text{ with } m(c) \text{ applied at position } i.
+   $
+   - Evaluate the model's prediction:
+   $
+   \hat{y} = f_{\theta}(x').
+   $
+   - If \( \hat{y} \neq y \), then \( x' \) is a candidate adversarial example.
+4. The goal is to find:
+   $
+   x^* = \arg\min_{x'} \text{distance}(x, x') + L_{readability}(\cdot)
+   $
+
+%Explanation
+The proposed variant introduces a new readability constraint \( L_{readability}(\cdot) \) into the DeepWordBug attack. This modification encourages the generation of adversarial examples that not only mislead the model but also maintain readability. The added constraint can be inspired by existing readability metrics or scores, such as Flesch-Kincaid Grade Level or Gunning-Fog Index, to ensure that the generated text is still comprehensible and readable.
+
+Summary: This variant differs from the main perturbation core in that it introduces a new constraint to prioritize readability while maintaining adversarial properties. The added constraint ensures that the generated text input \( x^* \) maintains some level of coherence and readability, making it more suitable for real-world applications where clear communication is crucial.

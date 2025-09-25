@@ -1,0 +1,34 @@
+%Input
+\[
+\begin{aligned}
+J_k & : \text{Current objective function value at iteration } k. \\
+\alpha_k & : \text{Step size at iteration } k. \\
+V(J) & : \text{Loss function dependent on } J. \\
+(X_k, Y_k) & : \text{Current input values at iteration } k. \\
+\alpha_k^x, \alpha_k^y & : \text{Step sizes for } X \text{ and } Y \text{ at iteration } k.
+\end{aligned}
+\]
+
+%Output
+\[
+\begin{aligned}
+\phi(\alpha_k J) &: \text{Updated function value after optimization.} \\
+(X, Y)_{\text{new}} &: \text{Updated input values after transformation.} \\
+X_{k+1} &: \text{Next step in } X \text{ using gradient descent.} \\
+Y_{k+1} &: \text{Next step in } Y \text{ using gradient descent.}
+\end{aligned}
+\]
+
+
+%Formula
+$\phi(\alpha_k J) = \text{argmin}_{V(J_k - \alpha J)} \frac{\partial}{\partial J_k} V(J)$
+
+$(X, Y)_{\text{new}} = \text{Value}_{\text{max}} - \text{Value}(X, Y)_{\text{original}}$
+
+$X_{k+1} = X_k - \alpha_k^x \frac{\partial}{\partial X_k} V(X_k, Y_k)$
+
+$Y_{k+1} = Y_k - \alpha_k^y \frac{\partial}{\partial Y_k} V(X_k, Y_k)$
+
+
+%Explanation
+The Adaptive Perturbation Descent (APD) variant of the Momentum Gradient Attack that incorporates a new perturbation strategy. The approach leverages gradient-based optimization to iteratively adjust input variables and minimize the impact on model performance. This results in more effective attacks with reduced computational requirements compared to other variants.

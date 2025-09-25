@@ -1,0 +1,20 @@
+%Input
+$\mathbf{r}_{tr}$: Training data points.  
+$\theta$: Model parameters.  
+$y_c$: Target class label.  
+$\epsilon$: Perturbation vector.  
+$L(\epsilon)$: Loss function dependent on perturbation $\epsilon$.  
+$C(\mathbf{x} + \epsilon)$: Regularization term with perturbation.  
+$R(\epsilon)$: Constraint term associated with $\epsilon$.
+
+
+%Output
+$\delta_{\text{KKT}} = \nabla_\epsilon L(\theta, \mathbf{r}_{tr}, y_c)$
+
+%Formula
+$L(\epsilon) = C(\mathbf{x} + \epsilon) - R(\epsilon)$, where $C$ is the regularization term and $R$ is the constraint.
+
+%Explanation
+This variant introduces a new perturbation strategy based on the Karush-Kuhn-Tucker (KKT) conditions. The KKT conditions provide necessary constraints to ensure that the perturbation does not violate any constraints or regularization terms. This approach maintains the core principle of the original attack while improving its robustness and effectiveness by incorporating additional constraints.
+
+Summary: This variant is different from the main perturbation core in that it incorporates the KKT conditions as a constraint, which ensures that the generated adversarial example adheres to the regularizations and constraints present in the original model.

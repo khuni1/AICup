@@ -1,0 +1,60 @@
+%Input
+\begin{align*}
+x & : \text{Original input image}, \\
+y & : \text{True label of } x, \\
+f(x) & : \text{Classifier network}, \\
+d(x_1, x_2) & : \text{Constraint function measuring perturbation}, \\
+\epsilon & : \text{Perturbation bound}, \\
+T & : \text{Number of optimization steps}, \\
+\lambda & : \text{Scaling factor for constraint function}, \\
+\eta & : \text{Step size for gradient update}.
+\end{align*}
+
+%Output
+Output: The Perturb Adversarial Constrained algorithm generates an adversarial image $x_e$ by iteratively applying perturbations to the original image $x$ while balancing the classifier loss and a new constraint function. The process begins by initializing $x_e$ with a small amount of Gaussian noise. The algorithm performs $T$ steps of gradient ascent, where each step involves calculating and normalizing the gradient $\Delta$ with respect to the classifier loss and the new constraint function. The step size $\eta$ is adjusted exponentially to ensure fine-tuning as the attack progresses. An approximate derivative $m$ of the constraint function is used to scale the perturbation appropriately. Finally, the algorithm updates $x_e$ and returns it as the perturbed image.
+
+%Formula
+\begin{enumerate}
+    \item \textbf{Input Parameters:}  
+    \begin{align*}
+    f(x) &: \text{Classifier network}, \\
+    d(x_1, x_2) &: \text{Constraint function}, \\
+    x &: \text{Original input}, \\
+    y &: \text{True label}, \\
+    \epsilon &: \text{Perturbation bound}, \\
+    T &: \text{Number of steps}.
+    \end{align*}
+
+    \item \textbf{Initialization:}  
+    Add small Gaussian noise to the input image to initialize perturbations:
+    \[
+    x_e = x + \epsilon \cdot \mathcal{N}(0, 1).
+    \]
+    \item Compute the exponential increase in $\lambda$:
+    \[
+    \lambda = 10^{t/T}.
+    \]
+    \item Calculate the gradient $\Delta$ of the classifier loss with an LPIPS penalty and the constraint function:
+    \[
+    \Delta = \nabla_{x_e} L(f(x_e), y) - \lambda \cdot d(x_e, x).
+    \]
+    \item Normalize the gradient:
+    \[
+    \Delta = \frac{\Delta}{\|\Delta\|_2}.
+    \]
+    \item Compute the step size $\eta$ with exponential decay:
+    \[
+    \eta = \epsilon \cdot (0.1)^{t/T}.
+    \]
+    \item Approximate the derivative of the constraint function in the direction of $\Delta$:
+    \[
+    m = d(x_e, x_e + h \cdot \Delta), \quad h = 0.1.
+    \]
+    \item Update the perturbed input:
+    \[
+    x_e = x_e + \frac{\eta}{m} \cdot \Delta.
+    \]
+\end{enumerate}
+
+%Explanation
+The Perturb Adversarial Constrained algorithm is derived from the Fast LPIPS-Constrained Perturbation Attack, introducing a new constraint function to balance the classifier loss and the perturbation. This variant maintains the core principle of the original attack while improving its behavior by incorporating a new scoring strategy. The algorithm requires $2T + 1$ forward passes and $T + 1$ backward passes for the self-bounded case, and $3T + 1$ forward passes and $2T + 1$ backward passes for the externally-bounded case.

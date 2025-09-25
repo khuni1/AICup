@@ -1,0 +1,25 @@
+%Input
+The algorithm is general and can be used to construct black-box adversarial examples where the perturbation is constrained to any convex set ($\ell_p$-norm constraints being a special case). We discuss the algorithm in its general form and then provide versions explicitly applied to the $\ell_2$ and $\ell_\infty$ cases. As previously mentioned, the latent vector $v_t \in K$ serves as a prior on the gradient for the corresponding round $t$. In fact, we make our prediction $g_t$ be exactly $v_t$ projected onto the appropriate space, and thus we set $K$ to be an extension of the space of valid adversarial perturbations (e.g., $\mathbb{R}^n$ for $\ell_2$ examples, $[-1, 1]^n$ for $\ell_\infty$ examples).
+
+%Output
+The output of this algorithm is an adversarial perturbation $v_{t+1}$, where $v_{t+1}$ is the updated latent vector that approximates the optimal adversarial example within the constraint set $K$ (such as $\ell_2$ or $\ell_\infty$ norm constraints). 
+
+For each iteration $t$, the algorithm outputs a perturbation $g_t = v_t$ that maximizes the loss $\ell_t$ in the direction of the estimated gradient. The result is a sequence of adversarial perturbations that converge towards a final adversarial example, which is optimized based on the specific convex constraint set $K$.
+
+In particular:
+- For $\ell_2$ norm constraints, the output is a perturbation vector constrained within a Euclidean ball.
+- For $\ell_\infty$ norm constraints, the output is a perturbation vector bounded within a hypercube, ensuring that each element lies within the range $[-1, 1]$.
+
+Ultimately, the algorithm produces an adversarial example that misleads the classifier while adhering to the specified norm constraint.
+
+
+%Formula
+Our loss function $\ell_t$ is defined as
+$\ell_t(g) = -\left\langle \nabla L(x, y), \frac{g}{\|g\|} \right\rangle$
+
+for a given gradient estimate $g$, where we access this inner product via finite differences. Here, $L(x, y)$ is the classification loss on an image $x$ with true class $y$. The crucial element of our algorithm will thus be the method of updating the latent vector $v_t$. We will adapt here the canonical “reduction from bandit information.” Specifically, our update procedure is parametrized by an estimator $\Delta_t$ of the gradient $\nabla_v \ell_t(v)$, and a first-order update step $A (K \times \mathbb{R}^{\text{dim}(K)} \to K)$, which maps the latent vector $v_t$ and the estimated gradient of $\ell_t$ with respect to $v_t$ (which we denote $\Delta_t$) to a new latent vector $v_{t+1}$. 
+
+%Explanation
+To generate adversarial examples, we alternate between estimating the gradient and updating the latent vector. The update rule varies depending on the convex set $K$. For instance, when $K = \mathbb{R}^n$, we use a simple gradient ascent method, whereas for $K = [-1, 1]^n$, we employ exponentiated gradients. 
+
+The overall approach efficiently interleaves the gradient estimation process with updates to the input image, ultimately enabling the construction of black-box adversarial examples. This method is applicable to various norm constraints, ensuring flexibility in how perturbations are applied.

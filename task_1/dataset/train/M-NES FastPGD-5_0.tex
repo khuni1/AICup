@@ -1,0 +1,28 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, $\epsilon$ be the maximum allowable perturbation, and $\alpha$ be the step size. The goal is to create an adversarial example $x^*$ that misleads a target model while leveraging a surrogate model for faster optimization.
+
+%Output
+The output of the Transfer Based NES Fast PGD attack is an adversarial example $x^*$ generated through a rapid iterative optimization process.
+
+%Formula
+The Transfer Based NES Fast PGD attack can be formulated as follows:
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Initialize the perturbation:
+   $\delta^{(0)} = 0$
+3. For each iteration $n = 1$ to $N$:
+   - Compute the gradient using the surrogate model:
+   $g_n = \nabla_x L(f_{\theta_s}(x^{(n-1)} + \delta^{(n-1)}), y)$
+   where $L$ is the loss function.
+   - Update the perturbation quickly using NES:
+   $\delta_n = \delta_{n-1} + \alpha \cdot \text{sign}(g_n)$
+   - Apply clipping to ensure the perturbed input remains within the allowable space:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x + \delta_n)$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+4. The final adversarial example is:
+   $x^* = x^{(N)} + \delta^{(N)} \quad \text{with the constraint that} \quad \|x^* - x\|_p \leq \epsilon$
+
+%Explanation
+The Transfer Based NES Fast PGD adversarial attack combines the speed of Fast PGD with the effectiveness of transfer-based methods to generate adversarial examples efficiently. By utilizing a surrogate model, this approach quickly computes gradients to inform perturbation updates, leveraging the advantages of the NES technique for optimization. The iterative process applies rapid perturbation adjustments while maintaining the visual integrity of the input by projecting the perturbed images back within acceptable limits. This method allows for the creation of adversarial examples $x^*$ that can effectively deceive the target model, demonstrating the potency of fast transfer-based attacks in adversarial machine learning contexts.

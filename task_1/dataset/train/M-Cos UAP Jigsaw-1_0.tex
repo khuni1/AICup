@@ -1,0 +1,28 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input image, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The Cos-UAP-Jigsaw attack aims to generate a universal adversarial perturbation \( \delta \) that can be applied to Jigsaw puzzle images.
+
+%Output
+The output of the Cos-UAP-Jigsaw attack is a universal adversarial perturbation \( \delta \) that can be applied to multiple images to mislead the model.
+
+%Formula
+The Cos-UAP-Jigsaw attack can be formulated as follows:
+1. Initialize the universal perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+2. Define the objective function to maximize the cosine similarity between the perturbation and the gradients:
+   $
+   \text{maximize } \sum_{i=1}^{N} \cos(\delta, \nabla_{\delta} L(f(x_i + \delta), y_i)) \text{ subject to } \|\delta\| \leq \epsilon,
+   $
+   where \( N \) is the number of images from the Jigsaw puzzle dataset.
+3. Update the perturbation using the gradient ascent approach:
+   $
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \nabla_{\delta} \left( \sum_{i=1}^{N} \cos(\delta, \nabla_{\delta} L(f(x_i + \delta), y_i)) \right).
+   $
+4. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The Cosine Universal Adversarial Perturbation for Jigsaw Puzzle Images (Cos-UAP-Jigsaw) attack generates a universal adversarial perturbation \( \delta \) by maximizing the cosine similarity between the perturbation and the gradients of the loss function across multiple Jigsaw puzzle images. By iteratively refining the perturbation based on the gradients, this attack aims to create a perturbation that can universally deceive the model when applied to different Jigsaw puzzle images, highlighting the vulnerability of models to universal adversarial perturbations.

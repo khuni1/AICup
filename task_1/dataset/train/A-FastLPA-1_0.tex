@@ -1,0 +1,76 @@
+%Input
+$f(\cdot)$: The classifier network, which takes an input and provides a classification.
+$d(\cdot, \cdot)$: The LPIPS (Learned Perceptual Image Patch Similarity) distance function, which measures perceptual similarity between two images.
+$x$: The original input image.
+$y$: The target label for the classification task.
+$\epsilon$: The maximum allowable perturbation (bound) for the attack.
+$x_e$: The perturbed version of the input image.
+$\lambda$: A scalar used to balance the loss function with the LPIPS distance.
+$\Delta$: The gradient direction used for perturbation.
+$\eta$: The step size for perturbation adjustment.
+$m$: An approximation of the derivative of the LPIPS distance with respect to $x_e$.
+$h$: A small step size used for numerical approximation of the derivative.
+
+%Output
+The FASTLPA algorithm generates an adversarial image $x_e$ by iteratively applying perturbations to the original image $x$ while balancing the classifier loss and perceptual similarity. The process begins by initializing $x_e$ with a small amount of Gaussian noise. The algorithm performs $T$ steps of gradient ascent, where each step involves calculating and normalizing the gradient $\Delta$ with respect to the classifier loss and LPIPS distance. The step size $\eta$ is adjusted exponentially to ensure fine-tuning as the attack progresses. An approximate derivative $m$ of the LPIPS distance is used to scale the perturbation appropriately. Finally, the algorithm updates $x_e$ and returns it as the perturbed image. FASTLPA requires more forward passes than PGD but the same number of backward passes, making it slightly slower in practice. 
+
+%Formula
+The FASTLPA algorithm can be formulated as follows:
+
+\begin{enumerate}
+    \item \textbf{Input Parameters:}  
+    \begin{align*}
+    f(x) &: \text{Classifier network}, \\
+    d(x_1, x_2) &: \text{LPIPS distance function}, \\
+    x &: \text{Original input}, \\
+    y &: \text{True label}, \\
+    \epsilon &: \text{Perturbation bound}, \\
+    T &: \text{Number of steps}.
+    \end{align*}
+
+    \item \textbf{Initialization:}  
+    Add small Gaussian noise to the input image to initialize perturbations:
+    \[
+    x_e = x + 0.01 \cdot N(0, 1).
+    \]
+
+    \item \textbf{Iterative Update:}  
+    For $t = 1, \ldots, T$, perform the following steps:
+    \begin{enumerate}
+        \item Compute the exponential increase in $\lambda$:
+        \[
+        \lambda = 10^{t/T}.
+        \]
+        \item Calculate the gradient $\Delta$ of the classifier loss with an LPIPS penalty:
+        \[
+        \Delta = \nabla_{x_e} L(f(x_e), y) - \lambda \cdot \max \left(0, d(x_e, x) - \epsilon \right).
+        \]
+        \item Normalize the gradient:
+        \[
+        \Delta = \frac{\Delta}{\|\Delta\|_2}.
+        \]
+        \item Compute the step size $\eta$ with exponential decay:
+        \[
+        \eta = \epsilon \cdot (0.1)^{t/T}.
+        \]
+        \item Approximate the derivative of the LPIPS distance in the direction of $\Delta$:
+        \[
+        m = \frac{d(x_e, x_e + h \cdot \Delta)}{h}, \quad h = 0.1.
+        \]
+        \item Update the perturbed input:
+        \[
+        x_e = x_e + \frac{\eta}{m} \cdot \Delta.
+        \]
+    \end{enumerate}
+
+    \item \textbf{Output:}  
+    Return the final perturbed image:
+    \[
+    x_e.
+    \]
+\end{enumerate}
+
+%Explanation
+FAST LPIPS-Constrained Perturbation Attack running time can be calculated similarly to LPA's, except that $S = 1$ and there is no projection step. Let $T$ be the number of steps taken during the attack. Fast-LPA requires $2T + 1$ forward passes and $T + 1$ backward passes for the self-bounded case, and $3T + 1$ forward passes and $2T + 1$ backward passes for the externally-bounded case.
+
+In comparison, PGD with $T$ iterations requires $T$ forward passes and $T$ backward passes. Thus, Fast-LPA is slightly slower, requiring $T + 1$ more forward passes and no more backward passes.

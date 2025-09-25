@@ -1,0 +1,38 @@
+%Input
+\begin{itemize}
+    \item \( f \) be the target model.
+    \item \( D = \{(x_i, y_i)\}_{i=1}^{N} \) be the training dataset, where \( x_i \) is an input and \( y_i \) is its true label.
+    \item \( \tilde{D} \) be the poisoned training dataset, where some of the points are subtly manipulated.
+    \item \( \epsilon \) be the maximum allowable perturbation applied to the poisoned samples.
+    \item \( \delta_i \) be the perturbation added to the original data point \( x_i \).
+    \item \( N \) be the number of training samples.
+\end{itemize}
+
+%Output
+The output is a poisoned dataset \( \tilde{D} \), where the poisoned samples are slightly altered to mislead the model, while remaining difficult to detect.
+
+%Formula
+The stealthy poisoning attack can be formulated as follows:
+1. Define the perturbation:
+   \[
+   \tilde{x}_i = x_i + \delta_i, \quad \text{for} \quad i \in \{1, 2, \dots, N\},
+   \]
+   where \( \delta_i \) is the perturbation and \( \|\delta_i\| \leq \epsilon \).
+   
+2. Minimize the loss on the poisoned dataset:
+   \[
+   \min_{\{\delta_i\}} \sum_{i=1}^{N} L(f(x_i + \delta_i), y_i) \quad \text{subject to} \quad \|\delta_i\| \leq \epsilon.
+   \]
+   
+3. Update the perturbations using gradient descent:
+   \[
+   \delta_i^{(t+1)} = \delta_i^{(t)} - \alpha \cdot \nabla_{\delta_i} \left( \sum_{i=1}^{N} L(f(x_i + \delta_i), y_i) \right).
+   \]
+   
+4. Project the perturbations to ensure they stay within the allowed bounds:
+   \[
+   \delta_i = \text{clip}(\delta_i, -\epsilon, \epsilon).
+   \]
+
+%Explanation
+The attack introduces small perturbations \( \delta_i \) to the training data to degrade model performance. The perturbations are optimized to minimize the loss, ensuring they remain undetectable while causing misclassification. This stealthy approach avoids detection by keeping the perturbations within a small threshold \( \epsilon \).

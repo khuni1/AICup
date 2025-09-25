@@ -1,0 +1,37 @@
+%Input
+$x$: Original input sample.
+$y_t$: Target class for the adversarial attack.
+$f_{\theta}$: Target model parameterized by $\theta$.
+$L(f_{\theta}(x), y_t)$: Loss function for targeted misclassification.
+$\epsilon$: Maximum perturbation budget.
+$\alpha$: Learning rate for optimization.
+$N$: Number of iterations for attack generation.
+$r_n$: Boundary robustness adjustment term.
+$\text{Clip}_{\mathcal{X}}(\cdot)$: Clipping function to enforce perturbation constraints.
+
+%Output
+The output of the MABERT adversarial attack is a targeted adversarial example $x^*$ that is crafted to deceive the model while optimizing for boundary robustness.
+
+%Formula
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size $\epsilon$, the learning rate $\alpha$, and the number of iterations $N$.
+3. For each iteration $n = 1$ to $N$:
+   - Compute the current prediction:
+   $\hat{y}^{(n)} = f_{\theta}(x^{(n-1)})$
+   - Calculate the gradient with respect to the loss function targeting the desired class $y_t$:
+   $g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y_t)$
+   - Update the input using a boundary-aware adjustment:
+   $x^{(n)} = x^{(n-1)} - \alpha \cdot g_n + r_n$
+   where $r_n$ is a term designed to enhance robustness against boundary perturbations.
+   - Apply clipping to keep the perturbation within bounds:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)})$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+4. The final targeted adversarial example is:
+   $x^* = x^{(N)}$
+
+%Explanation
+The MABERT adversarial attack maintains the core principle of the TREMBA method while introducing a new constraint that emphasizes the importance of gradient-based optimization. The incorporation of the $r_n$ term in the update process enhances robustness against boundary perturbations, making the resulting adversarial example more challenging to defend against. The MABERT attack can be seen as a variant of the TREMBA method with an added layer of complexity and sophistication, making it a valuable addition to the field of adversarial machine learning.

@@ -1,0 +1,34 @@
+%Input
+The input is the feature \( x_i \) of the input sample \( x \), the target class \( t \), and the output class \( o \). Additionally, the current pixel value and the gradient of the probability of the target class with respect to the pixel values are used.
+
+%Output
+The output includes the saliency score \( s(x_i) \), the updated pixel value, and the computed saliency scores for the target class and output class.
+
+%Formula
+The saliency score \( s(x_i) \) is given by:
+
+\begin{equation*}
+s(x_i) = 
+\begin{cases}
+0 & \text{if } s_t = 0 \text{ or } s_o = 0 \\
+s_t |s_o| & \text{otherwise} \\
+\end{cases}
+\end{equation*}
+
+where:
+
+\begin{align*}
+s_t &= \frac{\partial y_t}{\partial x_i} \\
+s_o &= \sum_{j \neq t} \frac{\partial y_j}{\partial x_i}
+\end{align*}
+
+The update rule for the adversarial example is:
+
+\begin{equation*}
+\text{New Pixel Value} = \text{Current Pixel Value} + \epsilon \cdot \nabla_{\text{pixel}} p(y_t | x)
+\end{equation*}
+
+%Explanation
+JSMA Silency Score variant (SS), where the saliency score \( s(x_i) \) quantifies the importance of the feature \( x_i \) in influencing the network's decision. It is calculated based on the sensitivity of the target class score \( s_t \) and the cumulative sensitivity of all other output class scores \( s_o \) to perturbations in \( x_i \). If either the target class score or the output class scores are zero, the saliency score is set to zero. Otherwise, it reflects the product of the target class sensitivity and the absolute value of the output class sensitivity.
+
+The update rule for adversarial examples adjusts the pixel value by adding a perturbation scaled by the gradient of the probability of the target class with respect to the pixel values. This perturbation is aimed at maximizing the target class probability, effectively generating adversarial examples that influence the network's classification.

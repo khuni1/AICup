@@ -1,0 +1,22 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, and $\epsilon$ be the maximum allowable perturbation. The goal is to create an adversarial example $x^*$ that misleads a target model while leveraging the knowledge gained from a surrogate model.
+
+%Output
+The output of the Transfer Based NES attack is an adversarial example $x^*$ generated through an optimization process that exploits the transferability of adversarial perturbations.
+
+%Formula
+The Transfer Based NES attack can be formulated as follows:
+1. Initialize a population of perturbations $\{\delta_i\}_{i=1}^N$.
+2. For each perturbation, evaluate the fitness using a surrogate model:
+   $\text{fitness}(\delta_i) = -L(f_{\theta_s}(x + \delta_i), y)$
+   where $f_{\theta_s}$ is the surrogate model's output and $L$ is the loss function.
+3. Update the perturbations using:
+   $\delta_{i+1} = \delta_i + \sigma \cdot z$
+   where $z \sim \mathcal{N}(0, I)$ is a random vector, and $\sigma$ is the step size.
+4. After a fixed number of iterations, select the best perturbation:
+   $\delta^* = \arg\max_{i} \text{fitness}(\delta_i)$
+5. The final adversarial example is then:
+   $x^* = x + \delta^* \quad \text{with the constraint that} \quad \|x^* - x\|_p \leq \epsilon$
+
+%Explanation
+The Transfer Based NES (Natural Evolution Strategies) adversarial attack utilizes the concept of transferability in adversarial examples to craft effective perturbations. By leveraging a surrogate model that may have different architecture or parameters than the target model, the attack aims to generate perturbations that can successfully mislead the target model. This is accomplished by evaluating the effectiveness of various perturbations based on their performance against the surrogate model. The optimization process employs natural evolution strategies to explore the space of perturbations while maintaining control over their magnitude. The resulting adversarial example $x^*$ is designed to exploit the vulnerabilities of the target model, demonstrating the utility of transfer-based methods in adversarial machine learning.

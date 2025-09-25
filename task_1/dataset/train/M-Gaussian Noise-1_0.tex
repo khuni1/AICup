@@ -1,0 +1,99 @@
+
+**Original**
+
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Gaussian Noise attack generates adversarial examples by adding Gaussian noise to the input.
+
+%Output
+The output of the Gaussian Noise attack is a modified input \( x^* \) that aims to mislead the model into making an incorrect prediction.
+
+%Formula
+The Gaussian Noise attack can be formulated as follows:
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Sample Gaussian noise:
+   $
+   \eta \sim \mathcal{N}(0, \sigma^2 I),
+   $
+   where \( \sigma \) is the standard deviation and \( I \) is the identity matrix.
+3. Create the adversarial example by adding the noise to the input:
+   $
+   x^* = x + \eta.
+   $
+4. Ensure that the modified input causes a misclassification:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The Gaussian Noise attack generates adversarial examples by adding randomly sampled Gaussian noise \( \eta \) to the original input \( x \). The noise is drawn from a normal distribution with a mean of zero and a specified standard deviation \( \sigma \), which controls the amount of perturbation. This method effectively creates a new input \( x^* \) that may deceive the model into misclassifying it while maintaining some level of perceptibility. The Gaussian Noise attack highlights the susceptibility of machine learning models to random perturbations and illustrates the challenges in designing robust models against such attacks.
+
+
+**Variant 1: PGD Attack Mathematical Perturbation Core with Label Space Noise**
+
+Input: Let $x$ be the original input image, $y$ be the true label associated with it, and $\epsilon$ be the maximum allowed perturbation. The goal is to create a universal adversarial example $x^*$ that misleads the model across multiple inputs.
+
+Output: The output of the PGD Fast-Universal attack is a universal adversarial perturbation $\delta$ added to multiple images, resulting in adversarial examples that can deceive the model.
+
+Formula:
+
+$\delta^{(0)} = 0$
+
+for $n = 1 \text{ to } N: \quad\n\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y) \right) \right)$
+
+Explanation: This variant extends the PGD Attack by introducing label space noise. The perturbation $\delta$ is updated using a noise distribution from the label space, which adds an additional layer of complexity to the attack.
+
+Connection to Original Attack: This variant modifies the original PGD Attack by incorporating label space noise, making it more challenging for the model to distinguish between adversarial examples and legitimate inputs.
+
+
+
+
+
+**Variant 2: Gaussian Noise with Gradient-based Optimization using L1 Regularization**
+
+Input: Let $x$ be the original input data point, $y$ be the true label, and $f_{\theta}$ be the target model. The Gaussian Noise attack generates adversarial examples by adding Gaussian noise to the input.
+
+Output: The output of the Gaussian Noise attack is a modified input $x^*$ that aims to mislead the model into making an incorrect prediction.
+
+Formula:
+
+1. Initialize the input and true label:
+   $(x, y)$
+2. Sample Gaussian noise:
+   $\eta \sim \mathcal{N}(0, \sigma^2 I)$
+3. Create the adversarial example by adding the noise to the input:
+   $x^* = x + \eta$
+4. Regularize the perturbation using L1 regularization:
+   $\delta = \text{Clip}_{\mathcal{X}}(\eta - (\nabla_\delta L(f_\theta(x), y) / ||\nabla_\delta L(f_\theta(x), y)||_1))$
+
+Explanation: This variant extends the Gaussian Noise attack by incorporating L1 regularization, which adds a constraint on the magnitude of the perturbation. This can help improve the stability and robustness of the attack.
+
+Connection to Original Attack: This variant modifies the original Gaussian Noise attack by adding L1 regularization, making it more challenging for the model to distinguish between adversarial examples and legitimate inputs.
+
+
+
+**Variant 3: PGD Attack with Multiple Iterations and Entropy-based Sampling**
+
+Input: Let $x$ be the original input image, $y$ be the true label associated with it, and $\epsilon$ be the maximum allowed perturbation. The goal is to create a universal adversarial example $x^*$ that misleads the model across multiple inputs.
+
+Output: The output of the PGD Fast-Universal attack is a universal adversarial perturbation $\delta$ added to multiple images, resulting in adversarial examples that can deceive the model.
+
+Formula:
+
+$\delta^{(0)} = 0$
+
+for $n = 1 \text{ to } N: \quad\n\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y) \right) \right)$
+
+Explanation: This variant extends the PGD Attack by introducing entropy-based sampling. The perturbation $\delta$ is updated using a distribution that takes into account the uncertainty of the model's predictions.
+
+Connection to Original Attack: This variant modifies the original PGD Attack by incorporating entropy-based sampling, making it more challenging for the model to distinguish between adversarial examples and legitimate inputs.
+
+Summary:
+
+* Variant 1 introduces label space noise to the PGD Attack, making it more challenging for the model to distinguish between adversarial examples and legitimate inputs.
+* Variant 2 incorporates L1 regularization into the Gaussian Noise attack, improving its stability and robustness.
+* Variant 3 uses entropy-based sampling in the PGD Attack, making it more challenging for the model to distinguish between adversarial examples and legitimate inputs.
+
+No results:

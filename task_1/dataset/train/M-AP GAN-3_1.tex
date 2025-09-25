@@ -1,0 +1,25 @@
+%Input
+Input sample: $X \in \mathbb{R}^d$
+True label: $y \in \mathcal{Y}$
+Target class (optional for targeted attack): $y_{\text{target}}$
+Generator network: $G(z; \theta_G)$, where $z$ is a latent vector and $\theta_G$ are the parameters
+Discriminator network: $D(X; \theta_D)$, where $\theta_D$ are the parameters
+Classifier to attack: $f(X)$
+Perturbation budget: $\epsilon$
+Output: Adversarial example $X_{\text{adv}}$ such that:
+\[
+f(X_{\text{adv}}) \neq y \quad \text{(untargeted)} \quad \text{or} \quad f(X_{\text{adv}}) = y_{\text{target}} \quad \text{(targeted)}.
+\]
+
+%Output
+Adversarial example $X_{\text{adv}}$ generated using the GAN-based attack, leveraging the generator's ability to produce perturbations and the discriminator's role in improving the generator's output quality.
+
+%Formula
+The combined objective for the generator is:
+\[
+\mathcal{L}_G = \mathcal{L}_{\text{adv}} + \lambda_{\text{rec}} \mathcal{L}_{\text{rec}},
+\]
+where $\lambda_{\text{rec}}$ is a hyperparameter balancing the adversarial and reconstruction losses.
+
+%Explanation
+The Adversarial Perturbation GAN (AP-GAN) variant introduced here maintains the core principle of the original perturbation core while improving its behavior by leveraging the generator's ability to produce perturbations and the discriminator's role in improving the generator's output quality. The use of the combined objective function, which balances adversarial loss with reconstruction loss, allows for more effective generation of adversarial examples. Additionally, the incorporation of the discriminator network enables a more nuanced understanding of the classifier's vulnerabilities, leading to more stealthy and targeted attacks.

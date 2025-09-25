@@ -1,0 +1,22 @@
+%Input
+\[
+\text{Given:} \quad X \text{ (original input)}, \quad y \text{ (true label)}, \quad \epsilon \text{ (perturbation bound)}, \quad \alpha_i \text{ (step sizes)}, \quad N \text{ (number of iterations)}, \quad M \text{ (number of step sizes)}
+\]
+
+%Output
+Adversarial example $X^{\text{adv}}$
+
+
+%Formula
+\[
+X^{\text{adv}}_0 = X
+\]
+\[
+X^{\text{adv}}_{t+1} = \Pi_{X, \epsilon} \left( X^{\text{adv}}_t + \alpha_i \cdot \text{sign} \left( \nabla_X L(\theta, X^{\text{adv}}_t, y) \right) \right)
+\]
+where $i = 1, 2, \ldots, M$ and $t = 0, 1, \ldots, N-1$
+
+%Explanation
+The Multi-Step Universal PGD (MSU-PGD) variant is an iterative method designed to generate a universal adversarial perturbation that can effectively mislead a model across a wide range of inputs. The attack starts with an initial perturbation of zero and iteratively updates it using multiple step sizes $\alpha_i$ inspired by the sign of the gradient of the loss function. Each update is clipped to ensure the perturbation remains within the allowable limits, similar to the original PGD method. After $N$ iterations, the resulting perturbation $\delta^{(N)}$ is added to the original input image $x$ to create a universal adversarial example $x^*$. This approach exploits the model's vulnerabilities by crafting multiple perturbations that can generalize across multiple instances, making it more difficult for the model to defend against.
+
+This variant introduces multiple step sizes $\alpha_i$ in each iteration, which are inspired by the sign of the gradient of the loss function. This modification allows the attack to maintain the core principle of the original PGD method while improving its effectiveness and adaptability across different inputs.

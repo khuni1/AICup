@@ -1,0 +1,22 @@
+%Input
+The input includes the perturbation $\delta$, the step sizes $\alpha_t$, and the estimated gradients $q_t$ for $T$ iterations.
+
+%Output
+The output is the final perturbation $\delta^T$ after $T$ iterations.
+
+%Formula
+$\delta^T = \sum_{t=1}^{T} \alpha_t q_t$
+
+%Explanation
+Query Limited (QL) where the formula for the perturbation update in the QL Attack method is given by:
+Perturbation Update:
+$\delta^T$
+This variable represents the perturbation after $T$ iterations of the QL Attack method. It accumulates the updates made to the perturbation in each iteration.
+Iteration Summation:
+$sum_{t=1}^{T}$
+This summation iterates over $T$ iterations of the QL Attack method, where each iteration contributes to the final perturbation.
+Step Size and Gradient:
+$\alpha_t &$ Step size or learning rate at iteration $t$
+$q_t &$ Estimated gradient at iteration $t$
+These terms represent the step size or learning rate $\alpha_t$ and the estimated gradient $q_t$ at each iteration $t$ of the QL Attack method. The step size controls the magnitude of the update, while the estimated gradient guides the direction of the update.
+The iterative process refines the perturbation $\delta$ by summing contributions from each iteration, scaled by their respective step sizes and gradients.

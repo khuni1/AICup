@@ -1,0 +1,57 @@
+%Input
+ An image $\mathbf{x}$ 
+ black-box neural network $h$ classifies as $h(\mathbf{x}) = y$ with predicted confidence
+
+%Output
+$p_h(y | \mathbf{x})$ Probability of the predicted label $y$ given the image $\mathbf{x}$.
+
+
+
+%Formula
+1. Initialize the perturbation $\delta \leftarrow 0$.
+
+2. Set the initial probability for the true label: 
+\[
+p \leftarrow p_h(y | \mathbf{x})
+\]
+
+3. While the current predicted label $y$ is the most probable label, i.e., $p_y = \max_{y'} p_{y'}$:
+\[
+\text{Pick a random query vector } q \in Q
+\]
+
+4. For each $\alpha \in \{\epsilon, -\epsilon\}$ (explore both positive and negative perturbations):
+\[
+p' \leftarrow p_h(y | \mathbf{x} + \delta + \alpha q)
+\]
+
+5. If the new probability for the correct label decreases:
+\[
+\text{if } p'_y < p_y:
+\]
+    - Update the perturbation:
+    \[
+    \delta \leftarrow \delta + \alpha q
+    \]
+    - Update the probability:
+    \[
+    p \leftarrow p'
+    \]
+    - Break the loop as an improvement is found.
+
+6. Repeat the process until the current label is no longer the most probable label.
+
+Return the final perturbation is:
+\[
+\delta
+\]
+
+
+%Explanation
+The intuition behind SimBA (Simple Black-box Attack) Query-Limited Optimization is straightforward for any direction $q$ and some step size $\epsilon$, one of $\mathbf{x} + \epsilon q$ or $\mathbf{x} - \epsilon q$ is likely to decrease $p_h(y | \mathbf{x})$. Therefore, we repeatedly pick random directions $q$ and either add or subtract them. To minimize the number of queries to $h$, we always first attempt adding $\epsilon q$. If this decreases the probability $p_h(y | \mathbf{x})$, we take the step; otherwise, we try subtracting $\epsilon q$. This procedure requires between 1.4 and 1.5 queries per update on average (depending on the dataset and target model).
+
+The search directions $Q$ are crucial for the efficiency of SimBA. We restrict all vectors in $Q$ to be orthonormal to ensure that no two directions cancel each other out or amplify each other disproportionately. We evaluate our attack using the standard basis vectors (in pixel space) and discrete cosine transform (DCT) basis vectors for their efficiency and natural suitability to images.
+
+Learning Rate $\epsilon$ Given any set of search directions $Q$, some directions may decrease $p_h(y | \mathbf{x})$ more than others. It is possible for the output probability $p_h(y | \mathbf{x} + \epsilon q)$ to be non-monotonic in $\epsilon$. However, experiments show that the probability $p_h(y | \mathbf{x} \pm \epsilon q)$ decreases monotonically in $\epsilon$ with surprising consistency across random images and vectors $q$.
+
+In query-limited scenarios, we may reduce the number of iterations by increasing $\epsilon$, which incurs a higher perturbation $\ell_2$-norm. Conversely, if a low norm solution is more desirable, reducing $\epsilon$ will allow for more queries at the same $\ell_2$-norm.

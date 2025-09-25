@@ -1,0 +1,22 @@
+%Input
+Original input data points \( x_i \) from dataset \( D \), corresponding true labels \( y_i \), model \( f \), perturbation bound \( \epsilon \), learning rate \( \alpha \), and number of iterations \( T \).
+
+%Output
+Optimized perturbations \( \{\delta_1, \delta_2, \dots, \delta_N\} \) that maximize the cumulative loss while remaining within the specified perturbation bound.
+
+%Formula
+1. Initialize the perturbations:
+   \[
+   \Delta = \{\delta_1 = 0, \delta_2 = 0, \ldots, \delta_N = 0\}.
+   \]
+2. Define the objective to maximize the cumulative loss:
+   \[
+   \text{maximize } \sum_{i=1}^{N} L(f(x_i + \delta_i), y_i) \quad \text{subject to } \|\delta_i\| \leq \epsilon, \, \forall i \in \{1, 2, \ldots, N\}.
+   \]
+3. Update each perturbation iteratively using projected gradient ascent:
+   \[
+   \delta_i^{(t+1)} = \text{clip}(\delta_i^{(t)} + \alpha \cdot \nabla_{\delta_i} L(f(x_i + \delta_i^{(t)}), y_i), -\epsilon, \epsilon).
+   \]
+
+%Explanation
+The Projected Cumulative Attack (PCA) variant introduces a more robust optimization method by projecting the perturbations at each iteration to ensure they remain within bounds. This modification maintains the core principle of the original attack while improving its stealthiness and effectiveness by preventing the perturbations from growing indefinitely.

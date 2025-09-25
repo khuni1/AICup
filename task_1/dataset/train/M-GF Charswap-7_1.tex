@@ -1,0 +1,40 @@
+%Input
+Let \( x \) be the original input text, \( y \) be the true label, and \( f_{\theta} \) be the target model. The PruthiKeyboard Charswap attack generates adversarial examples by swapping characters in the input text to deceive the model.
+
+%Output
+The output of the Charswap attack is a modified text input \( x^* \) that aims to mislead the model while maintaining a degree of semantic similarity to the original text.
+
+%Formula
+1. Initialize the input text and true label:
+   $
+   (x, y).
+   $
+2. Tokenize the input text:
+   $
+   x = (w_1, w_2, \ldots, w_n).
+   $
+3. For each character \( c_i \) in the input text:
+   - Identify potential characters to swap based on keyboard layout:
+   $
+   S(c_i) = \{c_{i1}, c_{i2}, \ldots, c_{im}\}.
+   $
+4. For each candidate character \( c_{ij} \):
+   - Construct a modified input by swapping characters:
+   $
+   x' = (w_1, \ldots, w_{i-1}, c_{ij}, w_{i+1}, \ldots, w_n).
+   $
+   - Evaluate the model's prediction:
+   $
+   \hat{y} = f_{\theta}(x').
+   $
+   - If \( \hat{y} \neq y \), then \( x' \) is a candidate adversarial example.
+5. The goal is to find:
+   $
+   x^* = \arg\max_{x'} \text{Prob}(f_{\theta}(x') \neq y),
+   $
+   ensuring that the number of swaps is minimized.
+
+%Explanation
+The Gradient-Free Charswap Attack (GF-Charswap) variant generates adversarial examples by strategically swapping characters in the input text \( x \) with similar-looking characters based on a keyboard layout. This subtle manipulation aims to create a new input \( x^* \) that retains readability while causing the model to misclassify the text.
+
+This variant introduces a gradient-free optimization approach, replacing the traditional iterative update rule with a gradient-free strategy inspired by the gradient-free optimization technique used in M-PruthiKeyabord. This modification allows for more efficient and scalable adversarial example generation.

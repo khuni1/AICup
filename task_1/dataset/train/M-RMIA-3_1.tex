@@ -1,0 +1,16 @@
+%Input
+Original input $x$, True label Model $f(\cdot)$ with parameters $\theta$
+and Loss function $J(\theta, x, y)$, Perturbation limit $\epsilon$ ,Step size $\alpha$ and Number of iterations $N$
+Output: Adversarial example $x_{\text{adv}}$
+Formula: $x_{0}^{\text{adv}} = x$
+
+%Output
+Adversarial example $x_{\text{adv}}$, with additional constraint: enforce $L_2$ regularization on the model parameters $\theta$
+
+%Formula
+$x_{i+1}^{\text{adv}} = \text{Clip}_{x, \epsilon}\left\{ x_i^{\text{adv}} + \alpha \cdot \text{sign}(g_i) + \beta \cdot \nabla_\theta J(\theta, x_i^{\text{adv}}, y) \right\}$
+
+%Explanation
+The Regularized Momentum Iterative Attack (RMIA) variant is a modified version of the original perturbation core. The new attack maintains the same iterative function sign framework but introduces an additional constraint to enforce $L_2$ regularization on the model parameters $\theta$. This regularizer encourages the model to reduce its complexity and improves its robustness to adversarial attacks. The added term in the formula $\beta \cdot \nabla_\theta J(\theta, x_i^{\text{adv}}, y)$ incorporates the gradient of the loss function with respect to the model parameters, which helps to adaptively update the model's weights during the optimization process. This modification makes the attack more effective and targeted towards improving the model's robustness.
+
+The RMIA variant improves upon the original perturbation core by incorporating $L_2$ regularization on the model parameters, making it a more robust and adaptive adversarial attack.

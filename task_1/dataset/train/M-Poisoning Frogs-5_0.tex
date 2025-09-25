@@ -1,0 +1,47 @@
+%Input
+\STATE \textbf{Input:} target instance $t$, base instance $b$, learning rate $\lambda$, weighting parameter $\beta$
+\STATE Initialize $x$: $x_0 \leftarrow b$
+\STATE Define: $L_p(x) = \|f(x) - f(t)\|^2$
+\STATE Inputs include the target instance $t$, base instance $b$, $\lambda$, and $\beta$. The network uses transfer learning from a pre-trained feature extraction model (e.g., InceptionV3).
+
+%Output
+\STATE Output is the poison instance that minimizes the distance to the target in feature space while staying close to the base instance in input space.
+\STATE The output is the poison instance that causes the target to be misclassified in transfer learning scenarios.
+
+\FOR{$i = 1$ to \text{maxIters}}
+    \STATE Forward step: $x_b^i = x_{i-1} - \lambda \nabla_x L_p(x_{i-1})$
+    \STATE Backward step: $x_i = \frac{x_b^i + \lambda \beta b}{1 + \beta \lambda}$
+\ENDFOR
+
+\STATE The output is the poison instance $p$ that minimizes the feature space distance to the target $t$ while staying close to the base instance $b$ in the input space.
+\STATE The output is the poison instance $p$ that induces misclassification of the target $t$ with 100\% success when added to the training set.
+
+%Formula
+\STATE The objective is to solve the following optimization problem:
+
+\begin{equation}
+p = \arg\min_x \|f(x) - f(t)\|_2^2 + \beta \|x - b\|_2^2
+\end{equation}
+
+\STATE In transfer learning, only the final softmax layer is trained while the feature extraction network remains frozen. For poisoning attacks, we craft the poison instance using Algorithm 1 and perform cold-start training with:
+
+\begin{equation}
+\beta = \beta_0 \cdot \frac{2048^2}{(\text{dim}_b)^2}
+\end{equation}
+
+\STATE where $\text{dim}_b$ represents the dimensionality of the base instance, and $2048$ is the feature space dimension for InceptionV3.
+
+\STATE We apply the following poisoning strategy to craft a poison instance that minimizes the distance to the target in feature space while staying close to the base instance in input space:
+
+\begin{equation}
+p = \arg\min_x \|f(x) - f(t)\|_2^2 + \beta \|x - b\|_2^2
+\end{equation}
+
+%Explanation
+Poisoning Frogs Feature Collision ensures that the poison instance $p$ resembles the base instance $b$, making it likely to be labeled as such by a human labeler. The first term pulls the poison instance toward the target $t$ in feature space, making the poison instance misclassified as the target by the model. After the model is retrained with the poisoned data, the decision boundary is expected to rotate, potentially including the target in the base class, enabling a backdoor misclassification of the target during test time.
+
+By using a single poison instance crafted through this method, we can force the network to misclassify the target after retraining the final layer with the poisoned dataset. The attack is highly effective in transfer learning setups, with success rates of 100\%.
+
+In this transfer learning case, the attack succeeds with 100\% accuracy. By crafting a single poison instance and adding it to the training set, the linear decision boundary rotates to include the poison (and potentially the target) in the base class. This approach works particularly well in scenarios where a pre-trained feature extraction network is used, and only the final layer is retrained.
+
+

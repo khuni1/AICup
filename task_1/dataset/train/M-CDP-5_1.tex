@@ -1,0 +1,19 @@
+%Input
+Let \( \theta \) be the network parameters, and let \( x \) represent the clean input data points. The adversarial poisoning attack introduces a set of poisoning samples \( A \) into the original dataset \( D \), forming a contaminated dataset \( D' = D \cup A \). 
+
+The clustering function applied to a dataset \( D' \) is denoted as \( f_D(D') \), and the distance measure between clusterings is given by \( d_c \). The objective of the attack is to maximize the difference between the clean clustering \( C \) and the contaminated clustering \( f_D(D \cup A) \).
+
+The attack is constrained by:
+- A maximum number of poisoning samples \( m \).
+- Feature value bounds \( x_{lb} \leq a \leq x_{ub} \), defining a valid attack sample set \( \Omega_p \).
+
+
+%Output
+$\theta$: Network parameters \ $x$: Clean input data points \ $A$: Set of adversarial poisoning samples \ $f_D$: Clustering function applied to dataset $D'$ \ $d_c$: Distance measure between clusterings \ $D$: Original dataset \ $D'$: Contaminated dataset $D \cup A$ \ $m$: Maximum number of poisoning samples \ $x_{lb}, x_{ub}$: Lower and upper bounds on feature values of attack samples \ $\Omega_p$: Set of valid attack samples constrained by $x_{lb} \leq a \leq x_{ub}$
+Output: An optimal adversarial poisoning strategy $A^*$ that maximizes the distance between clean and contaminated clustering.
+
+%Formula
+$\max_{A \in \Omega_p} g(A) = d_c(C, f_D(D \cup A))$
+
+%Explanation
+The Cluster Disruptive Poisoning (CDP) Attack variant differs from the main perturbation core by incorporating a targeted clustering approach. Instead of generating adversarial examples across multiple inputs, this variant focuses on corrupting specific clusterings in the original dataset. The attack strategy is designed to maximize the distance between clean and contaminated clusterings, ensuring that the malicious samples inserted into the data induce significant disruption.

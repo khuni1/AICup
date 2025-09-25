@@ -1,0 +1,28 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, $\epsilon$ be the maximum allowable perturbation, and $\alpha$ be the step size. The objective is to create an adversarial example $x^*$ that misleads a target model while leveraging the knowledge from a surrogate model.
+
+%Output
+The output of the Transfer Based NES PGD attack is an adversarial example $x^*$ generated through an iterative optimization process.
+
+%Formula
+The Transfer Based NES PGD attack can be formulated as follows:
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Initialize the perturbation:
+   $\delta^{(0)} = 0$
+3. For each iteration $n = 1$ to $N$:
+   - Compute the gradient using the surrogate model:
+   $g_n = \nabla_x L(f_{\theta_s}(x^{(n-1)} + \delta^{(n-1)}), y)$
+   where $L$ is the loss function.
+   - Update the perturbation using NES:
+   $\delta_n = \delta_{n-1} + \alpha \cdot \text{sign}(g_n)$
+   - Project the perturbed input back into the allowable space:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n-1)} + \delta_n)$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+4. The final adversarial example is represented as:
+   $x^* = x^{(N)} + \delta^{(N)} \quad \text{with the constraint that} \quad \|x^* - x\|_p \leq \epsilon$
+
+%Explanation
+The Transfer Based NES PGD adversarial attack integrates the concepts of transferability and projected gradient descent to generate effective adversarial examples. By utilizing a surrogate model, which may have a different architecture or training regime than the target model, the attack crafts perturbations that are optimized to mislead the target model. The process involves iteratively updating the perturbation based on the gradients computed from the surrogate model's predictions. The projection step ensures that the perturbations remain within a specified limit, preserving the visual integrity of the original input. The resulting adversarial example $x^*$ exploits vulnerabilities in the target model while leveraging the information derived from the surrogate, highlighting the strength of transfer-based attacks in adversarial machine learning.

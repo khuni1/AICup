@@ -1,0 +1,92 @@
+%Input
+$x$: Input sample \\
+$c$: True class label \\
+$d$: Dimension of input sample \\
+$K$: Number of classes \\
+$f$: Classifier function \\
+$C$: Constraint set on the input space \\
+$\delta_{\text{min},p}$: Minimal adversarial perturbation \\
+$\|\cdot\|_p$: $\ell_p$-norm operator\\
+$w$: Normal vector of the hyperplane \\
+$b$: Offset of the hyperplane \\
+$x$: Input sample \\
+$C$: Constraint set defined by lower and upper bounds \\
+$z^*$: Projection of $x$ onto the hyperplane \\
+$\|\cdot\|_p$: $\ell_p$-norm operator \\
+$l_i, u_i$: Lower and upper bounds on each component of $z$
+$x_{\text{orig}}$: Original input sample \\
+$x^{(i)}$: Current iterate \\
+$f$: Classifier function \\
+$\pi_l^{(i)}$: Approximate decision hyperplane \\
+$s$: Closest class to $x^{(i)}$ \\
+$d_p$: $\ell_p$-distance function
+Let $f : \mathbb{R}^d \to \mathbb{R}^K$ be a classifier which assigns every input $x \in \mathbb{R}^d$ (with $d$ the dimension of the input space) to one of the $K$ classes according to $\arg \max_{r=1,...,K} f_r(x)$. In many scenarios the input of $f$ has to satisfy a specific set of constraints $C$, e.g. images are represented as elements of $[0, 1]^d$. Then, given a point $x \in \mathbb{R}^d$ with true class $c$, we define the minimal adversarial perturbation for $x$ with respect to the $l_p$-norm.
+
+
+%Formula
+$\delta_{\text{min},p} = \arg \min_{\delta \in \mathbb{R}^d} \|\delta\|_p$
+$\text{s.t.} \quad \max_{l \neq c} f_l(x + \delta) \geq f_c(x + \delta), \quad x + \delta \in C.$
+$z^* = \arg \min_{z \in \mathbb{R}^d} \|z - x\|_p$
+$\text{s.t.} \quad \langle w, z \rangle + b = 0, \quad l_i \leq z_i \leq u_i, \quad i = 1, \dots, d.$
+
+If (2) is infeasible, compute:
+$z_0 = \arg \min_{\substack{l_i \leq z_i \leq u_i \\ \forall i}} \rho \cdot (\langle w, z \rangle + b),$
+$z_0^i = \begin{cases} 
+l_i & \text{if } \rho w_i > 0, \\
+u_i & \text{if } \rho w_i < 0, \\
+x_i & \text{if } w_i = 0,
+\end{cases}
+\quad \forall i = 1, \dots, d.$
+
+Define the projection operator:
+$\text{proj}_p(x, \pi, C) = \begin{cases} 
+z^* & \text{if (2) is feasible}, \\
+z_0 & \text{else}.
+\end{cases}$
+
+The decision boundary hyperplane:
+$\pi_l^{(i)}(z) : f_l(x^{(i)}) - f_c(x^{(i)}) + \langle \nabla f_l(x^{(i)}) - \nabla f_c(x^{(i)}), z - x^{(i)} \rangle = 0.$
+
+Distance to the hyperplane:
+$d_p(x^{(i)}, \pi_l) = \frac{|f_l(x^{(i)}) - f_c(x^{(i)})|}{\|\nabla f_l(x^{(i)}) - \nabla f_c(x^{(i)})\|_q}.$
+
+
+%Output
+$\delta_{\text{min},p} = \arg \min_{\delta \in \mathbb{R}^d} \|\delta\|_p$
+$\text{s.t.} \quad \max_{l \neq c} f_l(x + \delta) \geq f_c(x + \delta), \quad x + \delta \in C.$
+$z^* = \arg \min_{z \in \mathbb{R}^d} \|z - x\|_p$
+$\text{s.t.} \quad \langle w, z \rangle + b = 0, \quad l_i \leq z_i \leq u_i, \quad i = 1, \dots, d.$
+
+If (2) is infeasible, compute:
+$z_0 = \arg \min_{\substack{l_i \leq z_i \leq u_i \\ \forall i}} \rho \cdot (\langle w, z \rangle + b),$
+$z_0^i = \begin{cases} 
+l_i & \text{if } \rho w_i > 0, \\
+u_i & \text{if } \rho w_i < 0, \\
+x_i & \text{if } w_i = 0,
+\end{cases}
+\quad \forall i = 1, \dots, d.$
+
+Define the projection operator:
+$\text{proj}_p(x, \pi, C) = \begin{cases} 
+z^* & \text{if (2) is feasible}, \\
+z_0 & \text{else}.
+\end{cases}$
+
+The decision boundary hyperplane:
+$\pi_l^{(i)}(z) : f_l(x^{(i)}) - f_c(x^{(i)}) + \langle \nabla f_l(x^{(i)}) - \nabla f_c(x^{(i)}), z - x^{(i)} \rangle = 0.$
+
+Distance to the hyperplane:
+$d_p(x^{(i)}, \pi_l) = \frac{|f_l(x^{(i)}) - f_c(x^{(i)})|}{\|\nabla f_l(x^{(i)}) - \nabla f_c(x^{(i)})\|_q}.$
+
+
+%Explanation
+The optimization problem aims to find the smallest perturbation $\delta$ in terms of the $\ell_p$-norm that, when added to the original input $x$, results in a misclassification by the classifier $f$ while ensuring that the perturbed input remains within the constraints $C$. This problem is known to be non-convex and NP-hard, often requiring approximation algorithms due to computational complexity.
+Projection on a hyperplane with box constraints: Let $w \in \mathbb{R}^d$ and $b \in \mathbb{R}$ be the normal vector and the offset defining the hyperplane $\pi : \langle w, x \rangle + b = 0$. Let $x \in \mathbb{R}^d$, we denote by the box-constrained projection with respect to the $l_p$-norm of $x$ on $\pi$ (projection onto the intersection of the box $C = \{ z \in \mathbb{R}^d : l_i \leq z_i \leq u_i \}$ and the hyperplane $\pi$) the following minimization problem.
+
+The projection problem aims to find the closest point $z$ to $x$ on the hyperplane $\pi$ that also satisfies the box constraints. For $p \geq 1$, this problem is convex and can be solved efficiently. If the projection is infeasible, the closest point is computed by finding the intersection of the box constraints with the hyperplane. The projection operator handles both feasible and infeasible cases.
+
+We introduce now our algorithm to produce minimally distorted adversarial examples, with respect to any $l_p$-norm for $p \in \{1, 2, \infty \}$, for a given point $x_{\text{orig}}$ initially correctly classified by $f$ as class $c$. The high-level idea is that, first, we use the linearization of the classifier at the current iterate $x^{(i)}$ to compute the box-constrained projections of $x^{(i)}$ respectively $x_{\text{orig}}$ onto the approximated decision hyperplane and, second, we take a convex combination of these projections depending on the distance of $x^{(i)}$ and $x_{\text{orig}}$ to the decision hyperplane. Finally, we perform an extrapolation step. We explain below the geometric motivation behind these steps.
+
+The attack closest in spirit is DeepFool which is known to be very fast but suffers from low quality. DeepFool just tries to find the decision boundary quickly but has no incentive to provide a solution close to $x_{\text{orig}}$. Our scheme resolves this main problem and, together with the exact projection we use, leads to a principled way to track the decision boundary (the surface where the decision of $f$ changes) close to $x_{\text{orig}}$.
+
+The FAB attack uses linearization of the classifier at the current iterate to approximate the decision boundary. It computes the box-constrained projections of the current iterate and the original input onto this approximate decision hyperplane, combines these projections based on their distances to the hyperplane, and performs an extrapolation step. This approach helps to find minimally distorted adversarial examples that are close to the original input while being classified incorrectly by the model.

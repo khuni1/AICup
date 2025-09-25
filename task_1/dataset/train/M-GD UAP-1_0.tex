@@ -1,0 +1,28 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input data point, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The GD-UAP Attack aims to generate a universal adversarial perturbation \( \delta \) that can mislead the model across multiple inputs.
+
+%Output
+The output of the GD-UAP Attack is a universal adversarial perturbation \( \delta \) that can be applied to various inputs to mislead the classifier.
+
+%Formula
+The GD-UAP Attack can be formulated as follows:
+1. Initialize the universal perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+2. Define the objective function to minimize the average loss over a set of inputs:
+   $
+   \text{minimize } \frac{1}{N} \sum_{i=1}^{N} L(f(x_i + \delta), y_i) \text{ subject to } \|\delta\| \leq \epsilon,
+   $
+   where \( N \) is the number of input samples.
+3. Update the perturbation using gradient descent:
+   $
+   \delta^{(t+1)} = \delta^{(t)} - \alpha \cdot \nabla_{\delta} \left( \frac{1}{N} \sum_{i=1}^{N} L(f(x_i + \delta^{(t)}), y_i) \right).
+   $
+4. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The Gradient Descent-based Universal Adversarial Perturbation (GD-UAP) generates a universal adversarial perturbation \( \delta \) by minimizing the average loss across multiple input samples. This approach leverages the gradient of the loss function to iteratively refine \( \delta \), crafting a perturbation that can universally deceive the classifier when applied to different inputs. This method highlights the vulnerability of machine learning models to universal perturbations and underscores the importance of robust defense mechanisms.

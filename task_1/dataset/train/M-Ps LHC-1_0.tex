@@ -1,0 +1,33 @@
+%Input
+Let \( x \) be the original input data point and \( y \) be the true label. The Ps-LHC Adversarial Attack aims to generate adversarial examples by maximizing the likelihood of a target class under a hard-label setting.
+
+%Output
+The output of the Ps-LHC Adversarial Attack is a perturbed input \( \tilde{x} \) that is misclassified by the model.
+
+%Formula
+The Ps-LHC Adversarial Attack can be formulated as follows:
+1. Initialize the original input and the perturbation magnitude \( \epsilon \):
+   $
+   \tilde{x} = x + \delta,
+   $
+   where \( \delta \) is the perturbation to be optimized.
+2. Define the objective function to maximize the likelihood of the target class \( c \):
+   $
+   \text{maximize } L(\tilde{x}, c) = P(y = c | \tilde{x}),
+   $
+   subject to the constraint:
+   $
+   \|\delta\| \leq \epsilon.
+   $
+3. The optimization problem can be solved using gradient ascent:
+   $
+   \delta \leftarrow \delta + \alpha \nabla_{\delta} L(\tilde{x}, c),
+   $
+   where \( \alpha \) is the learning rate.
+4. Update the perturbed input:
+   $
+   \tilde{x} = x + \delta.
+   $
+
+%Explanation
+The Ps-LHC (Pseudo-Likelihood-based Hard-label Attack) Adversarial Attack generates adversarial examples by modifying the original input \( x \) to create a perturbed input \( \tilde{x} \). The objective is to maximize the likelihood of a specified target class \( c \) while ensuring that the perturbation remains within a predefined bound \( \epsilon \). The attack iteratively updates the perturbation \( \delta \) using gradient ascent on the likelihood function. This method effectively crafts adversarial examples that are likely to be misclassified by the model, demonstrating the potential vulnerabilities in classification systems to targeted attacks.

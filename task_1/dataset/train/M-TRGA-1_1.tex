@@ -1,0 +1,13 @@
+%Input
+Let $x$ denote a target input image and $x_{adv}$ represent an adversarial example generated from $x$. The perturbation $\delta$ is defined as the difference between the input and its target representation.
+
+%Output
+The output is an optimization problem that seeks to find adversarial examples $x_{adv}$ subject to a constraint defined by a specified perturbation $\epsilon$.
+
+%Formula
+$\mathcal{L}(x_{adv}, y) \approx \mathcal{L}(x, y) + (x_{adv} - x) \cdot \nabla_x \mathcal{L}(x, y)$
+
+%Explanation
+The Targeted Representation Gradient Attack (TRGA) variant proposes a modified loss function that incorporates the target representation of the input. This leads to a more targeted and stealthy adversarial attack by minimizing the perturbation while maintaining its effectiveness.
+
+The proposed variant is distinct from the original PGD Fast-Universal attack in its use of the target representation of the input, which improves the attack's ability to generalize across multiple instances.

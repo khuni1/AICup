@@ -1,0 +1,26 @@
+%Input
+Natural Evolution Strategies (NES) iteratively update the search distribution and are utilized for adversarial perturbation generation within DPA-A-NES framework. The key input elements are:
+- Learning rate parameter $\eta$
+- Initial parameters $\theta_{init}$
+- Fitness function $f$
+- Sample size $\lambda$
+  
+%Formula
+The algorithm updates the parameter $\theta$ as:
+$\theta \leftarrow \theta + \eta \nabla_\theta J(\theta)$
+where $\nabla_\theta J(\theta)$ is the gradient of the expected reward $J(\theta)$ with respect to the parameter $\theta$. For Gaussian distributions:
+$\pi(z | \theta) = \frac{1}{\sqrt{(2\pi)^d \det(\Sigma)}} \exp \left( -\frac{1}{2} (z - \mu)^\top \Sigma^{-1} (z - \mu) \right)$
+with $\theta = (\mu, \Sigma)$. The log-derivatives are:
+$\nabla_\mu \log \pi (z | \theta) = \Sigma^{-1} (z - \mu)$
+$\nabla_\Sigma \log \pi (z | \theta) = \frac{1}{2} \Sigma^{-1} (z - \mu) (z - \mu)^\top \Sigma^{-1} - \frac{1}{2} \Sigma^{-1}$
+
+%Output
+The output of the NES algorithm is an updated parameter set $\theta_{t+1} = (\mu_{t+1}, \Sigma_{t+1})$, which leads to an adversarial example after several iterations. This adversarial perturbation is optimized within the defined norm constraints (such as $\ell_2$ or $\ell_\infty$), making the process applicable for adversarial attack generation under constrained scenarios. Additionally, it ensures robustness in the face of adaptive adversarial perturbations.
+
+
+%Explanation
+The NES algorithm performs a gradient ascent search using the natural gradient $\nabla_\theta^N J = F^{-1} \nabla_\theta J$, where $F$ is the Fisher information matrix. The updates are performed iteratively by sampling from the distribution $\pi(z|\theta)$, evaluating the fitness function $f(z_k)$, and adjusting $\theta$ using the log-derivatives of the probability density function. The Fisher information matrix:
+$F = \mathbb{E} \left[ \nabla_\theta \log \pi (z|\theta) \nabla_\theta \log \pi (z|\theta)^\top \right]$
+is used to compute the natural gradient update, ensuring efficient convergence.
+
+

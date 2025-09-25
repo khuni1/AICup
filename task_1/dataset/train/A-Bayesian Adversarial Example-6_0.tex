@@ -1,0 +1,33 @@
+%Input
+Let \( x \) be the original input data, \( y \) be the true label, and \( f_{\theta} \) be the target model. The BAE attack aims to generate adversarial examples by sampling from a distribution of perturbations while leveraging a Bayesian framework.
+
+%Output
+The output of the BAE attack is a modified input \( x^* \) that is crafted to mislead the model while maintaining a certain level of uncertainty.
+
+%Formula
+The BAE adversarial attack can be formulated as follows:
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Define a prior distribution \( p(\delta) \) over perturbations \( \delta \):
+   $
+   \delta \sim p(\delta).
+   $
+3. For each sampled perturbation \( \delta \):
+   - Generate the modified input:
+   $
+   x' = x + \delta.
+   $
+   - Evaluate the model's prediction:
+   $
+   \hat{y} = f_{\theta}(x').
+   $
+   - If \( \hat{y} \neq y \), then \( x' \) is a candidate adversarial example.
+4. The objective is to maximize the likelihood of misclassification while controlling the perturbation:
+   $
+   x^* = \arg\max_{x'} \mathbb{E}_{\delta \sim p(\delta)} [f_{\theta}(x') \neq y].
+   $
+
+%Explanation
+The Bayesian Adversarial Example (BAE) attack generates adversarial examples by employing a Bayesian approach to perturbation. By sampling from a prior distribution of perturbations, the attack creates modified inputs \( x^* \) that are more likely to mislead the model. This method highlights the potential for uncertainty in adversarial attacks and the importance of considering probabilistic frameworks when designing robust defenses against such manipulations.

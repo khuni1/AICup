@@ -1,0 +1,11 @@
+%Input
+The input is a matrix \(A\) with elements \(a_{ij}\), and an objective function \(\hat{L}_t(\hat{A})\) to be maximized.
+
+%Output
+Generate one adversarial attack variant that incorporates a new scoring function inspired by the Hessian matrix of the original objective function, denoted as \(H\). The optimized matrix \(\hat{A}\) is generated using the modified gradient ascent method with the new scoring function.
+
+%Formula
+$\arg \max_{\hat{A}} \hat{L}_t(\hat{A}) + \sum_{i,j} \alpha_{ij} H_{ijkl} (\nabla_\delta L(f_\theta(x + \delta), y))^k_l$
+
+%Explanation
+This Hessian-Driven Adversarial Perturbation (H-DAP) variant modifies the original perturbation core by incorporating a new scoring function, inspired by the Hessian matrix of the objective function. The modified gradient ascent method uses this new scoring function to optimize the matrix $\hat{A}$ and generate adversarial examples with improved robustness.

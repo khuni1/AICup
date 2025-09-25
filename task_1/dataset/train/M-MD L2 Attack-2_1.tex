@@ -1,0 +1,19 @@
+%Input
+The input consists of the initial input $x_m$, the gradient of the loss function $\nabla L(x_m, y_c; \theta)$, the step size $\alpha$, and the momentum term $\mu$.
+
+%Output
+The output is the updated input $x_{m+1}$ after one iteration of the algorithm, and the gradient $g_{m+1}$ used to compute the update.
+Output: $x_{m+1} = \text{clip} \left( x_m + \alpha \cdot \frac{\nabla L(x_m, y_c; \theta)}{\|\nabla L(x_m, y_c; \theta)\|_2} \right)$
+Output: $g_{m+1} = \mu \cdot g_m + \frac{\nabla L(x_m, y_c; \theta)}{\|\nabla L(x_m, y_c; \theta)\|_2}$
+
+%Formula  
+\[
+x_{m+1} = \text{clip} \left( x_m + \alpha \cdot \frac{\nabla L(x_m, y_c; \theta)}{\|\nabla L(x_m, y_c; \theta)\|_2} \right)
+\]
+\[
+g_{m+1} = \mu \cdot g_m + \frac{\nabla L(x_m, y_c; \theta)}{\|\nabla L(x_m, y_c; \theta)\|_2}
+\]
+
+
+%Explanation
+The Momentum-Driven $\ell_2$-Normalized Attack (MD-$\ell_2$-Attack) variant is derived from the original perturbation core by replacing the $\ell_1$-norm with a $\ell_2$-norm in the gradient normalization step. This modification changes the attack's behavior, making it more sensitive to large gradients while maintaining its momentum term to accelerate convergence. The updated formula now uses the Euclidean norm of the gradient, which may lead to a different distribution of perturbations compared to the original method.

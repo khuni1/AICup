@@ -1,0 +1,32 @@
+%Input
+\[
+\text{Input: } \quad \text{Original image } \mathbf{x}_{\text{original}}, \quad \text{True label } y_{\text{true}}, \quad \text{Perturbation bound } \epsilon, \quad \text{Adaptive parameter } \gamma, \quad \text{Step size } \eta, \quad \text{Maximum iterations}.
+\]
+
+%Output
+The $L_\infty$-Bounded Adversarial Attack with a dynamic perturbation strategy is proposed. This variant maintains the core principle of the original attack while incorporating an adaptive perturbation approach inspired by the original method.
+
+%Formula
+1.Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2.Iterative Update:
+   For each iteration $t$, update $\mathbf{x}_{\text{adv}}$ as:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} + \eta \cdot \text{sign} \big( \nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{true}}) \big).
+   \]
+
+3.Projection onto $L_\infty$ Ball:
+   Ensure that the perturbation remains bounded using a novel dynamic clipping strategy:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}\big(\mathbf{x}_{\text{adv}}^{(t+1)}, \mathbf{x}_{\text{original}} - (\epsilon + \gamma t), \mathbf{x}_{\text{original}} + (\epsilon + \gamma t) \big),
+   \]
+   where $\gamma$ is a novel adaptive hyperparameter that controls the rate of perturbation growth.
+
+4.Stopping Criterion:
+   Terminate if $f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}$ or after $\text{max\_iterations}$.
+
+%Explanation
+This Adaptive $L_\infty$-Bounded Attack (ALIBA) variant introduces a new dynamic clipping strategy that adapts to the perturbation growth rate. The adaptive hyperparameter $\gamma$ is used to control the perturbation's magnitude, allowing for more aggressive attacks when $\gamma$ is large and more conservative attacks when $\gamma$ is small. This approach maintains the core principles of the original attack while introducing a novel strategy for adapting to the model's behavior.

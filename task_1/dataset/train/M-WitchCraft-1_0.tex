@@ -1,0 +1,43 @@
+%Input
+The input is the original sample \(x\) and the initial perturbation \(\delta\). The perturbation is then subjected to randomization and chaotic transformations.
+
+%Output
+The output is the updated perturbation \(\delta_{\text{final}}\) applied to the input \(x\), resulting in the adversarial example \(x_{\text{new}} = x + \delta_{\text{final}}\).
+
+%Formula
+The perturbation update follows these steps:
+
+Randomization Spell Generate a random perturbation \(\delta_{\text{random}}\) from a Gaussian distribution:
+
+\[
+\delta_{\text{random}} \sim \mathcal{N}(0, \sigma)
+\]
+
+Hexing with Mysterious Filters Apply a chaotic transformation \(f(\cdot)\) (e.g., logistic map) to the random perturbation:
+
+\[
+\delta_{\text{hexed}} = f(\delta_{\text{random}}), \quad f(x) = 4x(1 - x)
+\]
+
+Witch’s Cauldron Blending Combine multiple perturbations with random weights:
+
+\[
+\delta_{\text{final}} = \sum_{i} \omega_i \cdot \delta_i
+\]
+
+Unpredictable Update Rule Apply the final perturbation to the input:
+
+\[
+x_{\text{new}} = x_{\text{old}} + \delta_{\text{final}}
+\]
+
+Hexed Decision Choose the perturbation that maximizes the classification uncertainty:
+
+\[
+\text{Chaos Metric} = \sum_j \left| \frac{\partial y_j}{\partial x_i} \right|
+\]
+
+%Explanation
+WitchCraft or Magical where the input data \(x\) undergoes a sequence of chaotic transformations to generate an adversarial perturbation. The process begins by creating a random perturbation \(\delta_{\text{random}}\) from a Gaussian distribution, followed by applying a chaotic map (e.g., the logistic map) to introduce non-linearities and unpredictability into the perturbation. Multiple perturbations are blended using random weights to form a final perturbation \(\delta_{\text{final}}\).
+
+The perturbation is then applied to the input, resulting in a new adversarial example \(x_{\text{new}} = x + \delta_{\text{final}}\). The final perturbation is chosen to maximize the **Chaos Metric**, which measures the uncertainty of the model’s classification output. This ensures that the adversarial example causes unpredictable and erratic behavior in the model, resembling the chaotic and uncontrollable nature of a "witchcraft" approach in adversarial machine learning.

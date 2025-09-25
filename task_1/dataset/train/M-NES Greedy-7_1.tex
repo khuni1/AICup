@@ -1,0 +1,22 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, and $\epsilon$ be the maximum allowable perturbation. The goal is to create an adversarial example $x^*$ that misleads the model.
+
+%Output
+The output of the NES attack is an adversarial example $x^*$ generated through an optimization process that utilizes natural evolution strategies.
+
+%Formula
+1. Initialize a population of perturbations $\{\delta_i\}_{i=1}^N$.
+2. For each perturbation, evaluate the fitness:
+   $\text{fitness}(\delta_i) = -L(f_\theta(x + \delta_i), y)$
+   where $L$ is the loss function.
+3. Update the perturbations using:
+   $\delta_{i+1} = \delta_i + \sigma \cdot z$
+   where $z \sim \mathcal{N}(0, I)$ is a random vector, and $\sigma$ is the step size.
+4. Repeat the process until convergence to find:
+   $x^* = x + \delta^*$
+   where $\delta^*$ is the best perturbation found.
+
+%Explanation
+The Natural Evolution Strategies (NES) adversarial attack leverages evolutionary algorithms to generate adversarial examples. By initializing a population of perturbations, NES evaluates their effectiveness based on how well they can deceive the model. The process involves iteratively updating these perturbations based on their fitness scores, which reflect the model's loss when the perturbations are applied. The randomness introduced through the Gaussian noise ensures diversity in the perturbations, allowing the attack to explore a broader search space. After several iterations, the best-performing perturbation is selected to create the adversarial example $x^*$. This approach is particularly advantageous in scenarios where gradient information may be unavailable or unreliable, making NES a versatile tool in adversarial machine learning.
+
+The proposed variant, "NES-Greedy", modifies the original NES attack by introducing a greedy search mechanism. Instead of using an evolutionary process to update perturbations, NES-Greedy selects the best-performing perturbation at each iteration based on a predefined threshold. This change improves the attack's efficiency and speed while maintaining its effectiveness in generating adversarial examples.

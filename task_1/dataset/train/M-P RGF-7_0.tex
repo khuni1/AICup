@@ -1,0 +1,26 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, and $f_{\theta}$ be the target model. The goal is to generate an adversarial example $x^*$ without relying on gradient information.
+
+%Output
+The output of the RGF attack is an adversarial example $x^*$ that is created through a randomized approach to perturb the input.
+
+%Formula
+The RGF adversarial attack can be formulated as follows:
+1. Initialize the input:
+$x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size $\epsilon$ and the number of iterations $N$.
+3. For each iteration $n = 1$ to $N$:
+   - Generate a random perturbation:
+   $\delta_n = \text{Random}(-\epsilon, \epsilon)$
+   ensuring the perturbation remains within the allowed range.
+   - Create the perturbed input:
+   $x^{(n)} = x^{(n-1)} + \delta_n$
+   - Check the model's prediction:
+   $\text{if } f_{\theta}(x^{(n)}) \neq y, \text{ then accept } x^{(n)} \text{ as } x^*$
+
+4. The final adversarial example is:
+   $x^* = x^{(n)} \text{ (if found)}$
+
+%Explanation
+The RGF adversarial attack takes a unique approach by avoiding the computation of gradients, instead relying on random perturbations to the input image. By iterating through randomized adjustments within a specified perturbation budget, the attack seeks to identify an input that successfully misleads the target model. This method is particularly useful in scenarios where gradients are difficult to compute or when the model is not accessible. The resulting adversarial example $x^*$ demonstrates the effectiveness of randomized strategies in crafting adversarial inputs, highlighting vulnerabilities in machine learning models that can be exploited without traditional gradient-based methods.

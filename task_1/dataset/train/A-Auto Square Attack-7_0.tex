@@ -1,0 +1,180 @@
+%Input
+The algorithm takes the following inputs:
+- $f$: The classifier network, which provides a classification.
+- $S$: The feasible set within which perturbations are projected.
+- $x^{(0)}$: The initial input point/image.
+- $\eta$: The step size for gradient updates.
+- $N_{\text{iter}}$: The number of iterations for the optimization.
+- $W = \{w_0, \ldots, w_n\}$: The set of iteration indices where adjustments are made.
+
+
+%Formula
+The first algorithm for adversarial example generation can be described as follows:
+
+\begin{enumerate}
+    \item \textbf{Input Parameters:}  
+    \begin{align*}
+    f &: \text{Objective function}, \\
+    S &: \text{Constraint set}, \\
+    x^{(0)} &: \text{Initial input}, \\
+    \eta &: \text{Learning rate}, \\
+    N_{\text{iter}} &: \text{Number of iterations}, \\
+    W &: \text{Subset of iterations for condition checking}.
+    \end{align*}
+
+    \item \textbf{Initialization:}  
+    Compute the first update:  
+    \[
+    x^{(1)} = \mathcal{P}_S \left( x^{(0)} + \eta \nabla f(x^{(0)}) \right).
+    \]
+    Set the initial maximum value:  
+    \[
+    f_{\text{max}} = \max \{f(x^{(0)}), f(x^{(1)})\}.
+    \]
+    Assign the corresponding input:  
+    \[
+    x_{\text{max}} = 
+    \begin{cases} 
+    x^{(0)}, & \text{if } f_{\text{max}} = f(x^{(0)}) \\
+    x^{(1)}, & \text{otherwise}.
+    \end{cases}
+    \]
+
+    \item \textbf{Iterative Updates:}  
+    For each $k = 1, \dots, N_{\text{iter}} - 1$:
+    \begin{enumerate}
+        \item Compute the next perturbation:  
+        \[
+        z^{(k+1)} = \mathcal{P}_S \left( x^{(k)} + \eta \nabla f(x^{(k)}) \right).
+        \]
+        \item Update the input with momentum:  
+        \[
+        x^{(k+1)} = \mathcal{P}_S \left( \alpha (z^{(k+1)} - x^{(k)}) + (1 - \alpha)(x^{(k)} - x^{(k-1)}) \right).
+        \]
+        \item Update the maximum loss and corresponding input if:  
+        \[
+        f(x^{(k+1)}) > f_{\text{max}},
+        \]
+        then set:  
+        \[
+        x_{\text{max}} \gets x^{(k+1)}, \quad f_{\text{max}} \gets f(x^{(k+1)}).
+        \]
+        \item If $k \in W$ and specific conditions are met:
+        \begin{enumerate}
+            \item Adjust the learning rate:  
+            \[
+            \eta \gets \eta / 2.
+            \]
+            \item Reset the input:  
+            \[
+            x^{(k+1)} \gets x_{\text{max}}.
+            \]
+        \end{enumerate}
+    \end{enumerate}
+
+    \item \textbf{Output:}  
+    Return the input with the maximum loss:
+    \[
+    (x_{\text{max}}, f_{\text{max}}).
+    \]
+\end{enumerate}
+
+Second Algorithm:
+
+The Square Attack algorithm for adversarial example generation is defined as follows:
+
+\begin{enumerate}
+    \item \textbf{Input Parameters:}  
+    \begin{align*}
+    f &: \text{Classifier}, \\
+    x &: \text{Input point in } \mathbb{R}^d, \\
+    w &: \text{Image width}, \\
+    c &: \text{Number of color channels}, \\
+    \epsilon &: \ell_p\text{-radius of permissible perturbations}, \\
+    y &: \text{True label}, \\
+    N &: \text{Maximum number of iterations}.
+    \end{align*}
+
+    \item \textbf{Initialization:}  
+    Initialize the perturbed input and loss:  
+    \[
+    \hat{x} = \text{init}(x), \quad l^* = L(f(x), y), \quad i = 1.
+    \]
+
+    \item \textbf{Iterative Updates:}  
+    While $i < N$ and $\hat{x}$ is not adversarial:
+    \begin{enumerate}
+        \item Compute the side length of the perturbation region:
+        \[
+        h(i) = \text{schedule}(i).
+        \]
+        \item Sample a perturbation $\delta$ from the distribution $P$:  
+        \[
+        \delta \sim P(\epsilon, h(i), w, c, x, \hat{x}).
+        \]
+        \item Update the perturbed input:  
+        \[
+        \hat{x}_{\text{new}} = \text{Project}\left( \hat{x} + \delta \; \text{onto} \; \{z \in \mathbb{R}^d : \|z - x\|_p \leq \epsilon\} \cap [0, 1]^d \right).
+        \]
+        \item Compute the new loss:
+        \[
+        l_{\text{new}} = L(f(\hat{x}_{\text{new}}), y).
+        \]
+        \item If $l_{\text{new}} < l^*$:
+        \begin{align*}
+        \hat{x} &\gets \hat{x}_{\text{new}}, \\
+        l^* &\gets l_{\text{new}}.
+        \end{align*}
+        \item Increment the iteration counter:
+        \[
+        i \gets i + 1.
+        \]
+    \end{enumerate}
+
+    \item \textbf{Output:}  
+    Return the final perturbed input:  
+    \[
+    \hat{x}.
+    \]
+\end{enumerate}
+
+
+
+%Output
+The output of the algorithm consists of:
+- $x_{\text{max}}$: The perturbed input that maximizes the loss function.
+- $f_{\text{max}}$: The maximum value of the loss function achieved.
+
+%Explanation
+Auto Square attack is a gradient free attack designed for black box settings:
+\textbf{Initialization:}
+- Compute the initial perturbed input $x^{(1)}$ by applying the gradient ascent step and projecting it onto the feasible set $S$.
+- Initialize the maximum loss $f_{\text{max}}$ to be the maximum of the loss at $x^{(0)}$ and $x^{(1)}$.
+- Set the initial maximum input $x_{\text{max}}$ based on which loss value is higher.
+
+\textbf{Optimization Loop:}
+- For each iteration $k$ from 1 to $N_{\text{iter}} - 1$, compute the new perturbed input $z^{(k+1)}$ by applying the gradient ascent step and projecting it onto the feasible set.
+- Update the perturbed input $x^{(k+1)}$ using a combination of $z^{(k+1)}$ and the previous perturbation $x^{(k-1)}$.
+- If the loss at $x^{(k+1)}$ is greater than the current maximum loss $f_{\text{max}}$, update $x_{\text{max}}$ and $f_{\text{max}}$.
+- Adjust the step size $\eta$ if the current iteration index $k$ is in $W$ and if certain conditions are met.
+
+\textbf{Return:}
+- Return the final perturbed input $x_{\text{max}}$ and its corresponding loss $f_{\text{max}}$.
+
+\textbf{The Square Attack via Random Search:}
+\textbf{Initialization:}
+- Initialize $\hat{x}$ to the input image $x$.
+- Set the initial loss $l^*$ to the classifier loss for the original image and label $L(f(x), y)$.
+- Set the iteration counter $i$ to 1.
+
+\textbf{Iteration Loop:}
+- Continue iterating while $i < N$ and $\hat{x}$ is not adversarial.
+- Determine the side length $h(i)$ of the square to be modified according to some schedule.
+- Sample a perturbation $\delta$ from the distribution $P(\epsilon, h(i), w, c, x, \hat{x})$.
+- Project the perturbed image $\hat{x} + \delta$ onto the feasible set $\{z \in \mathbb{R}^d : \|z - x\|_p \leq \epsilon\} \cap [0, 1]^d$.
+- Compute the loss $l_{\text{new}}$ for the new perturbed image $\hat{x}_{\text{new}}$.
+- If the new loss $l_{\text{new}}$ is less than the current best loss $l^*$, update $\hat{x}$ and $l^*$.
+- Increment the iteration counter $i$ by 1.
+
+\textbf{Return:}
+- Return the final perturbed image $\hat{x}$.

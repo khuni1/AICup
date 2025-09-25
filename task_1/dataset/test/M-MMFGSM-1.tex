@@ -1,0 +1,18 @@
+%Input
+Let $x$ be an input image, and let $y$ be its true class label. The objective is to generate an adversarial example $x_{\text{adv}}$ by applying a perturbation $\delta$ that maximizes the loss function $L(f_\theta(x + \delta), y)$ while incorporating multi-scale momentum to enhance attack robustness.
+
+%Output
+The output of the Multi-scale Momentum FGSM (MMFGSM) attack is an adversarial example $x_{\text{adv}}$, obtained by iteratively updating the perturbation $\delta$ using momentum terms across multiple scales, ensuring diverse and effective adversarial samples.
+
+%Formula
+\[
+\delta^{(0)} = 0
+\]
+\[
+\text{for } n = 1 \text{ to } N: 
+    \delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y) \right)_{s}^k \right)
+\]
+where $k$ is a hyperparameter that controls the number of scales used, and $\left(\cdot\right)_s$ denotes the multi-scale momentum term.
+
+%Explanation
+ Multi-scale Momentum FGSM (MMFGSM) extends the FGSM-MI attack by incorporating multiple scales for the momentum term. The hyperparameter $k$ determines the number of scales used, which allows the attacker to adapt to different regions of the input space. This results in more robust and diverse adversarial examples.

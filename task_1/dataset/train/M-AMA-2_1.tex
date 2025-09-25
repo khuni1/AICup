@@ -1,0 +1,12 @@
+%Input
+The input includes the adversarial example $x^*$, the original input $x$, the loss function $J$, the perturbation constraint $\epsilon$, the step size $\alpha$, and the norm $p$.
+
+%Output
+The output is the adversarial example $x^*$ that maximizes the loss function subject to the perturbation constraints.
+Output: The output of the Momentum Iterative-Gradient Based Optimization attack is a optimized adversarial example $x^*$ that adapts its perturbation based on the gradient of the loss function.
+
+%Formula
+Formula: $\text{arg max} \quad J(x^*, y), \quad \text{s.t.} \quad \| kx^* - x \|_\infty \leq \epsilon$
+
+%Explanation
+The Adaptive Momentum Attack (AMA) variant modifies the original perturbation core by incorporating momentum into the optimization process, allowing the attack to adapt its perturbation based on the gradient of the loss function and preserving the advantages of iterative methods. The momentum term helps escape local minima and improves convergence rates, leading to more effective adversarial attacks.

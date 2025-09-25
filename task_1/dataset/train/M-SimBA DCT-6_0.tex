@@ -1,0 +1,12 @@
+%Input
+The input includes the current perturbation $p$, the original prediction $y$, the input image $x$, the adversarial perturbation $\delta$, the scaling factor $\alpha$, and the random vector $q$. The function $h(\cdot)$ represents the prediction function of the model.
+
+%Output
+The output includes the updated perturbation $p'$.
+
+%Formula
+$p' = p(h(y | x + \delta + \alpha q))$
+
+%Explanation
+where:
+This equation represents a transformation applied in the SimBA-DCT (Simple Black-box Adversarial Attacks with Discrete Cosine Transform) method. It updates the perturbation $p'$ based on the current perturbation $p$ and the model's prediction $h(y | x + \delta + \alpha q)$. Here, $y$ is the original prediction, $x$ is the input image, $\delta$ is the adversarial perturbation, $\alpha$ is a scaling factor, and $q$ is a random vector. The function $h(\cdot)$ represents the prediction function of the model, which outputs predictions based on the perturbed input $x + \delta + \alpha q$. The updated perturbation $p'$ is then computed based on these predictions.

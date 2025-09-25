@@ -1,0 +1,36 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input sequence (e.g., text, image, etc.).  
+$f(\mathbf{x})$: Target model (e.g., classifier).  
+$y_{\text{true}}$: True label of the input sequence.  
+$\lambda$: Learning rate for regression.  
+$N$: Maximum number of iterations for perturbation.  
+$\epsilon$: Threshold for stopping when misclassification is achieved.
+
+%Output
+Regressed adversarial input $\mathbf{x}_{\text{red}}$ that leads to model misclassification.
+
+%Formula
+1.Initialization: 
+   Start with the full input:  
+   \[
+   \mathbf{x}_{\text{reg}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2.Perturbation:
+   Iteratively update $\mathbf{x}$ using gradient-based regression and L1 regularization:
+   \[
+   \nabla_\mathbf{x} \mathcal{L}(f, \mathbf{x}, y) = -\frac{\partial}{\partial \mathbf{x}} (y - f(\mathbf{x})) + \lambda \text{sign} (\nabla_\mathbf{x} L(f, \mathbf{x}, y))).
+   \]
+
+3.Regression:
+   Minimize the loss function with respect to $\mathbf{x}$, using gradient descent and L1 regularization:
+   \[
+   \mathbf{x}_{\text{reg}}^{(t+1)} = \left(\frac{\partial}{\partial \mathbf{x}} \mathcal{L}(f, \mathbf{x}, y) + 2\lambda \text{sign} (\nabla_\mathbf{x} L(f, \mathbf{x}, y)) \right).
+   \]
+
+4.Stopping Condition:
+   - If misclassification is achieved such that $f(\mathbf{x}_{\text{reg}}^{(t+1)}) \neq y_{\text{true}}$, or  
+   - The maximum number of iterations is reached, terminate the attack.
+
+%Explanation
+This variant modifies the perturbation core by incorporating regression-based loss minimization. Instead of directly modifying the input to create an adversarial example, this approach learns a regressor that maps the original input to an adversarial input. This allows for more accurate and robust attacks, as the regressor can adapt to the model's behavior and learn the most effective perturbations. The key difference between this variant and the main perturbation core is its use of regression-based loss minimization, which provides a more nuanced approach to generating adversarial examples.

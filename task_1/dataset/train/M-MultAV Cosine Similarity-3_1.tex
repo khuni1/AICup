@@ -1,0 +1,30 @@
+%Input
+Let \( x \) be the original input, and \( \tilde{x} \) be the adversarially perturbed input such that \( \tilde{x} = x + \delta \), where \( \|\delta\| \leq \epsilon \). Define \( f \) as the model and \( L \) as the loss function. Let \( A \) represent a set of attributes, and \( \text{cosineSimilarity}(A, a) \) denote the cosine similarity between attribute \( a \) and the set \( A \). The goal is to iteratively update \( \delta \) using a cosine similarity-based approach.
+
+
+%Output
+The output of the MultAV Cosine Similarity Based Adversarial Attack is a perturbed input \(\tilde{x}\) that is designed to mislead the model while leveraging cosine similarity between multiple attributes.
+
+%Formula
+1. Initialize the perturbation \(\delta\):
+   $
+   \tilde{x} = x + \delta,
+   $
+   where \( \|\delta\| \leq \epsilon \).
+2. Define the objective function to minimize the loss for a target class \( c \):
+   $
+   \text{minimize } L(f(\tilde{x}), c),
+   $
+   where \( f \) is the model and \( L \) is the loss function.
+3. Use a cosine similarity-based approach to model the perturbation across multiple attributes:
+   $
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \sum_{a \in A} \nabla_{\delta} L(f(x + \delta^{(t)}), a) \cdot \text{cosineSimilarity}(A, a),
+   $
+   where \( \alpha \) is the step size and the summation is over all attributes \( A \).
+4. Update the perturbed input:
+   $
+   \tilde{x} = x + \delta^{(t+1)}.
+   $
+
+%Explanation
+The MultAV Cosine Similarity Based Adversarial Attack leverages cosine similarity between multiple attributes to craft more effective adversarial examples. By incorporating cosine similarity into the optimization process, this variant can better manipulate relevant features simultaneously, leading to increased robustness and generalizability across different inputs. This approach maintains the core principle of the original MultAV attack while introducing a new strategy to exploit attribute variations, making it a valuable addition to the family of attacks.

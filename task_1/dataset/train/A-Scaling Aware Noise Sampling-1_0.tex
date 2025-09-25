@@ -1,0 +1,37 @@
+%Input:
+Scaling procedure $g \circ h$, initial point $X \in \mathcal{H}$
+$g \circ h$: Scaling procedure composed of functions $g$ and $h$
+$X \in \mathcal{H}$: Initial point in the space $\mathcal{H}$
+$\mathcal{L}$: Space in which the noise $U$ lies
+$u \in \mathcal{L}$: Random noise sampled from the input space of function $f$
+$\tilde{U} \in \mathcal{H}$: Computed noise in the space $\mathcal{H}$ using the gradient formula.
+$\| \cdot \|_2$: Euclidean norm.
+
+%Output:
+A noise $U \in \mathcal{H}$ that lies in the space $\mathcal{L}$
+
+%Formula:
+Scaling-aware Noise Sampling (SNS)
+$\tilde{U} := \nabla_U \| (g \circ h)(X + U) - ((g \circ h)(X) + u) \|_2^2$
+
+1- Step 1
+    \STATE Sample random noise $u \in \mathcal{L}$ (i.e., input space of $f$)
+2- Step 2
+    \STATE Compute $\tilde{U} \in \mathcal{H}$ using the gradient $\nabla_U \| (g \circ h)(X + U) - ((g \circ h)(X) + u) \|_2^2$
+3- Step 3
+    \STATE Output $U \leftarrow \tilde{U}$
+
+%Explanation:
+Explanation: This formula computes the gradient $\tilde{U}$, which guides the sampling of the noise $U$ in black-box attacks. The noise $U$ is optimized to hide perturbations through the scaling procedure defined by $g \circ h$. The noise sampling is efficient because it considers the transformation introduced by $g \circ h$ and the input $u$.
+
+The SNS algorithm is designed to guide the sampling of noise in the input space of a function. The goal is to efficiently search for adversarial examples by hiding perturbations through the scaling function $g \circ h$.
+
+In Step 1, random noise $u$ is sampled from the space $\mathcal{L}$, which represents the input space of the function $f$. This noise is later used to estimate the direction in which adversarial examples should be sought.
+
+In Step 2, the gradient $\tilde{U}$ is computed using the formula provided. This gradient is essential for directing black-box attacks toward areas of the input space where adversarial perturbations are harder to detect, ensuring that the noise $U$ lies in the space $\mathcal{H}$, and is optimized for efficient attacks.
+
+Finally, in Step 3, the computed noise $\tilde{U}$ is output as $U$, which lies in the desired space $\mathcal{H}$, ready to be used for adversarial purposes.
+
+Incorporating Median Filtering Defenses:
+Although SNS is compatible with any projection defined by the scaling procedure $g \circ h$, median filtering defenses can affect black-box attack convergence due to the median function's robustness to outliers. Our empirical evaluation demonstrates that the convergence slows down under median filtering, as the median function does not change its output during most line search steps. We address this by improving gradient estimation using a trimmed and weighted average function, making the attack more efficient.
+

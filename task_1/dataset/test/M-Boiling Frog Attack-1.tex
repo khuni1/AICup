@@ -1,0 +1,38 @@
+%Input
+$f$ the target model
+$x$ the original input
+$y$ the true label
+$\epsilon$ the maximum allowable perturbation per step
+$T$ the total number of steps
+$\delta_t$ the perturbation applied at step $t$
+
+%Output
+The output is an adversarial example $\tilde{x}$ such that:
+\[
+\tilde{x} = x + \sum_{t=1}^T \delta_t,
+\]
+with the total perturbation constrained by \( \|\sum_{t=1}^T \delta_t\| \leq \epsilon \cdot T \).
+
+%Formula
+Initialization
+   \[
+   \tilde{x}^{(0)} = x, \quad \delta_t = 0 \text{ for } t \in \{1, 2, \ldots, T\}.
+   \]
+
+Iterative update of the perturbation
+   \[
+   \delta_t = \alpha \cdot \nabla_{\tilde{x}^{(t-1)}} L(f(\tilde{x}^{(t-1)}), y), \quad \text{with } \|\delta_t\| \leq \epsilon.
+   \]
+
+Update the input with the perturbation
+   \[
+   \tilde{x}^{(t)} = \tilde{x}^{(t-1)} + \delta_t.
+   \]
+
+Ensure the total perturbation remains imperceptible
+   \[
+   \tilde{x}^{(T)} = x + \sum_{t=1}^T \delta_t, \quad \text{with } \|\tilde{x}^{(T)} - x\| \leq \epsilon \cdot T.
+   \]
+
+%Explanation
+The Boiling Frogs Adversarial Attack introduces perturbations \( \delta_t \) in small increments over \( T \) steps. Each perturbation is computed to maximize the model's loss \( L(f(\tilde{x}), y) \). By ensuring \( \|\delta_t\| \leq \epsilon \) at each step, the attack remains stealthy, while the cumulative effect of the perturbations misleads the model \( f \). This gradual approach highlights the adversarial vulnerability of the model over time.

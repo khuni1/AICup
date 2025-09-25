@@ -1,0 +1,31 @@
+%Input
+\[
+\text{Input: } \quad \text{Original image } x, \quad \text{True label } y, \quad \text{Noise mean } \mu, \quad \text{Standard deviation } \sigma.
+\]
+
+%Output
+The output of the Gaussian Noise perturbation is a modified image \( x^* \) that aims to mislead the model into making an incorrect prediction.
+
+%Formula
+1. Initialize the input image and true label:
+   $
+   (x, y).
+   $
+2. Calculate the standard deviation of the noise distribution μ:
+   $
+   \mu = 0.
+   $
+3. Generate a Gaussian noise vector:
+   $
+   \delta = N(0, \mu^2),
+   $
+   where $N(\cdot)$ denotes a normal distribution with specified parameters.
+4. The modified image is then calculated as:
+   $
+   x^* = x + \delta.
+   $
+
+%Explanation
+The Stochastic Gaussian Perturbation (SGP) Attack variant introduces an element of uncertainty into the perturbation strategy by incorporating Gaussian noise. This approach allows for more nuanced manipulation of the input image, potentially making the attack more stealthy or effective against certain models. By controlling the standard deviation μ of the noise distribution, one can balance between perturbability and perturbing the image in a way that is difficult to detect. The use of normal distributions enables an efficient and computationally manageable method for generating adversarial examples while maintaining the core principle of the Kuleshov attack.
+
+This variant differs from the original Kuleshov attack by introducing Gaussian noise as part of the perturbation strategy, allowing for a more gradual and uncertain manipulation of the input image.

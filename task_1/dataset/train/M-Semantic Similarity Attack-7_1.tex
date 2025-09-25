@@ -1,0 +1,38 @@
+%Input
+Let \( x \) be the original input text, \( y \) be the true label, and \( f_{\theta} \) be the target model. The goal is to create a semantic-aware adversarial example that misleads the model while preserving the original meaning of the text.
+
+%Output
+The output of the Semantic Similarity Attack is a modified text input \( x^* \) that aims to mislead the model by replacing words with semantically similar alternatives, chosen based on their similarity scores. The attack is different from the TextFooler attack in its approach to word substitution and evaluation metric.
+
+%Formula
+1. Initialize the input text and true label:
+   $
+   (x, y).
+   $
+2. Tokenize the input text:
+   $
+   x = (w_1, w_2, \ldots, w_n).
+   $
+3. For each token \( w_i \) in the input:
+   - Calculate its semantic similarity score with a predefined dictionary of words:
+   $
+   S(w_i) = \{w_{i1}, w_{i2}, \ldots, w_{im}\}.
+   $
+4. For each candidate substitution \( w_{ij} \):
+   - Construct a modified input:
+   $
+   x' = (w_1, \ldots, w_{i-1}, w_{ij}, w_{i+1}, \ldots, w_n).
+   $
+   - Evaluate the model's prediction:
+   $
+   \hat{y} = f_{\theta}(x').
+   $
+   - If \( \hat{y} \neq y \), then \( x' \) is a candidate adversarial example.
+5. The goal is to find:
+   $
+   x^* = \arg\max_{x'} \text{Prob}(f_{\theta}(x') \neq y),
+   $
+   while ensuring that the number of substitutions is minimized.
+
+%Explanation
+The Semantic Similarity Attack variant introduces a semantic-aware approach by using similarity scores to select candidate word substitutions. This variant maintains the core principle of the TextFooler attack but improves its effectiveness by leveraging semantic information. The attack focuses on preserving the original meaning of the text while causing the model to misclassify, highlighting its potential as a more targeted and effective method for generating adversarial examples.

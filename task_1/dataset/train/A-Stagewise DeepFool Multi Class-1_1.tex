@@ -1,0 +1,42 @@
+%Input
+Input sample: $X \in \mathbb{R}^d$
+True label: $y \in \mathcal{Y}$
+Model function: $f(X)$, a differentiable classifier
+Maximum iterations: $T$
+Tolerance threshold: $\eta > 0$
+Output: Adversarial example $X_{\text{adv}}$ such that $f(X_{\text{adv}}) \neq y$, with minimal perturbation $\delta = X_{\text{adv}} - X$.
+
+%Output
+The output of the Stagewise DeepFool Multi Class Classifier-Gradient Based Optimization attack is a set of adversarial examples $X^*_{\text{adv}}$ that can mislead the model across multiple inputs. This variant is different from the main PGD Fast-Universal attack in its stagewise optimization approach, where each iteration improves the perturbation by moving closer to the decision boundary.
+
+%Formula
+1.Initialization:
+   \[
+   X^{(0)}_{\text{adv}} = X, \quad t = 0.
+   \]
+2.Iterative Update:
+At each iteration $t$, compute the gradient of the loss function with respect to the input and update the perturbation as follows:
+
+   \[
+   f(X) \approx \langle \nabla f_i(X^{(t)}_{\text{adv}}), X - X^{(t)}_{\text{adv}} \rangle + f_i(X^{(t)}_{\text{adv}}), \quad \forall i \neq y,
+   \]
+   \[
+   \delta^{(t+1)} = \arg\min_{\delta} \frac{|f_y(X^{(t)}_{\text{adv}}) - f_i(X^{(t)}_{\text{adv}})|}{\|\nabla f_y(X^{(t)}_{\text{adv}}) - \nabla f_i(X^{(t)}_{\text{adv}})\|_2^2},
+   \]
+   Update the adversarial example:
+   \[
+   X^{(t+1)}_{\text{adv}} = X^{(t)}_{\text{adv}} + \delta^{(t+1)}.
+   \]
+
+3.Stopping Criteria:
+   The iteration stops if:
+
+   \[
+   f(X^{(t+1)}_{\text{adv}}) \neq y \quad \text{or} \quad t = T \quad \text{or} \quad \|\delta^{(t+1)}\|_2 < \eta.
+   \]
+
+4.Final Output:
+Set $X^*_{\text{adv}} = X^{(T+1)}_{\text{adv}}$.
+
+%Explanation
+The Stagewise DeepFool Multi Class Classifier-Gradient Based Optimization attack is a variant of the original DeepFool method that uses stagewise optimization to improve the perturbation. This approach involves computing the gradient of the loss function with respect to the input at each iteration and updating the perturbation accordingly. The attack maintains the core principle of the original attack while improving its performance by moving closer to the decision boundary at each iteration.

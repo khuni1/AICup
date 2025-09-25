@@ -1,0 +1,82 @@
+%Input
+$x$: The input image. 
+$f$: The binary classifier function. 
+$\hat{r}$: The resulting perturbation. 
+$x_0$: The initial image (set to $x$).
+$i$: The iteration counter. 
+$\text{sign}(f(x))$: The sign of the classifier's output, indicating the class. 
+$r_i$: The perturbation at iteration $i$. 
+$\nabla f(x)$: The gradient of the classifier function at $x$.
+$\hat{k}(x)$: The predicted class label of image $x$. 
+$k$: A class different from the initial predicted class $\hat{k}(x_0)$. 
+$w'_k$: The difference in the gradients of the $k$-th and the initial class functions. 
+$f'_k$: The difference in the outputs of the $k$-th and the initial class functions. 
+$\hat{l}$: The class with the minimum ratio of $|f'_k|$ to $\|w'_k\|_2$.
+$\nabla f_k(x)$: The gradient of the $k$-th class function at $x$.
+
+%Output
+The DeepFool for binary classifier algorithm for binary classifiers generates a perturbation $\hat{r}$ to misclassify an image $x$. The algorithm works by iteratively updating the perturbation until the classifier's prediction changes. It begins with initializing the perturbation and iteration counter. During each iteration, the perturbation $r_i$ is computed based on the gradient of the classifier function and is applied to the image. The process continues until the image's classification changes. The final perturbation $\hat{r}$ is the sum of all individual perturbations computed during the iterations. This perturbation is designed to minimally alter the image while causing a misclassification.
+
+%Formula
+ The DeepFool algorithm for generating adversarial perturbations for binary classifiers can be formulated as follows:
+
+\begin{enumerate}
+    \item \textbf{Input Parameters:}  
+    \begin{align*}
+    x &: \text{Input image}, \\
+    f &: \text{Classifier function}.
+    \end{align*}
+
+    \item \textbf{Initialization:}  
+    Set the initial perturbed image and iteration counter:
+    \[
+    x_0 = x, \quad i = 0.
+    \]
+
+    \item \textbf{Iterative Update:}  
+    While the classifier prediction remains unchanged:
+    \[
+    \text{sign}(f(x_i)) = \text{sign}(f(x_0)),
+    \]
+    perform the following steps:
+    \begin{enumerate}
+        \item Compute the perturbation at iteration $i$:
+        \[
+        r_i = -\frac{f(x_i)}{\|\nabla f(x_i)\|_2^2} \nabla f(x_i).
+        \]
+        \item Update the perturbed image:
+        \[
+        x_{i+1} = x_i + r_i.
+        \]
+        \item Increment the iteration counter:
+        \[
+        i \gets i + 1.
+        \]
+    \end{enumerate}
+
+    \item \textbf{Output:}  
+    Return the cumulative perturbation:
+    \[
+    \hat{r} = \sum_i r_i.
+    \]
+\end{enumerate}
+
+
+%Explanation
+\textbf{Initialization:} 
+Set the initial perturbed image $x_0$ to the input image $x$. 
+Initialize the iteration counter $i$ to 0.
+\textbf{Iteration Loop:} 
+Continue iterating while the classifier's sign for $x_i$ is the same as for $x_0$.
+\textbf{Perturbation Calculation:}
+Calculate the perturbation $r_i$ as the negative of the classifier's output scaled by the gradient's norm squared. 
+Update the perturbed image $x_{i+1}$ by adding $r_i$ to $x_i$.
+\textbf{Update:} 
+Increment the iteration counter $i$ by 1.
+\textbf{Return:}
+Return the accumulated perturbation $\hat{r}$ as the sum of all $r_i$.
+
+
+
+
+

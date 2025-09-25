@@ -1,0 +1,23 @@
+%Input
+The input includes the perturbation $\rho$, the input $I_c$, and the various parameters such as $\epsilon$, $\alpha$, and $s$.
+
+%Output
+Output: Generate one adversarial attack variant that is logically derived from the perturbation core described in the uploaded LaTeX input provided. 
+
+%Formula
+\[
+\tilde{\rho} = s \cdot \rho
+\]
+
+\[
+I_c^{\text{adv}} = \text{Clip}_{\mathcal{X}} \left( I_c + \epsilon \cdot \text{sign}(\nabla_{I_c} L(f_{\theta}(I_c), y)) + \alpha \cdot \tilde{\rho} \right)
+\]
+
+where:
+$\tilde{\rho}$ is the scaled perturbation,
+$s$ is the scaling factor controlling perturbation intensity,
+$\epsilon$ and $\alpha$ adjust the adversarial strength,
+$\text{Clip}_{\mathcal{X}}$ ensures the result stays within valid bounds.
+
+%Explanation
+The proposed variant Adaptive-Scaled Perturbation (ASP) Attack introduces a new scaling factor `s` that adjusts the magnitude of the perturbation relative to the reference input. This modification allows for more control over the amount of distortion applied to the input, enabling the creation of more effective or stealthy adversarial examples.

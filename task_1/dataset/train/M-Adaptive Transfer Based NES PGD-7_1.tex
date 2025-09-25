@@ -1,0 +1,26 @@
+%Input
+Let $x$ be the original input image, $\theta_s$ be the parameters of the surrogate model, and $\epsilon$ be the maximum allowable perturbation. The objective is to create an adversarial example $x^*$ that misleads a target model while leveraging the knowledge from a surrogate model.
+
+%Output
+The output of the Transfer Based NES PGD attack with adaptive learning rate is an adversarial example $x^*$ generated through an iterative optimization process using the Adam optimizer and learning rate schedule $\eta_n = \eta_0 \cdot n^{-\frac{b}{2}}$.
+
+%Formula
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Initialize the perturbation:
+   $\delta^{(0)} = 0$
+3. For each iteration $n = 1$ to $N$:
+   - Compute the gradient using the surrogate model with adaptive learning rate:
+   $g_n = \nabla_x L(f_{\theta_s}(x^{(n-1)} + \delta^{(n-1)}), y)$
+   where $L$ is the loss function, $\eta_0 = 0.001$, and $\beta_2 = 0.9$
+   - Update the perturbation using NES with adaptive learning rate:
+   $\delta_n = \delta_{n-1} + \alpha \cdot \text{sign}(g_n)$
+   - Project the perturbed input back into the allowable space:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n-1)} + \delta_n)$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+4. The final adversarial example is represented as:
+   $x^* = x^{(N)} + \delta^{(N)} \quad \text{with the constraint that} \quad \|x^* - x\|_p \leq \epsilon$
+
+%Explanation
+The adaptive Transfer Based NES PGD attack modifies the original method by incorporating an adaptive learning rate schedule for the NES updates, allowing the perturbation to adaptively adjust its step size based on the surrogate model's performance. This enables the attack to optimize the perturbation more effectively and generate more robust adversarial examples. The introduction of the Adam optimizer further improves the stability and convergence of the optimization process, leading to improved adversarial example generation.

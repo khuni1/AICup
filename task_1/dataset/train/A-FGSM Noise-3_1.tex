@@ -1,0 +1,54 @@
+%Input
+\begin{align*}
+\epsilon &: \text{Perturbation bound,} \
+L &: \text{Number of Monte Carlo simulations,} \
+E &: \text{Number of epochs,} \
+B &: \text{Batches of training data.}
+\end{align*}
+
+
+%Output
+The trained model Fθ with robustness to adversarial perturbations.
+Adversarially trained model with updated parameters θ, where the model has been trained using the noise injection variant of the Fast Gradient Sign Method (FGSM) to enhance its robustness against adversarial perturbations.
+
+
+%Formula
+\begin{enumerate}
+    \item \textbf{Input Parameters:}
+    \begin{align*}
+    \epsilon &: \text{Perturbation bound,} \\
+    L &: \text{Number of Monte Carlo simulations,} \\
+    E &: \text{Number of epochs,} \\
+    B &: \text{Batches of training data.}
+    \end{align*}
+
+    \item \textbf{Algorithm Steps:}
+    For each epoch e in [1, E], iterate over the batches (Xb, Yb) ∈ B:
+    \begin{enumerate}
+        \item Sample random noise from a uniform distribution:
+        \[
+        \text{noise} \sim \text{Uniform}(-\epsilon, \epsilon).
+        \]
+        \item Perturb the input batch:
+        \[
+        X_{bn} = X_b + \text{noise}.
+        \]
+        \item Compute the adversarial perturbation r using the Monte Carlo gradient approximation and noise injection:
+        \[
+        r = \epsilon \cdot \text{sign}\left( \frac{1}{L} \sum_{l=1}^L \nabla_{X_{bn}} L(F_\theta(X_{bn}), Y_b) + \alpha \cdot \text{sign}\left( \nabla_{\delta} L(f_\theta(x + \delta), y) \right) \right).
+        \]
+        \item Update the input with the computed perturbation:
+        \[
+        X_{bn}' = X_{bn} + r.
+        \]
+        \item Compute the gradient with respect to the model weights θ:
+        \[
+        \text{gradient} = \nabla_{\theta} L(F_\theta(X_{bn}'), Y_b).
+        \]
+        \item Update model weights θ using the given optimizer and the computed gradient.
+\end{enumerate}
+
+
+
+%Explanation
+This variant introduces noise injection into the FGSM method, where a random noise is added to the input batch. The noise is then used to compute the adversarial perturbation, which enhances the robustness of the model against adversarial attacks.

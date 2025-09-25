@@ -1,0 +1,34 @@
+%Input
+Let \( x \) be the original input data point and \( y \) be the true label. The Pc-LHC Adversarial Attack aims to generate adversarial examples that maximize the pseudo-likelihood of a target class while maintaining the original input's structure.
+
+%Output
+The output of this Adversarial Attack is a perturbed input \( \tilde{x} \) that is likely to be classified as a different target class by the model.
+
+%Formula
+1. Initialize the original input and the perturbation magnitude \( \epsilon \):
+   $
+   \tilde{x} = x + \delta,
+   $
+   where \( \delta \) is the perturbation to be optimized.
+2. Define the objective function to maximize the pseudo-likelihood of the target class \( c \):
+   $
+   \text{maximize } L(\tilde{x}, c) = P(y = c | \tilde{x}),
+   $
+   subject to the constraint:
+   $
+   \|\delta\| \leq \epsilon.
+   $
+3. The optimization problem can be solved using gradient ascent:
+   $
+   \delta \leftarrow \delta + \alpha \nabla_{\delta} L(\tilde{x}, c),
+   $
+   where \( \alpha \) is the learning rate.
+4. Update the perturbed input:
+   $
+   \tilde{x} = x + \delta.
+   $
+
+%Explanation
+The Pseudo-Likelihood Constrained Adversarial Attack (PLCAA) variant Adversarial Attack focuses on crafting adversarial examples by modifying the original input \( x \) to produce a perturbed input \( \tilde{x} \). The goal is to maximize the pseudo-likelihood of a specified target class \( c \), while ensuring that the perturbation \( \delta \) remains within a specified bound \( \epsilon \). The method iteratively updates \( \delta \) using gradient ascent on the pseudo-likelihood function. This attack effectively generates adversarial examples that are likely to be misclassified, highlighting the vulnerabilities of classification models to targeted manipulations.
+
+This variant is similar to the original Pc-LHC Adversarial Attack but introduces a new scoring function based on the pseudo-likelihood of the target class. The modification focuses on maximizing the pseudo-likelihood while maintaining the original input's structure, making it more targeted and stealthy than the original attack.

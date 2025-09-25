@@ -1,0 +1,38 @@
+%Input
+The input includes:
+- The original dataset \( D = \{(x_i, y_i)\}_{i=1}^{N} \).
+- The target model \( f(\cdot) \).
+- The loss function \( L(f(x), y) \).
+- The perturbation magnitude \( \epsilon \).
+- The learning rate \( \alpha \).
+
+The goal is to craft a poisoned dataset \( \tilde{D} \) by introducing perturbations \( \delta_i \) to the input samples while ensuring the changes remain within a bounded perturbation norm \( \|\delta_i\| \leq \epsilon \).
+
+
+%Output
+The output is a poisoned dataset $\tilde{D}$, where the poisoned samples are subtly altered to mislead the model, while remaining difficult to detect.
+
+%Formula
+1. Define the perturbation:
+   \[
+   \tilde{x}_i = x_i + \delta_i, \quad \text{for} \quad i \in \{1, 2, \dots, N\},
+   \]
+   where $\delta_i$ is the perturbation and $\|\delta_i\| \leq \epsilon$.
+
+2. Minimize the loss on the poisoned dataset:
+   \[
+   \min_{\{\delta_i\}} \sum_{i=1}^{N} L(f(x_i + \delta_i), y_i) \quad \text{subject to} \quad \|\delta_i\| \leq \epsilon.
+   \]
+
+3. Update the perturbations using scaled gradient descent:
+   \[
+   \delta_i^{(t+1)} = \delta_i^{(t)} - \alpha \cdot \frac{\nabla_{\delta_i} \left( \sum_{i=1}^{N} L(f(x_i + \delta_i), y_i) \right)}{\|\nabla_{\delta_i} \left( \sum_{i=1}^{N} L(f(x_i + \delta_i), y_i) \right)\|_{2}}.
+   \]
+
+4. Project the perturbations to ensure they stay within the allowed bounds:
+   \[
+   \delta_i = \text{clip}(\delta_i, -\epsilon, \epsilon).
+   \]
+
+%Explanation
+The Momentum-Guided Poisoning Attack variant introduces a scaling factor in the gradient descent update step, which improves the stability and effectiveness of the attack. The scaled gradient descent approach helps to reduce the impact of noise in the optimization process, leading to more accurate and stealthy perturbations.

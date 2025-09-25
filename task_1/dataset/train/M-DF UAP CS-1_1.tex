@@ -1,0 +1,24 @@
+%Input
+Let \( f \) be the target model, \( \epsilon \) be the maximum allowable perturbation, and \( N \) be the number of iterations. The DF-UAP Attack aims to generate a universal perturbation \( \delta \) without access to the training data.
+
+%Output
+The output of the DF-UAP Attack is a universal adversarial perturbation \( \delta \) that can be applied to various inputs to deceive the classifier.
+Output: Generate one adversarial attack variant that incorporates an additional scoring function based on the input's confidence in its classification, to make the attacks more stealthy and targeted.
+
+%Formula
+1. Initialize the universal perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+2. For each iteration \( t \) from 1 to \( N \):
+   $
+   \delta^{(t)} = \delta^{(t-1)} + \alpha \cdot \text{sign} \left( \nabla_{\delta} J(f(x), y) \right),
+   $
+   where \( J \) is the objective function designed to maximize the misclassification probability for a set of generated inputs \( x \) based on the model's predictions, weighted by the confidence scores.
+3. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The new attack DeepFool Universal Adversarial Perturbation with Confidence Scoring (DF UAP CS) incorporates an additional scoring function based on the input's confidence in its classification, which makes the attacks more stealthy and targeted. The scoring function assigns higher weights to inputs with lower confidence scores, ensuring that the generated adversarial examples are less noticeable for well-confident but incorrect predictions. This modification improves the effectiveness of the DF-UAP Attack by making it more effective against models that rely heavily on confident predictions.

@@ -1,0 +1,28 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, and $f_{\theta}$ be the target model. The goal is to generate an adversarial example $x^*$ that misclassifies the input while optimizing for color space constraints.
+
+%Output
+The output of the ReColorAdv-Lagrangian attack is an adversarial example $x^*$ that is crafted to deceive the model while adhering to specific constraints in the color space.
+
+%Formula
+The ReColorAdv-Lagrangian adversarial attack can be formulated as follows:
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size $\epsilon$, the number of iterations $N$, and the Lagrange multiplier $\lambda$.
+3. For each iteration $n = 1$ to $N$:
+   - Compute the adversarial perturbation:
+   $\delta_n = -\alpha \cdot \nabla_x L(f_{\theta}(x^{(n-1)}), y)$
+   - Update the input while considering color space constraints:
+   $x^{(n)} = x^{(n-1)} + \delta_n + \lambda \cdot C(x^{(n-1)})$
+   where $C(x)$ is a function that enforces color space constraints.
+   - Apply clipping to ensure the perturbation stays within bounds:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)})$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+4. The final adversarial example is:
+   $x^* = x^{(N)}$
+
+%Explanation
+The ReColorAdv-Lagrangian adversarial attack aims to generate adversarial examples that effectively mislead a target model while respecting constraints related to color space. By incorporating a Lagrange multiplier, the attack balances the adversarial objective with adherence to color fidelity. This approach not only seeks to alter the model's prediction but also ensures that the generated inputs remain perceptually similar to the original images in terms of color distribution. The resulting adversarial example $x^*$ underscores the importance of considering perceptual constraints in adversarial machine learning, particularly in applications involving image classification.

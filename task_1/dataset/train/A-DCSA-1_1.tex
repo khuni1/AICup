@@ -1,0 +1,43 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original textual input  
+$y_{\text{true}}$: True label of the input  
+$f(\mathbf{x})$: Target model's prediction function  
+$\epsilon$: Maximum number of allowed character modifications  
+$\mathcal{N}(c)$: Set of possible character substitutions for a given character $c$  
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function measuring the model’s confidence in the original classification  
+$\mathbf{x}_{\text{adv}}^{(t)}$: Adversarial text at iteration $t$  
+$c_i$: Character at position $i$ in $\mathbf{x}_{\text{adv}}$  
+$c_i'$: Modified character chosen from $\mathcal{N}(c_i)$  
+
+
+%Output
+Output: Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with minimal changes}.
+\]
+
+%Formula
+1. Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Iterative Character Substitution with Directional Adaptation:
+   - For each character $c_i$ in $\mathbf{x}_{\text{adv}}$:
+     \[
+     c_i' = \underset{c' \in \mathcal{N}(c_i)}{\arg \max} \, \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(i \rightarrow c')}, y_{\text{true}}),
+     \]
+     where $\mathbf{x}_{\text{adv}}^{(i \rightarrow c')} = \mathbf{x}_{\text{adv}}^{(t)}$ with the replaced character, but now prioritizing only those changes that increase the model's loss in a specific direction (e.g., based on the gradient of the loss function).
+
+3. Update the Input:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} \, \text{with the replaced character}.
+   \]
+
+4. Stopping Condition:
+   - If $f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}$, or if the number of modified characters exceeds $\epsilon$, terminate the attack.
+
+%Explanation
+Summary: This variant Directional Character Swap Attack (DCSA) adapts Pruthi's Keyboard Character Swap Attack to prioritize character substitutions based on a specific direction, which is determined by the gradient of the loss function. This modification aims to improve the targeted nature and effectiveness of the attack by exploiting the model's sensitivity to certain directions in the input space.
+
+Note that the new attack maintains the core principle of the original attack but introduces an additional layer of directional adaptation to enhance its performance.

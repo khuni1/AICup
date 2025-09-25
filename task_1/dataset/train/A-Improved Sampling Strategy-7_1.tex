@@ -1,0 +1,27 @@
+%Input
+The classifier network is denoted as $f$, which takes an input and provides a classification. The input point/image is represented by $x \in \mathbb{R}^d$. The image size is denoted by $w$, and $c$ represents the number of color channels in the image. The $\ell_p$-radius for perturbation is given by $\epsilon$. The true label of the input image is $y \in \{1, \ldots, K\}$. The number of iterations is $N$. The perturbed image that minimizes the classifier loss is $\hat{x} \in \mathbb{R}^d$. The loss function of the classifier for input $x$ and label $y$ is denoted by $L(f(x), y)$. The side length of the square to modify at iteration $i$ is $h(i)$. The perturbation added to the image is represented by $\delta$. The sampling distribution for perturbation $\delta$ is $P(\epsilon, h(i), w, c, x, \hat{x})$. The projection function that ensures the perturbed image remains within the $\ell_p$-radius and the valid pixel range is denoted by $\text{Project}(\cdot)$.
+
+%Output
+The output of the A-Square Attack with Improved Sampling Strategy is the perturbed image $\hat{x} \in \mathbb{R}^d$ that minimizes the classifier loss while remaining within the $\ell_p$-radius for perturbation $\epsilon$. This image is designed to mislead the classifier, causing it to misclassify the input. The attack is performed over $N$ iterations, during which perturbations are added and adjusted to reduce the classification accuracy.
+
+
+%Formula
+1. Initialize the perturbation $\delta \leftarrow 0$.
+2. Set the initial probability for the true label:
+\[
+p \leftarrow p_h(y | \mathbf{x})
+\]
+3. While the current predicted label $y$ is the most probable label, i.e., $p_y = \max_{y'} p_{y'}$:
+\[
+\text{Pick a random query vector } q \in Q
+\]
+
+4. For each $\alpha \in \{\epsilon, -\epsilon\}$ (explore both positive and negative perturbations):
+\[
+p' \leftarrow p_h(y | \mathbf{x} + \delta + \alpha q)
+\]
+5. If the new loss $l_{\text{new}}$ is less than the current best loss $l^*$, update $\hat{x}$ to $\hat{x}_{\text{new}}$ and $l^*$ to $l_{\text{new}}$. Increment the iteration counter $i$ by 1.
+Return the final perturbed image $\hat{x}$ as the result of the attack.
+
+%Explanation
+The A-Square Attack with Improved Sampling Strategy is a variant of the original Square-Based Perturbation Attack. The new strategy introduces a more diverse sampling distribution for the perturbation $\delta$, which includes both positive and negative perturbations scaled by a random query vector $q$. This improvement allows the attack to better explore the space of possible adversarial examples, potentially leading to more effective attacks.

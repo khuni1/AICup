@@ -1,0 +1,36 @@
+%Input
+Let \( x \) be the original input data, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Morpheus attack aims to generate adversarial examples by applying a series of transformations to the input, specifically targeting the model's vulnerabilities.
+
+%Output
+The output of the Morpheus attack is a modified input \( x^* \) that misleads the model while preserving the semantic content of the original input.
+
+%Formula
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Define a set of transformation functions \( \mathcal{T} \) that can alter the input, such as noise addition, scaling, or rotation:
+   $
+   \mathcal{T} = \{t_1, t_2, \ldots, t_n\}.
+   $
+3. For each transformation \( t_i \in \mathcal{T} \):
+   - Apply the transformation to the input:
+   $
+   x' = t_i(x).
+   $
+   - Evaluate the model's prediction:
+   $
+   \hat{y} = f_{\theta}(x').
+   $
+   - If \( \hat{y} \neq y \), then \( x' \) is a candidate adversarial example.
+4. The objective is to find a sequence of transformations that produces:
+   $
+   x^* = t_k(t_{k-1}(\ldots t_1(x) \ldots)),
+   $
+   while ensuring:
+   $f_{\theta}(x^*) \neq y$.
+
+%Explanation
+The Morpheus-Enhanced Transformation Attack (META) attack generates adversarial examples by applying a series of transformations to the original input \( x \). By exploring different combinations of transformations, the attack aims to produce a new input \( x^* \) that remains similar to the original while successfully misleading the model into making an incorrect classification. This method highlights the adaptive nature of adversarial attacks and the necessity for robust defenses against various input manipulations.
+
+Morpheus-Enhanced Transformation Attack (META) variant modifies the original attack by incorporating a new transformation function that enhances the model's vulnerability to adversarial examples. Specifically, it introduces a scoring function based on the model's confidence in its predictions, which guides the selection of transformations. This approach makes the attack more targeted and effective at exploiting the model's weaknesses.

@@ -1,0 +1,40 @@
+%Input
+
+
+%Output
+The output of the GNN Adversarial Attack is an adversarial example graph $\mathbf{G}_{\text{adv}}$ that misleads the model across multiple graphs. The attack starts with an initial graph perturbation of zero and iteratively updates it using the sign of the gradient of the loss function.
+
+%Formula
+1. Initialization:
+   \[
+   \mathbf{G}_{\text{adv}}^{(0)} = \mathbf{G}_{\text{original}}.
+   \]
+
+2. Graph Perturbation Update:
+   Apply the perturbation to maximize the loss, where $\text{sign}(\mathbf{g})$ applies the sign of each edge weight.
+
+   \[
+   \mathbf{G}_{\text{adv}}^{(t+1)} = \mathbf{G}_{\text{adv}}^{(t)} + \eta \cdot \text{sign}(\nabla_\mathbf{g} L(f_\theta(\mathbf{G}_{\text{adv}}^{(t)}, \mathbf{y}))), \quad \text{where } \eta \text{ is the learning rate.}
+   \]
+
+3. Graph Constraint:
+   Ensure the perturbation does not exceed $\epsilon$.
+
+4. Stopping Condition:
+   Terminate the attack if:
+   \[
+   f(\mathbf{G}_{\text{adv}}^{(t+1)}) \neq \mathbf{y}, \quad \text{or if } t \geq N.
+   \]
+
+%Explanation
+Gradient-Sign Graph Perturbation Attack (GSGPA) Adversarial Attack targets graph neural networks by introducing small, imperceptible perturbations to the input graphs. The process involves:
+
+1. Objective: The goal is to craft an adversarial graph $\mathbf{G}_{\text{adv}}$ that misleads the GNN model while keeping the perturbation within an acceptable limit.
+
+2. Graph Perturbation Update: Gradients of the loss function with respect to the edge weights are computed to identify the direction of perturbation that maximizes the loss.
+
+3. Iterative Perturbation: Using the sign of the gradient, small perturbations are iteratively applied to the graph. The step size is controlled by a learning rate $\eta$, and the total perturbation is constrained by $\epsilon$.
+
+4. Stopping Criteria: The attack stops when the model misclassifies the adversarial example or when the maximum number of iterations is reached.
+
+This attack is logically derived from the GNN-based input, leveraging the model's differentiable structure to efficiently generate adversarial examples for graph neural networks.

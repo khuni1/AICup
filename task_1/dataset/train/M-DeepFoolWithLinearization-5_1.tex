@@ -1,0 +1,39 @@
+%Input
+The input consists of:
+- Original input sample $x_{\text{orig}}$
+- Perturbation parameter $\rho$
+- Norm constraint parameters $p$ and $q$
+- Projection function $g(z)$
+- Hyperparameter $t$
+
+%Output
+%Output
+The adversarial example $x_{\text{adv}}$ generated from $x_{\text{orig}}$ that forces a misclassification while maintaining minimal perturbation.
+
+\[
+x_{\text{adv}} = x^{(i)}_{\text{proj}} + t \frac{x_{\text{orig}} - x^{(i)}_{\text{proj}}}{\|x_{\text{orig}} - x^{(i)}_{\text{proj}}\|}
+\]
+
+where $x^{(i)}_{\text{proj}}$ is obtained through the optimization:
+
+\[
+x^{(i)}_{\text{proj}} = \mathop{\mathrm{argmin}}_{z} \left(\|z - x^{(i)}\|_p^q + \rho g(z)\right)
+\]
+
+%Formula
+
+\[
+\begin{aligned}
+x^{(i)}_{\text{proj}} &= \mathop{\mathrm{argmin}}_{z} \left(\|z - x^{(i)}\|_p^q + \rho g(z)\right), \\
+x^{(i)}_{\text{attack}} &= x^{(i)}_{\text{proj}} + t \frac{x_{\text{orig}} - x^{(i)}_{\text{proj}}}{\|x_{\text{orig}} - x^{(i)}_{\text{proj}}\|}.
+\end{aligned}
+\]
+
+where $g(z)$ is the convex combination of projections onto the decision hyperplane, and $t$ is a hyperparameter controlling the distance from $x^{(i)}$ to the attack point.
+
+%Explanation
+The proposed variant, `DeepFoolWithLinearization`, improves upon the original DeepFool attack by incorporating a more principled approach to tracking the decision boundary. This is achieved through the use of linearization and convex combinations of projections onto the decision hyperplane. The resulting attack is more targeted and effective in perturbing the input to make it incorrectly classified.
+
+Note that this variant requires careful tuning of the hyperparameter $t$ to achieve optimal results. Additionally, the convex combination of projections can be computed using a variety of methods, including those based on linear programming or optimization algorithms.
+
+The DeepFoolWithLinearization attack is particularly well-suited for scenarios where the decision boundary is complex or non-linear, and requires a more targeted approach to perturbation.

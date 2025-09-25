@@ -1,0 +1,54 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input (image, text, or other data type).
+$f(\mathbf{x})$: Target model (e.g., classifier).
+$y_{\text{true}}$: True label of the input.
+$\epsilon$: Magnitude of the perturbation (noise bound).
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function associated with the model and the input.
+
+%Output
+
+
+%Formula
+1. Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Add Noise:
+   \[
+   \mathbf{x}_{\text{adv}} = \mathbf{x}_{\text{original}} + \eta,
+   \]
+   where $\eta$ is a random perturbation constrained by:
+   \[
+   \|\eta\| \leq \epsilon.
+   \]
+
+3. Check Validity:
+   - If $f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}$, the attack is successful.
+   - Otherwise, adjust $\eta$ and repeat until success or stopping criteria are met.
+
+4. Enhanced Perturbation Strategy:
+   - For targeted or directed attacks, compute the gradient of the loss with respect to the input using a learned perturbation strategy (e.g., L2-regularized noise):
+     \[
+     \eta = \epsilon \cdot \text{sign}(\nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}, y_{\text{true}})).
+     \]
+   - Use an adaptive learning rate to adjust the perturbation magnitude:
+     \[
+     \alpha = 0.9 \cdot \min(1, \|\nabla_\eta L(f_\theta(x + \delta^{(n-1)}), y)\|_2),
+     \]
+     where $\alpha$ is a hyperparameter controlling the learning rate.
+
+%Explanation
+Adversarial Noise Attacks with Enhanced Perturbation Strategy introduce imperceptible perturbations to input data to deceive machine learning models. The primary steps and characteristics are as follows:
+
+1. Objective: To generate adversarial examples by adding noise while maintaining the original input's perceptual similarity.
+
+2. Random Perturbation: Noise is applied uniformly or within a specific range, constrained by a defined magnitude ($\epsilon$).
+
+3. Enhanced Perturbation Strategy: Leveraging a learned perturbation strategy and adaptive learning rate to optimize the attack, making it more effective against robust models.
+
+4. Use Case: This attack is typically used as a baseline or benchmark for testing model robustness to input perturbations.
+
+5. Non-Semantic Perturbation: Unlike heuristic or targeted attacks (e.g., TextFooler), adversarial noise does not require semantic understanding of the data.
+
+This variant differs from the main perturbation core by introducing an adaptive learning rate and a learned perturbation strategy, making it more effective against robust models.

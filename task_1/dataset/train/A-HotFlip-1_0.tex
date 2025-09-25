@@ -1,0 +1,31 @@
+%Input
+Let $x$ be the original input text, $y$ be the true label associated with it, and $f_{\theta}$ be the target model. The goal is to generate an adversarial example $x^*$ that misclassifies the input by flipping characters.
+
+%Output
+The output of the HotFlip attack is an adversarial text example $x^*$ that is crafted to deceive the model while minimizing the distance to the original input.
+
+%Formula
+The HotFlip adversarial attack can be formulated as follows:
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum number of flips $k$ and the learning rate $\alpha$.
+3. For each iteration $n = 1$ to $k$:
+   - Compute the model's prediction:
+   $\hat{y}^{(n)} = f_{\theta}(x^{(n-1)})$
+   - Calculate the gradient of the loss function with respect to the input:
+   $g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y)$
+   - Identify the character to flip:
+   $i = \arg\max_{j} |g_n[j]|$
+   where $j$ indexes the characters in the input.
+   - Flip the character at index $i$:
+   $x^{(n)} = \text{Flip}(x^{(n-1)}, i)$
+   where $\text{Flip}$ is a function that changes the character at position $i$ to its adversarial counterpart.
+   - Check if the new prediction differs from the original:
+   $\text{if } f_{\theta}(x^{(n)}) \neq y, \text{ then accept } x^{(n)} \text{ as } x^*$
+
+4. The final adversarial example is:
+   $x^* = x^{(n)} \text{ (if found)}$
+
+%Explanation
+The HotFlip adversarial attack focuses on generating adversarial text examples by strategically flipping characters in the input. By using gradients to identify which character modifications have the most significant impact on the model's predictions, the attack iteratively alters the input to create a misclassification. The character flipping mechanism allows for minimal perturbations while effectively deceiving the model. The resulting adversarial text example $x^*$ demonstrates the vulnerabilities of text classification models to subtle input changes, highlighting the importance of robust defenses against such attacks.

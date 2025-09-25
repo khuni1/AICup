@@ -1,0 +1,14 @@
+%Input
+Filename: M-DFO (1+1) ES-Gradient Free Optimization.tex
+Input: Let us consider a classification task $X \mapsto [K]$ where $X \subseteq \mathbb{R}^d$ is the input space and $[K] = \{1, \ldots, K\}$ is the corresponding label set. Let $f : \mathbb{R}^d \to \mathbb{R}^K$ be a classifier (a feedforward neural network in our paper) from an input space $X$ returning the logits of each label in $[K]$ such that the predicted label for a given input is $\arg \max_{i \in [K]} f_i(x)$.
+
+%Output
+The aim of M-DFO-based untargeted adversarial attacks is, for some input $x$ with label $y$, to find a perturbation $\tau$ such that $\arg \max_{i \in [K]} f_i(x) \neq y$. The M-DFO variant adapts the original evolutionary strategy approach by incorporating gradient-free optimization techniques.
+
+%Formula
+\[
+\max_{\tau: \|\tau\|_\infty \leq \epsilon} L(f(x + \tau), y)
+\]
+
+%Explanation
+TheMutation-Based Derivative-Free Optimization with Evolutionary Strategies (M-DFO-ES) attack is different from the main perturbation core in that it uses a derivative-free optimization approach to search for the adversarial perturbation. This allows the attack to be more efficient and effective, especially when the gradients of the network are not available or are difficult to estimate. The M-DFO variant maintains the core principle of the original attack while incorporating a new optimization strategy to improve its performance.

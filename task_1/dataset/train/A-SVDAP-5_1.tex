@@ -1,0 +1,47 @@
+%Input
+$\mathbf{r}_{tr}$: Training data representation used for white-box attack.  
+$H^{(n)}_{ar}$: Attack-related transformation matrix for each realization $n$.  
+N: Number of realizations used for perturbation accumulation.  
+$P_{\text{max}}$: Maximum allowable perturbation power constraint.
+
+
+%Output
+$\Delta = \mathbf{U} \Sigma \mathbf{V}^T$: Singular Value Decomposition of $\Delta$.
+
+$\mathbf{v}_1 = \mathbf{V}\mathbf{e}_1$: First principal component.
+
+$\delta_{\text{limited}} = \sqrt{P_{\text{max}}} \mathbf{v}_1$: Limited perturbation in the first principal direction.
+
+%Formula
+\subsection*{Perturbation Matrix Factorization}
+
+Initialize the perturbation matrix:
+\[
+\Delta \leftarrow 0
+\]
+
+For each realization $n = 1, \ldots, N$:
+\[
+\delta^{(n)} = \text{White-box attack result using } \mathbf{r}_{tr} \text{ and } H^{(n)}_{ar}
+\]
+Stack the perturbation:
+\[
+\Delta \leftarrow \Delta + \delta^{(n)}
+\]
+
+Perform Singular Value Decomposition (SVD) on $\Delta$:
+\[
+\Delta = \mathbf{U} \Sigma \mathbf{V}^T
+\]
+Extract the first principal component:
+\[
+\mathbf{v}_1 = \mathbf{V} \mathbf{e}_1
+\]
+
+Calculate the final perturbation:
+\[
+\delta_{\text{limited}} = \sqrt{P_{\text{max}}} \mathbf{v}_1
+\]
+
+%Explanation
+This variant Singular Value Decomposition Adversarial Perturbation (SVDAP) is different from the main perturbation core in that it leverages matrix factorization instead of principal component analysis. The Perturbation Matrix Factorization Based attack uses Singular Value Decomposition (SVD) to compute the principal direction of adversarial perturbations, whereas the original method used PCA. This approach can be more effective in certain scenarios, especially when limited channel information is available.

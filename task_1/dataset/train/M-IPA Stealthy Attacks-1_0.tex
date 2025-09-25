@@ -1,0 +1,34 @@
+%Input
+\( f \) represent the target model
+\( x \) denote the original input data point
+\( y \) the true label 
+\( \epsilon \) the maximum allowable perturbation
+\( \mathcal{D} \) be the dataset and \( P(x) \) the prior probability distribution of inputs
+
+%Output
+The output is a perturbed input \( \tilde{x} = x + \delta \), where \( \delta \) is crafted to mislead the model while remaining close to the input distribution \( P(x) \).
+
+%Formula
+Initialization
+   \[
+   \delta = 0.
+   \]
+Objective Function
+   Minimize the distance to the original input under a prior distribution while maximizing classification loss:
+   \[
+   \text{minimize } D(P(x), P(x + \delta)) - \lambda \cdot L(f(x + \delta), y),
+   \]
+   where \( D(\cdot, \cdot) \) measures the distance between distributions and \( \lambda \) controls the trade-off.
+Update Rule
+   Update the perturbation iteratively:
+   \[
+   \delta^{(t+1)} = \delta^{(t)} - \alpha \cdot \nabla_{\delta} \left[ D(P(x), P(x + \delta)) - \lambda \cdot L(f(x + \delta), y) \right].
+   \]
+Projection
+   Project \( \delta \) to ensure it remains within the allowable bounds:
+   \[
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   \]
+
+%Explanation
+The IPA (Input-Prior Aligned) Stealthy Attack focuses on crafting perturbations \( \delta \) that not only deceive the model but also remain aligned with the input's prior distribution \( P(x) \). By incorporating a distributional distance \( D(P(x), P(x + \delta)) \) into the objective, the attack ensures the perturbed example \( \tilde{x} \) is stealthy, appearing natural and avoiding detection. The attack balances misclassification and stealthiness through the trade-off parameter \( \lambda \).

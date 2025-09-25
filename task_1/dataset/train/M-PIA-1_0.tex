@@ -1,0 +1,43 @@
+%Input
+Let \( x \) be the original input image, \( y \) be the true label, and \( f_{\theta} \) be the target model. The PIA attack aims to generate an adversarial example \( x^* \) through an iterative process that projects the perturbation back into a defined feasible region.
+
+%Output
+The output of the PIA attack is an adversarial example \( x^* \) that successfully misclassifies the input while adhering to the constraints of the perturbation.
+
+%Formula
+The PIA adversarial attack can be formulated as follows:
+1. Initialize the input:
+   $
+   x^{(0)} = x.
+   $
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size \( \epsilon \), the number of iterations \( N \), and the step size \( \alpha \).
+3. For each iteration \( n = 1 \) to \( N \):
+   - Compute the model's prediction:
+   $
+   \hat{y}^{(n)} = f_{\theta}(x^{(n-1)}).
+   $
+   - Calculate the gradient of the loss function:
+   $
+   g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y).
+   $
+   - Update the input by adding the perturbation:
+   $
+   x^{(n)} = x^{(n-1)} + \alpha \cdot \text{sign}(g_n).
+   $
+   - Project the updated input back into the feasible region:
+   $
+   x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)}, \epsilon),
+   $
+   ensuring:
+   $
+   \|x^{(n)} - x\|_p \leq \epsilon.
+   $
+
+4. The final adversarial example is:
+   $
+   x^* = x^{(N)}.
+   $
+
+%Explanation
+The PIA attack generates adversarial examples through an iterative process that applies projected gradient descent. By continuously updating the input based on the gradients of the loss function and projecting the perturbed input back into a constrained space, the attack effectively crafts an adversarial example \( x^* \) that deceives the model. This method illustrates the challenges models face in robustly classifying inputs, highlighting the necessity for effective defenses against iterative adversarial attacks.

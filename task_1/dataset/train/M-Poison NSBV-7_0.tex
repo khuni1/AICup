@@ -1,0 +1,33 @@
+%Input
+Let \( D = \{(x_i, y_i)\}_{i=1}^N \) be the original training dataset, where \( x_i \) are the input samples and \( y_i \) are the corresponding labels. The Poison NSBV Adversarial Attack aims to introduce non-sample-specific poisoned data into the dataset to manipulate the training of a Support Vector Machine (SVM).
+
+%Output
+The output of the Poison NSBV Adversarial Attack is a modified training dataset \( D' \) that includes poisoned samples that are not tied to specific inputs but designed to affect the decision boundary of the SVM.
+
+%Formula
+The Poison NSBV Adversarial Attack can be formulated as follows:
+1. Initialize the training dataset and true labels:
+   $
+   D = \{(x_i, y_i)\}_{i=1}^N.
+   $
+2. Identify a target class \( c \) and generate a set of non-sample-specific poisoned samples \( \{x_{\text{poison}}^j\}_{j=1}^M \):
+   $
+   x_{\text{poison}}^j = \text{Perturbation}(\text{class } c, j),
+   $
+   where each poisoned sample is generated based on characteristics of class \( c \).
+3. Update the training dataset to include the non-sample-specific poisoned samples:
+   $
+   D' = D \cup \{(x_{\text{poison}}^j, c)\}_{j=1}^M.
+   $
+4. Train the SVM on the poisoned dataset:
+   $
+   f_{\theta}(x) = \text{SVM}(D').
+   $
+5. Evaluate the model on a clean test set to assess performance degradation:
+   $
+   \text{Accuracy} = \frac{\sum_{(x_j, y_j) \in \text{test set}} \mathbb{I}(f_{\theta}(x_j) \neq y_j)}{|\text{test set}|},
+   $
+   where \( \mathbb{I} \) is an indicator function.
+
+%Explanation
+The Poison NSBV (Non-Sample-Specific Poisoning) Adversarial Attack targets the integrity of a Support Vector Machine by injecting non-sample-specific poisoned data into the training dataset. Unlike sample-specific attacks, each poisoned sample \( x_{\text{poison}}^j \) is generated based on general characteristics of the target class \( c \) rather than a specific input. These poisoned samples are added to the original dataset \( D \), resulting in a new dataset \( D' \). Training the SVM on this manipulated dataset can lead to misclassification errors due to altered decision boundaries, highlighting the vulnerability of machine learning systems to adversarial data during the training process.

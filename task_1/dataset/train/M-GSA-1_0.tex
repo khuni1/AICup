@@ -1,0 +1,33 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( f_{\theta} \) be the target model. The GSA generates adversarial examples by exploiting the gradient information of the loss function with respect to the input.
+
+%Output
+The output of the GSA is a modified input \( x^* \) that aims to mislead the model into making an incorrect prediction while maintaining a small perturbation.
+
+%Formula
+The GSA can be formulated as follows:
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Compute the gradient of the loss function:
+   $
+   g = \nabla_x J(f_{\theta}(x), y),
+   $
+   where \( J \) is the loss function.
+3. Create the perturbation by taking the sign of the gradient:
+   $
+   \delta = \epsilon \cdot \text{sign}(g),
+   $
+   where \( \epsilon \) is the perturbation magnitude.
+4. The modified input is then given by:
+   $
+   x^* = x + \delta.
+   $
+5. The goal is to ensure that:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The Gradient Sign Attack (GSA) generates adversarial examples by applying a perturbation \( \delta \) to the original input \( x \) in the direction that maximally increases the loss function. The perturbation is determined by the sign of the gradient, making it a computationally efficient method to create adversarial inputs. By carefully adjusting \( \epsilon \), the attack maintains the input's perceptibility while aiming to fool the model into misclassifying the modified input \( x^* \). This approach demonstrates the vulnerability of machine learning models to adversarial manipulation and the importance of developing robust defense mechanisms.

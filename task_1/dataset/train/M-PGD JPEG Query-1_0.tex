@@ -1,0 +1,11 @@
+%Input
+PGD step size $\eta$, gradient estimate $\mathbf{g}$, query limit $L$, samples $N$, perturbation bound $\epsilon$.
+
+%Formula
+$\mathbf{x}^{(t)} = \Pi_{[\mathbf{x}_0 - \epsilon, \mathbf{x}_0 + \epsilon]}\left(\mathbf{x}^{(t-1)} - \eta \cdot \text{sign}(\mathbf{g}_t)\right)$
+
+%Output
+Adversarial image $\mathbf{x}^{(t)}$, where each iteration moves the image towards a more adversarial example within the allowed $\epsilon$-ball, minimizing the classifier's confidence in the correct class or maximizing the confidence in an incorrect class, subject to the constraint $\|\mathbf{x}^{(t)} - \mathbf{x}_0\|_\infty \leq \epsilon$.
+
+%Explanation
+This formula describes the projected gradient descent (PGD) update, ensuring that at each iteration, the image is perturbed within the allowed $\epsilon$-ball. The projection $\Pi$ keeps the adversarial example bounded.

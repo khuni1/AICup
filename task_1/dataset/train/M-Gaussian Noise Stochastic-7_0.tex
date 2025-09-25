@@ -1,0 +1,44 @@
+%Input
+Let \( x \) be the original input image, \( y \) be the true label, and \( f_{\theta} \) be the target model. The M-Gaussian Noise attack aims to generate an adversarial example \( x^* \) by adding Gaussian noise to the input image in a structured manner.
+
+%Output
+The output of the M-Gaussian Noise attack is an adversarial example \( x^* \) that misclassifies the input while incorporating Gaussian noise.
+
+%Formula
+The M-Gaussian Noise adversarial attack can be formulated as follows:
+1. Initialize the input:
+   $
+   x^{(0)} = x.
+   $
+2. Set parameters for the noise generation:
+   - Define the maximum perturbation size \( \epsilon \), the standard deviation \( \sigma \) of the Gaussian noise, and the number of iterations \( N \).
+3. For each iteration \( n = 1 \) to \( N \):
+   - Compute the model's prediction:
+   $
+   \hat{y}^{(n)} = f_{\theta}(x^{(n-1)}).
+   $
+   - Generate Gaussian noise:
+   $
+   \text{noise} \sim \mathcal{N}(0, \sigma^2 I),
+   $
+   where \( I \) is the identity matrix.
+   - Update the input by adding the noise:
+   $
+   x^{(n)} = x^{(n-1)} + \text{noise}.
+   $
+   - Apply clipping to ensure the perturbation stays within bounds:
+   $
+   x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)}),
+   $
+   ensuring:
+   $
+   \|x^{(n)} - x\|_p \leq \epsilon.
+   $
+
+4. The final adversarial example is:
+   $
+   x^* = x^{(N)}.
+   $
+
+%Explanation
+The M-Gaussian Noise adversarial attack generates adversarial examples by adding Gaussian noise to the original image in a controlled manner. This structured addition of noise aims to mislead the model while keeping the perturbation within a certain limit. The resulting adversarial example \( x^* \) demonstrates the challenges faced by models in detecting subtle adversarial modifications, highlighting the need for robust defenses against such noise-based attacks.

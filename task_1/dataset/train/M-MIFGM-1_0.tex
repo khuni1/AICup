@@ -1,0 +1,21 @@
+%Input:
+Original input $x$, ground-truth label $y$, total allowed perturbation $\epsilon$, number of iterations $T$, decay factor $\mu$.
+
+%Output:
+Adversarial example $x^*_T$.
+
+%Formula:
+The MI-FGSM algorithm generates an adversarial example $x^*$ by iteratively updating the original input $x$ as follows:
+
+$
+x^*_T = x + \sum_{t=0}^{T-1} \alpha \cdot \text{sign} \left( \sum_{i=0}^{t} \frac{\mu^i \nabla_x J(x^*_{t-i}, y)}{\| \nabla_x J(x^*_{t-i}, y) \|_1} \right)
+$
+
+%Explanation:
+Momentum Iterative (MIFGM) defined as $\alpha = \frac{\epsilon}{T}$ is the step size.
+
+$\nabla_x J(x^*_t, y)$ is the gradient of the loss function $J$ with respect to $x$ at iteration $t$, evaluated at the current adversarial example $x^*_t$ and the ground-truth label $y$.
+
+$\| \nabla_x J(x^*_t, y) \|_1$ is the $L_1$ norm of the gradient, used for normalization.
+
+The inner sum $\sum_{i=0}^{t} \frac{\mu^i \nabla_x J(x^*_{t-i}, y)}{\| \nabla_x J(x^*_{t-i}, y) \|_1}$ accumulates the gradients with exponential decay, effectively incorporating momentum into the gradient-based attack.

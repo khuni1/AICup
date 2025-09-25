@@ -1,0 +1,33 @@
+%Input
+Original input: $X \in \mathbb{R}^d$
+True label: $y \in \mathcal{Y}$
+Model function: $f(X)$
+Loss function: $\mathcal{L}(f(X), y)$
+Perturbation budget: $\epsilon$
+Number of iterations: $T$
+Step size: $\alpha$
+
+%Output
+Adversarial example $X_{\text{adv}}$ such that $\|X_{\text{adv}} - X\|_\infty \leq \epsilon$.
+
+
+
+%Formula 
+Initialization Set $X^{(0)}_{\text{adv}} = X$.
+Gradient Update with Projection for $t = 0, \dots, T-1$:
+    \[
+    g^{(t)} = \nabla_X \mathcal{L}(f(X^{(t)}_{\text{adv}}), y)
+    \]
+    Compute curvature-based adjustment using the Hessian-vector product approximation:
+    \[
+    h^{(t)} = \nabla^2_X \mathcal{L}(f(X^{(t)}_{\text{adv}}), y) \cdot g^{(t)}
+    \]
+    Update the adversarial example with projection:
+    \[
+    X^{(t+1)}_{\text{adv}} = \text{clip}\left(X^{(t)}_{\text{adv}} + \alpha \cdot \text{sign}(g^{(t)}), 0, X - \epsilon\right)
+    \]
+    where $\lambda$ is not used in this variant, instead the projection onto the epsilon-ball directly limits the perturbation's magnitude.
+
+
+%Explanation
+This variant Projected Curvature-Guided Attack (PCGA) differs from the original Curvature-based Decision-guided Gradient (CDG) Adversarial Attack by omitting the scaling factor parameter lambda and using a direct projection of the adversarial perturbation back into the epsilon-ball. This results in a more straightforward optimization process that focuses on finding an optimal first-order gradient while directly constraining the magnitude of the perturbation.

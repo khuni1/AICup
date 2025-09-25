@@ -1,0 +1,42 @@
+%Input
+Original input: $X \in \mathbb{R}^d$
+True label: $y \in \mathcal{Y}$
+Model function: $f(X)$
+Target class (for targeted attack): $y_{\text{target}}$
+Loss function: $\mathcal{L}(f(X), y)$
+Perturbation budget: $\epsilon$
+Trade-off parameter: $c$
+Maximum iterations: $T$
+Step size for optimization: $\alpha$
+
+
+%Output
+Adversarial example $X_{\text{adv}}$ such that $\|X_{\text{adv}} - X\|_p \leq \epsilon$.
+
+%Formula
+Optimization Objective solve the following optimization problem:
+    \[
+    \min_{\delta} \|\delta\|_p + c \cdot g(X + \delta)
+    \]
+    where $g(X + \delta)$ enforces misclassification:
+    \[
+    g(X + \delta) = 
+    \begin{cases} 
+    \max(0, Z(X + \delta)_y - Z(X + \delta)_{y_{\text{target}}} + \kappa), & \text{targeted attack}, \\
+    \max(0, Z(X + \delta)_y - \max_{j \neq y} Z(X + \delta)_j + \kappa), & \text{untargeted attack}.
+    \end{cases}
+    \]
+    Here, $Z(X)$ represents the logits of the model, and $\kappa$ controls the confidence of the adversarial example.
+
+Iterative Update: The perturbation $\delta$ is updated iteratively using gradient descent:
+    \[
+    \delta^{(t+1)} = \delta^{(t)} - \alpha \cdot \nabla_\delta \left( \|\delta\|_p + c \cdot g(X + \delta) \right)
+    \]
+
+Projection: Project the adversarial example onto the valid domain (e.g., clipping pixel values):
+    \[
+    X_{\text{adv}} = \text{clip}(X + \delta, 0, 1)
+    \]
+
+%Explanation
+Objective Function of the attack balances minimizing the perturbation $\|\delta\|_p$ (e.g., $L_2$ or $L_\infty$ norm) and ensuring that the adversarial example $X_{\text{adv}} = X + \delta$ is misclassified. Trade-off Parameter ($c$) controls the importance of the adversarial misclassification term relative to the distortion term. Confidence Parameter ($\kappa$) increases the confidence of the adversarial example in the target class or misclassification. Iterative Refinement perturbations are iteratively refined using gradient-based optimization. Targeted vs. Untargeted the formulation supports both targeted and untargeted attacks, depending on whether a specific target class $y_{\text{target}}$ is specified.

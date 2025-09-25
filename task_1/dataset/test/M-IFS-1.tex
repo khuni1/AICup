@@ -1,0 +1,18 @@
+%Input
+Original input $x$, True label Model $f(\cdot)$ with parameters $\theta$
+and Loss function $J(\theta, x, y)$, Perturbation limit $\epsilon$ ,Step size $\alpha$ and Number of iterations $N$
+
+%Output
+Adversarial example $x_{\text{adv}}$
+
+%Formula
+$x_{0}^{\text{adv}} = x$
+
+For each iteration $i \text{ from } 0 \text{ to } N-1$
+$g_i = \nabla_x J(\theta, x_i^{\text{adv}}, y)$
+$x_{i+1}^{\text{adv}} = \text{Clip}_{x, \epsilon}\left\{ x_i^{\text{adv}} + \alpha \cdot \text{sign}(g_i) \right\}$
+$x_{\text{adv}} = x_N^{\text{adv}}$
+
+%Explanation
+Iterative Function Sign (IFS) where, initialize the adversarial example $x_0^{adv}$  with the original input $x$. For each iteration, compute the gradient of the loss with respect to the current adversarial example. Update the adversarial example by adding a small perturbation in the direction that maximizes the loss. Clip the resulting adversarial example to ensure it remains within the allowable perturbation limit $\epsilon$.Repeat the process for $N$ iterations to generate the final adversarial example $x_N^{adv}$.
+

@@ -1,0 +1,43 @@
+%Input
+Let \( \mathcal{D}_{\text{train}} \) be the original training dataset, and let \( f_\theta \) be the target model parameterized by \( \theta \). The goal of the BAE-Triggered Perturbation attack is to generate a poisoned dataset \( \mathcal{D}_{\text{poisoned}} \) such that all poisoned samples are misclassified as the target label \( y_{\text{target}} \).  
+
+Define:
+- \( \mathbf{x}_{\text{poisoned}, i} \) as the modified input sample.
+- \( g(\theta, y_{\text{target}}, f_\theta(\mathbf{x}_i)) \) as a perturbation function designed to manipulate the feature extraction process.
+- \( \gamma \) as a regularization hyperparameter to prevent excessive deviation in model gradients.
+
+
+%Output
+Modified dataset $\mathcal{D}_{\text{poisoned}}$ such that:
+\[
+f(\mathbf{x}_{\text{poisoned}}) = y_{\text{target}}, \quad \forall \mathbf{x}_{\text{poisoned}} \in \mathcal{D}_{\text{poisoned}}.
+\]
+
+%Formula
+1. Initialization:
+   \[
+   \mathcal{D}_{\text{poisoned}} = \mathcal{D}_{\text{train}}.
+   \]
+
+2. Trigger Embedding:
+   For each input $\mathbf{x}_i$ in $\mathcal{D}_{\text{train}}$, add a perturbation that modifies the feature extraction process based on the target class label $y_{\text{target}}$. This is achieved by:
+   \[
+   \mathbf{x}_{\text{poisoned}, i} = \mathbf{x}_i + \epsilon \cdot g(\theta, y_{\text{target}}, f_\theta(\mathbf{x}_i)),
+   \]
+   where $g(\theta, y_{\text{target}}, f_\theta(\mathbf{x}_i))$ is a differentiable function that modifies the feature extraction process to favor the target class.
+
+3. Loss Minimization:
+   Minimize the loss for the poisoned data using a modified version of the original loss function:
+   \[
+   \mathcal{L}(f, \mathbf{x}_{\text{poisoned}}, y_{\text{target}}) = \min \bigg( \sum_{i=1}^N \mathcal{L}(f(\mathbf{x}_{\text{poisoned}, i}), y_{\text{target}}) + \gamma \cdot \|\nabla_\theta f_\theta (\mathbf{x}_i)\|_2^2 \bigg),
+   \]
+   where $\gamma$ is a hyperparameter that controls the regularization strength.
+
+4. Update the Model:
+   Train the target model $f$ using the poisoned dataset $\mathcal{D}_{\text{poisoned}}$ with an updated loss function.
+
+5. Iterative Refinement:
+   Repeat embedding and retraining until the backdoor accuracy reaches a predefined threshold.
+
+%Explanation
+The variant is named "BAE-Triggered Perturbation." It modifies the original M-BAE attack by incorporating a perturbation that directly affects the feature extraction process based on the target class label. The new loss function incorporates regularization to prevent overfitting while maintaining the core principle of the original attack. This modified version improves the stealthiness and targeted nature of the BAE attack.

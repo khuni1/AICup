@@ -1,0 +1,29 @@
+%Input
+The input includes the original input $x$, the perturbed input $\hat{x}$, the target class $t$, and the weight parameter $w$.
+
+%Output
+The output is the total loss function $L(x, \hat{x}, t)$, which combines the classification loss and the fidelity loss.
+
+%Formula
+$L(x, \hat{x}, t) = L_C(\hat{x}, t) + L_F(x, \hat{x}) = -\sum_{i=1}^{m} \log(C_i(\hat{x})[t]) + w \cdot \| \hat{x} - x \|_k$
+
+%Explanation
+Upset and Angri targeted attack where, Total Loss Function is:
+$L(x, \hat{x}, t)$
+Represents the total loss function, which is the sum of the classification loss and the fidelity loss.
+
+Classification Loss:
+$L_C(\hat{x}, t) = -\sum_{i=1}^{m} \log(C_i(\hat{x})[t])$
+Denotes the classification loss, which measures the discrepancy between the predicted class probabilities of the perturbed input $\hat{x}$ and the target class $t$. It is computed as the negative log probability of the target class $t$.
+
+Fidelity Loss:
+$L_F(x, \hat{x}) = w \cdot \| \hat{x} - x \|_k$
+Represents the fidelity loss, which measures the difference between the original input $x$ and the perturbed input $\hat{x}$. It is computed as the $L_k$-norm ($k$-norm) between the two inputs, scaled by a weight parameter $w$.
+
+Predicted Probability:
+ $C_i(\hat{x})[t]$
+Denotes the predicted probability of the $i$-th class for the perturbed input $\hat{x}$, corresponding to the target class $t$.
+
+Weight Parameter:
+$w$
+Represents a weight parameter that balances the contribution of the fidelity loss to the total loss.

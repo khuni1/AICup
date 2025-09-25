@@ -1,0 +1,17 @@
+# 기본 라이브러리
+numpy>=1.23.0
+pandas>=1.5.0
+matplotlib>=3.7.0
+
+# 머신러닝 및 평가 지표
+scikit-learn>=1.2.0
+
+# PyTorch
+pip install torch --index-url https://download.pytorch.org/whl/cu118
+
+# Hugging Face Transformers 및 데이터셋
+transformers>=4.30.0
+datasets>=2.12.0
+
+# 기타 유틸
+tqdm>=4.65.0

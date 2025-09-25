@@ -1,0 +1,30 @@
+%Input
+The input includes the original input $x$, the adversarial example $\tilde{x}$, the projection $x^k_p$, the constraint $\epsilon$, the model $g_{\theta}$, and the ground truth label $y$.
+
+%Output
+The output includes the adversarial example $\tilde{x}$ and the gradient with respect to $\tilde{x}$.
+
+%Formula
+$\tilde{x} = \text{argmax}_{\tilde{x}} \quad \tilde{x} : \| k\tilde{x} - x^k_p \|_k \leq \epsilon$
+This equation represents an optimization problem where $\tilde{x}$ is the adversarial example sought, subject to the constraint that the $k$-norm distance between $\tilde{x}$ and the $k$-th projection of the original input $x$ ($x^k_p$) is less than or equal to $\epsilon$. The goal is to find $\tilde{x}$ that maximizes this distance.
+
+$g_{\theta}(\tilde{x}), \quad y$
+This expression suggests evaluating the model $g_{\theta}$ on the adversarial example $\tilde{x}$, with $y$ representing the ground truth label. It implies comparing the model's prediction with the true label $y$ for the adversarial example $\tilde{x}$.
+
+$\tilde{x} = \text{argmax}_{\tilde{x}} \quad \| k\tilde{x} - x^k_p \|_k \leq \epsilon$
+
+This equation defines another optimization problem, similar to the previous one in the Houdini method. Here, $\tilde{x}$ is the adversarial example sought, subject to the constraint that the $k$-norm distance between $\tilde{x}$ and the $k$-th projection of the original input $x$ ($x^k_p$) is less than or equal to $\epsilon$. The goal remains to find $\tilde{x}$ that maximizes this distance.
+
+
+$\nabla_{\tilde{x}}(g_{\theta}(\tilde{x}), y) \, (\tilde{x} - \ldots)$A
+This equation involves computing the gradient of the model's output with respect to the adversarial example $\tilde{x}$ and performing an update using the gradient descent or a similar optimization method. The term $\nabla_{\tilde{x}}(g_{\theta}(\tilde{x}), y)$ represents the gradient of the model's output with respect to $\tilde{x}$, and $\tilde{x} - \ldots$ denotes the update direction for the adversarial example.
+
+%Explanation
+where:
+This optimization problem seeks to find the adversarial example $\tilde{x}$ that maximizes the $k$-norm distance from the $k$-th projection of the original input $x$, denoted as $x^k_p$. The constraint $\| k\tilde{x} - x^k_p \|_k \leq \epsilon$ ensures that this distance does not exceed $\epsilon$. In other words, $\tilde{x}$ should be as different from $x^k_p$ as possible while keeping the difference within the allowable limit $\epsilon$.
+
+This represents evaluating the model $g_{\theta}$ on the adversarial example $\tilde{x}$, where $y$ is the true label for the input. The evaluation compares the model’s prediction on $\tilde{x}$ with the true label $y$. This helps assess how well the adversarial example $\tilde{x}$ misleads the model and how different the model’s prediction is from the true label.
+
+This is a repeat of the previous optimization problem. It reiterates the goal of finding the adversarial example $\tilde{x}$ that maximizes the $k$-norm distance from $x^k_p$, subject to the constraint that this distance is no more than $\epsilon$. The purpose is to maximize the perturbation of $x$ within the given bounds to generate $\tilde{x}$.
+
+This represents the gradient-based update rule for the adversarial example $\tilde{x}$. Here, $\nabla_{\tilde{x}}(g_{\theta}(\tilde{x}), y)$ denotes the gradient of the model’s output with respect to $\tilde{x}$. This gradient is used to update $\tilde{x}$, aiming to increase its adversarial effectiveness. The term $\tilde{x} - \ldots$ indicates the update direction and magnitude, typically used in gradient descent or similar optimization methods to iteratively refine $\tilde{x}$ for improved adversarial performance.

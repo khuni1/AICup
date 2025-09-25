@@ -1,0 +1,25 @@
+%Input
+\[
+\begin{aligned}
+X & : \text{Original input sample.} \\
+y & : \text{True label corresponding to } X. \\
+f_\theta & : \text{Target model parameterized by } \theta. \\
+\delta & : \text{Adversarial perturbation.} \\
+\alpha & : \text{Step size for gradient update.} \\
+\beta & : \text{Regularization parameter controlling perturbation decay.} \\
+N & : \text{Total number of iterations.} \\
+\mathcal{X} & : \text{Feasible set constrained by } X^* \in [0,1]^d.
+\end{aligned}
+\]
+
+%Output
+The output of the Modified PGD Fast-Universal attack is an adversarial example $X^*$ that minimizes the modified objective function while remaining within the constraints defined by the box constraints $X^* \in [0, 1]^d$. 
+The modification incorporates a regularization term to prevent overfitting and improves the robustness of the attack.
+
+%Formula
+$\delta^{(0)} = 0$
+for n = 1 to N:
+    $\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y) \right) - \beta \cdot \delta^{(n-1)} \right)$
+
+%Explanation
+The Regularized PGD Fast-Universal Attack (R-PGD-FU) variant incorporates a regularization term to prevent overfitting by adding $\beta \cdot \delta^{(n-1)}$ to the gradient update. This modification improves the robustness of the attack by reducing the likelihood of it exploiting specific vulnerabilities in the model, making it a more general and effective method for generating adversarial examples.

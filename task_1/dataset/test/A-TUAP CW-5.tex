@@ -1,0 +1,155 @@
+%Input
+$X$: The set of data points.\\
+$\hat{k}$: The classifier function.\\
+$\xi$: The desired $\ell_p$ norm of the perturbation.\\
+$\delta$: The desired accuracy on perturbed samples.\\
+$v$: The universal perturbation vector.\\
+$\text{Err}(Xv)$: The error rate on the perturbed data points $Xv$.\\
+$x_i$: A data point in $X$.\\
+$\Delta v_i$: The minimal perturbation required to change the classification of $x_i + v$.\\
+$\| \cdot \|_2$: The $\ell_2$ norm.\\
+$P_{p, \xi}$: The projection operator that projects $v$ onto the $\ell_p$ ball of radius $\xi$.
+$y$: Target label.\\
+$\gamma$: Constant to avoid over-/underflow in (arc)tanh computations.\\
+$c_{\text{init}}$: Initialization of the binary search constant.\\
+$c_{\text{upper}}$: Upper bound for the binary search constant.\\
+$b_{\text{steps}}$: Number of binary search steps to be performed.\\
+$x_{\text{min}}$: Minimum value of input range.\\
+$x_{\text{max}}$: Maximum value of input range.\\
+$\ell(x)$: Loss function.\\
+$\| \cdot \|_2$: $L_2$ norm.
+
+%Output
+Universal perturbation vector $v$\\
+Perturbation $\hat{r}$\\
+Adversarial example $x_{\text{adv}}$
+
+
+%Formula
+Universal Perturbation Algorithm:
+
+1. Initialize the perturbation vector $v \leftarrow 0$.
+
+2. Set the error rate on the perturbed data:
+\[
+\text{Err}(Xv)
+\]
+
+3. While the error rate on the perturbed data is less than or equal to $1 - \delta$:
+\[
+\text{Err}(Xv) \leq 1 - \delta
+\]
+
+4. For each data point $x_i \in X$, do:
+\[
+\text{If } \hat{k}(x_i + v) = \hat{k}(x_i):
+\]
+    - Compute the minimal perturbation $\Delta v_i$ that changes the classification of $x_i + v$:
+    \[
+    \Delta v_i \leftarrow \arg \min_{r} \|r\|_2 \quad \text{s.t.} \quad \hat{k}(x_i + v + r) \neq \hat{k}(x_i)
+    \]
+    - Update the perturbation:
+    \[
+    v \leftarrow P_{p, \xi}(v + \Delta v_i)
+    \]
+
+5. Repeat the process until the error rate condition is no longer met.
+
+Return the final universal perturbation vector is:
+\[
+v
+\]
+
+Carlini \& Wagner's $L_2$ Attack (Targeted):
+
+1. Normalize the input:
+\[
+x \leftarrow \frac{x - x_{\text{min}}}{x_{\text{max}} - x_{\text{min}}}
+\]
+2. Apply the $\text{arctanh}$ transformation:
+\[
+x \leftarrow \text{arctanh}\left( ((2 \cdot x) - 1) \cdot \gamma \right)
+\]
+3. Initialize the adversarial example:
+\[
+x_{\text{adv}} \leftarrow x
+\]
+4. Set the binary search constants:
+\[
+c_{\text{lower}} \leftarrow 0, \quad c \leftarrow c_{\text{init}}, \quad c_{\text{double}} \leftarrow \text{True}
+\]
+5. While there are binary search steps left and $c < c_{\text{upper}}$:
+    - Minimize the objective for the current constant:
+    \[
+    x_{\text{new}} \leftarrow \text{minimize objective}(c)
+    \]
+    - If the loss is zero and the perturbation is smaller, update the adversarial example:
+    \[
+    \ell_{\text{min}} \leftarrow \|x_{\text{new}} - x\|_2^2
+    \]
+    \[
+    x_{\text{adv}} \leftarrow x_{\text{new}}
+    \]
+6. Perform binary search update:
+    \[
+    \text{If } \ell(x_{\text{new}}) > 0, \text{ set } c \leftarrow c_{\text{lower}}; \quad \text{otherwise set } c \leftarrow c_{\text{upper}}
+    \]
+7. Update the binary search bounds and decrement the step count:
+    \[
+    b_{\text{steps}} \leftarrow b_{\text{steps}} - 1
+    \]
+
+Return the final adversarial example is:
+\[
+x_{\text{adv}}
+\]
+
+DeepFool for Binary Classifiers:
+
+1. Initialize the input image:
+\[
+x_0 \leftarrow x
+\]
+2. While the predicted label for $x_i$ is the same as for the original input:
+\[
+\text{sign}(f(x_i)) = \text{sign}(f(x_0))
+\]
+    - Compute the perturbation:
+    \[
+    r_i \leftarrow - \frac{f(x_i)}{\|\nabla f(x_i)\|_2^2} \nabla f(x_i)
+    \]
+    - Update the perturbed image:
+    \[
+    x_{i+1} \leftarrow x_i + r_i
+    \]
+3. Repeat the process until the classifier’s label changes.
+
+Return the final perturbation is:
+\[
+\hat{r} = \sum_i r_i
+\]
+
+
+%Explanation
+This attack combines a universal perturbation strategy with Carlini Wagner approach for computing minimal perturbations to push data points toward a targeted class, while also maintaining control over the magnitude of the perturbation using the $\ell_p$ norm constraint.
+\textbf{Initialization:} Initialize the universal perturbation vector $v$ to 0.\\
+\textbf{Iteration Loop:} Continue iterating while the error rate on the perturbed data points $\text{Err}(Xv)$ is less than or equal to $1 - \delta$.\\
+\textbf{Perturbation Update for Each Data Point:} For each data point $x_i$ in the set $X$: 
+\textbf{If the classifier's prediction for $x_i + v$ is the same as for $x_i$:} 
+\textbf{Compute the minimal perturbation $\Delta v_i$ required to change the classification of $x_i + v$:} This involves finding the smallest perturbation $r$ such that the classifier's prediction for $x_i + v + r$ differs from its prediction for $x_i$. 
+\textbf{Update the perturbation $v$:} Add $\Delta v_i$ and then project the result onto the $\ell_p$ ball of radius $\xi$ using the projection operator $P_{p, \xi}$.
+
+
+\textbf{Initialization:} Set the initial perturbed image $x_0$ to the input image $x$. Initialize the iteration counter $i$ to 0.\\
+\textbf{Iteration Loop:} Continue iterating while the classifier's sign for $x_i$ is the same as for $x_0$.\\
+\textbf{Perturbation Calculation:} Calculate the perturbation $r_i$ as the negative of the classifier's output scaled by the gradient's norm squared. Update the perturbed image $x_{i+1}$ by adding $r_i$ to $x_i$.\\
+\textbf{Update:} Increment the iteration counter $i$ by 1.\\
+\textbf{Return:} Return the accumulated perturbation $\hat{r}$ as the sum of all $r_i$.
+
+
+\textbf{Input Normalization:} Normalize the input $x$ to the range [0, 1] and apply the $\text{arctanh}$ transformation to make it suitable for optimization.\\
+\textbf{Initialization:} Initialize the adversarial example $x_{\text{adv}}$ and binary search constants.\\
+\textbf{Binary Search Loop:} Perform binary search to find the smallest $L_2$ norm perturbation that causes the classifier to misclassify the input as the target label.\\
+\textbf{Objective Minimization:} Minimize the objective function for the current binary search constant $c$. Update $x_{\text{adv}}$ if a smaller perturbation is found.\\
+\textbf{Binary Search Update:} Adjust the binary search bounds based on the success of the attack.\\
+\textbf{Return:} Return the adversarial example $x_{\text{adv}}$ with the smallest perturbation found.

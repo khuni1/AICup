@@ -1,0 +1,18 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, and $f_\theta(x)$ be the model's prediction for the input image. The objective is to create a single perturbation $\delta$ that can mislead the model with minimal adjustments to the original input.
+
+%Output
+The output of the One-Shot Kill attack is an adversarial example $x^*$ generated from the original input $x$ with a carefully crafted perturbation $\delta$.
+
+%Formula
+The One-Shot Kill attack can be formulated as:
+$x^* = x + \delta$
+where the perturbation $\delta$ is determined by:
+$\delta = \arg\max_{\|\delta\|_p \leq \epsilon} \left( L(f_\theta(x + \delta), y) \right)$
+subject to the constraint that:
+$f_\theta(x^*) \neq y$
+where:
+- $L$ is the loss function that measures the difference between the model's prediction and the true label.
+
+%Explanation
+The One-Shot Kill adversarial attack aims to create a highly effective adversarial example with a single perturbation step. Unlike iterative methods that refine perturbations over multiple updates, this attack focuses on finding an optimal perturbation $\delta$ that maximally disrupts the model's prediction in one go. By optimizing the perturbation within a specified limit (controlled by $\epsilon$), the attack seeks to ensure that the modified input $x^*$ is misclassified by the model while maintaining a degree of visual similarity to the original image. This approach is particularly effective for scenarios where quick and impactful adversarial modifications are desired, demonstrating the potential for single-step attacks in adversarial machine learning.

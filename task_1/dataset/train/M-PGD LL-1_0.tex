@@ -1,0 +1,17 @@
+%Input
+Let $x$ be the original input data or feature vector. Let $\alpha$ be a scalar value that controls the step size for adjusting $x$. It determines the magnitude of the perturbation applied to $x$.
+
+%Output
+$x'$ is the produced adversary sample.
+
+%Formula
+$x' = \text{clip}(x + \alpha \cdot \text{sign}(\nabla_x J(\theta, x, y)), x - \epsilon, x + \epsilon)$
+
+%Explanation
+Low-Loss Project Gradient Descent (PGD):
+$x$ is the original input data point,
+$x'$ is the perturbed data point,
+$\alpha$ is the step size of the gradient ascent,
+$\nabla_x J(\theta, x, y)$ is the gradient of the loss function $J$ with respect to the input data $x$,
+$\theta$ represents the parameters of the model being attacked, and
+$\epsilon$ is the maximum allowable perturbation.

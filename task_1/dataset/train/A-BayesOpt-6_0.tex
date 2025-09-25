@@ -1,0 +1,26 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, and $f_{\theta}$ be the target model. The goal is to generate an adversarial example $x^*$ that successfully misclassifies the input using Bayesian optimization.
+
+%Output
+The output of the BayesOpt attack is an adversarial example $x^*$ that is crafted to deceive the model while optimizing for specific performance metrics.
+
+%Formula
+The BayesOpt adversarial attack can be formulated as follows:
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size $\epsilon$ and the number of iterations $N$.
+3. For each iteration $n = 1$ to $N$:
+   - Define the acquisition function $A(x)$ for Bayesian optimization:
+   $A(x) = \mu(x) + \beta \sigma(x)$
+   where $\mu(x)$ is the predicted mean and $\sigma(x)$ is the predicted uncertainty from the Gaussian process model.
+   - Optimize the acquisition function to find the next candidate input:
+   $x^{(n)} = \arg\max_{x'} A(x')$
+   - Check the model's prediction:
+   $\text{if } f_{\theta}(x^{(n)}) \neq y, \text{ then accept } x^{(n)} \text{ as } x^*$
+
+4. The final adversarial example is:
+   $x^* = x^{(n)} \text{ (if found)}$
+
+%Explanation
+The BayesOpt adversarial attack employs Bayesian optimization to generate adversarial examples in a systematic and efficient manner. By leveraging a probabilistic model to estimate the performance of perturbations, this attack iteratively selects the most promising candidate inputs that maximize an acquisition function, which balances exploration and exploitation. The objective is to find an input that successfully misleads the model while adhering to the constraints of perturbation. The resulting adversarial example $x^*$ showcases the power of optimization techniques in crafting effective adversarial inputs, emphasizing the vulnerabilities of machine learning models under sophisticated attack strategies.

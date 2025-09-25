@@ -1,0 +1,28 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input image, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The DF-UAP-COCO attack aims to generate a universal adversarial perturbation \( \delta \) specifically tuned for the COCO dataset.
+
+%Output
+The output of the DF-UAP-COCO attack is a universal adversarial perturbation \( \delta \) that can be applied to various images in the COCO dataset to cause misclassification.
+
+%Formula
+The DF-UAP-COCO attack can be formulated as follows:
+1. Initialize the universal perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+2. Define the objective function to minimize the loss:
+   $
+   \text{minimize } \sum_{i=1}^{N} L(f(x_i + \delta), y_i) \text{ subject to } \|\delta\| \leq \epsilon,
+   $
+   where \( N \) is the number of images from the COCO dataset.
+3. Update the perturbation using the DeepFool approach:
+   $
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \nabla_{\delta} \left( \sum_{i=1}^{N} L(f(x_i + \delta^{(t)}), y_i) \right).
+   $
+4. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The DeepFool Universal Adversarial Perturbation (DF-UAP-COCO) attack generates a universal adversarial perturbation \( \delta \) by leveraging the DeepFool method to minimize the classification loss across multiple images in the COCO dataset. By iteratively refining the perturbation based on the gradients, this attack aims to create a perturbation that can universally deceive the model when applied to different images from the dataset, showcasing the vulnerability of models to universal adversarial perturbations.

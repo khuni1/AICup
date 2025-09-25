@@ -1,0 +1,30 @@
+%Input
+Let \( x \) be the original input text and \( y \) be the true label. Define a set of candidate modifications \( \mathcal{M} \) that includes synonym replacement, word insertion, and word deletion.
+
+%Output
+Adversarial text \( x^* \) that misleads the model \( f_{\theta} \) into predicting an incorrect label \( \hat{y} \neq y \).
+
+
+%Formula
+1. Initialize the input text and true label:
+   $
+   (x, y).
+   $
+2. Define a set of candidate modifications \( \mathcal{M} \) that can be applied to the input text, such as synonym replacement, word insertion, or word deletion.
+3. For each candidate modification \( m \in \mathcal{M} \):
+   - Generate the modified text:
+   $
+   x' = m(x).
+   $
+   - Evaluate the model's prediction:
+   $
+   \hat{y} = f_{\theta}(x').
+   $
+   - If \( \hat{y} \neq y \), then \( x' \) is an adversarial example.
+4. The goal is to find:
+   $
+   x^* = \arg\min_{x'} \text{distance}(x, x') \quad \text{subject to } f_{\theta}(x') \neq y.
+   $
+
+%Explanation
+The Paraphrase-Based Adversarial Text Attack (PBATA) variant of the original Text Attack. The main difference lies in the modification strategy where a new candidate modification \( m \) is introduced that inserts a new word into the input text. This approach aims to increase the stealthiness of the attack by making it more difficult for the model to detect the adversarial example. By leveraging the power of word insertion, this variant can potentially generate more effective and targeted adversarial examples.

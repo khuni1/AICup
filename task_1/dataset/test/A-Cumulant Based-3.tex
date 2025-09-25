@@ -1,0 +1,26 @@
+%Input
+ Let $x$ be the original input image, $y$ be the true label associated with it, and $\epsilon$ be the maximum allowed perturbation. The goal is to create a universal adversarial example $x^*$ that misleads the model across multiple inputs.
+
+%Output
+The output of the Cumulant-Based Adversarial Attack is a set of eigenvalues $\lambda$ and eigenvectors $v$ used to construct an adaptive perturbation $\delta$ added to the original input image, resulting in adversarial examples that can deceive the model.
+The Cumulant-Based Adversarial Attack variant differs from the original Discretized Inputs attack by utilizing a cumulant-based approach to construct an adaptive perturbation that adapts to the model's response during each iteration. This modification introduces new elements such as the spectral decomposition of the Hessian matrix and Rayleigh quotient updates, which enhance the attack's effectiveness against robust models. By leveraging the eigenvalues and eigenvectors from the spectral decomposition, this variant aims to produce a more targeted perturbation that exploits the model's vulnerabilities more efficiently.
+
+
+%Formula
+$\frac{v^T H_f(x + v)}{v^T v} = \lambda_n$
+1. Compute the spectral decomposition of the Hessian matrix $H_f(x)$:
+   $H_f(x) = \sum_{i=1}^K \lambda_i v_i v_i^T$
+2. Initialize the eigenvalues $\lambda_0$ and eigenvector $v_0$:
+   - Choose an initial perturbation direction $v_0$
+   - Compute the initial eigenvalue $\lambda_0 = ||H_f(x)||_{F}$, where $|| \cdot ||_{F}$ denotes the Frobenius norm
+3. For each iteration $n = 1$ to $N$:
+   - Update the perturbation direction using Rayleigh quotient:
+     $\lambda_n = \frac{v^T H_f(x + v)}{v^T v}$
+     $v_n = \argmin_{||w||_2=1} v^T (H_f(x) w)$
+   - Compute the adaptive perturbation:
+     $\delta_n = (\sum_{i=1}^{N+1} \lambda_i^n v_i^n) \odot \text{sign}(\nabla_x L(f_\theta(x + \delta_n), y))$
+4. The final adversarial example is:
+   $x^* = x + \delta_N$
+   
+%Explanation
+The Cumulant-Based Adversarial Attack uses eigenvalue decomposition of the Hessian matrix to adaptively update the perturbation direction. This approach maintains the core principle of the original attack but incorporates new elements that improve its behavior against robust models, making it a variant worth considering for generating effective adversarial examples.

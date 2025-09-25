@@ -1,0 +1,23 @@
+%Input
+The input is the matrix \(A\) and the objective function \(\hat{L}_t(\hat{A})\) to be maximized.
+
+%Output
+The output is the optimized matrix \(\hat{A}\), which maximizes the objective function while satisfying the constraints.
+
+%Formula:
+$\arg \max_{\hat{A}} \hat{L}_t(\hat{A}), \quad \text{s.t.} \quad i < j, \quad |A_{ij} - \hat{A}_{ij}| \leq \rho$
+
+%Explanations:
+Matrix Based Method MGA where the objective function is given by:
+$\hat{L}_t(\hat{A})$
+This function represents the objective to be maximized. It depends on the matrix \(\hat{A}\) and is typically designed to encourage misclassification or decrease confidence in the correct classification of the input data.
+optimization variable:
+The optimization variable is:
+$\hat{A}$
+This variable represents the matrix that is being optimized. The goal is to find the values of $\hat{A}$ that maximize the objective function $(\hat{L}_t(\hat{A})$
+constraints:
+The constraints are defined as:
+$i < j$
+and
+$|A_{ij} - \hat{A}_{ij}| \leq \rho$
+The first constraint ensures that the elements $i$ and $j$ of the matrix $\hat{A}$ are distinct, where $i$vand $j$ are indices representing different features or components. The second constraint limits the allowable change between the original matrix $A$ and the optimized matrix $\hat{A}$ to be less than or equal to $\rho$. This constraint controls the magnitude of the perturbations applied to the matrix elements.

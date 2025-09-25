@@ -1,0 +1,26 @@
+%Input
+The input includes the perturbation $v'$, the original input $v$, the norm $p$, and the constraint $\xi$.
+
+%Output
+The output is the perturbation $v'$ that minimizes the distance to the original input $v$ while satisfying the constraint on its norm.
+
+%Formula
+$P_{p, \xi}(v) = \text{arg min}_{v'} \| v - v' \|_2^2 \quad \text{subject to} \quad \| v' \|_p \leq \xi$
+
+%Explanation
+JigSaw Attack-Gradient Regularized where,
+Function Definition:
+$P_{p, \xi}(v)$
+Denotes the function that generates the perturbation $v'$ for the input $v$ under the specified norms and constraints.
+
+Objective Function:
+$\| v - v' \|_2^2$
+Represents the squared $L_2$ distance between the original input $v$ and the perturbed input $v'$. The objective is to minimize this distance.
+
+Norm of Perturbation:
+$\| v' \|_p$
+Denotes the $L_p$-norm of the perturbation $v'$, where $p$ determines the type of norm used (e.g., $p = 2$ for $L_2$ norm).
+
+Constraint on Perturbation Magnitude:
+$\xi$
+Specifies the maximum allowable magnitude of the perturbation, controlling the strength of the attack.

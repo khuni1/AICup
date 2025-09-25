@@ -1,0 +1,13 @@
+%Input
+Input: $x, C(x), step, max$
+
+%Output: 
+$xadv$
+
+%Formula
+$\rho(x)=-\psi(x,C(x))$
+
+%Explanation
+The Proximal Projected Gradient Descent (P-PGD) variant of the PGD attack that uses proximal optimization to improve its stability and effectiveness. The addition of the step parameter introduces a form of regularization, which helps to prevent overfitting and improve the robustness of the attack. The max parameter allows for more control over the maximum perturbation allowed, making this variant more flexible than the original PGD attack.
+
+This variant is different from the main PGD attack in that it uses a proximal optimization scheme instead of gradient descent. The addition of the step parameter introduces a form of regularization, which helps to prevent overfitting and improve the stability of the attack. Additionally, the use of the max parameter allows for more control over the maximum perturbation allowed, making this variant more flexible than the original PGD attack.

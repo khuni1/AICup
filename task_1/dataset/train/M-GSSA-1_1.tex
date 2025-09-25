@@ -1,0 +1,36 @@
+%Input
+The input includes:
+- The original input sample \( x \).
+- The true label \( y \).
+- The target model \( f_{\theta} \).
+- The perturbation magnitude \( \epsilon \).
+- The loss function \( J(f_{\theta}(x), y) \).
+
+The goal is to generate an adversarial perturbation \( \delta \) that, when added to \( x \), results in an adversarial example \( x^* \) that is misclassified by the model.
+
+
+%Output
+The output of the Spoofing Adversarial Attack is a modified input \( x^* \) that is designed to lead the model to make an incorrect prediction.
+
+%Formula
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Generate a perturbation \( \delta \) based on the model's loss function:
+   $
+   \delta = \epsilon \cdot \text{sign}(\nabla_x J(f_{\theta}(x), y)),
+   $
+   where \( \epsilon \) controls the magnitude of the perturbation.
+3. Create the adversarial example:
+   $
+   x^* = x + \delta.
+   $
+4. Ensure that the modified input causes a misclassification:
+   $
+   f_{\theta}(x^*) \neq y$.
+
+%Explanation
+The Gradient-Sign Spoofing Attack (GSSA) variant creates adversarial examples by adding a perturbation \( \delta \) to the original input \( x \). The perturbation is determined by the gradient of the loss function, which indicates the direction in which the model's prediction can be maximized. By modifying the input in this direction, the attack aims to generate a new input \( x^* \) that is likely to be misclassified by the model.
+
+This variant introduces an additional constraint to the perturbation core by ensuring that the modified input causes a misclassification, rather than just increasing the loss function.

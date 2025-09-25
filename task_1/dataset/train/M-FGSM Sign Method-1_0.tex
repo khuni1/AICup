@@ -1,0 +1,16 @@
+%Input
+The input is the original data point \(x\) and a perturbation magnitude \(\epsilon\). The gradient of the loss function \(J(\theta, x, y)\) with respect to the input \(x\) is used to determine the direction of the perturbation.
+
+%Formula
+${x} = x + \epsilon \cdot \text{sign}(\nabla_x J(\theta, x, y))$
+$x$ represents the original input data point,
+$\tilde{x}$ represents the perturbed data point,
+$\epsilon$ is the magnitude of the perturbation,
+$\nabla_x J(\theta, x, y)$ is the gradient of the loss function $J$ with respect to the input data $x$, and
+$\theta$ represents the parameters of the model being attacked.
+
+%Output
+The perturbed data point \(\tilde{x}\), which is the original input \(x\) modified by a small perturbation in the direction of the gradient.
+
+%Explanation
+Fast Gradient Sign Method (FGSM) formula represents an adversarial attack method where a small perturbation \(\epsilon \cdot \text{sign}(\nabla_x J(\theta, x, y))\) is added to the original input \(x\) to create a new input \(\tilde{x}\) that is intended to deceive the model. The gradient \(\nabla_x J(\theta, x, y)\) indicates the direction in which the loss function increases most rapidly, and by adding a perturbation in this direction, the adversarial example \(\tilde{x}\) is crafted to maximize the loss and potentially cause the model to make an incorrect prediction.

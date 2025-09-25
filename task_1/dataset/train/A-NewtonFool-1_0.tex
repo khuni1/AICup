@@ -1,0 +1,52 @@
+%Input
+$x$: The original input image or data point.
+$y$: The true class label of the input $x$.
+$F(x)$: The output of the classifier for input $x$ (typically the logits or class probabilities).
+$\nabla F(x)$: The gradient of the classifier's output with respect to $x$.
+$\nabla^2 F(x)$: The Hessian (second derivative) of the classifier's output with respect to $x$.
+$x_{\text{adv}}$: The adversarial sample, initialized to $x$.
+$\eta$: The step size for the perturbation.
+$i_{\text{max}}$: The maximum number of iterations.
+$\text{clip}(x_{\text{adv}})$: A function to clip $x_{\text{adv}}$ to the valid image space, ensuring pixel values are within a specified range.
+
+%Output
+The final adversarial sample $x_{\text{adv}}$, which is designed to mislead the classifier while maintaining the original structure of $x$.
+
+%Formula
+Initialize the adversarial sample: 
+\( x_{\text{adv}} \leftarrow x \).
+
+For each iteration \( i = 1, \ldots, i_{\text{max}} \):
+\[
+\nabla F(x_{\text{adv}}), \quad \nabla^2 F(x_{\text{adv}})
+\]
+Solve Newton's method update step:
+\[
+\delta = - (\nabla^2 F(x_{\text{adv}}))^{-1} \nabla F(x_{\text{adv}})
+\]
+Update the adversarial sample:
+\[
+x_{\text{adv}} \leftarrow x_{\text{adv}} + \eta \cdot \delta
+\]
+Clip the adversarial sample to the valid image space:
+\[
+x_{\text{adv}} \leftarrow \text{clip}(x_{\text{adv}})
+\]
+Increment the iteration counter:
+\[
+i \leftarrow i + 1
+\]
+
+\subsection*{Return}
+The final adversarial sample is:
+\[
+x_{\text{adv}}
+\]
+
+%Explanation
+The Newton-Fool adversarial attack uses second-order optimization (Newton’s method) to find adversarial perturbations. In each iteration:
+1. The gradient \( \nabla F(x_{\text{adv}}) \) and Hessian \( \nabla^2 F(x_{\text{adv}}) \) of the classifier are computed at the current adversarial sample.
+2. The perturbation \( \delta \) is computed using the Newton’s method formula, where the gradient is scaled by the inverse of the Hessian.
+3. The adversarial sample is updated by adding the perturbation scaled by the step size \( \eta \).
+4. The updated sample is clipped to ensure it remains a valid image (i.e., all pixels are within the valid range).
+5. The process repeats until the maximum number of iterations is reached, producing the final adversarial example \( x_{\text{adv}} \).

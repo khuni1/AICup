@@ -1,0 +1,48 @@
+%Input
+\[
+\begin{aligned}
+\mathcal{D} & : \text{Dataset with samples } \{(\mathbf{x}_i, y_i)\}_{i=1}^N, \text{ where } y_i \in \{0, 1\}. \\
+f(\mathbf{x}) & : \text{Target model to be trained on } \mathcal{D}. \\
+p_{\text{flip}} & : \text{Proportion of labels to be flipped in the dataset.} \\
+\mathcal{N}(i) & : \text{Neighborhood set of sample } i.
+\end{aligned}
+\]
+
+%Output
+\[
+\begin{aligned}
+\mathcal{D} & : \text{Dataset with samples } \{(\mathbf{x}_i, y_i)\}_{i=1}^N, \text{ where } y_i \in \{0, 1\}.
+f(\mathbf{x}) & : \text{Target model to be trained on } \mathcal{D}.
+p_{\text{flip}} & : \text{Proportion of labels to be flipped in the dataset.}
+\end{aligned}
+\]
+
+%Formula
+1. Selection of Flip Targets:  
+   Randomly select a subset $\mathcal{I}_{\text{flip}} \subseteq \{1, 2, \ldots, N\}$ such that:
+   \[
+   |\mathcal{I}_{\text{flip}}| = \lceil p_{\text{flip}} \cdot N \rceil.
+   \]
+
+2. Label Flipping:  
+   For each $i \in \mathcal{I}_{\text{flip}}$, flip the label:
+   \[
+   y_i^{\text{adv}} = 1 - y_i.
+   \]
+
+3. Neighborhood Label Propagation:  
+   Compute the labels of the data points in $\mathcal{I}_{\text{flip}}$ by propagating the changes through their neighborhood:
+   \[
+   y_i^{\text{adv}} = \text{argmax} \left[ f(\mathbf{x}_i + \delta) - f(\mathbf{x}_j + \delta') : j \in \mathcal{N}(i) \right].
+   \]
+
+4. Adversarial Dataset:  
+   Construct the modified dataset:
+   \[
+   \mathcal{D}_{\text{adv}} = \{(\mathbf{x}_i, y_i^{\text{adv}}) : i \in \mathcal{I}_{\text{flip}}\} \cup \{(\mathbf{x}_i, y_i) : i \notin \mathcal{I}_{\text{flip}}\}.
+   \]
+
+%Explanation
+The SMOTE-based Label Propagation Adversarial Attack combines the principles of label flipping and neighborhood label propagation to create a more targeted and effective attack. By propagating changes through their neighborhood, the attack aims to induce local instability in the model's predictions, making it more susceptible to adversarial examples.
+
+This variant differs from the original M-Label Flipping attack by introducing a new constraint that encourages the attack to be more targeted and less random. The use of neighborhood label propagation adds an additional layer of complexity to the attack, making it more challenging for the target model to defend against.

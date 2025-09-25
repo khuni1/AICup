@@ -1,0 +1,12 @@
+%Input
+Classifier loss function $f$, constant $c > 0$, distance metric $D$, perturbation $\delta$, image $\mathbf{x}$.
+
+%Formula
+$\min_{\delta} \quad D(\mathbf{x}, \mathbf{x} + \delta) + c \cdot f(\mathbf{x} + \delta) \quad \text{s.t.} \quad \mathbf{x} + \delta \in [0, 1]^n$
+
+%Output
+Adversarial perturbation $\delta^*$, which minimizes the distance between the original image $\mathbf{x}$ and the adversarial example $\mathbf{x} + \delta^*$ while ensuring that the classifier is misled. The adversarial example satisfies the constraint $\mathbf{x} + \delta \in [0, 1]^n$, where $\delta^*$ is the optimal perturbation found by balancing the trade-off between distortion and the success of the attack.
+
+
+%Explanation
+The reformulated objective introduces a penalty term based on the classifier’s output. The constant $c$ balances the trade-off between minimizing the perturbation size and achieving a successful attack, ensuring that the adversarial example satisfies the constraint $f(\mathbf{x} + \delta) \leq 0$.

@@ -1,0 +1,35 @@
+%Input
+\begin{align*}
+    & \mathbf{x}_{\text{original}}: \text{Original input.} \\
+    & \mathbf{x}_{\text{adv}}: \text{Adversarial input.} \\
+    & f(\mathbf{x}): \text{Model function mapping input to output.} \\
+    & y_{\text{true}}: \text{True label.} \\
+    & \mathcal{L}(f, \mathbf{x}, y): \text{Loss function.} \\
+    & k: \text{Maximum number of bits to flip.} \\
+    & \nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}, y): \text{Gradient of the loss with respect to the input.} \\
+    & \text{argsort}(\cdot): \text{Function to rank the bits based on their impact.}
+\end{align*}
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+$f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with minimal bit flips ($\leq k$)}.$
+
+
+%Formula: 
+1. **Initialization:** 
+   $\mathbf{x}_{\text{adv}} = \mathbf{x}_{\text{original}}.$
+
+2. **Gradient-Based Ranking:** Compute the gradient of the loss function with respect to the input:
+   $\nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}, y).$
+   Rank the bits in $\mathbf{x}_{\text{original}}$ by their absolute gradient values:
+   $\text{Ranked bits} = \text{argsort}(|\nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}, y)|).$
+
+3. **Bit Flipping:** Iteratively flip the top $k$ ranked bits in $\mathbf{x}_{\text{adv}}$:
+   $\mathbf{x}_{\text{adv}}[i] = 1 - \mathbf{x}_{\text{adv}}[i], \quad \text{for } i \in \text{Ranked bits}.$
+
+4. **Stopping Condition:** Stop if:
+   $f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}},$
+   or after flipping $k$ bits.
+
+%Explanation
+The MinOver sparse binary vectors adversarial attack variant improves upon the original method by incorporating gradient-based ranking to target the most impactful bits. This allows for more efficient and targeted attacks, while maintaining the sparsity constraint and minimal bit flips. The new attack is logically derived from the perturbation core described in the uploaded LaTeX input, introducing a new scoring function that prioritizes the most significant impact of each bit on the model's prediction.

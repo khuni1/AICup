@@ -1,0 +1,25 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, $\epsilon$ be the maximum allowable perturbation, and $\alpha$ be the step size. The goal is to create an adversarial example $x^*$ that misleads the model using Natural Evolution Strategies combined with Projected Gradient Descent.
+Input: This variant introduces a new constraint on the optimization process by incorporating a regularization term that encourages the search for more diverse and robust perturbations.
+
+%Output
+The output is an adversarial example $x^*$ generated through an iterative optimization process with the added regularization constraint.
+
+%Formula
+1. Initialize the input:
+   $x^{(0)} = x$
+2. For each iteration $n = 1$ to $N$:
+   - Compute the gradient:
+   $g_n = \nabla_x L(f_\theta(x^{(n-1)}), y)$
+   where $L$ is the loss function.
+   - Update the perturbation using NES and regularization:
+   $\delta_n = \delta_{n-1} + \alpha \cdot \text{sign}(g_n) - \beta \cdot \text{GradientNorm}(\delta_{n-1})$
+   - Project the perturbed input back into the allowable space:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n-1)} + \delta_n)$
+   where $\text{Clip}_{\mathcal{X}}(\cdot)$ ensures that the perturbation remains within the limit $\epsilon$.
+
+3. The final adversarial example can be represented as:
+   $x^* = x^{(N)} \quad \text{with the constraint that} \quad \|x^* - x\|_p \leq \epsilon$
+
+%Explanation
+The Regularized NES-PGD Attack (R-NES-PGD) variant extends the NES PGD non-Fast attack by incorporating a regularization term that encourages more diverse and robust perturbations. The addition of $\beta \cdot \text{GradientNorm}(\delta_{n-1})$ to the update rule for $\delta_n$ introduces an additional layer of exploration, making the search process less focused on only minimizing the loss function. This modification aims to improve the attacks' ability to navigate complex decision boundaries and evade defenses more effectively.

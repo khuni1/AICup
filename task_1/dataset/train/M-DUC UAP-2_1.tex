@@ -1,0 +1,25 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input data point, \( y \) be the true label, and \( \epsilon \). The DUC-UAP Attack aims to generate a universal perturbation \( \delta \) that effectively deceives the model by leveraging the gradient information and utilizing a different optimization strategy.
+
+%Output
+The output of the DUC-UAP Attack is a universal adversarial perturbation \( \delta \) that can be applied to various inputs to mislead the classifier.
+
+%Formula
+1. Initialize the universal perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+2. For each iteration \( t \):
+   $
+   \delta^{(t)} = \delta^{(t-1)} + \alpha \cdot \text{sign} \left( \frac{1}{N} \sum_{i=1}^N \nabla_{\delta} L(f(x_i + \delta^{(t-1)}), y_i) \right),
+   $
+   where \( N \) is the number of sampled inputs and \( L \) is the loss function designed to maximize the misclassification probability.
+3. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The Differentiable Universal Coverer (DUC-UAP) Attack generates a universal adversarial perturbation by utilizing gradient information from a set of inputs and employing an optimization strategy that is distinct from the original GAP-UAP method. By iteratively updating the perturbation based on the average gradient of the loss function over multiple samples, the attack creates a perturbation that is effective across a range of inputs. This method illustrates the potential for differentiable approaches to craft universal adversarial perturbations that exploit the vulnerabilities of machine learning models.
+
+The DUC-UAP Attack differs from the GAP-UAP Attack by utilizing an optimization strategy that is more suitable for differentiable optimization problems, whereas the GAP-UAP Attack relies on gradient averaging. This variant also introduces a new constraint by maintaining the same perturbation bounds as the original attack.

@@ -1,0 +1,34 @@
+%Input
+Scaling procedure $g \circ h$, initial point $X \in \mathcal{H}$
+$g \circ h$: Scaling procedure composed of functions $g$ and $h$
+$X \in \mathcal{H}$: Initial point in the space $\mathcal{H}$
+$\mathcal{L}$: Space in which the noise $U$ lies
+$u \in \mathcal{L}$: Random noise sampled from the input space of function $f$
+$\tilde{U} \in \mathcal{H}$: Computed noise in the space $\mathcal{H}$ using the gradient formula.
+$\| \cdot \|_2$: Euclidean norm
+Output: Generate one adversarial attack variant that is logically derived from the perturbation core described in the uploaded LaTeX input provided.
+
+%Output
+A-Scaled Gradient Perturbation Sampling (ASGPS)
+This variant combines the principles of scaled noise sampling with a gradient-based optimization approach. The ASGPS algorithm samples random noise $u$ and computes the gradient $\tilde{U}$ using the formula provided, which guides the sampling process to optimize for efficient attacks.
+
+%Formula
+$\tilde{U} := \nabla_U \| (g \circ h)(X + U) - ((g \circ h)(X) + u) \|_2^2$
+
+$w = 0.5$
+$w_{\text{trim}} = 0.1$
+$\gamma = 1.5$
+$\alpha = 0.01$
+
+$\theta = \nabla_U (\| (g \circ h)(X + U) - ((g \circ h)(X) + u) \|_2^2)$
+$\theta_{\text{trim}} = \nabla_U_{\text{trim}} (\| (g \circ h)(X + U) - ((g \circ h)(X) + u) \|_2^2)$$
+$w_{\text{avg}} = w + (1-w)\cdot w_{\text{trim}}$
+$\theta_{\text{avg}} = \frac{\theta}{w} + \left(1-\frac{\theta}{w}\right) \cdot \theta_{\text{trim}}$
+
+$\tilde{U} := \nabla_U \| (g \circ h)(X + U) - ((g \circ h)(X) + u) \|_2^2$
+$\delta = (\gamma w_{\text{avg}})^{-1} \cdot g \circ h(X + U)$
+
+%Explanation
+The ASGPS algorithm leverages a combination of scaled noise sampling and gradient-based optimization to generate efficient adversarial attacks. The scaling procedure $g \circ h$ is used to define the space in which the noise $U$ lies, while the gradient $\tilde{U}$ guides the sampling process to optimize for efficient attacks. The trimmed weighted average function $w_{\text{avg}}$ and the averaged weight function $w_{\text{avg}}$ are used to improve gradient estimation and reduce sensitivity to outliers. The final attack $\delta$ is generated using a scaled version of the scaling procedure $g \circ h(X + U)$. This variant maintains the core principle of the original attack while improving its efficiency and stealth.
+
+Summary: ASGPS combines scaled noise sampling with gradient-based optimization, incorporating trimmed weighted averages to improve gradient estimation. The final attack $\delta$ leverages a scaled version of the scaling procedure $g \circ h(X + U)$, making it more efficient and targeted compared to the original SNS variant.

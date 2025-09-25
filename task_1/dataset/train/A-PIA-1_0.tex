@@ -1,0 +1,54 @@
+%Input
+$X_{\text{train}} = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n\}$: Original training dataset.
+$y_{\text{train}} = \{y_1, y_2, \ldots, y_n\}$: Corresponding labels.
+$\mathcal{L}(\theta; X_{\text{train}}, y_{\text{train}})$: Loss function of the model.
+$\theta$: Model parameters.
+$m$: Number of poisoned points to inject.
+
+%Output
+Poisoned dataset: $\tilde{X}_{\text{train}} = X_{\text{train}} \cup \{\mathbf{z}_1, \mathbf{z}_2, \ldots, \mathbf{z}_m\}$.
+Updated labels: $\tilde{y}_{\text{train}} = y_{\text{train}} \cup \{\tilde{y}_1, \tilde{y}_2, \ldots, \tilde{y}_m\}$.
+
+%Formula
+1.Objective:  
+   Maximize the influence of poisoned points on the model by solving:
+   \[
+   \max_{\{\mathbf{z}_i, \tilde{y}_i\}_{i=1}^m} \quad \mathcal{I}(\tilde{X}_{\text{train}}, \tilde{y}_{\text{train}}),
+   \]
+   where $\mathcal{I}(\cdot, \cdot)$ quantifies the influence of poisoned points on the model's decision boundary or predictions.
+
+2.Influence Metric:  
+   Influence can be measured as:
+   \[
+   \mathcal{I}(\tilde{X}_{\text{train}}, \tilde{y}_{\text{train}}) = \sum_{i=1}^m \frac{\partial \mathcal{L}(\theta; \mathbf{z}_i, \tilde{y}_i)}{\partial \theta}.
+   \]
+
+3.Perturbation Strategy:  
+   The poisoned points are crafted iteratively to maximize the deviation in model parameters:
+   \[
+   \mathbf{z}_i = \arg \max_{\mathbf{z}} \left\| \frac{\partial \mathcal{L}(\theta; \mathbf{z}, \tilde{y})}{\partial \theta} \right\|.
+   \]
+
+4.Update Rule:  
+   Model parameters are updated using:
+   \[
+   \theta \leftarrow \theta - \eta \nabla_\theta \mathcal{L}(\theta; \tilde{X}_{\text{train}}, \tilde{y}_{\text{train}}),
+   \]
+   where $\eta$ is the learning rate.
+
+%Explanation
+The goal of Poisoning Influence Attack (PIA) is to manipulate the training process by introducing poisoned data points $\{\mathbf{z}_i\}_{i=1}^m$ that maximize the model's susceptibility to specific errors or misclassifications.
+
+The Poisoning Mechanism:
+   - Poisoned points are generated to maximize their influence on the loss function and the resulting model parameters.
+   - Labels $\{\tilde{y}_i\}_{i=1}^m$ for the poisoned points may be assigned adversarially to ensure targeted misclassification.
+
+The Iterative Crafting: Poisoned points are iteratively crafted using gradient-based optimization to maximize their impact on the loss function.
+
+Effect: The poisoned dataset $\tilde{X}_{\text{train}}$ and $\tilde{y}_{\text{train}}$ cause the model to learn a skewed decision boundary, leading to incorrect predictions or targeted misclassifications.
+
+Key Characteristics:
+- Target: Any machine learning model, particularly supervised classifiers.
+- Effect: Alters the decision boundary by manipulating the loss function during training.
+- Metric: Influence is measured as the gradient of the loss function with respect to model parameters.
+- Type: Gradient-based attack focusing on the training process.

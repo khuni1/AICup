@@ -1,0 +1,57 @@
+%Input
+Let us consider a classification task \( X \mapsto [K] \) where:
+\begin{itemize}
+    \item \( X \subseteq \mathbb{R}^d \) is the input space (e.g., images or feature vectors),
+    \item \( [K] = \{1, ..., K\} \) is the corresponding set of possible labels, with \( K \) classes.
+\end{itemize}
+
+The classifier \( f : \mathbb{R}^d \to \mathbb{R}^K \) takes an input \( x \in \mathbb{R}^d \) and outputs a vector of logits \( f(x) = (f_1(x), f_2(x), \dots, f_K(x)) \). The predicted label for the input is given by:
+\[
+\hat{y} = \arg \max_{i \in [K]} f_i(x)
+\]
+where \( \hat{y} \) is the predicted label.
+
+%Output
+The goal of the adversarial attack is to compute the perturbation \( \tau \) such that the classifier's prediction changes. For the untargeted attack, the aim is to cause the classifier to misclassify the input, i.e., the predicted label should differ from the true label \( y \). For the targeted attack, the goal is to cause the classifier to predict a specific target label \( y_t \) instead of the true label \( y \).
+
+For the untargeted attack, the objective is:
+\[
+\arg \max_{i \in [K]} f_i(x + \tau) \neq y
+\]
+where \( y \) is the true label of the original input.
+
+For the targeted attack, the objective is:
+\[
+\arg \max_{i \in [K]} f_i(x + \tau) = y_t
+\]
+where \( y_t \) is the target label.
+
+%Formula
+The optimization problem for the adversarial perturbation \( \tau \) is formulated as follows:
+
+\textbf{Untargeted attack:} The goal is to maximize the loss function, which measures the classifier's incorrect prediction:
+\[
+\max_{\tau: \|\tau\|_\infty \leq \epsilon} L(f(x + \tau), y)
+\]
+where:
+\begin{itemize}
+    \item \( L \) is the loss function (typically the cross-entropy loss between the true label \( y \) and the predicted logits),
+    \item \( \|\tau\|_\infty \leq \epsilon \) ensures the perturbation \( \tau \) is bounded within an \( \ell_\infty \)-norm ball with a maximum perturbation size \( \epsilon \).
+\end{itemize}
+
+\textbf{Targeted attack:} The objective is to maximize the loss function such that the classifier predicts the target label \( y_t \) instead of the true label \( y \):
+\[
+\max_{\tau: \|\tau\|_\infty \leq \epsilon} -L(f(x + \tau), y_t)
+\]
+where the negative sign inverts the objective to increase the likelihood of the target label \( y_t \).
+
+%Explanation
+CMA-ES (Covariance Matrix Adaptation Evolution Strategy) where \( \ell_\infty \)-bounded adversarial attack involves perturbing the input \( x \) by a small amount \( \tau \), such that the classifier's prediction is either incorrect (untargeted attack) or manipulated to predict a specific target class (targeted attack).
+
+\begin{itemize}
+    \item \textbf{Untargeted attack:} In this case, the adversarial perturbation \( \tau \) is optimized to increase the loss \( L \), which causes the classifier to misclassify the perturbed input. The attack aims to make the classifier choose a label that is not the true label \( y \).
+    \item \textbf{Targeted attack:} Here, the adversarial perturbation \( \tau \) is designed to push the classifier's prediction towards a specific target label \( y_t \), making the classifier misclassify the input as \( y_t \) instead of the true label \( y \).
+\end{itemize}
+
+The \( \ell_\infty \) norm restricts the perturbation \( \tau \) such that each component of \( \tau \) is bounded by \( \epsilon \), i.e., the perturbation is constrained to stay within a box defined by the norm. This constraint ensures that the adversarial perturbation remains small and imperceptible to humans while still effectively altering the model's prediction.
+

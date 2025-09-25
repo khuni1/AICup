@@ -1,0 +1,52 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input text sequence.  
+$f(\mathbf{x})$: Target model (e.g., classifier).  
+$y_{\text{true}}$: True label of the input sequence.  
+$\mathcal{S}(w)$: Synonym set for word $w$ derived from embedding-based similarity metrics.  
+$\mathcal{P}(w)$: Perturbation set for word $w$ (e.g., typos, homophones).  
+$T$: Maximum number of modifications.  
+$N$: Number of iterations for searching adversarial examples.  
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function for evaluating model performance.
+
+%Output
+Generate one adversarial attack variant that incorporates temporal constraints to prioritize critical periods in the input sequence.
+
+
+%Formula
+1. **Initialization:** Start with the original input text sequence $\mathbf{x}_{\text{original}}$.
+
+2. **Synonym and Perturbation Selection:** For each word $w$ in the input sequence $\mathbf{x}_{\text{original}}$, generate:
+   \[
+   \mathcal{S}(w) = \text{Synonym set for } w
+   \]
+   \[
+   \mathcal{P}(w) = \text{Perturbation set for } w
+   \]
+
+3. **Temporal Weighting:** Compute the temporal weight for each word based on its position in the sequence:
+   \[
+   \text{Weight}(w) = \frac{1}{T} \sum_{t \in \text{Critical Periods}} \text{Frequency}(w, t)
+   \]
+   where $\text{Critical Periods}$ are predefined segments (start, middle, end).
+
+4. **Adversarial Perturbation Search:** For $N$ iterations, iteratively select words to perturb, prioritizing those with higher temporal weights:
+   \[
+   w_{\text{adv}} = \arg\max_{w} \left(\text{Weight}(w) \cdot \text{Impact}(w)\right)
+   \]
+   where $\text{Impact}(w)$ is the adversarial impact score of the word perturbation.
+
+5. **Adversarial Example Generation:** Update the input sequence $\mathbf{x}_{\text{adv}}$ by replacing the selected words with their synonyms or perturbations:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} \text{ with } w_{\text{adv}} \in \mathcal{S}(w)
+   \]
+   Ensure that the total number of modifications does not exceed $T$.
+
+6. **Stopping Condition:** Stop if:
+   \[
+   f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}} \quad \text{or after $T$ modifications.}
+   \]
+
+
+
+%Explanation
+The proposed variant introduces a tempo-based perturbation approach. It calculates the average word frequency across different time intervals and assigns higher weights to words within critical periods (e.g., start, middle, or end) of the input sequence. The attack then prioritizes modifications based on these weighted scores, ensuring that adversarial examples are generated during high-impact segments, making them more effective against NLP models. This modification maintains the core principle of the original Morpheus attack while enhancing its targeted nature and adaptability to different linguistic structures.

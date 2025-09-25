@@ -1,0 +1,51 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input instance.  
+$f(\mathbf{x})$: Target model (e.g., classifier or regressor).  
+$y_{\text{true}}$: True label associated with the input.  
+$\mathcal{N}$: Neighborhood function to find semantically similar inputs.  
+$k$: Number of iterations to refine the adversarial example.  
+$\epsilon$: Perturbation constraint ensuring imperceptibility.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:  
+\[ 
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{and } \|\mathbf{x}_{\text{adv}} - \mathbf{x}_{\text{original}}\| \leq \epsilon.
+\]
+
+%Formula: 
+1. Initialization:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Gradient Sign Calculation:  
+   Compute the sign of the gradient of the loss with respect to the input:  
+   \[
+   \nabla_{\mathbf{x}} = \text{sign}\left(\frac{\partial \mathcal{L}(f, \mathbf{x}, y_{\text{true}})}{\partial \mathbf{x}}\right).
+   \]
+
+3. Multitask Objective:  
+   Compute the loss for multiple tasks simultaneously, e.g., image recognition and object detection:  
+   \[
+   \mathcal{L}_{\text{mt}} = \sum_{t=1}^{T} \lambda_t L(f, \mathbf{x}, y_{\text{true}}, t)
+   \]
+   where $T$ is the number of tasks and $\lambda_t$ are task weights.
+
+4. Neighborhood Exploration:  
+   For each candidate $\mathbf{x}_{\text{neighbor}} \in \mathcal{N}(\mathbf{x}_{\text{adv}}^{(t)})$, compute:  
+   \[
+   \Delta = \|\mathbf{x}_{\text{neighbor}} - \mathbf{x}_{\text{adv}}^{(t)}\|, \quad \mathcal{L}_{\text{neighbor}} = \mathcal{L}(f, \mathbf{x}_{\text{neighbor}}, y_{\text{true}}, t).
+   \]
+   Choose the neighbor minimizing $\mathcal{L}_{\text{neighbor}}$ and satisfying $\Delta \leq \epsilon$.
+
+5. Update Adversarial Input:  
+   Update the adversarial input as:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{neighbor}}.
+   \]
+
+6. Stopping Criterion:  
+   Stop if multiple objectives are optimized within the specified tolerance.
+
+%Explanation
+The proposed variant, GSA-Multitask Adversarial Attack, extends the original Gradient Search Adversarial (GSA) attack by incorporating a multitask objective function that allows the model to optimize losses for multiple tasks simultaneously. This approach can improve the robustness and versatility of the attack, especially when dealing with multi-objective problems in computer vision or NLP tasks. The addition of task weights and the use of neighborhood exploration maintain the core principles of GSA while introducing a new dimension of complexity that can lead to more effective attacks.

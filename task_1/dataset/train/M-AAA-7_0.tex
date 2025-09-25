@@ -1,0 +1,31 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input data point, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The Ask Aqurie Attack aims to generate an adversarial perturbation \( \delta \) through a querying process.
+
+%Output
+The output of the Ask Aqurie Attack is an adversarial example \( \tilde{x} = x + \delta \) that causes the model to misclassify.
+
+%Formula
+The Ask Aqurie Attack can be formulated as follows:
+1. Initialize the perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+2. Define the querying process to evaluate the model:
+   $
+   q(x + \delta) = f(x + \delta).
+   $
+3. Optimize the perturbation based on the feedback from the queries:
+   $
+   \text{minimize } L(q(x + \delta), y) \text{ subject to } \|\delta\| \leq \epsilon.
+   $
+4. Update the perturbation using gradient descent:
+   $
+   \delta^{(t+1)} = \delta^{(t)} - \alpha \cdot \nabla_{\delta} L(q(x + \delta^{(t)}), y).
+   $
+5. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The Ask Aqurie Attack (AAA) generates an adversarial perturbation \( \delta \) by querying the model to evaluate its responses to perturbed inputs. By minimizing the loss between the queried predictions and the true label, the attack effectively crafts perturbations that mislead the model. This method showcases a novel approach to adversarial attack generation through iterative querying, highlighting the potential vulnerabilities in machine learning models.

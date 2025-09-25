@@ -1,0 +1,34 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, and $f_{\theta}$ be the target model. The goal is to create an adversarial example $x^*$ that misleads the model by utilizing the model's score function.
+
+%Output
+The output of the Score-Based attack is an adversarial example $x^*$ generated through optimization of the score function to achieve misclassification.
+
+%Formula
+The Score-Based adversarial attack can be formulated as follows:
+1. Initialize the input:
+   $x^{(0)} = x$
+   
+2. Set parameters for the optimization process:
+   - Define the step size $\alpha$ and the maximum perturbation size $\epsilon$.
+3. For each iteration $n = 1$ to $N$:
+   - Compute the score of the current input:
+   $s_n = f_{\theta}(x^{(n-1)})$
+   where $s_n$ represents the score vector of the model's output for input $x^{(n-1)}$.
+   - Calculate the gradient of the score with respect to the loss function:
+   $g_n = \nabla_x L(s_n, y)$
+   
+   where $L$ is the loss function.
+   - Update the input with the calculated gradient:
+   $x^{(n)} = x^{(n-1)} - \alpha \cdot g_n$
+   
+   - Apply clipping to keep the perturbation within bounds:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)})$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+4. The final adversarial example is:
+   $x^* = x^{(N)}$
+
+%Explanation
+The Score-Based adversarial attack generates adversarial examples by leveraging the model's score function, which quantifies the confidence of the model's predictions. By iteratively optimizing the input based on the gradient of the score, the attack focuses on maximizing the misclassification of the target class while controlling the magnitude of the perturbation. This method effectively exploits the relationship between the input and the model's predictions, allowing the creation of adversarial examples that can bypass many defenses. The resulting adversarial example $x^*$ illustrates the vulnerabilities present in neural networks and highlights the need for improved robustness in model training.

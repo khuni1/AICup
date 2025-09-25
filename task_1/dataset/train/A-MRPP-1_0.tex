@@ -1,0 +1,85 @@
+%Input
+$\mathbf{r}_{tr}$: Input representation of the signal. \\
+$\epsilon_{acc}$: The desired level of accuracy in minimizing the perturbation. \\
+$P_{max}$: Maximum power allowed for perturbation. \\
+model of the classifier: The classification model being targeted.
+
+%Output
+$\delta_{c,\text{norm}} = \frac{H_{ar}^* \nabla_x L(\theta, \mathbf{r}_{tr}, y_c)}{\|H_{ar}^* \nabla_x L(\theta, \mathbf{r}_{tr}, y_c)\|_2}$
+$\epsilon_{avg} \leftarrow \frac{\epsilon_{max} + \epsilon_{min}}{2}$
+$\mathbf{x}_{adv} \leftarrow \mathbf{x} - \epsilon_{avg} H_{ar} \delta_{c,\text{norm}}$
+$\text{target} = \arg \min \epsilon$
+$\delta_{\text{MRPP}} = -\sqrt{P_{max}} \delta_{\text{target}}$
+
+
+%Formula
+The direction of the gradient is calculated as:
+$\delta_{c,\text{norm}} = \frac{H_{ar}^* \nabla_x L(\theta, \mathbf{r}_{tr}, y_c)}{\|H_{ar}^* \nabla_x L(\theta, \mathbf{r}_{tr}, y_c)\|_2}$
+where $\nabla_x L(\theta, \mathbf{r}_{tr}, y_c)$ represents the gradient of the loss function with respect to input $\mathbf{r}_{tr}$.
+
+1. Input:
+   - Input representation: $\mathbf{r}_{tr}$
+   - Desired accuracy: $\epsilon_{acc}$
+   - Power constraint: $P_{max}$
+   - Model of the classifier: $\theta$
+
+2. Initialization:
+   - Initialize $\epsilon \gets \mathbf{0}_{C \times 1}$, where $C$ is the number of classes.
+
+3. Iterate Over Classes:
+   - For each class index $c$ in the range $[1, C]$:
+     
+     - (a) Set bounds for perturbation:
+       \[
+       \epsilon_{max} \gets P_{max}, \quad \epsilon_{min} \gets 0
+       \]
+
+     - (b) Compute normalized gradient direction:
+       \[
+       \delta_{c,\text{norm}} \gets \frac{H_{ar}^* \nabla_x L(\theta, \mathbf{r}_{tr}, y_c)}{\|H_{ar}^* \nabla_x L(\theta, \mathbf{r}_{tr}, y_c)\|_2},
+       \]
+       where $L(\cdot)$ is the loss function.
+
+4. Binary Search for Perturbation:
+   - While $(\epsilon_{max} - \epsilon_{min}) > \epsilon_{acc}$:
+     
+     - (a) Compute the average perturbation magnitude:
+       \[
+       \epsilon_{avg} \gets \frac{\epsilon_{max} + \epsilon_{min}}{2}.
+       \]
+
+     - (b) Generate adversarial example:
+       \[
+       \mathbf{x}_{adv} \gets \mathbf{x} - \epsilon_{avg} H_{ar} \delta_{c,\text{norm}}.
+       \]
+
+     - (c) Check classification result:
+       - If $\hat{l}(\mathbf{x}_{adv}) == l_{\text{true}}$, update:
+         \[
+         \epsilon_{min} \gets \epsilon_{avg}.
+         \]
+       - Else, update:
+         \[
+         \epsilon_{max} \gets \epsilon_{avg}.
+         \]
+
+5. Update Class Perturbation:
+   - After the binary search loop, store the maximum perturbation for class $c$:
+     \[
+     \epsilon[c] \gets \epsilon_{max}.
+     \]
+
+6. Determine Target Class:
+   - Find the target class with the minimum perturbation:
+     \[
+     \text{target} \gets \arg \min \epsilon.
+     \]
+
+7. Compute MRPP Perturbation:
+   - Calculate the final perturbation for the target class:
+     \[
+     \delta_{\text{MRPP}} \gets -\sqrt{P_{max}} \delta_{\text{target}}.
+     \]
+
+%Explanation
+Minimal-Robust Perturbation Projection Attack (MRPP) based on Karush-Kuhn-Tucker (KKT) conditions where the normalized gradient direction points to the direction that maximally impacts the classification result.

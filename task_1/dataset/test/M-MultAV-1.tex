@@ -1,0 +1,30 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( A \) be a set of attributes relevant to the classification task. The MultAV Adversarial Attack aims to generate adversarial examples by manipulating multiple attributes simultaneously.
+
+%Output
+The output of the MultAV Adversarial Attack is a perturbed input \( \tilde{x} \) that is designed to mislead the model while altering multiple attributes.
+
+%Formula
+The MultAV Adversarial Attack can be formulated as follows:
+1. Initialize the perturbation \( \delta \):
+   $
+   \tilde{x} = x + \delta,
+   $
+   where \( \|\delta\| \leq \epsilon \).
+2. Define the objective function to minimize the loss for a target class \( c \):
+   $
+   \text{minimize } L(f(\tilde{x}), c),
+   $
+   where \( f \) is the model and \( L \) is the loss function.
+3. Use a variational approach to model the perturbation across multiple attributes:
+   $
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \sum_{a \in A} \nabla_{\delta} L(f(x + \delta^{(t)}), a),
+   $
+   where \( \alpha \) is the step size and the summation is over all attributes \( A \).
+4. Update the perturbed input:
+   $
+   \tilde{x} = x + \delta^{(t+1)}.
+   $
+
+%Explanation
+The MultAV (Mult-Attribute Variational) Adversarial Attack generates adversarial examples by strategically manipulating multiple relevant attributes of the input \( x \). By optimizing the perturbation \( \delta \) to minimize the loss associated with a target class \( c \), the attack effectively leverages variations across different attributes to create a robust adversarial input \( \tilde{x} \). This method highlights the vulnerability of machine learning models to adversarial examples that alter several features at once, potentially leading to misclassification while maintaining a plausible appearance.

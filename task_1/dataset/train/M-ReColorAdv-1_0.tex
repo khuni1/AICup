@@ -1,0 +1,26 @@
+%Input
+ReColorAdv is a novel adversarial attack against image classifiers that leverages a functional threat model. It generates adversarial examples by uniformly changing colors of an input image. Each pixel $x_i$ in the input image $\mathbf{x}$ is treated as a point in a 3-dimensional color space $C \subseteq [0, 1]^3$. For instance, $C$ could be the normal RGB color space. 
+
+%Output
+The output is an adversarial example $\mathbf{x}^e$ generated from the input image $\mathbf{x}$ by applying a perturbation function $f(\cdot)$ to the colors of each pixel.
+
+%Formula
+\begin{equation}
+x_i = (c_{i,1}, c_{i,2}, c_{i,3}) \in C \subseteq [0, 1]^3 \rightarrow x_i^e = (\hat{c}_{i,1}, \hat{c}_{i,2}, \hat{c}_{i,3}) = f(c_{i,1}, c_{i,2}, c_{i,3})
+\end{equation}
+
+\begin{equation}
+L_{\text{adv}}(f, \mathbf{x}) = \max \left( \max_{i \neq y} (g(\mathbf{x}^e)_i - g(\mathbf{x}^e)_y), 0 \right)
+\end{equation}
+
+\begin{equation}
+\arg\min_{f \in F_{\text{diff-col}}} L_{\text{adv}}(f, \mathbf{x}) + \lambda L_{\text{smooth}}(f)
+\end{equation}
+
+\begin{equation}
+L_{\text{smooth}}(f) = \sum_{g_j \in G} \sum_{g_k \in N(g_j)} \| (f(g_j) - g_j) - (f(g_k) - g_k) \|_2
+\end{equation}
+
+%Explanation
+The ReColorAdv attack perturbation function $f: C \rightarrow C$ is applied to each pixel in the input image, transforming its color to create the adversarial example. The goal is to ensure that the generated adversarial example is misclassified by the image classifier. The goal is to minimize the adversarial loss $L_{\text{adv}}$ while ensuring the perturbation function adheres to the defined constraints. The optimization incorporates a regularization term $L_{\text{smooth}}$ to enforce smoothness indirectly, solved using projected gradient descent (PGD).
+

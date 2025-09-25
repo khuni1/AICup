@@ -1,0 +1,26 @@
+%Input
+Let \( x \) be the original input data, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Semantic Perturbation attack aims to modify the input data in a way that is undetectable but misleads the model.
+Output: The output of the Semantic Perturbation attack is a modified dataset that includes perturbed examples designed to cause the model to learn incorrect associations.
+
+%Output
+The output is a modified dataset \( D' \) that contains perturbed examples \( x_i^* \) designed to subtly alter the model’s decision boundary while maintaining perceptual similarity to the original data. This adversarial dataset can mislead the model into learning incorrect associations during training.
+
+
+%Formula
+1. Initialize the input and target:
+   $
+   D = \{(x_i, y_i)\}_{i=1}^N
+   $
+   where \( D \) is the original dataset.
+2. For each data point \( (x_i, y_i) \) in the dataset, create a perturbed example \( x_i^* \):
+   $
+   x_i^* = x_i + \epsilon \cdot \text{sign}(\nabla_{x_i} L(f_{\theta}(x_i), y_i))
+   $
+3. Update the dataset with the perturbed examples:
+   $
+   D' = D \cup \{(x_i^*, y_i)\}_{i=1}^M
+   $
+   where \( D' \) is the poisoned dataset and \( M \) is the number of perturbed examples generated.
+
+%Explanation
+The Stealth Semantic Perturbation Attack (SSP-Attack) differs from the original perturbation core by using a more subtle approach to modify the input data. Instead of adding significant adversarial examples, this variant uses small modifications that are undetectable but mislead the model during training. This allows for a more targeted and stealthy attack, making it harder to detect and defend against.

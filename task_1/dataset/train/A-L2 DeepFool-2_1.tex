@@ -1,0 +1,29 @@
+%Input
+$X$: Input dataset containing $n$ samples.
+$t$: Target class for the adversarial perturbation.
+$v$: Universal perturbation vector.
+$\Delta v_i$: Perturbation for each data point $x_i$.
+$P_{p, 2}$: Projection operator onto the $\ell_2$ ball.
+$\hat{k}$: Classifier's prediction function.
+$\delta$: Confidence margin for adversarial misclassification.
+
+%Output
+Output: Targeted universal perturbation vector $v$
+
+%Formula
+1. Initialize the perturbation vector $v \leftarrow 0$
+2. While the error rate on the perturbed data is less than or equal to $1 - \delta$:
+$\text{Err}(Xv) \leq 1 - \delta$
+3. For each data point $x_i \in X$, do:
+    - If the classifier's prediction for $x_i + v$ is not the target class $t$:
+        $\hat{k}(x_i + v) \neq t$
+        - Compute the minimal perturbation $\Delta v_i$ that changes the classification of $x_i + v$ to the target class $t$:
+            $\Delta v_i \leftarrow \arg \min_{r} \|r\|_2 \quad \text{s.t.} \quad \hat{k}(x_i + v + r) = t$
+        - Update the perturbation:
+            $v \leftarrow P_{p, 2}(v + \Delta v_i)$
+4. Repeat the process until the error rate condition is no longer met.
+Return the final targeted universal perturbation vector is:
+$v$
+
+%Explanation
+This attack combines a universal perturbation strategy with DeepFool's approach for computing minimal perturbations to push data points toward a targeted class, while also maintaining control over the magnitude of the perturbation using the $L_2$ norm constraint. The main difference from the original TUAP method is the use of the $L_2$ norm constraint instead of $\ell_p$ norm, which allows for more precise control over the size of the perturbations and can lead to more effective attacks.

@@ -1,0 +1,44 @@
+%Input
+$\mathbf{X}{\text{original}}$: Original input binary vector.
+$f(\mathbf{X})$: Target model (e.g., a classifier).
+$y{\text{true}}$: True label associated with $\mathbf{X}_{\text{original}}$.
+$\mathcal{L}(f, \mathbf{X}, y)$: Loss function to be optimized.
+$\epsilon$: Perturbation budget, controlling the number of bit flips allowed.
+
+%Output  
+Adversarial binary vector $\mathbf{X}_{\text{adv}}$ such that:  
+\[
+f(\mathbf{X}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with minimal perturbations}.
+\]
+
+%Formula 
+1. Initialization:  
+   \[
+   \mathbf{X}_{\text{adv}} = \mathbf{X}_{\text{original}}.
+   \]
+
+2. Gradient Computation:  
+   Compute the gradient of the loss function with respect to the binary input:  
+   \[
+   \nabla_{\mathbf{X}} \mathcal{L}(f, \mathbf{X}, y) \big|_{\mathbf{X} = \mathbf{X}_{\text{adv}}}.
+   \]
+
+3. Bit Importance Scoring:  
+   Rank the bits based on the absolute value of the gradient:  
+   \[
+   I(i) = \left| \frac{\partial \mathcal{L}(f, \mathbf{X}, y)}{\partial \mathbf{X}_i} \right|, \quad i \in \{1, 2, \ldots, d\},
+   \]
+   where $d$ is the dimension of the binary vector.
+
+4. Bit Flipping:  
+   Select the top-$k$ bits (within $\epsilon$) and flip their values:  
+   \[
+   \mathbf{X}_{\text{adv}}^{(i)} = 1 - \mathbf{X}_{\text{adv}}^{(i)}, \quad \text{if } i \in \text{Top-}k(I).
+   \]
+
+5. Stopping Condition:  
+   Stop if $f(\mathbf{X}_{\text{adv}}) \neq y_{\text{true}}$ or if the perturbation budget $\epsilon$ is exhausted.
+
+
+%Explanation
+The Non-Sparse Binary Vector Adversarial Attack is designed to generate adversarial examples for binary data by modifying multiple bits simultaneously without maintaining sparsity. The attack uses gradients to identify critical bits to flip, optimizing the adversarial perturbation to induce misclassification efficiently. Unlike sparse vector attacks, this approach does not constrain the perturbation sparsity, enabling broader changes within the perturbation budget.

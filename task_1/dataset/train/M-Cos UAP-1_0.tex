@@ -1,0 +1,27 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input data point, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The COS-UAP Attack aims to generate a universal perturbation \( \delta \) based on cosine similarity.
+
+%Output
+The output of the COS-UAP Attack is a universal adversarial perturbation \( \delta \) that can be applied to various inputs to mislead the classifier.
+
+%Formula
+The COS-UAP Attack can be formulated as follows:
+1. Initialize the universal perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+2. Define the objective function to maximize the cosine similarity between the perturbed model output and the target class:
+   $
+   \text{maximize } \cos(f(x + \delta), f(x)) \text{ subject to } \|\delta\| \leq \epsilon.
+   $
+3. Update the perturbation using gradient ascent:
+   $
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \nabla_{\delta} \cos(f(x + \delta^{(t)}), f(x)).
+   $
+4. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The Gradient-Averaged Perturbation Universal Adversarial Perturbation (GAP-UAP) Attack generates a universal adversarial perturbation \( \delta \) by focusing on maximizing the cosine similarity between the perturbed output and the desired target class output. By iteratively updating \( \delta \) based on the gradient of the cosine similarity, this attack effectively crafts perturbations that can universally deceive the classifier across various inputs. This method showcases the potential of cosine-based approaches in developing adversarial attacks, highlighting vulnerabilities in machine learning models.

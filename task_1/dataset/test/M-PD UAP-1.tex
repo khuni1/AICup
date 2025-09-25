@@ -1,0 +1,28 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input data point, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The PD-UAP Attack aims to generate a universal adversarial perturbation \( \delta \) that can effectively mislead the model across various inputs.
+
+%Output
+The output of the PD-UAP Attack is a universal adversarial perturbation \( \delta \) that can be applied to multiple inputs to cause misclassification.
+
+%Formula
+The PD-UAP Attack can be formulated as follows:
+1. Initialize the universal perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+2. Define the objective function to minimize the average loss over a set of inputs:
+   $
+   \text{minimize } \frac{1}{N} \sum_{i=1}^{N} L(f(x_i + \delta), y_i) \text{ subject to } \|\delta\| \leq \epsilon,
+   $
+   where \( N \) is the number of input samples.
+3. Update the perturbation using projected gradient descent:
+   $
+   \delta^{(t+1)} = \delta^{(t)} - \alpha \cdot \nabla_{\delta} \left( \frac{1}{N} \sum_{i=1}^{N} L(f(x_i + \delta^{(t)}), y_i) \right).
+   $
+4. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The Projected Descent-based Universal Adversarial Perturbation (PD-UAP) Attack generates a universal adversarial perturbation \( \delta \) by minimizing the average loss across a set of input samples using projected gradient descent. By iteratively updating \( \delta \) based on the gradients of the loss function, the attack crafts a perturbation that is effective across multiple inputs, demonstrating a significant vulnerability in machine learning models to universal adversarial examples.

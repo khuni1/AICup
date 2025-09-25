@@ -1,0 +1,47 @@
+%Input
+The input consists of the initial input $x_m$, the gradient of the loss function $\nabla L(x_m, y_c; \theta)$, the step size $\alpha$, and the momentum term $\mu$.
+
+%Output
+The output is the updated input $x_{m+1}$ after one iteration of the algorithm, and the gradient $g_{m+1}$ used to compute the update.
+
+%Formula
+The iterative update rules for the gradient and the input are given by:
+
+\begin{align}
+g_{m+1} &= \mu \cdot g_m + \frac{\nabla L(x_m, y_c; \theta)}{\|\nabla L(x_m, y_c; \theta)\|_1} \\
+x_{m+1} &= \text{clip} \left( x_m + \alpha \cdot \text{sign}(g_{m+1}) \right)
+\end{align}
+
+where:
+\begin{equation*}
+\text{clip}(\cdot)
+\end{equation*}
+is a function that constrains the value of its argument to stay within a specified range.
+
+\begin{equation*}
+\mu
+\end{equation*}
+is a momentum term that helps in smoothing the gradient updates and accelerating convergence.
+
+\begin{equation*}
+\nabla L(x_m, y_c; \theta)
+\end{equation*}
+is the gradient of the loss function $L$ with respect to the input $x_m$ and the true class $y_c$, parameterized by $\theta$.
+
+\begin{equation*}
+\|\nabla L(x_m, y_c; \theta)\|_1
+\end{equation*}
+is the $\ell_1$-norm of the gradient, which normalizes the gradient to ensure it does not become excessively large.
+
+\begin{equation*}
+\text{sign}(g_{m+1})
+\end{equation*}
+is the sign function applied to the gradient $g_{m+1}$, which extracts the direction of the gradient.
+
+\begin{equation*}
+\alpha
+\end{equation*}
+is the step size for each iteration.
+
+%Explanation
+Momentum Iterative Method (MIM) where the iterative method involves updating the gradient $g_{m+1}$ by incorporating a momentum term $\mu$ that smooths the gradient updates. The gradient is normalized using the $\ell_1$-norm to prevent it from becoming excessively large. The input $x_{m+1}$ is updated by adding a perturbation in the direction of the sign of the gradient $g_{m+1}$, scaled by the step size $\alpha$. The $\text{clip}$ function ensures that the updated input stays within a specified range, maintaining the constraints of the adversarial perturbation.

@@ -1,0 +1,27 @@
+%Input 
+$f$, $\theta_{\text{init}}$, $\mu_{\text{init}}$, $\Sigma_{\text{init}}$, $\eta$, stopping criterion
+
+%Output
+Updated parameters $\theta = (\mu, \Sigma)$ that maximize the objective function $J(\theta)$.
+
+%Formula
+$\theta \leftarrow \theta + \eta \nabla_\theta J(\theta)$
+
+For Gaussian distributions:
+$\nabla_\mu \log \pi (z | \theta) = \Sigma^{-1} (z - \mu)$
+$\nabla_\Sigma \log \pi (z | \theta) = \frac{1}{2} \Sigma^{-1} (z - \mu) (z - \mu)^\top \Sigma^{-1} - \frac{1}{2} \Sigma^{-1}$
+
+For natural gradient:
+$\nabla_\theta^N J = F^{-1} \nabla_\theta J$
+$F = \mathbb{E} \left[ \nabla_\theta \log \pi (z|\theta) \nabla_\theta \log \pi (z|\theta)^\top \right]$
+
+%Explanation
+Natural Evolution Strategies (NES) optimize a distribution of solutions, rather than individual solutions, by adjusting the parameters $\theta$ of the search distribution $\pi(z|\theta)$. 
+
+In the case of Gaussian distributions, NES operates by iteratively drawing samples $z_k$ from $\mathcal{N}(\mu, \Sigma)$, evaluating their fitness, and updating the distribution parameters ($\mu, \Sigma$). The update is driven by the stochastic gradient $\nabla_\theta J(\theta)$, which is averaged over multiple samples.
+
+To make the updates more robust and efficient, NES uses the **natural gradient** instead of the ordinary gradient. This natural gradient incorporates the geometry of the parameter space and scales the updates according to the curvature of the space using the Fisher information matrix $F$.
+
+The natural gradient $\nabla_\theta^N J$ is computed as $F^{-1} \nabla_\theta J$, where $F$ is the Fisher information matrix. This ensures that the parameter updates follow the natural path of the distribution, leading to more stable and efficient convergence.
+
+To summarize, NES allows for gradient-based optimization in a distributional setting, with the natural gradient ensuring that the updates respect the underlying distribution's geometry.

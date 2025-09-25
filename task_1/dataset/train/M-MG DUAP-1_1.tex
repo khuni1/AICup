@@ -1,0 +1,34 @@
+%Input
+%Input
+Let \( f \) be the target model, \( x_i \) be an input data point from a dataset of size \( N \), and \( y_i \) be the corresponding true label.  
+Define the universal adversarial perturbation \( \delta \) such that it generalizes across multiple inputs.  
+Let \( \epsilon \) be the maximum allowable perturbation norm, and let \( L(f(x), y) \) represent the loss function measuring the model's performance.  
+The attack iteratively updates \( \delta \) using a gradient-based approach while ensuring the perturbation remains within the defined bounds.
+
+
+%Output
+The output of the MG-DUAP Attack is a universal adversarial perturbation δ that can be applied to various inputs to mislead the classifier.
+
+%Formula
+1. Initialize the universal perturbation δ:
+   $
+   \delta = 0.
+   $
+2. Define the objective function to minimize the average loss over a set of inputs:
+   $
+   \text{minimize } \frac{1}{N} \sum_{i=1}^{N} L(f(x_i + \delta), y_i) \text{ subject to } \|\delta\| \leq \epsilon,
+   $
+   where $N$ is the number of input samples.
+3. Update the perturbation using gradient descent:
+   $
+   \delta^{(t+1)} = \delta^{(t)} - \alpha \cdot \nabla_{\delta} \left( \frac{1}{N} \sum_{i=1}^{N} L(f(x_i + \delta^{(t)}), y_i) \right).
+   $
+4. Project δ to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The Modified Gradient Descent-based Universal Adversarial Perturbation (MG-DUAP) Attack is a variant of the GD-UAP (Gradient Descent-based Universal Adversarial Perturbation) Attack. The main difference between the two attacks lies in the update rule for the perturbation δ. In the MG-DUAP Attack, the perturbation δ is updated using a modified gradient descent algorithm that incorporates an additional constraint to ensure the stability of the optimization process. This modification improves the convergence rate and reduces the risk of divergence during the optimization process. The MG-DUAP Attack maintains the core principle of the GD-UAP Attack while introducing a new strategy to improve its effectiveness.
+
+The MG-DUAP Attack is similar to the GD-UAP Attack, but with an improved update rule for the perturbation δ that enhances stability and convergence.

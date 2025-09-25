@@ -1,0 +1,27 @@
+%Input
+Original input: $X \in \mathbb{R}^d$
+True label: $y \in \mathcal{Y}$
+Loss function: $\mathcal{L}(f(X), y)$, where $f$ is the model
+Perturbation budget: $\epsilon$
+Step size: $\alpha$
+Number of iterations: $T$
+
+
+%Output
+Adversarial example $X_{\text{adv}}$ such that $\|X_{\text{adv}} - X\|_\infty \leq \epsilon$.
+
+%Formula
+Initialize $X^{(0)}_{\text{adv}} = X$. For $t = 0, \dots, T-1$:
+\[
+X^{(t+1)}_{\text{adv}} = X^{(t)}_{\text{adv}} + \alpha \cdot \text{sign}(\nabla_X \mathcal{L}(f(X^{(t)}_{\text{adv}}), y))
+\]
+Project $X^{(t+1)}_{\text{adv}}$ onto the $\epsilon$-ball around $X$:
+\[
+X^{(t+1)}_{\text{adv}} = \text{clip}(X^{(t+1)}_{\text{adv}}, X - \epsilon, X + \epsilon)
+\]
+
+After $T$ iterations, $X_{\text{adv}} = X^{(T)}_{\text{adv}}$.
+
+%Explanation
+ Projected Gradient Method (PGM) attack start with the original input $X$ as the initial adversarial example. The Gradient Update in each iteration, compute the gradient of the loss function $\mathcal{L}$ with respect to the input, and update the adversarial example by moving in the direction of the signed gradient scaled by $\alpha$. The projection after each update, project the adversarial example back into the $\epsilon$-ball around the original input to enforce the $L_\infty$ constraint. The iterative Refinement where iterative updates refine the perturbation to maximize the adversarial impact while adhering to the norm constraint.
+

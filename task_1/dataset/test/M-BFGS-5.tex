@@ -1,0 +1,35 @@
+%Input
+Given:
+- $x^{(k)}$: The current iterate.
+- $x^{(k+1)}$: The next iterate, calculated using the BFGS update.
+- $\alpha_k$: The step size, typically determined by a line search.
+- $H_k$: The approximation of the inverse Hessian matrix at iteration $k$.
+- $\nabla f(x^{(k)})$: The gradient of the objective function at iteration $k$.
+- $s_k = x^{(k+1)} - x^{(k)}$: The difference between successive iterates.
+- $y_k = \nabla f(x^{(k+1)}) - \nabla f(x^{(k)})$: The difference between successive gradients.
+
+%Formula
+The BFGS update formula for the inverse Hessian approximation $H_k$ is:
+
+\[
+H_{k+1} = \left(I - \frac{s_k y_k^T}{y_k^T s_k}\right) H_k \left(I - \frac{y_k s_k^T}{y_k^T s_k}\right) + \frac{s_k s_k^T}{y_k^T s_k}
+\]
+
+Using $H_{k+1}$, the next iterate $x^{(k+1)}$ is calculated as:
+
+\[
+x^{(k+1)} = x^{(k)} - \alpha_k H_k \nabla f(x^{(k)})
+\]
+
+
+%Output
+The Broyden–Fletcher–Goldfarb–Shanno (BFGS) optimization algorithm, method generates an updated inverse Hessian approximation, $H_{k+1}$, at each step. This approximation is then used to compute the next iterate $x^{(k+1)}$. Unlike the limited-memory BFGS (L-BFGS) algorithm, which only stores a limited number of vector pairs $(s_k, y_k)$ to save memory, the full BFGS algorithm retains the complete inverse Hessian approximation $H_k$, making it suitable for smaller problems where memory usage is less of a concern.
+
+%Explanation
+- **Symmetry and Positive-Definiteness**: The BFGS update maintains the symmetry and positive-definite properties of $H_k$ if the initial matrix $H_0$ is chosen to be symmetric and positive definite.
+  
+- **Curvature Condition**: For the BFGS update to be valid, the curvature condition $y_k^T s_k > 0$ must hold, ensuring that $H_{k+1}$ remains a valid approximation of the inverse Hessian.
+  
+- **Step Size $\alpha_k$**: Typically determined by a line search that satisfies the Wolfe conditions, which helps maintain stable convergence properties.
+
+- **Interpretation**: This formula updates the inverse Hessian approximation using curvature information from the previous steps, resulting in an increasingly accurate approximation of the true Hessian matrix.

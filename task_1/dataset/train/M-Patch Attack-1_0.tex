@@ -1,0 +1,12 @@
+%Input
+The input includes the generated patch $G$, the adversarially perturbed image $x_{\text{adv}}$, the target label $T$, and the predicted label $y$.
+
+%Output
+The output includes the generated patch $G$.
+
+%Formula
+$\arg\min_{G} -LCE(T, x_{\text{adv}}, y)$
+
+
+%Explanation
+Patch attack is an optimization based where, this equation represents the objective function used in this attack. $G$ represents the generated patch. The objective is to minimize the negative cross-entropy loss $LCE(T, x_{\text{adv}}, y)$ between the target label $T$ and the predicted label $y$ of the adversarially perturbed image $x_{\text{adv}}$. The negative sign is used because minimizing the negative loss is equivalent to maximizing the positive loss, which aligns with the goal of adversarial attacks.

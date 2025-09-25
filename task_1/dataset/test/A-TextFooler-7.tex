@@ -1,0 +1,59 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input text sequence.
+$f(\mathbf{x})$: Target model (e.g., classifier).
+$y_{\text{true}}$: True label of the input sequence.
+$\epsilon$: Perturbation limit (e.g., maximum allowed changes).
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function to minimize for successful attack.
+$\mathcal{S}(w)$: Synonym set for word $w$ from an embedding-based similarity metric.
+$N$: Maximum number of iterations.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+  \[
+  f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with minimal semantic distortion}.
+  \]
+
+%Formula
+1.Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2.Word Importance Scoring:
+   - For each word $w_i$ in $\mathbf{x}_{\text{adv}}$, compute the change in loss when $w_i$ is masked:
+     \[
+     I(w_i) = \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(-i)}, y_{\text{true}}) - \mathcal{L}(f, \mathbf{x}_{\text{adv}}, y_{\text{true}}),
+     \]
+     where $\mathbf{x}_{\text{adv}}^{(-i)}$ is the input with $w_i$ replaced by a mask token.
+
+3.Synonym Replacement:
+   - For the most important word $w_i$ (highest $I(w_i)$):
+     \[
+     w_i' = \underset{w' \in \mathcal{S}(w_i)}{\arg \max} \, \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(i \rightarrow w')}, y_{\text{true}}),
+     \]
+     where $\mathbf{x}_{\text{adv}}^{(i \rightarrow w')}$ is the input with $w_i$ replaced by its synonym $w'$.
+
+4.Update the Input:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} \, \text{with the replaced word}.
+   \]
+
+5.Stopping Condition:
+   - If $f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}$, or if the number of modified words exceeds $\epsilon$, terminate the attack.
+
+%Explanation
+TextFooler is designed for natural language processing (NLP) tasks, such as text classification and can be developed following the below steps:
+
+1.Objective: The goal of the TextFooler attack is to generate adversarial text that maintains the original semantic meaning while misleading the target model.
+
+2.Word Importance: Words are ranked based on their contribution to the model's prediction. Words with the highest importance scores are prioritized for modification.
+
+3.Synonym Replacement:
+   - Candidate replacements for important words are selected from synonym sets generated using word embeddings (e.g., GloVe or Word2Vec) or lexical databases (e.g., WordNet).
+   - The replacement word should maximize the model loss while preserving semantic consistency.
+
+4.Iterative Refinement: The attack iteratively replaces words until it achieves misclassification or exceeds the allowed number of modifications.
+
+5.Semantic Preservation: The use of synonyms ensures that the generated adversarial example $\mathbf{x}_{\text{adv}}$ remains similar to $\mathbf{x}_{\text{original}}$ in meaning, ensuring imperceptibility to human readers.
+
+

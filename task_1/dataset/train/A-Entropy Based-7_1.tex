@@ -1,0 +1,43 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input text sequence.  
+$f(\mathbf{x})$: Target model (e.g., classifier).  
+$y_{\text{true}}$: True label of the input sequence.  
+$\mathcal{E}(w)$: Counter-fitted word embedding vector for word $w$.  
+$\epsilon$: Perturbation limit (maximum number of allowed word replacements).  
+$N$: Maximum number of iterations.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:  
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with minimal semantic distortion}.
+\]
+
+%Formula
+1. Initialization:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Word Importance Scoring: For each word $w_i$ in $\mathbf{x}_{\text{adv}}$, compute the impact on the model's prediction:  
+     \[
+     I(w_i) = |f(\mathbf{x}_{\text{adv}}^{(-i)}) - f(\mathbf{x}_{\text{adv}})|,
+     \]  
+     where $\mathbf{x}_{\text{adv}}^{(-i)}$ represents $\mathbf{x}_{\text{adv}}$ with $w_i$ masked or removed.
+
+3. Candidate Synonym Generation: Use the counter-fitted word embedding $\mathcal{E}(w_i)$ to find candidate synonyms for $w_i$:  
+     \[
+     \mathcal{S}_{CF}(w_i) = \{w' \,|\, \text{cosine similarity}(\mathcal{E}(w_i), \mathcal{E}(w')) \geq \tau, w' \neq w_i\},
+     \]  
+     where $\tau$ is a hyperparameter controlling the level of semantic similarity.
+
+4. Entropy-Based Perturbation: Introduce an entropy-based scoring function to select the next word replacement based on the mutual information between the replaced word and the input text. Specifically, for each word $w_i$, compute its entropy $H(w_i) = -\sum_{j} p(w_j | w_i) \log p(w_j | w_i)$, where $p(w_j | w_i)$ is the conditional probability of word $w_j$ given word $w_i$. The word with the highest entropy is selected as the next replacement.
+
+5. Update the Input:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} \, \text{with the replaced word}.
+   \]
+
+6. Stopping Condition: If $f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}$, or if the number of replaced words exceeds $\epsilon$, terminate the attack.
+
+%Explanation
+The Word Embedding Swap Attack with Entropy-Based Perturbation is a modified variant of the original attack. The main difference lies in the introduction of an entropy-based scoring function to select the next word replacement, which aims to maximize the mutual information between the replaced word and the input text. This modification allows for more targeted and effective attacks, as it considers not only the semantic similarity but also the contextual relevance of each word replacement.

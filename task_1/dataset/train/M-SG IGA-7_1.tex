@@ -1,0 +1,47 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input data point, \( y \) be the true label, and \( \theta \) be the model's parameters.  
+Define the maximum allowable perturbation \( \epsilon \), the standard deviation \( \sigma \) of the Gaussian noise, and the number of iterations \( N \).  
+ 
+
+%Output
+The output of the M-Gaussian Noise-Based Iterative Perturbation Attack is an adversarial example $x^*$ that misclassifies the input while incorporating Gaussian noise. The new attack maintains the core principle of the original attack but introduces a scoring function to guide the perturbation process.
+
+%Formula
+
+1. Initialize the input:
+   $
+   x^{(0)} = x.
+   $
+2. Set parameters for the noise generation:
+   - Define the maximum perturbation size $\epsilon$, the standard deviation $\sigma$ of the Gaussian noise, and the number of iterations $N$.
+3. For each iteration $n = 1$ to $N$:
+   - Compute the model's prediction:
+   $
+   \hat{y}^{(n)} = f_{\theta}(x^{(n-1)}).
+   $
+   - Generate Gaussian noise:
+   $
+   \text{noise} \sim \mathcal{N}(0, \sigma^2 I),
+   $
+   where $I$ is the identity matrix.
+   - Update the input by adding the noise with a score-based update function:
+   $
+   x^{(n)} = x^{(n-1)} + \text{noise} \cdot f(x^{(n-1)}, y, \theta),
+   $
+   where $f$ is a scoring function that evaluates the model's confidence in its prediction.
+   - Apply clipping to ensure the perturbation stays within bounds:
+   $
+   x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)}),
+   $
+   ensuring:
+   $
+   \|x^{(n)} - x\|_p \leq \epsilon.
+   $
+
+4. The final adversarial example is:
+   $
+   x^* = x^{(N)}.
+   $
+
+%Explanation
+The Score-Guided Iterative Gaussian Perturbation Attack (SG-IGA) generates adversarial examples by adding Gaussian noise to the original image in an iterative manner, guided by a scoring function that enhances the model's confidence-based approach. This variant improves upon the original attack by incorporating a score-based update function that encourages more effective perturbations while maintaining control over the perturbation size and bounds.

@@ -1,0 +1,37 @@
+%Input
+The input is the original example $X$, the step size $\alpha$, and the loss function $J$ with respect to the input. The adversarial perturbation is updated iteratively.
+
+%Output
+The output is the adversarial example $X_{\text{adv}}^{N+1}$ after $N+1$ iterations.
+
+%Formula
+The iterative method for generating adversarial examples is given by:
+
+\begin{align}
+X_{\text{adv}}^0 &= X, \\
+X_{\text{adv}}^{N+1} &= \text{Clip}_{X,\epsilon} \left( X_{\text{adv}}^N - \alpha \cdot \text{sign} \left( \nabla_X J(X_{\text{adv}}^N, y_{\text{LL}}) \right) \right)
+\end{align}
+
+where:
+\begin{equation*}
+\text{Clip}_{X,\epsilon}(\cdot)
+\end{equation*}
+is the clipping function that ensures the perturbed example stays within the $\epsilon$-ball around the original input $X$.
+
+\begin{equation*}
+\alpha
+\end{equation*}
+is the step size for each iteration.
+
+\begin{equation*}
+\text{sign}(\cdot)
+\end{equation*}
+is the sign function, which takes the sign of the gradient.
+
+\begin{equation*}
+\nabla_X J(X_{\text{adv}}^N, y_{\text{LL}})
+\end{equation*}
+is the gradient of the loss function $J$ with respect to the input $X$ at iteration $N$, evaluated at the adversarial example $X_{\text{adv}}^N$ and the least likely class $y_{\text{LL}}$.
+
+%Explanation
+The ILCM (Iterative Least-Confident Model) Adversarial Attack appears to follow a structure similar to well-known iterative gradient-based attacks, Basic Iterative Method (BIM), which is an extension of the Fast Gradient Sign Method (FGSM) where the iterative method begins with the original input $X$ and updates the adversarial example $X_{\text{adv}}$ by moving in the direction of the gradient of the loss function $J$. The $\text{sign}$ function applies perturbations in the direction of the gradient, while $\text{Clip}_{X,\epsilon}$ ensures that the perturbation remains within a specified $\epsilon$-ball around the original input $X$. The step size $\alpha$ controls the magnitude of each update. After $N+1$ iterations, the resulting adversarial example $X_{\text{adv}}^{N+1}$ is produced.

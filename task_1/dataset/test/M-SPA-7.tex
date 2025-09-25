@@ -1,0 +1,26 @@
+%Input
+Let \( x \) be an input image, and let \( f(x) \) be the classifier's output. The adversarial perturbation \( e(x) \) is applied to modify the image while ensuring that the perturbation remains sparse.
+
+%Output
+An adversarially perturbed image \( x' = x + e(x) \) such that the classifier misclassifies \( x' \) while satisfying the sparsity constraint on \( e(x) \).
+
+%Formula
+\[
+\underset{e(x)}{\text{maximize}} \quad \mathcal{L}(f(x + e(x)), y)
+\]
+subject to 
+\[
+\| e(x) \|_0 \leq k,
+\]
+where:
+\begin{itemize}
+    \item \( \mathcal{L} \) is the loss function associated with the classifier.
+    \item \( y \) is the true label of \( x \).
+    \item \( k \) is the maximum allowed number of perturbed pixels.
+    \item \( \| e(x) \|_0 \) represents the number of non-zero elements in \( e(x) \).
+\end{itemize}
+
+%Explanation
+One Pixel Space Adversarial with $\ell_0$-Norm Constraint, where the Objective Function and Constraint are modified by replacing the Euclidean norm ($\| \cdot \|_2$) with the $\ell_0$-norm ($\| e(x) \|_0$). 
+
+This Sparse Pixel Attack (SPA) variant limits the number of non-zero elements in the perturbation $e(x)$ applied to each pixel $x$ in the input image, while maintaining the core principle of maximizing misclassification by a classifier. The change introduces a new aspect to the attack, focusing on sparse perturbations that can potentially evade detection methods relying on robustness against small noise additions.

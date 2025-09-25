@@ -1,0 +1,58 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input sample.
+$f(\mathbf{x})$: Target model (e.g., classifier).
+$y_{\text{true}}$: True label for $\mathbf{x}_{\text{original}}$.
+$\epsilon$: Adversarial noise bound in $L_p$ norm.
+$\eta$: Step size for optimization.
+$\text{max\_iterations}$: Maximum number of iterations.
+$\mathcal{L}(f, \mathbf{x}, y_{\text{true}})$: Loss function to maximize for successful attack.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+  \[
+  \|\mathbf{x}_{\text{adv}} - \mathbf{x}_{\text{original}}\|_p \leq \epsilon \quad \text{and} \quad f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}.
+  \]
+
+%Formula
+1.Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2.Iterative Noise Update:
+   For iteration $t$, update the adversarial example:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} + \eta \cdot \text{sign}\big(\nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{true}})\big).
+   \]
+
+3.Projection:
+   After each update, project $\mathbf{x}_{\text{adv}}$ onto the $L_p$ ball of radius $\epsilon$:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}_p\big(\mathbf{x}_{\text{adv}}^{(t+1)}, \mathbf{x}_{\text{original}}, \epsilon\big),
+   \]
+   where $\text{clip}_p$ ensures:
+   \[
+   \|\mathbf{x}_{\text{adv}}^{(t+1)} - \mathbf{x}_{\text{original}}\|_p \leq \epsilon.
+   \]
+
+4.Stopping Condition:
+   - Terminate if $f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}$.
+   - Stop after $\text{max\_iterations}$ iterations if no success.
+
+%Explanation
+The PANB (Projected Adversarial Noise Bound) Adversarial Attack is a gradient-based optimization approach where the adversarial example is iteratively refined while maintaining the perturbation within a bounded region defined by the $L_p$ norm. The projection step ensures that the attack respects the adversarial noise constraints, making the attack practical and imperceptible. This method is versatile and adapts to different norm constraints (e.g., $L_1$, $L_2$, $L_\infty$) based on the choice of $\epsilon$ can be formulated as below:
+
+1.Objective:
+   - The goal is to perturb the original input $\mathbf{x}_{\text{original}}$ minimally (within the $L_p$ constraint) to produce an adversarial example $\mathbf{x}_{\text{adv}}$ that the model $f$ misclassifies.
+
+2.Gradient-Based Attack:
+   - This attack iteratively modifies the input by using the gradient of the loss function $\mathcal{L}$ to identify the most sensitive directions for perturbation.
+
+3.Projection:
+   - After each gradient step, the adversarial example is projected back onto the $L_p$ ball of radius $\epsilon$ to maintain a bounded perturbation.
+
+4.Iterative Refinement:
+   - Multiple iterations allow for gradual refinement of the adversarial example, improving its likelihood of success under the $L_p$ norm constraint.
+
+5.Adversarial Noise Bound:
+   - The $L_p$ norm ensures the perturbation remains imperceptible while effectively fooling the model.

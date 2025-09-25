@@ -1,0 +1,60 @@
+%Input
+\begin{align*}
+    & x^{(0)}: \text{The initial input data point.} \\
+    & N_{\text{iter}}: \text{The total number of iterations.} \\
+    & k^{(i+1)}: \text{The sparsity level at each iteration.} \\
+    & \eta^{(i+1)}: \text{The step size at each iteration.} \\
+    & M: \text{A set of checkpoints where sparsity and step size adjustments occur.} \\
+    & L(x): \text{The loss function used to guide the attack.} \\
+    & s(\nabla L(x), k \cdot d): \text{A sparsity function applied to the gradient.} \\
+    & \text{PS}(u): \text{A projection step ensuring the perturbation remains within constraints.} \\
+    & x_{\text{best}}: \text{The best adversarial example found.} \\
+    & L_{\text{best}}: \text{The best loss value encountered.}
+\end{align*}
+
+%Output
+\( x^{(0)} \) is the initial input data point.  
+\( N_{\text{iter}} \) is the total number of iterations.  
+\( k^{(i+1)} \) represents the sparsity level at each iteration.  
+\( \eta^{(i+1)} \) is the step size at each iteration.  
+\( M \) is a set of checkpoints where sparsity and step size adjustments occur.
+
+%Formula
+1. For each iteration \( i = 0 \) to \( N_{\text{iter}} - 1 \):
+
+    2. Adjust sparsity and step size at checkpoints \( i + 1 \in M \):
+       \[
+       k^{(i+1)} \leftarrow \text{sparsity}
+       \]
+       \[
+       \eta^{(i+1)} \leftarrow \text{step size}
+       \]
+       
+    3. If \( \eta^{(i+1)} = \eta^{(0)} \):
+       \[
+       x^{(i)} \leftarrow x_{\text{best}}
+       \]
+       
+    4. Update step:
+       \[
+       u^{(i+1)} = x^{(i)} + \eta^{(i)} \cdot s(\nabla L(x^{(i)}), k^{(i+1)} \cdot d)
+       \]
+       \[
+       x^{(i+1)} = \text{PS}(u^{(i+1)}) \quad \text{(project onto feasible set)}
+       \]
+       
+    5. Update best point found:
+       \[
+       \text{If } L(x^{(i+1)}) > L_{\text{best}}:
+       \]
+       \[
+       x_{\text{best}} \leftarrow x^{(i+1)}
+       \]
+       \[
+       L_{\text{best}} \leftarrow L(x^{(i+1)})
+       \]
+
+2. Return \( x_{\text{best}} \) as the best adversarial example found after all iterations.
+
+%Explanation
+This variant of the Momentum Iterative algorithm introduces a linear search to determine the optimal step size for each iteration. The linear search explores a range of possible step sizes, and at each checkpoint, it chooses the step size that yields the highest improvement in the loss function. This modification aims to improve the efficiency and effectiveness of the adversarial attack by allowing the algorithm to adapt more closely to the characteristics of the target model.

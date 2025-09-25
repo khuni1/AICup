@@ -1,0 +1,30 @@
+%Input
+Let \( x \) be the original input data point and \( y \) be the true label. The Subtle Adv Adversarial Attack aims to generate adversarial examples that are visually similar to the original input while causing misclassification by the model.
+
+%Output
+The output of the Subtle Adv Adversarial Attack is a perturbed input \( \tilde{x} \) that remains visually indistinguishable from \( x \) but is misclassified.
+
+%Formula
+The Subtle Adv Adversarial Attack can be formulated as follows:
+1. Initialize the original input \( x \) and the perturbation \( \delta \) with a small magnitude:
+   $
+   \tilde{x} = x + \delta,
+   $
+   where \( \|\delta\| \leq \epsilon \).
+2. Define the objective function to minimize the loss while maintaining subtlety:
+   $
+   \text{minimize } J(f(\tilde{x}), y) + \lambda \cdot \|\delta\|^2,
+   $
+   where \( J \) is the loss function, \( f \) is the model, and \( \lambda \) is a regularization parameter that controls the trade-off between misclassification and perturbation size.
+3. Use an optimization algorithm (e.g., gradient descent) to iteratively update \( \delta \):
+   $
+   \delta \leftarrow \delta - \alpha \nabla_{\delta} \left(J(f(\tilde{x}), y) + \lambda \cdot \|\delta\|^2\right),
+   $
+   where \( \alpha \) is the learning rate.
+4. Update the perturbed input:
+   $
+   \tilde{x} = x + \delta.
+   $
+
+%Explanation
+The Subtle Adv Adversarial Attack generates adversarial examples by carefully perturbing the original input \( x \) to create a new input \( \tilde{x} \). The objective is to achieve misclassification while ensuring that the perturbation remains small enough to keep \( \tilde{x} \) visually similar to \( x \). The attack employs a loss function that balances the need for misclassification with the desire for minimal perceptual change, utilizing regularization to control the perturbation size. This method highlights vulnerabilities in classification systems, especially in applications where subtlety is critical, such as in image recognition.

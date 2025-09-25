@@ -1,0 +1,32 @@
+%Input
+The input data is $X$, and the true label is $y_{\text{true}}$.
+
+%Output
+The output is the adversarial example $X_{\text{adv}}$ and the total loss value.
+
+%Formula
+The Basic Iterative Method (BIM) for adversarial example generation involves iteratively updating the input $X$ using the formula:
+
+$X_{\text{adv}} = X + \epsilon \frac{\nabla_X J(X, y_{\text{true}})} {||\nabla_X J(X, y_{\text{true}})||_2}$
+
+where:
+$\epsilon$ is the step size or perturbation magnitude.
+$\nabla_X J(X, y_{\text{true}})$ is the gradient of the loss function $J$ with respect to the input $X$, evaluated at the true label $y_{\text{true}}$.
+$||\nabla_X J(X, y_{\text{true}})||_2$ denotes the $L_2$ norm of the gradient, used to normalize the perturbation.
+
+
+The loss function for BIM-A is given by:
+$\text{Loss} = \frac{1}{{(m - k)} + \lambda_k } \left( \sum_{i \in \text{CLEAN}} L(X_i | y_i) + \lambda \sum_{i \in \text{ADV}} L(X_{\text{adv}_i} | y_i) \right)$
+
+where:
+$m$ is the number of clean examples.
+$k$ is the number of adversarial examples.
+$\lambda_k$ and $\lambda$ are weighting factors for clean and adversarial examples.
+$L(X_i | y_i)$ is the loss for each clean example.
+$L(X_{\text{adv}_i} | y_i)$ is the loss for each adversarial example.
+
+
+%Explanation:
+The Basic Iterative Method A (BIM) is a variant of the Fast Gradient Sign Method (FGSM) that iteratively applies small perturbations to the input data to create adversarial examples. The perturbations are applied in the direction of the gradient of the loss function, which is computed with respect to the true label $y_{\text{true}}$. This iterative process helps in generating adversarial examples that are more effective in misleading the model compared to a single-step attack.
+
+The loss function for BIM-A combines the loss on clean examples and adversarial examples, weighted by factors $\lambda_k$ and $\lambda$. This helps in balancing the training process between maintaining performance on clean data and improving robustness against adversarial attacks. The goal is to find the adversarial perturbations that maximize the loss for adversarial examples while ensuring that the model performs well on clean examples. This approach is used to enhance the model's robustness by training it on both clean and adversarially perturbed data.

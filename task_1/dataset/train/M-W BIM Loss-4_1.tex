@@ -1,0 +1,13 @@
+%Input
+Number of clean examples $m$, 
+number of adversarial examples $k$, 
+weighting factors $\lambda_k$ and $\lambda$.
+
+%Output
+Total loss $\text{Loss} = \lambda L(X_i | y_i) + (1-\lambda)\lambda_k L(X_{\text{adv}_i} | y_i)$
+
+%Formula
+$\text{Loss}$ represents the overall loss computed by the function, where $L(X_i | y_i)$ is the loss function applied to each clean example $X_i$ with its corresponding true label $y_i$, and $L(X_{\text{adv}_i} | y_i)$ is the loss function applied to each adversarial example $X_{\text{adv}_i}$ with its corresponding true label $y_i$.
+
+%Explanation
+The M-BIM-based adversarial loss function combines the clean and adversarial examples in a weighted manner, where $\lambda_k$ controls the contribution of clean examples and $\lambda$ controls the contribution of adversarial examples. This approach allows for flexible tuning of the relative importance of clean and adversarial examples in the training process, which can lead to improved performance on both clean and adversarial examples. The variant Weighted BIM Loss (W-BIM Loss) differs from the main perturbation core by incorporating a weighted loss function that balances the contributions of clean and adversarial examples, whereas the original perturbation core uses a uniform weighting factor for all examples.

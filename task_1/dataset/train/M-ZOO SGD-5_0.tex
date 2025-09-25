@@ -1,0 +1,75 @@
+%Input
+$x_2 &\geq 0$
+\textbf{$f(x_1, x_2)$}: Objective function to be minimized. \\
+\textbf{$x_1^2 + x_2^2 \leq 2$}: Circular constraint. \\
+\textbf{$x_1, x_2 \geq 0$}: Non-negativity constraints.
+
+%Output
+\[
+(x_1, x_2) = (1, 1) \quad \text{with} \quad f(x) = 2
+\]
+
+%Formula
+To solve this optimization problem, we use the method of Lagrange multipliers. Define the Lagrangian:
+\[
+\mathcal{L}(x_1, x_2, \lambda, \mu_1, \mu_2) = x_1 + x_2 + \lambda (x_1^2 + x_2^2 - 2) - \mu_1 x_1 - \mu_2 x_2
+\]
+where $\lambda$, $\mu_1$, and $\mu_2$ are the Lagrange multipliers.
+
+Taking the partial derivatives and setting them to zero:
+\begin{align}
+\frac{\partial \mathcal{L}}{\partial x_1} &= 1 + 2\lambda x_1 - \mu_1 = 0 \label{eq1} \\
+\frac{\partial \mathcal{L}}{\partial x_2} &= 1 + 2\lambda x_2 - \mu_2 = 0 \label{eq2} \\
+\frac{\partial \mathcal{L}}{\partial \lambda} &= x_1^2 + x_2^2 - 2 = 0 \label{eq3} \\
+\frac{\partial \mathcal{L}}{\partial \mu_1} &= -x_1 = 0 \label{eq4} \\
+\frac{\partial \mathcal{L}}{\partial \mu_2} &= -x_2 = 0 \label{eq5}
+\end{align}
+
+From \eqref{eq4} and \eqref{eq5}, we have:
+\[
+x_1 = 0 \quad \text{and} \quad x_2 = 0
+\]
+
+This solution does not satisfy the constraint \eqref{eq3}. Therefore, we need to consider other cases.
+
+First, consider $\mu_1 = 0$ and $\mu_2 = 0$. From \eqref{eq1} and \eqref{eq2}, we get:
+\[
+1 + 2\lambda x_1 = 0 \quad \Rightarrow \quad \lambda = -\frac{1}{2x_1} \quad (\text{for} \, x_1 \neq 0)
+\]
+\[
+1 + 2\lambda x_2 = 0 \quad \Rightarrow \quad \lambda = -\frac{1}{2x_2} \quad (\text{for} \, x_2 \neq 0)
+\]
+
+Equating the two expressions for $\lambda$, we get:
+\[
+-\frac{1}{2x_1} = -\frac{1}{2x_2} \quad \Rightarrow \quad x_1 = x_2
+\]
+
+Substituting $x_1 = x_2$ into the constraint \eqref{eq3}:
+\[
+2x_1^2 = 2 \quad \Rightarrow \quad x_1^2 = 1 \quad \Rightarrow \quad x_1 = \pm 1
+\]
+
+Since $x_1 \geq 0$ and $x_2 \geq 0$, we have:
+\[
+x_1 = 1 \quad \text{and} \quad x_2 = 1
+\]
+
+The corresponding value of the objective function is:
+\[
+f(1, 1) = 1 + 1 = 2
+\]
+
+%Explanation
+ZOO (Zeroth-Order Optimization) attack is an untargeted black-box adversarial attack that optimizes adversarial perturbations without access to gradients. The key idea of ZOO is to use function evaluations to estimate gradients in order to guide the search for adversarial examples. where:
+\textbf{Objective Function}: The function to be minimized, \( f(x) = x_1 + x_2 \).
+\textbf{Constraints}:
+    - \( x_1^2 + x_2^2 \leq 2 \): Ensures that the solution lies within a circle of radius \(\sqrt{2}\).
+    - \( x_1 \geq 0 \): Non-negativity constraint for \( x_1 \).
+    - \( x_2 \geq 0 \): Non-negativity constraint for \( x_2 \).
+\textbf{Lagrangian Function}: Combines the objective function and constraints using Lagrange multipliers:
+    \[
+    \mathcal{L}(x_1, x_2, \lambda, \mu_1, \mu_2) = x_1 + x_2 + \lambda (x_1^2 + x_2^2 - 2) - \mu_1 x_1 - \mu_2 x_2
+    \]
+\textbf{Partial Derivatives}: We take the partial derivatives of the Lagrangian with respect to \( x_1 \), \( x_2 \), \( \lambda \), \( \mu_1 \), and \( \mu_2 \), and set them to zero to find the critical points.
+\textbf{Solving the System of Equations}: The partial derivatives yield a system of equations. By solving these equations, we find the values of \( x_1 \) and \( x_2 \) that minimize the objective function subject to the constraints. To solve the optimization problem of minimizing \( x_1 + x_2 \) subject to \( x_1^2 + x_2^2 \leq 2 \), \( x_1 \geq 0 \), and \( x_2 \geq 0 \), we use the method of Lagrange multipliers. By constructing and solving the Lagrangian, we find that the optimal solution is \( (x_1, x_2) = (1, 1) \), with a minimum value of the objective function \( f(x) = 2 \).

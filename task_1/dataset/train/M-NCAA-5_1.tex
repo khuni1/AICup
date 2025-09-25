@@ -1,0 +1,14 @@
+%Input
+The input includes the original input $x$, the adversarial perturbation $\delta$, the target model $y$, the perturbation constraint $\rho$, and the distance metric $d$.
+
+%Output
+$\min_{\delta} \quad y(x + \delta) \quad \text{subject to} \quad \| \delta \|_2 < \rho$
+The output includes the adversarial perturbation $\delta$ and the function $h(x_0)$, which outputs $y$ for all $x_0$ within a certain neighborhood of the input $x$.
+
+%Formula
+$h(x_0) = y \quad \forall x_0 \in \{ x_0 \, | \, d(x_0, x) \leq \rho \}$
+
+%Explanation
+This Neighborhood-Constrained Adversarial Attack (NCAA) vernation equation represents an optimization problem that seeks to minimize the output $y(x + \delta)$ of the target model $y$ when the input $x$ is perturbed by an adversarial perturbation $\delta$. The goal is to find the perturbation $\delta$ that minimizes the model output, which could correspond to misclassification or other undesired outcomes. The constraint ensures that the $L_2$ norm of the perturbation $\delta$ is less than a given threshold $\rho$, balancing between effectiveness and maintaining a small perturbation size.
+
+This variant is different from the main perturbation core because it incorporates a distance metric $d(x_0, x)$ to define the neighborhood around the input $x$. This allows for a more targeted approach to generating adversarial examples, as the attack only considers points within a certain distance $\rho$ from the original input.

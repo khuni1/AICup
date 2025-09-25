@@ -1,0 +1,31 @@
+%Input
+Default search space is $\mathbb{R}^d$.
+$L_{\infty}$ bounded adversarial attacks. 
+the search space is $B_{\infty}(\epsilon) = \{\tau : \|\tau\|_{\infty} \leq \epsilon\}$. This requires adapting the problem to this specific setting.
+$\tau$ in $\mathbb{R}^d$ that maximizes the loss $L$.
+
+%Formula
+$B_{\infty}(\epsilon) = \epsilon \tanh(\mathbb{R}^d) $
+$\max_{\tau \in \mathbb{R}^d} L(f(x + \epsilon \tanh(\tau)), y)$
+$\max_{\tau \in \{-\epsilon, +\epsilon\}^d} L(f(x + \tau), y)$
+To make the problem compliant with our evolutionary strategies setting, we rewrite it by considering a stochastic function $f(x + \epsilon \tau)$, where $\tau_i \in \{-1, +1\}$ and $P(\tau_i = 1) = \text{Softmax}(a_i, b_i) = \frac{e^{a_i}}{e^{a_i} + e^{b_i}}$. The problem then is to find the best parameters $a_i$ and $b_i$ that optimize:
+$\min_{a,b} \mathbb{E}_{\tau \sim P_{a,b}} [L(f(x + \epsilon \tau), y)]$
+The problem is to find the best parameters $a$ and $b$ that minimize the expected loss with respect to the stochastic perturbation $\tau$.
+
+
+%Output
+DFOc-\textit{optimizer}: The output is the adversarial perturbation $\tau$ in $\mathbb{R}^d$ that maximizes the loss $L(f(x + \epsilon \tanh(\tau)), y)$.
+DFOd-\textit{optimizer}: The output is the best pair of parameters $(a, b)$ that minimizes the expected loss $\mathbb{E}_{\tau \sim P_{a,b}} [L(f(x + \epsilon \tau), y)]$.
+
+
+%Explanation
+Derivative-free optimization methods aim to optimize an objective function without access to the gradient. We tested several evolution strategies:
+
+{(1+1)-ES Algorithm}:
+The (1+1)-evolution strategy with one-fifth rule is a simple but effective algorithm. Compared to random search, this algorithm adapts the scale of Gaussian sampling by taking into account the frequency of the best candidate.
+
+{CMA-ES Algorithm}:
+The Covariance Matrix Adaptation Evolution Strategy (CMA-ES) combines evolution strategies, Cumulative Step-Size Adaptation, and a method for adapting the covariance matrix. It is robust but slow in high dimensions due to the expensive computation of the matrix square root.
+
+{Tiling Trick}:
+To reduce the number of queries necessary to fool the network, Ilyas et al. (2018) suggested tiling the attack. This reduces the dimensionality of the search space and speeds up convergence by initializing optimization algorithms with tiled noise.

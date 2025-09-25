@@ -1,0 +1,45 @@
+%Input
+Let \( x \) be the original input data, and let's define a new perturbation strategy inspired by the Bayesian framework.
+
+%Output
+The output of our new variant is an adversarial example that leverages an entropy-based scoring function to guide the optimization process. The objective is to maximize the likelihood of misclassification while controlling the perturbation.
+
+%Formula
+
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+
+2. Define a prior distribution \( p(\delta) \) over perturbations \( \delta \):
+   $
+   \delta \sim p(\delta) = N(0, I),  # Entropy-based prior
+   $
+
+3. For each sampled perturbation \( \delta \):
+   - Generate the modified input:
+   $
+   x' = x + \delta.
+   $
+
+4. Define an entropy-based scoring function \( s(x') \) to guide the optimization process:
+   $
+   s(x') = H(f_{\theta}(x')),  # Entropy of model's prediction
+   $
+
+5. Evaluate the model's prediction:
+   $
+   \hat{y} = f_{\theta}(x').
+   $
+
+6. If \( \hat{y} \neq y \), then \( x' \) is a candidate adversarial example.
+
+7. The objective is to maximize the likelihood of misclassification while controlling the perturbation:
+   $
+   x^* = \arg\max_{x'} [f_{\theta}(x') \neq y] + s(x').
+   $
+
+%Explanation
+Our new variant employs an entropy-based scoring function to guide the optimization process. By incorporating this scoring function, our attack becomes more targeted and stealthy, as it is designed to exploit the model's uncertainty. This approach maintains the core principle of the original Bayesian Adversarial Example (BAE) attack while introducing a new layer of sophistication.
+
+Summary: Our variant differs from the main perturbation core by incorporating an entropy-based scoring function to guide the optimization process. This allows for more targeted and stealthy attacks, while maintaining the core principle of the original BAE attack.

@@ -1,0 +1,25 @@
+%Input
+\begin{enumerate}
+  \item Choose a scoring function $f$ and modify it to calculate the confidence scores for the target class in the perturbed input space.
+  \item Update the loss function $L_t$ to use the modified scoring function $f_{\delta}$.
+  \item Apply the constraint $\|\delta^*\|_p = \epsilon$ directly to the optimization algorithm without introducing new constraints or modifications to the existing variables.
+  \item Remove the $\gamma_k$ decay factor for the confidence score updates and focus solely on the perturbation norm $\|\delta_k\|_p$.
+  \item Update the $\alpha_k$ step size decay using a simple exponential decay function, such as $\alpha_k = h(\alpha_0, \frac{\epsilon}{k})$, where $h(\cdot)$ is an exponentially decaying function.
+  \item Keep the rest of the algorithm unchanged.
+
+\end{enumerate}
+
+%Output
+$L_t(x + \delta) = f_{\delta}(x, y') - f_{\delta}(x, y)$ 
+$f_{\delta}(x, y') &= \max_i \left( 1 - \text{sign}(\nabla f(y, x)) \right) g_y^{(i)} \cdot \phi(y', x)$
+$\epsilon_k &= |g^|_p$
+
+%Formula
+\begin{align*}
+L_t(x + \delta) &= f_{\delta}(x, y') - f_{\delta}(x, y), \\
+f_{\delta}(x, y') &= \max_i (1 - \text{sign}(\nabla f(y, x))) g_y^{(i)} \cdot \phi(y', x), \\
+\epsilon_k &= \|g^*\|_p.
+\end{align*}
+
+%Explanation
+This variant of the original perturbation core focuses on maximizing the confidence score for the target class $y'$ while ensuring that the perturbed input remains within a specified norm $\epsilon$. The new scoring function $f_{\delta}$ incorporates the sign of the gradient of the loss function with respect to the prediction, which encourages the model to assign higher confidence scores to the target class. By removing the confidence score updates and focusing solely on the perturbation norm, this variant reduces the computational cost while maintaining the core principle of the original attack.

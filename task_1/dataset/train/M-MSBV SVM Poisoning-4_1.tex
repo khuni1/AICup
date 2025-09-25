@@ -1,0 +1,32 @@
+%Input
+Input: Let $D = \{(x_i, y_i)\}_{i=1}^N$ be the original training dataset, where $x_i$ are the input samples and $y_i$ are the corresponding labels. The Poison MSBV Adversarial Attack aims to introduce multiple poisoned samples into the dataset to manipulate the training of a Support Vector Machine (SVM).
+
+%Output
+The output of the Poison MSBV Adversarial Attack is a modified training dataset $D'$ that includes multiple poisoned samples designed to degrade the model's performance.
+
+%Formula
+1. Initialize the training dataset and true labels:
+   $
+   D = \{(x_i, y_i)\}_{i=1}^N.
+   $
+2. Identify a target class $c$ and generate multiple poisoned samples $\{x_{\text{poison}}^j\}_{j=1}^M$ for that class:
+   $
+   x_{\text{poison}}^j = x + \delta_j,
+   $
+   where $\delta_j$ are perturbations crafted for each poisoned sample.
+3. Update the training dataset to include the poisoned samples:
+   $
+   D' = D \cup \{(x_{\text{poison}}^j, c)\}_{j=1}^M.
+   $
+4. Train the SVM on the poisoned dataset:
+   $
+   f_{\theta}(x) = \text{SVM}(D').
+   $
+5. Evaluate the model on a clean test set to assess performance degradation:
+   $
+   \text{Accuracy} = \frac{\sum_{(x_j, y_j) \in \text{test set}} \mathbb{I}(f_{\theta}(x_j) \neq y_j)}{|\text{test set}|},
+   $
+   where $\mathbb{I}$ is an indicator function.
+
+%Explanation
+The MSBV-SVM Poisoning Attack variant aims to compromise the performance of a Support Vector Machine by introducing multiple adversarial samples into the training dataset. Each poisoned sample $x_{\text{poison}}^j$ is generated with a specific perturbation $\delta_j$ designed to mislead the model. These poisoned samples are added to the original dataset $D$, resulting in a new dataset $D'$. Training the SVM on this manipulated dataset can lead to erroneous decision boundaries, ultimately causing a reduction in accuracy when evaluated on clean test data. This attack demonstrates the susceptibility of machine learning systems to adversarial manipulation during the training phase.

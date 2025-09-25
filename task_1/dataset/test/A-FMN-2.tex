@@ -1,0 +1,63 @@
+%Input
+Given an input sample \( \mathbf{x} \in [0, 1]^d \), belonging to class \( y \in \{1, \ldots, c\} \).
+
+%Output
+The minimum-norm adversarial example \( \mathbf{x}^* \).
+
+%Formula
+The goal of an untargeted attack is to find the minimum-norm perturbation \( \delta^* \) such that the corresponding adversarial example \( \mathbf{x}^* = \mathbf{x} + \delta^* \) is misclassified. This problem can be formulated as:
+\begin{align}
+\delta^* \in \arg \min_{\delta} \|\delta\|_p , \quad \text{subject to} \\
+L(\mathbf{x} + \delta, y, \theta) < 0 , \\
+\mathbf{x} + \delta \in [0, 1]^d ,
+\end{align}
+where \( \|\cdot\|_p \) indicates the \( \ell_p \)-norm operator. The loss \( L \) in the constraint is defined as:
+\begin{equation}
+L(\mathbf{x}, y, \theta) = f_y(\mathbf{x}, \theta) - \max_{j \neq y} f_j(\mathbf{x}, \theta) ,
+\end{equation}
+
+To solve this problem, we reformulate it using an upper bound \( \epsilon \) on \( \|\delta\|_p \):
+\begin{align}
+\min_{\epsilon, \delta} \epsilon , \quad \text{subject to} \\
+\|\delta\|_p \leq \epsilon ,
+\end{align}
+and the constraints in (2)-(3).
+
+\begin{algorithm}[H]
+\caption{Fast Minimum-norm (FMN) Attack}
+\begin{algorithmic}[1]
+\Input $\mathbf{x}$, the input sample; $t$, a variable denoting whether the attack is targeted ($t = +1$) or untargeted ($t = -1$); $y$, the target (true) class label if the attack is targeted (untargeted); $\gamma_0$ and $\gamma_K$, the initial and final $\epsilon$-step sizes; $\alpha_0$ and $\alpha_K$, the initial and final $\delta$-step sizes; $K$, the total number of iterations.
+\Output The minimum-norm adversarial example $\mathbf{x}^*$.
+\State $\mathbf{x}_0 \gets \mathbf{x}$, $\epsilon_0 = 0$, $\delta_0 \gets 0$, $\delta^* \gets \infty$
+\For{$k = 1, \ldots, K$}
+    \State $\mathbf{g} \gets t \cdot \nabla_{\delta}L(\mathbf{x}_{k-1} + \delta, y, \theta)$ // loss gradient
+    \State $\gamma_k \gets h(\gamma_0, \gamma_K, k, K)$ // $\epsilon$-step size decay
+    \If{$L(\mathbf{x}_{k-1}, y, \theta) \geq 0$}
+        \State $\epsilon_k = \|\delta_{k-1}\|_p + L(\mathbf{x}_{k-1}, y, \theta)/\|\mathbf{g}\|_q$ if adversarial not found yet else $\epsilon_k = \epsilon_{k-1}(1 + \gamma_k)$
+    \Else
+        \If{$\|\delta_{k-1}\|_p \leq \|\delta^*\|_p$}
+            \State $\delta^* \gets \delta_{k-1}$ // update best min-norm solution
+        \EndIf
+        \State $\epsilon_k = \min(\epsilon_{k-1}(1 - \gamma_k), \|\delta^*\|_p)$
+    \EndIf
+    \State $\alpha_k \gets h(\alpha_0, \alpha_K, k, K)$ // $\delta$-step size decay
+    \State $\delta_k \gets \delta_{k-1} + \alpha_k \cdot \mathbf{g}/\|\mathbf{g}\|_2$ // gradient-scaling step
+    \State $\delta_k \gets \Pi_{\epsilon}(\mathbf{x}_0 + \delta_k) - \mathbf{x}_0$
+    \State $\delta_k \gets \text{clip}(\mathbf{x}_0 + \delta_k) - \mathbf{x}_0$
+    \State $\mathbf{x}_k \gets \mathbf{x}_0 + \delta_k$
+\EndFor
+\Return $\mathbf{x}^* \gets \mathbf{x}_0 + \delta^*$
+\end{algorithmic}
+\end{algorithm}
+
+%Explanation
+Fast Minimum-Norm (FMN) Attack, which is an adversarial attack designed to find the minimum-norm perturbation that causes a classifier to misclassify an input sample where:
+\textbf{Objective Function}: The function to be minimized, \( \|\delta\|_p \).
+\textbf{Constraints}:
+    \begin{itemize}
+        \item \( L(\mathbf{x} + \delta, y, \theta) < 0 \): Ensures that the adversarial example \( \mathbf{x} + \delta \) is misclassified.
+        \item \( \mathbf{x} + \delta \in [0, 1]^d \): Ensures that the perturbed sample lies within the feasible input space.
+    \end{itemize}
+\textbf{Lagrangian Function}: Combines the objective function and constraints using Lagrange multipliers.
+\textbf{Partial Derivatives}: We take the partial derivatives of the Lagrangian with respect to \( \delta \), \( \epsilon \), and other parameters to find the critical points.
+\textbf{Solving the System of Equations}: The partial derivatives yield a system of equations. By solving these equations, we find the values of \( \delta \) that minimize the objective function subject to the constraints.

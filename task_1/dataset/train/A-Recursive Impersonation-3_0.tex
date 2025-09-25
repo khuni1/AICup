@@ -1,0 +1,90 @@
+%Input
+$x$: Original image \\
+$r$: Perturbation applied to $x$ \\
+$f(x + r)$: Objective function to minimize \\
+$O$: Oracle that outputs a candidate list \\
+$\text{score}_{\text{top}}$: Confidence score of the top-ranked item in the candidate list \\
+$\text{score}_{\text{target}}$: Confidence score of the target in the candidate list \\
+$\text{rank}$: Rank of the target in the candidate list \\
+$\text{maxObjective}$: A large value when the target is not in the top three candidates. \\
+$\text{image}_{\text{original}}$: Original image \\
+$candidates$: Candidate list returned by oracle $O$ \\
+$target$: Target to be impersonated \\
+$numParticles$: Number of particles in the PSO swarm \\
+$epochmax$: Maximum number of PSO iterations \\
+$seed$: Set of particles providing an initial solution.
+
+%Output
+Movement of the particle swarm to minimize the objective function based on candidates provided by the oracle, or optimal perturbation for impersonation or termination if no solution is found.
+$f(x)$: Objective function evaluated based on the candidates returned by the oracle $\text{candidates}$: List of potential impersonation targets provided by $O$  $\text{maxObjective}$: A penalty when the target is not in the top three candidates.
+
+%Formula
+\begin{equation}
+f(x) = 
+\begin{cases} 
+\text{rank} \cdot \frac{\text{score}_{\text{top}}}{\text{score}_{\text{target}}}, & \text{if target} \in \text{candidates} \\
+\text{maxObjective}, & \text{if target} \notin \text{candidates}
+\end{cases}
+\end{equation}
+
+1. Initialization:
+   - Initialize the following:
+     - $epoch \gets 0$,
+     - $numParticles$ (number of particles),
+     - $epochmax$ (maximum epochs),
+     - $seed$ (initial seed for the algorithm).
+   - Set $candidates \gets O(\text{image}_{\text{original}})$, where $O$ is the function that computes class probabilities for the original image.
+
+2. Determine Initial Target:
+   - If $target \in candidates$:
+     \[
+     targetcurrent \gets target
+     \]
+   - Else:
+     \[
+     targetcurrent \gets \text{2nd most probable class from } candidates.
+     \]
+
+3. Iterative Optimization:
+   - While $epoch \leq epochmax$:
+     
+     - (a) Run Particle Swarm Optimization (PSO):
+       - Execute the PSO subroutine with $targetcurrent$ and $seed$.
+       
+     - (b) Check for Solution:
+       - If any particle impersonates the target during the PSO run:
+         - Output solution found and terminate the algorithm.
+       
+     - (c) Update Target if Needed:
+       - If $target \in candidates$ from any query during the PSO run:
+         - Update $targetcurrent \gets target$.
+         - Clear $seed$.
+         - Add particles that produced $target$ during the current PSO run to $seed$:
+           \[
+           seed \supseteq \text{particles producing this candidate}.
+           \]
+       - Else, if a new candidate emerges from the current PSO run:
+         - Update $targetcurrent \gets \text{new candidate}$.
+         - Clear $seed$.
+         - Add particles that produced the new candidate during the current PSO run to $seed$:
+           \[
+           seed \supseteq \text{particles producing this candidate}.
+           \]
+       - Else:
+         - Output no solution found and terminate the algorithm.
+     
+     - (d) Increment Epoch:
+       \[
+       epoch \gets epoch + 1.
+       \]
+
+4. Termination:
+   - The algorithm terminates when:
+     - A solution is found, or
+     - $epoch > epochmax$, or
+     - No new candidate or target can be identified.
+
+%Explanation
+In each iteration of Particle Swarm Optimization (PSO) Recursive Impersonation, particles are moved based on the evaluation of the objective function $f(x + r)$, which queries the oracle $O$. The goal is to reduce the objective by adjusting perturbations, $r$, to the original image $x$. When the target appears in the top candidates returned by the oracle, the objective function uses the target's rank and score to guide the particle's movement. Otherwise, a large penalty $\text{maxObjective}$ is applied, moving the swarm away from non-optimal solutions.
+The modification ensures that particles resulting in successful impersonations are globally tracked and reused in future iterations to either continue the attack or provide seeds for further impersonation attempts.
+The Recursive Impersonation Algorithm iteratively adjusts the target using PSO based on the feedback provided by the oracle. If the target is successfully impersonated, the algorithm halts. Otherwise, it continues to track new candidates that emerge during the PSO process. The algorithm uses seeds from successful queries to guide future impersonation attempts. If no solution is found after the maximum number of iterations, the process terminates.

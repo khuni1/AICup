@@ -1,0 +1,24 @@
+%Input
+The loss function for a variant of the PGD Fast-Universal attack with additional adversarial training. The goal is to create a universal adversarial example $x^*$ that misleads the model across multiple inputs.
+
+%Output
+where $\lambda_a$ and $\epsilon$: Weights for the adversarial training term and user-specified scale factor.
+- $x$: Original input image.
+- $y$: True label associated with it.
+- $\delta^{(0)}$: Initial perturbation of zero.
+- $\alpha$: Learning rate for the attack.
+- $L(f_\theta(x + \delta), y)$: Loss function value.
+
+%Formula
+$\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y) \right) \right)$
+$\lambda_a = \max(\epsilon \cdot \lfloor n / c \rfloor, \lambda_b)$
+
+%Explanation
+Adversarial Training for Universal Adversarial Examples where,
+- $\alpha$: Learning rate for the attack.
+- $n$: The current iteration number.
+- $\text{floor}(\cdot)$: Function that returns the greatest integer less than or equal to the given value.
+- $\max(\cdot, \cdot)$: Function that returns the maximum value between the two arguments.
+- $\lambda_a$ and $\epsilon$ are user-specified weights.
+
+The variant PGD-Universal Adversarial Training (PGD UAT) is different from the main PGD Fast-Universal attack in that it incorporates an additional adversarial training term, which improves the attack's ability to generate universal adversarial examples. The new parameter $\lambda_a$ controls the weight of this term, allowing for a more targeted and effective attack.

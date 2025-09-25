@@ -1,0 +1,41 @@
+%Input
+$f$, $\theta_{\text{init}}$, $\mu_{\text{init}}$, $\Sigma_{\text{init}}$, $\eta$, stopping criterion
+
+%Output
+Updated parameters $\theta = (\mu, \Sigma)$ that maximize the objective function $J(\theta)$.
+
+%Formula
+$\theta \leftarrow \theta + \eta \nabla_\theta J(\theta)$
+
+For Gaussian distributions:
+$\nabla_\mu \log \pi (z | \theta) = \Sigma^{-1} (z - \mu)$
+$\nabla_\Sigma \log \pi (z | \theta) = \frac{1}{2} \Sigma^{-1} (z - \mu) (z - \mu)^\top \Sigma^{-1} - \frac{1}{2} \Sigma^{-1}$
+
+For natural gradient:
+$\nabla_\theta^N J = F^{-1} \nabla_\theta J$
+$F = \mathbb{E} \left[ \nabla_\theta \log \pi (z|\theta) \nabla_\theta \log \pi (z|\theta)^\top \right]$
+
+
+%Explanation
+Natural Evolution Strategies (NES) performance and robustness, fitness shaping and adaptation sampling are employed. Fitness shaping uses rank-based transformations to ensure algorithm invariance under monotonic transformations of the fitness function. Adaptation sampling adjusts learning rates online to optimize the pace of progress. 
+
+The above encoding by means of transformations of a rotation invariant normal form of the distribution hints at the introduction of a canonical local coordinate system in which the normal form becomes the current search distribution. It turns out from Equation (6) that the dependency of the distribution on $A$ is only in terms of the symmetric positive definite matrix $A^\top A$. In the Gaussian case, this matrix coincides with the covariance matrix. Instead of performing natural gradient steps on the manifolds of invertible or positive definite symmetric matrices, we introduce a one-to-one encoding with a vector space representation. The matrix exponential, restricted to the vector space of symmetric matrices, is a global map for the manifold of symmetric positive definite matrices. Thus, we introduce “exponential” local coordinates $(\delta, M) \mapsto (\mu_{\text{new}}, A_{\text{new}}) = (\mu + A^\top \delta, A \exp \left( \frac{1}{2} M \right))$. These coordinates are local in the sense that the current search distribution is encoded by $(\delta, M) = (0, 0)$. It turns out that in these coordinates the Fisher matrix takes the rather simple form
+\[
+F = \begin{pmatrix}
+I & v \\
+v^\top & c
+\end{pmatrix}
+\]
+with $v = \frac{\partial^2 \log \pi(z)}{\partial (\delta, M) \partial \tau} \in \mathbb{R}^{(m-d_0) \times d_0}$ and $c = \frac{\partial^2 \log \pi(z)}{\partial \tau^2} \in \mathbb{R}^{d_0 \times d_0}$. 
+
+Note that for distributions without radial parameters $\tau$, such as Gaussians, we obtain $F = I$. Thus, in local coordinates the otherwise computationally intensive operations of computing and inverting the Fisher matrix are trivial, and the vanilla gradient coincides with the natural gradient. For this reason, we call the above local coordinates also natural exponential coordinates. For non-trivial parameters $\tau$, we use the Woodbury identity to compute the inverse of the Fisher matrix as
+$
+F^{-1} = \begin{pmatrix}
+I & v \\
+v^\top & c
+\end{pmatrix}^{-1} = \begin{pmatrix}
+I + Hvv^\top & -Hv \\
+-Hv^\top & H
+\end{pmatrix}
+$
+with $H = (c - v^\top v)^{-1}$, and exploiting $H^\top = H$. It remains to compute the gradient. We obtain the three components of derivatives of log-probabilities

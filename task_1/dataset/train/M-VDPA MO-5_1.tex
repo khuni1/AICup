@@ -1,0 +1,37 @@
+%Input
+Let \( f_1(x) \) and \( f_2(x) \) be two non-convex objective functions defined on a feasible set \( \mathcal{X} \subseteq \mathbb{R}^n \). Assume both functions have multiple local minima. The goal is to find solutions \( x_1^* \in \mathcal{X} \) and \( x_2^* \in \mathcal{X} \) that minimize \( f_1(x) \) and \( f_2(x) \), i.e.,  
+\[
+x_1^* = \arg \min_{x \in \mathcal{X}} f_1(x),
+\]
+\[
+x_2^* = \arg \min_{x \in \mathcal{X}} f_2(x).
+\]
+
+
+%Output
+Let \( f_1(x) \) and \( f_2(x) \) be two non-convex objective functions defined on a feasible set \( \mathcal{X} \subseteq \mathbb{R}^n \). Assume both functions have multiple local minima.
+The goal is to find solutions \( x_1^* \in \mathcal{X} \) and \( x_2^* \in \mathcal{X} \) that minimize \( f_1(x) \) and \( f_2(x) \), i.e.,
+\[
+x_1^* = \arg \min_{x \in \mathcal{X}} f_1(x),
+\]
+\[
+x_2^* = \arg \min_{x \in \mathcal{X}} f_2(x).
+\]
+
+%Formula
+minimize  $f_1(x), f_2(x)$
+subject to 
+$g_i(x) \leq 0, \quad i = 1, 2, \ldots, m$,
+$h_j(x) = 0, \quad j = 1, 2, \ldots, p$,
+where:
+\begin{itemize}
+    \item \( f_1(x), f_2(x) \): Non-convex objective functions with potentially multiple local minima.
+    \item \( g_i(x) \): Inequality constraints.
+    \item \( h_j(x) \): Equality constraints.
+    \item \( \mathcal{X} \): Feasible set defined by the constraints.
+\end{itemize}
+
+%Explanation
+A multi-objective optimization problem arises when there are two or more conflicting objectives, such as minimizing both \( f_1(x) \) and \( f_2(x) \). Such problems are challenging because they can have multiple local minima and finding the global minimum is not guaranteed. Techniques like evolutionary algorithms or Pareto-based methods are often employed to approximate solutions.
+
+This Deep Perturbation Attack for Multi-Objective Optimization (DPA-MO) variant introduces a new approach for multi-objective optimization, where two separate objectives are minimized simultaneously. It differs from the original perturbation core by incorporating two non-convex objective functions instead of one, and it maintains the core principle of using gradient descent-like updates while improving the method's applicability to multiple objective problems.

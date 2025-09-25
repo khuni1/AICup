@@ -1,0 +1,49 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input text sequence.  
+$f(\mathbf{x})$: Target model (e.g., classifier).  
+$y_{\text{true}}$: True label of the input sequence.  
+$\mathcal{S}(w)$: Synonym set for word $w$ derived from embedding-based similarity metrics.  
+$\mathcal{P}(w)$: Perturbation set for word $w$ (e.g., typos, homophones).  
+$T$: Maximum number of modifications.  
+$N$: Number of iterations for searching adversarial examples.  
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function for evaluating model performance.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:  
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with imperceptible textual modifications}.
+\]
+
+%Formula
+1.Initialization:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2.Word Importance Scoring:  
+   For each word $w_i$ in $\mathbf{x}_{\text{adv}}$, compute its importance by assessing the loss difference when the word is masked:  
+   \[
+   I(w_i) = \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(-i)}, y_{\text{true}}) - \mathcal{L}(f, \mathbf{x}_{\text{adv}}, y_{\text{true}}),
+   \]
+   where $\mathbf{x}_{\text{adv}}^{(-i)}$ is the input with $w_i$ replaced by a mask token.
+
+3.Perturbation Application:  
+   For the most important word $w_i$ (highest $I(w_i)$), replace it with a candidate from its perturbation set:  
+   \[
+   w_i' = \underset{w' \in \mathcal{S}(w_i) \cup \mathcal{P}(w_i)}{\arg \max} \, \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(i \rightarrow w')}, y_{\text{true}}),
+   \]
+   where $\mathbf{x}_{\text{adv}}^{(i \rightarrow w')}$ represents the input with $w_i$ replaced by $w'$.
+
+4.Update Input:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} \, \text{with the replaced word}.
+   \]
+
+5.Stopping Condition:  
+   The attack stops when one of the following conditions is met:
+   \[
+   f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}} \quad \text{or} \quad t > T.
+   \]
+
+%Explanation
+Morpheus Adversarial Attack targets natural language processing (NLP) systems by crafting adversarial examples with minimal and imperceptible textual modifications. The attack uses both semantic-preserving transformations (e.g., synonyms) and noise-inducing perturbations (e.g., typos) to modify the input. Unlike purely heuristic methods, Morpheus leverages the model's loss function to rank and modify the most critical components of the input iteratively. The combination of semantic and non-semantic perturbations ensures high adversarial success rates while maintaining the plausibility of the modified input. This attack is particularly effective against classifiers and models deployed in real-world scenarios due to its stealthy nature.  

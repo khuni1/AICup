@@ -1,0 +1,30 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, and $f_{\theta}$ be the target model. The goal is to generate a targeted adversarial example $x^*$ that misclassifies the input while enhancing the model's robustness.
+
+%Output
+The output of the TREMBA attack is a targeted adversarial example $x^*$ that is crafted to deceive the model while optimizing for boundary robustness.
+
+%Formula
+The TREMBA adversarial attack can be formulated as follows:
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size $\epsilon$, the learning rate $\alpha$, and the number of iterations $N$.
+3. For each iteration $n = 1$ to $N$:
+   - Compute the current prediction:
+   $\hat{y}^{(n)} = f_{\theta}(x^{(n-1)})$
+   - Calculate the gradient with respect to the loss function targeting the desired class $y_t$:
+   $g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y_t)$
+   - Update the input using a boundary-aware adjustment:
+   $x^{(n)} = x^{(n-1)} - \alpha \cdot g_n + r_n$
+   where $r_n$ is a term designed to enhance robustness against boundary perturbations.
+   - Apply clipping to keep the perturbation within bounds:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)})$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+4. The final targeted adversarial example is:
+   $x^* = x^{(N)}$
+   
+%Explanation
+The TREMBA adversarial attack focuses on generating targeted adversarial examples while simultaneously enhancing the robustness of the model against future attacks. By iteratively adjusting the input based on the gradients of a targeted loss function, the attack seeks to misclassify the input into a specified target class. The incorporation of robustness-enhancing adjustments during the optimization process helps create adversarial examples that are not only effective but also harder to defend against in subsequent iterations. The resulting adversarial example $x^*$ underscores the complexities of adversarial machine learning, demonstrating the interplay between attack effectiveness and model robustness.

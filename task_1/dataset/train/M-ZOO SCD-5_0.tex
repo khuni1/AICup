@@ -1,0 +1,34 @@
+%Input
+\textbf{$f(x_1, x_2)$}: Objective function to be minimized, defined as $f(x) = x_1 + x_2$. \\
+\textbf{$x_1^2 + x_2^2 \leq 2$}: Circular constraint, ensuring $x_1$ and $x_2$ lie within a circle of radius $\sqrt{2}$. \\
+\textbf{$x_1, x_2 \geq 0$}: Non-negativity constraints for $x_1$ and $x_2$. \\
+\textbf{$\lambda, \mu_1, \mu_2$}: Lagrange multipliers corresponding to the constraints. \\
+
+%Formula
+\textbf{Lagrangian}:
+\[
+\mathcal{L}(x_1, x_2, \lambda, \mu_1, \mu_2) = x_1 + x_2 + \lambda (x_1^2 + x_2^2 - 2) - \mu_1 x_1 - \mu_2 x_2
+\]
+\textbf{Partial derivatives}:
+\[
+\frac{\partial \mathcal{L}}{\partial x_1} = 1 + 2\lambda x_1 - \mu_1 = 0, \quad
+\frac{\partial \mathcal{L}}{\partial x_2} = 1 + 2\lambda x_2 - \mu_2 = 0
+\]
+\[
+\frac{\partial \mathcal{L}}{\partial \lambda} = x_1^2 + x_2^2 - 2 = 0, \quad
+\frac{\partial \mathcal{L}}{\partial \mu_1} = -x_1 = 0, \quad
+\frac{\partial \mathcal{L}}{\partial \mu_2} = -x_2 = 0
+\]
+
+%Output
+\textbf{Optimal solution}: 
+\[
+(x_1, x_2) = (1, 1)
+\]
+\textbf{Objective value}:
+\[
+f(1, 1) = 2
+\]
+
+%Explanation
+The method is typically used to solve problems in optimization theory, physics, economics, etc., and is unrelated to adversarial machine learning. The objective function $f(x_1, x_2) = x_1 + x_2$ is minimized subject to the given constraints. We use the method of Lagrange multipliers by introducing $\lambda, \mu_1, \mu_2$ to form the Lagrangian. Partial derivatives of the Lagrangian with respect to $x_1, x_2, \lambda, \mu_1, \mu_2$ yield the critical points. Solving this system results in $x_1 = x_2 = 1$, giving the minimum value $f(x_1, x_2) = 2$.

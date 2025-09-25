@@ -1,0 +1,31 @@
+%Input
+$\mathbf{x}$: Original input image. \\
+$\alpha$: Perturbation scalar. \\
+$e_i$: Sign vector for the most likely class. \\
+$e_j$: Sign vector for the target class. \\
+$\beta$: Reward-based penalty term. \\
+$F(\mathbf{x})$: Model output function. \\
+$\kappa$: Lower bound for adversarial loss function.
+
+%Output
+Adversarial loss function value $f(x, t)$.
+
+%Formula
+The RBO method generates an adversarial example by optimizing the loss function $f(x, t)$, which is defined as:
+
+\[
+f(x, t) = \max_{\alpha} \left[ \log[F(x + \alpha e_i)]_i - \log[F(x + \alpha e_j)]_j - \beta \cdot |\alpha| \right]
+\]
+
+%Explanation
+The variant Reward-Based Optimization (RBO), where $x$ represents the input data that we aim to perturb in order to create an adversarial example.
+
+$\alpha$ is a scalar value representing the amount of perturbation added to the input image $x$. The sign vector $e_i$ and $e_j$ denote the direction of the most likely class $i$ and the target class $j$, respectively.
+
+The term $\log[F(x + \alpha e_i)]_i - \log[F(x + \alpha e_j)]_j$ calculates the difference between the log-probability of the predicted class $i$ and the log-probability of the target class $j$. This represents the confidence gap between the most likely class and the target class.
+
+The penalty term $\beta \cdot |\alpha|$ adds a reward-based penalty to discourage large perturbations, ensuring that the adversarial example is more stealthy. If $\beta$ is positive, smaller perturbations are favored; if negative, larger perturbations are favored.
+
+Finally, the max operation $\max_{\alpha} \left[ \cdot, -\kappa \right]$ ensures that the value of the function $f(x, t)$ is at least $-\kappa$, providing a lower bound to the computed loss and ensuring the adversarial example has sufficient confidence.
+
+The RBO method differs from ZOO in its use of a reward-based penalty term $\beta \cdot |\alpha|$. This allows for more nuanced control over the perturbation strategy, potentially leading to more effective and stealthy adversarial examples.

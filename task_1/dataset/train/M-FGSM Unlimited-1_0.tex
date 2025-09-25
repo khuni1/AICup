@@ -1,0 +1,30 @@
+%Input
+The loss function for LBiasGAN is defined as:
+$ \text{LBiasGAN}(G_1, G_2, D_1, D_2, F) = \lambda_b \cdot L_{\text{bias}} + \lambda_g \cdot L_{\text{guard}} + [L_{\text{GAN}} + L_{\text{identity}} + L_{\text{cycle}}] $
+where $ \lambda_b $ and $ \lambda_g $ control the weights of the proposed items.
+The training strategy involves setting $ \lambda_g $ as a dynamic value which increases with the training epoch and reaches its maximum value $ \lambda_b $. The formula for $ \lambda_g $ is:
+$ \lambda_g = \max(\epsilon \cdot \lfloor \text{epoch} / c \rfloor, \lambda_b) $
+
+%Output
+The expected outcome includes:
+Bias Term Control: The $ \lambda_b \cdot L_{\text{bias}} $ term adjusts the model's response to bias.
+Guard Mechanism: The $ \lambda_g \cdot L_{\text{guard}} $ term introduces a guard mechanism, dynamically adjusting its influence as the training progresses.
+GAN Performance: The combined $ L_{\text{GAN}} + L_{\text{identity}} + L_{\text{cycle}} $ terms focus on improving GAN performance and maintaining identity consistency and cycle consistency.
+
+%Formula
+The key formulas include:
+Loss Function:
+$ \text{LBiasGAN}(G_1, G_2, D_1, D_2, F) = \lambda_b \cdot L_{\text{bias}} + \lambda_g \cdot L_{\text{guard}} + [L_{\text{GAN}} + L_{\text{identity}} + L_{\text{cycle}}] $
+Dynamic Weight Adjustment:
+$ \lambda_g = \max(\epsilon \cdot \lfloor \text{epoch} / c \rfloor, \lambda_b) $
+
+%Explanation
+$ \text{LBiasGAN}(G_1, G_2, D_1, D_2, F) $ is the loss function for the GAN model, combining bias, guard, GAN, identity, and cycle loss terms.
+$ \lambda_b $ is the weight for the bias loss term $ L_{\text{bias}} $.
+$ \lambda_g $ is the weight for the guard loss term $ L_{\text{guard}} $, dynamically adjusted during training.
+$ L_{\text{GAN}}, L_{\text{identity}}, L_{\text{cycle}} $ represent the GAN loss, identity loss, and cycle consistency loss, respectively.
+$ \epsilon $ is a user-specified scale factor for adjusting $ \lambda_g $.
+$ \text{epoch} $ refers to the current training epoch.
+$ c $ is a user-specified scale factor controlling the rate of increase for $ \lambda_g $.
+$ \lfloor \cdot \rfloor $ denotes the floor function, returning the greatest integer less than or equal to the given value.
+$ \max(\cdot, \cdot) $ returns the maximum value between the two arguments.

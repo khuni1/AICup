@@ -1,0 +1,25 @@
+%Input
+Let $G_1, G_2$ be the generator networks, $D_1, D_2$ be the discriminator networks, and $F$ be the feature extractor. The objective is to introduce an adaptive mechanism that dynamically adjusts the bias term and guard mechanism weight during training. Define:
+
+$L_{\text{bias}}$: Bias control loss.
+$L_{\text{guard}}$: Guard mechanism loss.
+$L_{\text{GAN}}$: Adversarial loss for GAN training.
+$L_{\text{identity}}$: Identity loss ensuring consistency.
+$L_{\text{cycle}}$: Cycle consistency loss.
+$\lambda_b$: Weight for bias term control.
+$\lambda_g$: Weight for adaptive guard mechanism.
+$\alpha$: Adaptive scaling factor.
+$x, y$: Current epoch number and training iteration.
+
+%Output
+Bias Term Control with Adaptive Guard Mechanism: The $ \lambda_b \cdot L_{\text{bias}} $ term adjusts the model's response to bias, while the guard mechanism dynamically adapts its influence as training progresses.
+Dynamic Weight Adjustment with Adaptive Scale Factor: The formula for $ \lambda_g $ is modified by replacing $ \epsilon \cdot \lfloor \text{epoch} / c \rfloor $ with a new adaptive scale factor $ \alpha \cdot \text{max}(x, y) $, where x and y are the current epoch number and training iteration respectively.
+
+%Formula 
+Loss Function:
+$ \text{LBiasGAN}(G_1, G_2, D_1, D_2, F) = \lambda_b \cdot L_{\text{bias}} + \lambda_g \cdot L_{\text{guard}} + [L_{\text{GAN}} + L_{\text{identity}} + L_{\text{cycle}}] $
+Dynamic Weight Adjustment:
+$ \lambda_g = \alpha \cdot \max(x, y) $
+
+%Explanation
+This variant  LBiasGAN Unlimited-Gradient Based Optimization builds upon the original LBiasGAN attack by introducing an adaptive guard mechanism and scale factor. The adaptive scale factor $ \alpha \cdot \text{max}(x, y) $ adjusts the rate of increase for $ \lambda_g $ based on the current epoch number and training iteration. This modification allows for a more nuanced and adaptive approach to training, potentially leading to improved performance and robustness against adversarial attacks.

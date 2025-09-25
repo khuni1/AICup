@@ -1,0 +1,28 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input data point, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The COS-UAP Attack aims to generate a universal perturbation \( \delta \) based on cosine similarity.
+
+%Output
+The output of the COS-UAP Attack is a universal adversarial perturbation \( \delta \) that can be applied to various inputs to mislead the classifier.
+Output: This variant uses gradient-based optimization instead of gradient ascent, resulting in more efficient and stable attacks. 
+
+%Formula
+Formula:
+1. Initialize the universal perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+2. Define the objective function to maximize the cosine similarity between the perturbed model output and the target class:
+   $
+   \text{maximize } \cos(f(x + \delta), f(x)) \text{ subject to } \|\delta\| \leq \epsilon.
+   $
+3. Update the perturbation using gradient descent:
+   $
+   \delta^{(t+1)} = \delta^{(t)} - \alpha \cdot \nabla_{\delta} \cos(f(x + \delta^{(t)}), f(x)).
+   $
+4. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+This variant Cosine Similarity Gradient Descent Universal Adversarial Perturbation Attack (Cosine-GD UAP Attack) uses gradient descent instead of gradient ascent, resulting in more efficient and stable attacks compared to the original COS-UAP Attack. The optimization method still aims to maximize the cosine similarity between the perturbed output and the target class output, but it employs a gradient-based approach that can lead to better convergence properties.

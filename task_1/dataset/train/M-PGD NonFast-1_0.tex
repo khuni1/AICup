@@ -1,0 +1,16 @@
+%Input
+$x, C(x), step, max\n* 
+
+%Output 
+$xadv\n* 
+
+%Formula
+$rho(x)=−psi(x,C(x))$
+$rho(x)=−psi(x,C(x))\n \\ell_{fgsm}(x,x')=\\begin{cases} 0 &
+\\text{if }C(x)=C(x')$
+\\
+$infty & \\text{otherwise}\\end{cases}$
+
+%Explanation
+The PGD (Projected Gradient Descent) Non Fast attack is an extension of the FGSM (Fast Gradient Sign Method) attack. It adds two extra floating-point parameters: step and max, which control the strength and maximum perturbation allowed for the attack.\n\nThe attack works by iteratively applying the FGSM attack with increasing strength, determined by the step parameter. At each iteration, it calculates the gradient of the loss function with respect to x, and then adjusts x to maximize the perturbation while keeping $C(x) = C(x')$ 
+(where $x'$ is the perturbed version of $x$). The process repeats until the maximum perturbation allowed (max) is reached or the attack is successful.

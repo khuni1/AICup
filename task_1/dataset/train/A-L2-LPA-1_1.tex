@@ -1,0 +1,47 @@
+%Input
+$x$: Input sample from the dataset.
+$y$: True label of the input sample.
+$f_{\theta}$: Target classifier parameterized by $\theta$.
+$v$: Universal perturbation vector.
+$\Delta v$: Learned perturbation vector.
+$\mathcal{N}$: Neural network generating perturbations.
+$P_{2, \xi}$: Projection operator onto the $\ell_2$ ball of radius $\xi$.
+$\delta$: Confidence margin for adversarial misclassification.
+
+%Output
+$x^* = x + v$: Final adversarial example after applying the learned perturbation.
+$f_{\theta}(x^*)$: Model prediction on the perturbed input.
+$v$: Universal perturbation vector adapted through learned perturbation strategy.
+
+%Formula
+Let $\mathcal{X}$ be the input space and $\mathcal{Y}$ be the label set. We define the Carlini-Wagner approach as follows:
+
+1. Initialize the universal perturbation vector $v$ to 0.
+2. Iterate until convergence:
+	* For each data point $x_i \in \mathcal{X}$, compute the classifier's prediction $\hat{y} = f(x_i + v)$.
+	* If the classifier's prediction is correct, add a small perturbation $\Delta v_i$ to $v$ such that the new prediction $\hat{y}' = f(x_i + (v + \Delta v_i))$ differs from the original prediction.
+	* Project the updated perturbation vector $v + \Delta v_i$ onto the $\ell_2$ ball of radius $\xi$ using a projection operator $P_{2, \xi}$.
+
+%Explanation
+This attack variant L2 Regularized Adversarial Attack (L2-LPA) with Learned Perturbation Strategy modify the original Carlini-Wagner approach by incorporating a learned perturbation strategy. Introduce a neural network $\mathcal{N}$ that takes the input image $x$ and outputs a perturbation vector $\Delta v$. The objective function is rewritten as:
+
+$\min_{v, \Delta v} [f(x + (v - \Delta v))]_{\text{class}} = 1 - \delta$
+
+where $[f(x)]_{\text{class}}$ denotes the predicted label of the input image.
+
+The perturbation strategy $\mathcal{N}$ is learned using a separate optimization scheme:
+
+$\min_{\theta} [f(x + (v + \Delta v))]_{\text{class}} = 1 - \delta$
+
+where $\theta$ represents the model parameters of $\mathcal{N}$.
+
+The complete modified attack can be written as:
+
+1. Initialize the universal perturbation vector $v$ to 0.
+2. Iterate until convergence:
+	* For each data point $x_i \in \mathcal{X}$, compute the classifier's prediction $\hat{y} = f(x_i + v)$.
+	* If the classifier's prediction is correct, pass the input image $x_i$ through the neural network $\mathcal{N}$ to obtain a perturbation vector $\Delta v$. Update the perturbation vector using the gradient of the objective function with respect to $\theta$, and project it onto the $\ell_2$ ball of radius $\xi$.
+	* Add the updated perturbation vector to $v$.
+3. Return the final perturbed image $x + v$.
+
+The modified attack is different from the original Carlini-Wagner approach in that it introduces a learned perturbation strategy using a neural network. This allows for more flexibility and adaptability in generating adversarial examples.

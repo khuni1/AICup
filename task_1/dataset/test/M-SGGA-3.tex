@@ -1,0 +1,43 @@
+%Input
+Let $x$ be the original input, and let $y$ be the true class label. The adversary seeks to generate an adversarial example $x^*$ that leads to misclassification by perturbing $x$ while keeping the perturbation within a constraint.
+
+Given:
+- $f_{\theta}$: The target model with parameters $\theta$.
+- $L(s, y)$: The loss function based on the model’s score output $s$.
+- $\alpha$: The step size for optimization.
+- $\epsilon$: The maximum allowable perturbation.
+- $N$: The total number of iterations.
+- $\mathcal{X}$: The valid input space.
+
+The attack iteratively updates the input $x$ to maximize misclassification while ensuring the perturbation remains within the allowed bounds.
+
+
+%Output
+The output of the Score-Based attack is an adversarial example $x^*$ generated through optimization of the score function to achieve misclassification.
+
+%Formula
+1. Initialize the input:
+   $x^{(0)} = x$
+   
+2. Set parameters for the optimization process:
+   - Define the step size $\alpha$ and the maximum perturbation size $\epsilon$.
+3. For each iteration $n = 1$ to $N$:
+   - Compute the score of the current input:
+   $s_n = f_{\theta}(x^{(n-1)})$
+   where $s_n$ represents the score vector of the model's output for input $x^{(n-1)}$.
+   - Calculate the gradient of the score with respect to the loss function:
+   $g_n = \nabla_x L(s_n, y)$
+   
+   where $L$ is the loss function.
+   - Update the input with the calculated gradient:
+   $x^{(n)} = x^{(n-1)} - \alpha \cdot g_n$
+   
+   - Apply clipping to keep the perturbation within bounds:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)})$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+%Explanation
+The Score-Guided Gradient Attack (SGGA) variant attack generates adversarial examples by leveraging the model's score function, which quantifies the confidence of the model's predictions. By iteratively optimizing the input based on the gradient of the score, the attack focuses on maximizing the misclassification of the target class while controlling the magnitude of the perturbation. This method effectively exploits the relationship between the input and the model's predictions, allowing the creation of adversarial examples that can bypass many defenses.
+
+This variant is different from the main perturbation core in its use of a scoring function to guide the optimization process. Instead of directly optimizing the input based on the loss function gradient, this variant uses the score vector as a proxy for the model's confidence scores. This modification allows the attack to focus on the most confident classes and generate more targeted adversarial examples.

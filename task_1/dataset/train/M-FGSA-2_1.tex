@@ -1,0 +1,33 @@
+%Input
+Input: Let \( x \) be the original input data point, \( y \) be the true label, and \( f_{\theta} \) be the target model. The variant generates adversarial examples by exploiting the gradient information of the loss function with respect to the input.
+Input: The variant introduces a new scoring function based on the Focal Loss instead of the standard Cross-Entropy Loss used in the original GSA.
+
+%Output
+The output of the Focal GSA is a modified input \( x^* \) that aims to mislead the model into making an incorrect prediction while maintaining a small perturbation. A scoring function based on Focal Loss is applied instead of Cross-Entropy Loss to improve the robustness and stealthiness of the attack.
+
+%Formula
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Compute the gradient of the loss function using Focal Loss:
+   $
+   g = \nabla_x J_{FOCAL}(f_{\theta}(x), y),
+   $
+   where \( J_{FOCAL} \) is the Focal Loss function.
+3. Create the perturbation by taking the sign of the gradient:
+   $
+   \delta = \epsilon \cdot \text{sign}(g),
+   $
+   where \( \epsilon \) is the perturbation magnitude.
+4. The modified input is then given by:
+   $
+   x^* = x + \delta.
+   $
+5. The goal is to ensure that:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The Focal Gradient Sign Attack (FGSA) introduces a new scoring function based on the Focal Loss, which modifies the standard Cross-Entropy Loss used in the original GSA. This modification aims to improve the robustness and stealthiness of the attack by prioritizing samples with harder-to-forecast labels. The new variant maintains the core principle of the original GSA while introducing a new strategy to enhance its effectiveness.

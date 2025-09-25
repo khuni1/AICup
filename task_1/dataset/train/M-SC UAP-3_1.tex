@@ -1,0 +1,25 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input data point, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The SV-UAP Attack aims to generate a universal perturbation \( \delta \) that effectively deceives the model for a single view or perspective of the data.
+
+This variant modify by incorporating a new constraint: \( \nabla_{\delta} L(f(x + \delta), y)^T \cdot \text{sign}(x - x') = 0 \) for all \( x' \in \mathcal{D} \), where \( \mathcal{D} \) is the dataset distribution. This constraint ensures that the perturbation \( \delta \) is symmetric with respect to any given input \( x' \).
+
+%Output
+The output of the Modified SV-UAP Attack is a universal adversarial perturbation \( \delta \) added to multiple images, resulting in adversarial examples that can deceive the model. The modified attack maintains the core principle of the original SV-UAP Attack while incorporating the new constraint. This constraint ensures that the generated perturbation \( \delta \) exhibits symmetry across the dataset distribution.
+
+%Formula
+1. Initialize the universal perturbation \( \delta = 0 \).
+2. Define the objective function to minimize the loss for a target class \( c \):
+   $
+   \text{minimize } L(f(x + \delta), c).
+   $
+3. Update the perturbation using gradient descent with the modified constraint:
+   $
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \nabla_{\delta} L(f(x + \delta^{(t)}), y) - \beta \cdot \text{sign}(x - x') \cdot \nabla_{\delta} L(f(x + \delta^{(t)}), y)^T
+   $
+4. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The Symmetry-Constrained Universal Adversarial Perturbation (SC-UAP) variant Modified SV-UAP Attack generates a universal adversarial perturbation \( \delta \) designed to deceive the model when applied to a specific input \( x \). By incorporating the new constraint that ensures symmetry across the dataset distribution, the attack exploits the model's vulnerabilities in a more targeted manner. This modification maintains the core principle of the original SV-UAP Attack while improving its effectiveness against robust models.

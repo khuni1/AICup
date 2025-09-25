@@ -1,0 +1,18 @@
+%Input
+$\mathbf{x}$: Original input image. \\
+$\delta$: Perturbation to be found. \\
+$C(\mathbf{x} + \delta)$: Constraint requiring the modified image to be classified as a specific class. \\
+$\epsilon$: Perturbation bound. \\
+$\text{model}$: The target model for the attack.
+
+%Output
+The optimized perturbation $\delta_{\text{opt}}$ that minimizes the loss function while adhering to the perturbation constraint.
+
+%Formula
+\[
+\delta_{\text{opt}} = \arg \min_{\delta} \mathcal{L}(\mathbf{x} + \delta, \text{model}) \quad \text{subject to} \quad C(\mathbf{x} + \delta) \quad \text{and} \quad \|\delta\|_2 \leq \epsilon
+\]
+
+
+%Explanation
+The Targeted ZOO Optimization (T-ZOO) variant introduces a targeted one-shot optimization approach, where the perturbation is estimated using zeroth-order optimization based on the output of the classifier. This makes it effective against black-box models and ensures the perturbation stays within the specified bound. The main difference between this variant and the original ZOO attack is its use of targeted optimization, which allows for more precise control over the generated adversarial examples.

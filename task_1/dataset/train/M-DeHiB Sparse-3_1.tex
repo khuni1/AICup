@@ -1,0 +1,34 @@
+%Input
+Original input sample $x$ from the dataset $\mathcal{D}$ and model $f$ with loss function $L$. 
+Perturbation budget $\epsilon$ defining the maximum allowable modification.
+High-pass filter function $H$ for emphasizing high-bandwidth features.
+Sparse gradient thresholding function to control perturbation sparsity.
+
+
+%Output
+The output of the DeHiB Sparse Adversarial Attack is a perturbed input $\tilde{x}$ with a sparse gradient that exploits high-bandwidth features to mislead the model.
+
+%Formula
+1. Initialize the perturbation $\delta$:
+   $
+   \tilde{x} = x + \delta,
+   $
+   where $\|\delta\| \leq \epsilon.$
+2. Define the objective function to maximize the loss for a target class $c$:
+   $
+   \text{maximize } L(f(\tilde{x}), c),
+   $
+   where $f$ is the model and $L$ is the loss function.
+3. Use an iterative optimization technique with sparse gradient update:
+   $
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \text{sign}(\nabla_{\delta^s} L(f(x + \delta^{(t)}), c)),
+   $
+   where $\delta^s$ is the sparse version of $\delta$, obtained by thresholding its values.
+4. Apply a high-pass filter to emphasize high-bandwidth features:
+   $
+   \tilde{x} = x + H(\delta^{(t+1)}),
+   $
+   where $H$ is the high-pass filter function.
+
+%Explanation
+The DeHiB Sparse High-Bandwidth Attack generates adversarial examples by focusing on sparse gradients that exploit high-bandwidth features. By optimizing the perturbation $\delta$ to maximize the loss associated with a target class $c$, while maintaining a sparse gradient, the attack leverages high-frequency components and exploits the model's sensitivity to specific characteristics of the input space, leading to successful deception of the classifier. This variant improves upon the original DeHiB Attack by introducing a new constraint on the perturbation strategy, resulting in more targeted and stealthy adversarial examples.

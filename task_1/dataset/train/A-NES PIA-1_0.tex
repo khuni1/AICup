@@ -1,0 +1,67 @@
+%Input
+\(\mathbf{x}\): Input data point. \\
+\(\mathbf{r}_{tr}\): Initial representation of the input. \\
+\(N_{\text{iter}}\): Number of iterations for the evolution process. \\
+\(P_{\text{max}}\): Power constraint limit for the attack. \\
+\(\sigma\): Step size for the mutation of perturbations. \\
+\(\lambda\): Scaling factor for the perturbation. \\
+Model: The target model (classifier).
+
+
+%Output
+\(\delta_{\text{opt}}\): The optimized adversarial perturbation.
+
+
+%Formula
+\textbf{Initialization:}
+\begin{itemize}
+    \item Initialize the perturbation parameter \(\mathbf{p}^{(0)}\) as a random perturbation sampled from a normal distribution, e.g., \( \mathbf{p}^{(0)} \sim \mathcal{N}(0, I) \).
+    \item Set \(\Delta = 0\) to accumulate the perturbation changes across iterations.
+    \item Define the population size \(N\) (number of candidate perturbations) and the learning rate \(\sigma\) (for mutation).
+    \item Define the number of iterations \(N_{\text{iter}}\) for the optimization process.
+\end{itemize}
+
+\textbf{For each iteration \(t = 1, \ldots, N_{\text{iter}}\):}
+\begin{itemize}
+    \item \textbf{Perturbation Evolution:} 
+    \begin{equation}
+        \mathbf{p}^{(t)} = \mathbf{p}^{(t-1)} + \sigma \cdot \mathcal{N}(0, I)
+    \end{equation}
+    where \(\mathcal{N}(0, I)\) is the standard normal distribution and \(\sigma\) controls the step size for perturbation evolution.
+    
+    \item \textbf{Adversarial Loss Computation:}
+    \begin{equation}
+        L_{\text{attack}}^{(t)} = \mathcal{L}(\mathbf{x} + \lambda \mathbf{p}^{(t)}, y_{\text{true}})
+    \end{equation}
+    where \(\mathcal{L}(\cdot, y_{\text{true}})\) is the loss function for the model, and \(y_{\text{true}}\) is the true class label of the input.
+
+    \item \textbf{Update Perturbation:} 
+    \begin{equation}
+        \mathbf{p}^{(t)} \leftarrow \mathbf{p}^{(t)} - \alpha \cdot \nabla_{\mathbf{p}} L_{\text{attack}}^{(t)}
+    \end{equation}
+    where \(\alpha\) is the learning rate for gradient descent applied to perturbation updates.
+    
+    \item \textbf{Update Perturbation Accumulation:}
+    \begin{equation}
+        \Delta^{(t)} \leftarrow \Delta^{(t-1)} + \mathbf{p}^{(t)}
+    \end{equation}
+\end{itemize}
+
+\textbf{After the final iteration \(t = N_{\text{iter}}\):}
+\begin{itemize}
+    \item \textbf{Final Perturbation:}
+    \begin{equation}
+        \delta_{\text{opt}} = \frac{\Delta^{(N_{\text{iter}})}}{\|\Delta^{(N_{\text{iter}})}\|_2}
+    \end{equation}
+    The final perturbation is normalized to ensure that it stays within the power constraint limit \(P_{\text{max}}\).
+    
+    \item \textbf{Adversarial Example:}
+    \begin{equation}
+        \mathbf{x}_{\text{adv}} = \mathbf{x} + \lambda \delta_{\text{opt}}
+    \end{equation}
+    where \(\mathbf{x}_{\text{adv}}\) is the generated adversarial example.
+\end{itemize}
+
+%Explanation
+The NES PIA attack is an optimization-based adversarial attack that uses Natural Evolution Strategies (NES) to generate adversarial perturbations. Here's a detailed breakdown of the procedure:
+The NES PIA attack leverages evolutionary strategies to iteratively improve the adversarial perturbation, making it effective against machine learning models that rely on gradient-based techniques for classification. The attack can be adjusted by changing the number of iterations \(N_{\text{iter}}\), the mutation step size \(\sigma\), and the scaling factor \(\lambda\), which control the strength and effectiveness of the perturbations.

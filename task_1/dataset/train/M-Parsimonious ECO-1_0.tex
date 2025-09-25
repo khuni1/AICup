@@ -1,0 +1,12 @@
+%Input
+Let \( x \) denote the original input, such as an image, and \( x_{adv} \) represent the adversarial example generated from \( x \). The perturbation \( \delta \)
+
+%Output
+The output is an optimization problem that seeks to find adversarial examples \( x_{adv} \) subject to a constraint defined by a specified perturbation \( \epsilon \).
+
+%Formula
+$\mathcal{L}(x_{adv}, y) \approx \mathcal{L}(x, y) + (x_{adv} - x) \cdot \nabla_x \mathcal{L}(x, y)$
+$\text{maximize}_{x_{adv}} \quad \mathcal{L}(x_{adv}) \quad \text{subject to} \quad \|x_{adv} - x\|_\infty \leq \epsilon$
+
+%Explanation
+Parsimonious ECO goal is to maximize the loss function \( \mathcal{L}(x_{adv}, y) \) by finding the adversarial example \( x_{adv} \) that misclassifies the input while maintaining a small perturbation. This formulation involves approximating the loss function and maximizing it while maintaining the perturbation within the specified bounds defined by \( \epsilon \). This leads to a linear programming (LP) interpretation for FGSM and the sequential approach of PGD.

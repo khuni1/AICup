@@ -1,0 +1,49 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input instance.  
+$f(\mathbf{x})$: Target model (e.g., classifier or regressor).  
+$y_{\text{true}}$: True label associated with the input.  
+$\mathcal{N}$: Neighborhood function to find semantically similar inputs.  
+$k$: Number of iterations to refine the adversarial example.  
+$\epsilon$: Perturbation constraint ensuring imperceptibility.
+
+%Output  
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:  
+\[ 
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{and } \|\mathbf{x}_{\text{adv}} - \mathbf{x}_{\text{original}}\| \leq \epsilon.
+\]
+
+%Formula  
+1. Initialization:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Gradient Sign Calculation:  
+   Compute the sign of the gradient of the loss with respect to the input:  
+   \[
+   \nabla_{\mathbf{x}} = \text{sign}\left(\frac{\partial \mathcal{L}(f, \mathbf{x}, y_{\text{true}})}{\partial \mathbf{x}}\right).
+   \]
+
+3. Neighborhood Exploration:  
+   For each candidate $\mathbf{x}_{\text{neighbor}} \in \mathcal{N}(\mathbf{x}_{\text{adv}}^{(t)})$, compute:  
+   \[
+   \Delta = \|\mathbf{x}_{\text{neighbor}} - \mathbf{x}_{\text{adv}}^{(t)}\|, \quad \mathcal{L}_{\text{neighbor}} = \mathcal{L}(f, \mathbf{x}_{\text{neighbor}}, y_{\text{true}}).
+   \]
+   Choose the neighbor minimizing $\mathcal{L}_{\text{neighbor}}$ and satisfying $\Delta \leq \epsilon$.
+
+4. Update Adversarial Input:  
+   Update the adversarial input as:  
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{neighbor}}.
+   \]
+
+5. Stopping Criterion:  
+   Stop if $f(\mathbf{x}_{\text{adv}}^{(t+1)}) \neq y_{\text{true}}$ or the iteration limit $k$ is reached.
+
+%Explanation   
+Gradient Search Adversarial (GSA) attack combines gradient-based techniques with neighborhood exploration. It leverages gradient information to identify directions for adversarial perturbation but refines the process by exploring the semantic neighborhood of the perturbed input.  
+Gradient-Based Component The gradient sign is used to direct the perturbation.  
+Neighborhood Search Ensures the generated adversarial examples remain semantically consistent while optimizing the loss.  
+Iterative Process By iteratively updating and refining the adversarial input, the attack balances effectiveness and imperceptibility.  
+
+This hybrid approach makes GSA effective for tasks like image recognition or NLP, where both gradient information and semantic constraints are critical.

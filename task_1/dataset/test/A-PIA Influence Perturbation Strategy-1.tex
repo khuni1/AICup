@@ -1,0 +1,19 @@
+%Input
+$\tilde{X}_{\text{train}}$: Poisoned dataset, combining original training data and adversarially selected points  
+$X_{\text{train}}$: Original training dataset  
+$\mathbf{z}_i$: Adversarial data points added to the training set  
+$\tilde{y}_i$: Updated labels for the adversarial points  
+$y_i$: Original labels for the adversarial points  
+$\mathcal{L}(\theta; \mathbf{z}, y_i)$: Loss function with respect to the model parameters for poisoned data  
+$\nabla_\theta \mathcal{L}(\theta; \mathbf{z}, y_i)$: Gradient of the loss function with respect to the model parameters.  
+
+
+%Output
+Poisoned dataset: $\tilde{X}_{\text{train}} = X_{\text{train}} \cup \{\mathbf{z}_1, \mathbf{z}_2, \ldots, \mathbf{z}_m\}$.
+Updated labels: $\tilde{y}_{\text{train}} = y_{\text{train}} \cup \{\tilde{y}_1, \tilde{y}_2, \ldots, \tilde{y}_m\}$.
+
+%Formula
+$\mathbf{z}_i = \arg \max_{\mathbf{z}} \left\| -\nabla_\theta \mathcal{L}(\theta; \mathbf{z}, y_i) \right\|$.
+
+%Explanation
+The proposed attack variant A-PIA-Influence Perturbation Strategy, "Influence Perturbation Strategy," modifies the original perturbation strategy by maximizing the negative influence of poisoned points on the model's decision boundary. This is achieved by taking the negative gradient of the loss function with respect to the model parameters at the targeted label $y_i$. The new strategy introduces an adversarial aspect by ensuring that labels $\{\tilde{y}_i\}_{i=1}^m$ are assigned to maximize the misclassification probability.

@@ -1,0 +1,17 @@
+%Input
+\[
+\text{Target class } y_{\text{adv}}, \quad \text{classifier } P, \quad \text{perturbation bound } \epsilon, \quad \text{step size } \eta, \quad \text{epsilon decay } \delta \epsilon.
+\]
+
+%Output
+\[
+\text{Adversarial image } x_{\text{adv}} \text{ such that } P(y_{\text{adv}} | x_{\text{adv}}) > 0.5, \text{ where the perturbation is constrained within a JPEG compression-based bounding box.}
+\]
+
+%Formula
+\[
+x_{\text{adv}} = \text{clip}_x (x - \delta \epsilon \cdot g), \quad \text{where } x \in [x - \epsilon, x + \epsilon] \text{ and } g = \nabla_x L(P(x), y_{\text{adv}})
+\]
+
+%Explanation
+This variant JPEG-Bounded Gradient Attack (JBGA) introduces a new perturbation core that incorporates JPEG compression to constrain the adversarial perturbation. The perturbation is now bounded within a JPEG compression-based bounding box, making it more challenging for classifiers to distinguish between clean and adversarial inputs. This modification improves the stealthiness and effectiveness of the attack by exploiting the model's vulnerability to JPEG compression.

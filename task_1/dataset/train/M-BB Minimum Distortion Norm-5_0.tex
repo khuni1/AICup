@@ -1,0 +1,88 @@
+%Input
+$x$: Input sample \\
+$c$: True class label \\
+$d$: Dimension of input sample \\
+$K$: Number of classes \\
+$\delta_{\text{min},p}$: Minimal adversarial perturbation \\
+$\|\cdot\|_p$: $\ell_p$-norm operator\\
+$w$: Normal vector of the hyperplane \\
+$b$: Offset of the hyperplane \\
+$C$: Constraint set defined by lower and upper bounds \\
+$z^*$: Projection of $x$ onto the hyperplane \\
+$l_i, u_i$: Lower and upper bounds on each component of $z$ \\
+$z$: Projection point \\
+$\|\cdot\|_p$: $\ell_p$-norm operator\\
+$\rho$: Sign of the hyperplane offset \\
+$z_0$: Closest corner point of the box to the hyperplane \\
+$z_0^i$: Component of $z_0$ \\
+$l_i, u_i$: Lower and upper bounds on each component of $z$ \\
+$\text{proj}_p$: Projection operator \\
+$\pi$: Hyperplane \\
+$z^*$: Feasible projection point \\
+$z_0$: Infeasible projection point\\
+$x_{\text{orig}}$: Original input sample \\
+$x^{(i)}$: Current iterate \\
+$s$: Closest class to $x^{(i)}$ \\
+$\pi_l^{(i)}$: Approximate decision hyperplane \\
+$d_p$: $\ell_p$-distance function \\
+$f$: Classifier function\\
+Let $f : \mathbb{R}^d \to \mathbb{R}^K$ be a classifier which assigns every input $x \in \mathbb{R}^d$ (with $d$ the dimension of the input space) to one of the $K$ classes according to $\arg \max_{r=1,...,K} f_r(x)$. In many scenarios the input of $f$ has to satisfy a specific set of constraints $C$, e.g., images are represented as elements of $[0, 1]^d$. Given a point $x \in \mathbb{R}^d$ with true class $c$, we define the minimal adversarial perturbation for $x$ with respect to the $\ell_p$-norm as.
+
+%Formula
+$\delta_{\text{min},p} = \arg \min_{\delta \in \mathbb{R}^d} \|\delta\|_p \quad \text{s.t.} \quad \max_{l \neq c} f_l(x + \delta) \geq f_c(x + \delta), \quad x + \delta \in C$
+$z_0 = \arg \min_{\substack{l_i \leq z_i \leq u_i \\ \forall i}} \rho \cdot (\langle w, z \rangle + b)$
+$z_0^i = \begin{cases} 
+l_i & \text{if } \rho w_i > 0, \\
+u_i & \text{if } \rho w_i < 0, \\
+x_i & \text{if } w_i = 0,
+\end{cases}
+\quad \forall i = 1, ..., d.
+$
+$\text{proj}_p(x, \pi, C) = \begin{cases} 
+z^* & \text{if (2) is feasible}, \\
+z_0 & \text{else}.
+\end{cases}$
+$\pi_l^{(i)}(z) : f_l(x^{(i)}) - f_c(x^{(i)}) + \langle \nabla f_l(x^{(i)}) - \nabla f_c(x^{(i)}), z - x^{(i)} \rangle = 0$
+Moreover, the $\ell_p$-distance $d_p(x^{(i)}, \pi_l)$ of $x^{(i)}$ to $\pi_l$ is given, assuming $\frac{1}{p} + \frac{1}{q} = 1$, by
+
+$d_p(x^{(i)}, \pi_l) = \frac{|f_l(x^{(i)}) - f_c(x^{(i)})|}{\|\nabla f_l(x^{(i)}) - \nabla f_c(x^{(i)})\|_q}$
+$s = \arg \min_{l \neq c} \frac{|f_l(x^{(i)}) - f_c(x^{(i)})|}{\|\nabla f_l(x^{(i)}) - \nabla f_c(x^{(i)})\|_q}$
+
+%Output
+$\delta_{\text{min},p} = \arg \min_{\delta \in \mathbb{R}^d} \|\delta\|_p \quad \text{s.t.} \quad \max_{l \neq c} f_l(x + \delta) \geq f_c(x + \delta), \quad x + \delta \in C$
+$z_0 = \arg \min_{\substack{l_i \leq z_i \leq u_i \\ \forall i}} \rho \cdot (\langle w, z \rangle + b)$
+$z_0^i = \begin{cases} 
+l_i & \text{if } \rho w_i > 0, \\
+u_i & \text{if } \rho w_i < 0, \\
+x_i & \text{if } w_i = 0,
+\end{cases}
+\quad \forall i = 1, \dots, d.$
+$\text{proj}_p(x, \pi, C) = \begin{cases} 
+z^* & \text{if (2) is feasible}, \\
+z_0 & \text{else}.
+\end{cases}$
+
+$\pi_l^{(i)}(z) : f_l(x^{(i)}) - f_c(x^{(i)}) + \langle \nabla f_l(x^{(i)}) - \nabla f_c(x^{(i)}), z - x^{(i)} \rangle = 0$
+
+Moreover, the $\ell_p$-distance $d_p(x^{(i)}, \pi_l)$ of $x^{(i)}$ to $\pi_l$ is given, assuming $\frac{1}{p} + \frac{1}{q} = 1$, by:
+$d_p(x^{(i)}, \pi_l) = \frac{|f_l(x^{(i)}) - f_c(x^{(i)})|}{\|\nabla f_l(x^{(i)}) - \nabla f_c(x^{(i)})\|_q}$
+$s = \arg \min_{l \neq c} \frac{|f_l(x^{(i)}) - f_c(x^{(i)})|}{\|\nabla f_l(x^{(i)}) - \nabla f_c(x^{(i)})\|_q}$
+
+
+%Explanation
+The optimization problem (1) is non-convex and NP-hard for non-trivial classifiers \cite{katz2017reluplex}. Although for some classes of networks it can be formulated as a mixed-integer program \cite{tjeng2019evaluating}, solving it is computationally prohibitive for large, normally trained networks. Thus, $\delta_{\text{min},p}$ is usually approximated by an attack algorithm, which serves as a heuristic to solve (1). We will see in the experiments that current attacks sometimes drastically overestimate $\|\delta_{\text{min},p}\|_p$, thus impacting the perceived robustness of the networks.
+Projection on a Hyperplane with Box Constraints: Let $w \in \mathbb{R}^d$ and $b \in \mathbb{R}$ be the normal vector and the offset defining the hyperplane $\pi : \langle w, x \rangle + b = 0$. Let $x \in \mathbb{R}^d$, we denote by the box-constrained projection with respect to the $\ell_p$-norm of $x$ on $\pi$ (projection onto the intersection of the box $C = \{ z \in \mathbb{R}^d : l_i \leq z_i \leq u_i \}$ and the hyperplane $\pi$) the following minimization problem:
+
+$z^* = \arg \min_{z \in \mathbb{R}^d} \|z - x\|_p \quad \text{s.t.} \quad \langle w, z \rangle + b = 0, \quad l_i \leq z_i \leq u_i, \quad i = 1, ..., d.$
+
+For $p \geq 1$, the optimization problem (2) is convex \cite{hein2017formal}. The solution can be obtained in $O(d \log d)$ time, which is the complexity of sorting a vector of $d$ elements, as well as determining that no feasible point exists. Since this projection is part of our iterative scheme, we specifically handle the case where (2) is infeasible. In this case, defining $\rho = \text{sign}(\langle w, x \rangle + b)$, we instead compute
+
+Assuming that the point $x$ satisfies the box constraints (as it holds in our algorithm), this is equivalent to identifying the corner of the $d$-dimensional box, defined by the component-wise constraints on $z$, closest to the hyperplane $\pi$. Note that if (2) is infeasible, then the objective function of (3) remains positive and the points $x$ and $z$ are strictly contained in one of the two halfspaces divided by $\pi$. Finally, we define the projection operator
+
+We introduce our algorithm to produce minimally distorted adversarial examples with respect to any $\ell_p$-norm for $p \in \{1, 2, \infty\}$, for a given point $x_{\text{orig}}$ initially correctly classified by $f$ as class $c$. The high-level idea is that first, we use the linearization of the classifier at the current iterate $x^{(i)}$ to compute the box-constrained projections of $x^{(i)}$ and $x_{\text{orig}}$ onto the approximated decision hyperplane, and second, we take convex combinations of these projections depending on the distance of $x^{(i)}$ and $x_{\text{orig}}$ to the decision hyperplane. Finally, we perform an extrapolation step. We explain below the geometric motivation behind these steps.
+
+The attack closest in spirit is DeepFool which is known to be very fast but suffers from low quality. DeepFool just tries to find the decision boundary quickly but has no incentive to provide a solution close to $x_{\text{orig}}$. Our scheme resolves this main problem and, together with the exact projection we use, leads to a principled way to track the decision boundary (the surface where the decision of $f$ changes) close to $x_{\text{orig}}$.
+
+If $f$ was a linear classifier, then the closest point to $x^{(i)}$ on the decision hyperplane could be found in closed form. However, neural networks are highly non-linear (although ReLU networks, i.e., neural networks which use ReLU as an activation function, are piecewise affine functions and thus locally a linearization of the network is an exact description of the classifier). Let $l \neq c$, then the decision boundary between classes $l$ and $c$ can be locally approximated using a first-order Taylor expansion at $x^{(i)}$ by the hyperplane
+
+Note that if $d_p(x^{(i)}, \pi_l) = 0$, then $x^{(i)}$ belongs to the true decision boundary. Moreover, if the local linear approximation of the network is correct, then the class $s$ with the decision hyperplane closest to the point $x^{(i)}$.

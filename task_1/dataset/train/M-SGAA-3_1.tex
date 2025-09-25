@@ -1,0 +1,17 @@
+%Input
+Let \( x \) be the original input image, \( x' \) be the augmented version of \( x \), and \( \mathcal{A} \) be the set of augmentation transformations. Let \( \delta \) be the adversarial perturbation and \( \text{sim}(x, x') \) be a similarity metric.
+
+%Output
+The output of the Data Augmentation Attack with similarity-based optimization is an adversarial example $x^*$ generated through various augmentations applied to the original input image $x$, where the perturbation $\delta$ is scaled based on the similarity between the augmented and original images.
+
+%Formula
+The formula can be expressed as:
+$x^* = \text{Augment}(x, \mathcal{A}) + \delta$
+where:
+- $\text{Augment}(x, \mathcal{A})$ represents the application of a set of augmentation transformations $\mathcal{A}$ (e.g., rotation, scaling, translation) to the input $x$,
+- $\delta = \sigma(\|\text{sim}(x, x')\|)$, where:
+  - $\|\cdot\|$ is the norm measuring the distance between the original and augmented images,
+  - $\text{sim}(x, x')$ is a similarity metric (e.g., cosine similarity) that captures the similarity between the original and augmented images.
+
+%Explanation
+In this variant Similarity-Guided Augmented Attack (SGAA), we modify the perturbation strategy by scaling it based on the similarity between the augmented and original images. The new attack takes advantage of the model's sensitivity to variations in image features, but now with an added layer of control through the use of a similarity metric. This allows for more targeted and effective attacks, as the perturbation is only scaled when the similarity between the images is high, indicating that the augmentation has successfully manipulated the feature space.

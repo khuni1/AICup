@@ -1,0 +1,29 @@
+%Input
+Let \( x_i \) be the original input data points from a dataset \( D \), \( y_i \) be the true labels, and \( \epsilon \) be the maximum allowable perturbation. The UAP Attack aims to generate a universal perturbation \( \delta \) that can deceive the model across a variety of inputs.
+
+%Output
+The output of the UAP Attack is a universal perturbation \( \delta \) that can be added to various inputs to mislead the classifier.
+
+%Formula
+The UAP Attack can be formulated as follows:
+1. Initialize the universal perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+2. Define the objective function to minimize the loss for all inputs:
+   $
+   \text{minimize } \frac{1}{N} \sum_{i=1}^N L(f(x_i + \delta), y_i),
+   $
+   where \( f \) is the model and \( L \) is the loss function.
+3. Update the perturbation using gradient descent:
+   $
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \text{sign} \left( \frac{1}{N} \sum_{i=1}^N \nabla_{\delta} L(f(x_i + \delta^{(t)}), y_i) \right),
+   $
+   where \( \alpha \) is the step size and \( N \) is the number of samples.
+4. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The UAP Attack generates a universal adversarial perturbation \( \delta \) that can be applied to multiple inputs \( x_i \) in order to mislead the model. By optimizing \( \delta \) to minimize the average loss across a set of inputs, the attack effectively creates a perturbation that generalizes well to various data points. This approach demonstrates the potential for a single perturbation to compromise the classification of a range of inputs, highlighting a significant vulnerability in machine learning models to universal adversarial attacks.

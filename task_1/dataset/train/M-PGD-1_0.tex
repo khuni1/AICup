@@ -1,0 +1,24 @@
+%Input
+- Model's loss function: $L(\theta, X, y)$
+- Clean input sample: $X \in \mathbb{R}^n$
+- True label: $y$
+- Perturbation bound: $\epsilon$
+- Number of steps: $N$
+- Step size: $\alpha$
+
+%Output
+- Adversarial example: $X^{\text{adv}}$
+
+%Formula
+\[
+X^{\text{adv}}_0 = X
+\]
+\[
+X^{\text{adv}}_{t+1} = \Pi_{X, \epsilon} \left( X^{\text{adv}}_t + \alpha \cdot \text{sign} \left( \nabla_X L(\theta, X^{\text{adv}}_t, y) \right) \right)
+\]
+where $t = 0, 1, \ldots, N-1$
+
+%Explanation
+Projected Gradient Descent (PGD) adversarial attack, the goal is to iteratively adjust the input $X$ to create an adversarial example $X^{\text{adv}}$ within an $\epsilon$-ball around $X$. Each iteration updates $X^{\text{adv}}$ by taking a step in the direction of the gradient of the loss function $L$ with respect to the input, multiplied by the step size $\alpha$. The projection operator $\Pi_{X, \epsilon}$ ensures that $X^{\text{adv}}$ remains within the $\epsilon$-bound of the original input $X$ by projecting it back if necessary.
+
+ed

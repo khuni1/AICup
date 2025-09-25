@@ -1,0 +1,27 @@
+%Input
+An input to be perturbed $x_{\text{init}}$, true label $y_{\text{init}}$, a hypercube-based search space $H$ with a smaller dimensionality, and a chunk-based flipping strategy.
+
+%Output
+Output: Generate one adversarial attack variant that is logically derived from the perturbation core described in the uploaded LaTeX input provided.
+
+
+%Formula
+$\delta \leftarrow \epsilon$
+$x_o \leftarrow x_{\text{init}}$.
+Define $g(q) = \frac{L(\Pi_{B_p(x_{\text{init}}, \epsilon)} (x_o + \delta q), y_{\text{init}}) - L(x_o, y_{\text{init}})}{\delta}$.
+$\textsc{SignHunter.init}(g)$.
+
+while $C(x) = y_{\text{init}}$
+    $\textsc{SignHunter.step()}$.
+    $s \leftarrow \textsc{SignHunter.getCurrentSignEstimate()}$.
+    $x \leftarrow \Pi_{B_p(x_{\text{init}}, \epsilon)} (x_o + \delta s)$.
+if $\textsc{SignHunter.isDone()}$ then
+    $x_o \leftarrow x$.
+    Define $g$ as in Line 5 (with $x_o$ updated).
+    $\textsc{SignHunter.init}(g)$.
+end if
+
+$x$
+
+%Explanation
+The new attack SignHunter Dimensional Reduction maintains the core principle of the original attack while improving its efficiency. By reducing the dimensionality of the search space and employing a chunk-based flipping strategy, the attack becomes more targeted and stealthy. This variant is different from the main perturbation core as it focuses on exploiting the properties of DNNs' gradients with respect to their inputs rather than directly manipulating the input data.

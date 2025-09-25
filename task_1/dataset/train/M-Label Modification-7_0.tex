@@ -1,0 +1,54 @@
+%Input
+$\mathcal{D} = \{(\mathbf{x}_i, y_i)\}_{i=1}^N$: Original dataset, where $\mathbf{x}_i$ are inputs and $y_i$ are corresponding labels.
+$f(\mathbf{x})$: Target model for training.
+$y_{\text{target}}$: Desired incorrect label for adversarial manipulation.
+$\mathcal{M}(\mathcal{D})$: Modified dataset after label manipulation.
+$\alpha$: Fraction of labels to modify.
+$\text{TrainingAlgorithm}$: Algorithm used to train the model.
+
+%Output 
+Adversarially trained model $\hat{f}$ that performs poorly on clean test data due to label manipulation.
+
+%Formula
+1.Label Modification:
+   - Randomly select a subset of the dataset $\mathcal{D}_{\text{modify}} \subset \mathcal{D}$, such that:
+     \[
+     |\mathcal{D}_{\text{modify}}| = \alpha \cdot N.
+     \]
+   - For each sample $(\mathbf{x}_i, y_i) \in \mathcal{D}_{\text{modify}}$, replace the label $y_i$ with $y_{\text{target}}$:
+     \[
+     \mathcal{M}(\mathcal{D}) = \{(\mathbf{x}_i, y_{\text{target}}) \; \forall \; (\mathbf{x}_i, y_i) \in \mathcal{D}_{\text{modify}}\}.
+     \]
+
+2.Training with Modified Labels:
+   - Train the model $\hat{f}$ on the manipulated dataset:
+     \[
+     \hat{f} = \text{TrainingAlgorithm}(\mathcal{M}(\mathcal{D})).
+     \]
+
+3.Adversarial Impact:
+   - Evaluate the model $\hat{f}$ on clean test data $\mathcal{D}_{\text{test}}$ to measure degradation in performance caused by incorrect label training.
+
+%Explanation
+The Label Modification Adversarial Attack is a data poisoning technique where incorrect labels are intentionally introduced into the training dataset. By manipulating a fraction $\alpha$ of the labels to point to a target class, the attack degrades the model's performance on clean test data. The attack does not rely on gradient-based optimization but rather exploits the dependency of the model on the quality of labeled data as formulated below:
+
+1.Objective:
+   - The purpose of the Label Modification Adversarial Attack is to degrade the target model's performance by corrupting the labels in the training dataset.
+
+2.Attack Methodology:
+   - A fraction $\alpha$ of the dataset is chosen, and the true labels of these samples are replaced with a target label $y_{\text{target}}$.
+   - This creates label noise, misleading the training process.
+
+3.Impact on the Model:
+   - Training on the manipulated dataset forces the model to learn incorrect mappings, which reduces its accuracy on clean, correctly labeled test data.
+
+4.Adversarial Effect:
+   - The adversarially trained model $\hat{f}$ struggles to generalize to clean test data due to corrupted supervision during training.
+
+5.Fraction Parameter ($\alpha$):
+   - The parameter $\alpha$ controls the intensity of the attack:
+     - Low $\alpha$: Minimal attack, limited degradation.
+     - High $\alpha$: Severe attack, significant performance drop.
+
+6.Practical Considerations:
+   - The success of the attack depends on the model's robustness to label noise and the distribution of the modified labels in the training data.

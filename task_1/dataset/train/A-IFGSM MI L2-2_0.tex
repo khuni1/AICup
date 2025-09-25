@@ -1,0 +1,45 @@
+%Input
+\( x^{(0)} \) is the original input data point.
+\( \epsilon \) represents the magnitude of the perturbation applied to the input.
+\( \nabla_x J(\theta, x, y) \) is the gradient of the loss function \( J \) with respect to the input \( x \), where \( \theta \) denotes the model parameters and \( y \) is the true label.
+\( \alpha \) is the step size parameter that controls the magnitude of the update.
+\( N_{\text{iter}} \) is the total number of iterations.
+
+%Formula
+\begin{algorithm}
+    \( x_{\text{adv}} \)
+
+    \[
+    x^{(1)} \leftarrow \text{Clip}\left(x^{(0)} + \epsilon \cdot \text{sign}(\nabla_x J(\theta, x^{(0)}, y)), x - \epsilon, x + \epsilon\right)
+    \]
+
+    \For{\( t = 1 \) \KwTo \( N_{\text{iter}} \)}{
+        \[
+        x^{(t+1)} \leftarrow \text{Clip}\left(x^{(t)} + \alpha \cdot \text{sign}(\nabla_x J(\theta, x^{(t)}, y)), x - \epsilon, x + \epsilon\right)
+        \]
+    }
+
+    \[
+    x_{\text{adv}} \leftarrow x^{(N_{\text{iter}})}
+    \]
+\end{algorithm}
+
+
+%Output
+\( x_{\text{adv}} \) is the final adversarial example generated after \( N_{\text{iter}} \) iterations.
+
+%Explanation
+Iterative Fast Gradient Sign Method (IFGSM) equation defined as
+\( x^{(1)} \leftarrow \text{Clip}\left(x^{(0)} + \epsilon \cdot \text{sign}(\nabla_x J(\theta, x^{(0)}, y)), x - \epsilon, x + \epsilon\right) \): 
+This step initializes the adversarial example by taking a step in the direction of the gradient's sign.
+The perturbation is scaled by \( \epsilon \), which controls the amount of change applied to the input.
+The `Clip` function ensures that the updated input stays within a specified range, maintaining the integrity of the original data within the bounds of \( x - \epsilon \) and \( x + \epsilon \).
+
+\( x^{(t+1)} \leftarrow \text{Clip}\left(x^{(t)} + \alpha \cdot \text{sign}(\nabla_x J(\theta, x^{(t)}, y)), x - \epsilon, x + \epsilon\right) \): 
+This iterative step refines the adversarial example.
+The process is repeated for \( N_{\text{iter}} \) iterations, where each iteration applies a small perturbation, determined by the step size \( \alpha \), to the current adversarial example \( x^{(t)} \).
+The perturbation is again clipped to ensure it does not exceed the allowable range.
+
+\( \text{Clip}(\cdot, x - \epsilon, x + \epsilon) \): 
+This is a crucial function that maintains the updated adversarial example within a certain perturbation range.
+By clipping the values to be within the \( \epsilon \)-ball around the original input \( x \), it ensures that the modifications do not distort the input beyond recognition.

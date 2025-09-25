@@ -1,0 +1,23 @@
+%Input
+Let \( x \) be the original input, \( y \) be the true label, and \( f_{\theta} \) be the target model with parameters \( \theta \). The attack is based on iterative gradient-based optimization, incorporating adaptive feature importance into the perturbation step. 
+
+%Output
+The output of the M-IGB Adapted Attack is an adversarial example $x^*$ that leverages the power of gradient-based optimization while introducing a novel constraint inspired by the original method. This variant maintains the core principle of the IGB Adam attack but incorporates a new perturbation strategy that adapts to the input's features.
+
+%Formula
+Define the loss function:
+\[
+L(f_{\theta}(x), y)
+\]
+
+Let \( \alpha \) be the step size, \( \epsilon \) be a small constant for numerical stability, and \( \hat{v}_t \) represent an adaptive second-moment estimate of the gradient. 
+
+The update rule considers feature importance, modifying the perturbation as follows:
+\[
+x^{n+1} = x^n - \frac{\alpha}{\sqrt{\hat{v}_t} + \epsilon} \cdot \text{feature_importance} (\nabla_x L(f_\theta(x^n), y))
+\]
+
+This ensures that the adversarial example generation process is more targeted and effective by prioritizing perturbations on the most critical features.
+
+%Explanation
+This variant Feature-Weighted IGB Attack (FW-IGB Attack), adapts the IGB Adam attack by incorporating a novel constraint that leverages feature importance scores. The perturbation strategy now takes into account the relative importance of each input feature, as measured by the gradient of the loss function with respect to the input. This allows the attack to better focus its adversarial perturbation on the most critical features, potentially increasing its effectiveness while maintaining control over the perturbation size.

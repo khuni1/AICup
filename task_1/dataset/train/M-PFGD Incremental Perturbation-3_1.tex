@@ -1,0 +1,37 @@
+%Input
+The input consists of:
+- Clean input sample $x$
+- Model parameters $\theta$
+- True label $y$
+- Perturbation step size $\alpha$
+- Gradient scaling factor $\gamma$
+- Number of iterations $N$
+
+%Output
+The output is an adversarial example $x^*$, where:
+\[
+x^* = x + \delta^{(N)}
+\]
+such that the perturbation $\delta^{(N)}$ is constrained within the feasible set $\mathcal{X}$ and is optimized to maximize the model’s classification loss.
+
+
+%Formula
+$\delta^{(0)} = 0$
+
+for $n = 1 \text{ to } N$:
+
+$\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y) \right) \right)$
+
+$\delta_{inc}^{(n)} = \delta^{(n)} - \gamma \cdot \text{Clip}_{\mathcal{X}} \left( \frac{\nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y)}{||\nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y)||} \right)$
+
+$H_k = I - \frac{s_k y_k^T}{y_k^T s_k}$
+
+$x^{(k+1)} = x^{(k)} - \alpha_k H_k \nabla f(x^{(k)})$
+
+
+%Explanation: 
+The Incremental PGD (iPGD) attack is a variant of the original PGD Fast-Universal attack. It differs from the main attack in that it adds an incremental perturbation $\delta_{inc}^{(n)}$ to the previous perturbation at each step, which helps to maintain the stability and effectiveness of the attack.
+
+The formula for the incremental perturbation is derived by adding a term that subtracts a fraction of the gradient of the loss function with respect to the current perturbation. This helps to reduce the magnitude of the perturbation while still maintaining its effect on the model's output.
+
+In contrast, the original PGD Fast-Universal attack uses a fixed step size and does not incorporate this incremental perturbation term. The iPGD attack is designed to be more stealthy and effective than the original attack, making it a useful variant for generating adversarial examples that can deceive models.

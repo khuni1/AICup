@@ -1,0 +1,22 @@
+%Input
+Let $x$ be the original input image, and $y$ be the true label associated with it. The goal is to create an adversarial example $x^*$ that misleads the model.
+
+%Output
+The output of the Momentum Adversarial Attack is an adversarial example $x^*$ generated through iterative updates using momentum-based perturbation.
+
+%Formula
+The Momentum Adversarial Attack updates the input using the following iterative update rule:
+$\text{initialize } & m_0 = 0, \\
+    \text{for } n = 1 \text{ to } N: & \\
+    & g_n = \nabla_x L(f_\theta(x^n), y), \\
+    & m_n = \beta m_{n-1} + g_n, \\
+    & x^{n+1} = x^n + \epsilon \cdot \text{sign}(m_n)$
+where:
+- $L$ is the loss function,
+- $f_\theta(x^n)$ is the model's output for input $x^n$,
+- $\beta$ is the momentum factor (typically close to 1),
+- $\epsilon$ controls the magnitude of the perturbation,
+- $N$ is the total number of iterations.
+
+%Explanation
+In the IFGSM Momentum Adversarial Attack, the perturbation is updated iteratively using a momentum term that accumulates past gradients. This approach helps to enhance the attack's effectiveness by allowing the adversarial perturbation to build momentum over iterations, which can result in stronger adversarial examples. By applying the sign of the accumulated gradient (momentum) to update the input, this attack can achieve greater changes in the model's predictions while remaining within a specified perturbation budget. The use of momentum allows for a more directed and powerful adversarial attack, making it more likely to succeed in misclassifying the input.

@@ -1,0 +1,41 @@
+%Input
+\textbf{$f(x_1, x_2)$}: Objective function to be minimized. \\
+\textbf{$x_1^2 + x_2^2 \leq 2$}: Circular constraint. \\
+\textbf{$x_1, x_2 \geq 0$}: Non-negativity constraints.
+
+%Output
+\[
+(x_1, x_2) = (1, 1), \quad f(1, 1) = 2
+\]
+
+%Formula
+We use the method of Lagrange multipliers to solve the optimization problem.
+
+Define the Lagrangian:
+\[
+\mathcal{L}(x_1, x_2, \lambda, \mu_1, \mu_2) = x_1 + x_2 + \lambda(x_1^2 + x_2^2 - 2) - \mu_1 x_1 - \mu_2 x_2
+\]
+
+Taking the partial derivatives and setting them equal to zero:
+\[
+\frac{\partial \mathcal{L}}{\partial x_1} = 1 + 2\lambda x_1 - \mu_1 = 0, \quad
+\frac{\partial \mathcal{L}}{\partial x_2} = 1 + 2\lambda x_2 - \mu_2 = 0
+\]
+\[
+\frac{\partial \mathcal{L}}{\partial \lambda} = x_1^2 + x_2^2 - 2 = 0, \quad
+\frac{\partial \mathcal{L}}{\partial \mu_1} = -x_1 = 0, \quad
+\frac{\partial \mathcal{L}}{\partial \mu_2} = -x_2 = 0
+\]
+
+From the conditions $\mu_1 = 0$, $\mu_2 = 0$, and $x_1 = x_2$, we solve:
+\[
+x_1 = x_2 \quad \Rightarrow \quad 2x_1^2 = 2 \quad \Rightarrow \quad x_1 = x_2 = 1
+\]
+
+Thus, the optimal solution is $x_1 = 1$ and $x_2 = 1$, yielding:
+\[
+f(1, 1) = 1 + 1 = 2
+\]
+
+%Explanation
+The problem is to minimize $x_1 + x_2$ within a circle of radius $\sqrt{2}$, with both $x_1$ and $x_2$ constrained to be non-negative. Using Lagrange multipliers, we incorporate the constraints into the optimization. Solving the partial derivatives gives $x_1 = 1$ and $x_2 = 1$, resulting in an objective function value of $f(1, 1) = 2$.

@@ -1,0 +1,56 @@
+%Input
+\( x^{(0)} \) is the initial input data point.  
+\( N_{\text{iter}} \) is the total number of iterations.  
+\( k^{(i+1)} \) represents the sparsity level at each iteration.  
+\( \eta^{(i+1)} \) is the step size at each iteration.  
+\( M \) is a set of checkpoints where sparsity and step size adjustments occur.
+
+%Output
+\( x_{\text{best}} \) is the best adversarial example found by the algorithm after all iterations.
+
+%Formula
+The algorithm is formulated as follows:
+
+1. For each iteration \( i = 0 \) to \( N_{\text{iter}} - 1 \):
+
+    2. Adjust sparsity and step size at checkpoints \( i + 1 \in M \):
+       \[
+       k^{(i+1)} \leftarrow \text{sparsity}
+       \]
+       \[
+       \eta^{(i+1)} \leftarrow \text{step size}
+       \]
+       
+    3. If \( \eta^{(i+1)} = \eta^{(0)} \):
+       \[
+       x^{(i)} \leftarrow x_{\text{best}}
+       \]
+       
+    4. Update step:
+       \[
+       u^{(i+1)} = x^{(i)} + \eta^{(i)} \cdot s(\nabla L(x^{(i)}), k^{(i+1)} \cdot d)
+       \]
+       \[
+       x^{(i+1)} = \text{PS}(u^{(i+1)}) \quad \text{(project onto feasible set)}
+       \]
+       
+    5. Update best point found:
+       \[
+       \text{If } L(x^{(i+1)}) > L_{\text{best}}:
+       \]
+       \[
+       x_{\text{best}} \leftarrow x^{(i+1)}
+       \]
+       \[
+       L_{\text{best}} \leftarrow L(x^{(i+1)})
+       \]
+
+2. Return \( x_{\text{best}} \) as the best adversarial example found after all iterations.
+
+%Explanation
+Momentum Iterative (MI) algorithm defined as 
+\( \text{Clip}_{\epsilon} \left\{ \cdot \right\} \) This operation ensures that the perturbed data remains within an \( \epsilon \)-ball around the original data. The clipping prevents the perturbation from making large changes to the input, keeping it within a controlled range.
+\( u^{(i+1)} = x^{(i)} + \eta^{(i)} \cdot s(\nabla L(x^{(i)}), k^{(i+1)} \cdot d) \):The update step modifies the current input \( x^{(i)} \) by adding a perturbation. The perturbation is calculated as the product of the step size \( \eta^{(i)} \) and a function \( s(\nabla L(x^{(i)}), k^{(i+1)} \cdot d) \), which adjusts the gradient \( \nabla L(x^{(i)}) \) based on the sparsity level \( k^{(i+1)} \).
+  
+\( \text{PS}(u^{(i+1)}) \) (project onto feasible set):After applying the perturbation, the new point \( u^{(i+1)} \) is projected back onto the feasible set, ensuring that the updated data point remains valid under the constraints of the problem.
+\( x_{\text{best}} \):This is the point that produces the highest value of the loss function \( L \) during the entire iterative process. The algorithm updates \( x_{\text{best}} \) whenever a new point improves the loss function, ensuring that the best adversarial example is retained.

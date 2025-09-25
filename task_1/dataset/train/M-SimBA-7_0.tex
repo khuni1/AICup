@@ -1,0 +1,16 @@
+%Input
+The input includes the original input $x$, the adversarial perturbation $\delta$, the target model $y$, the perturbation constraint $\rho$, and the distance metric $d$.
+
+%Output
+The output includes the adversarial perturbation $\delta$ and the function $h(x_0)$.
+
+%Formula
+$\min_{\delta} \quad y(x + \delta) \quad \text{subject to} \quad \| \delta \|_2 < \rho$
+
+%Explanation
+where:
+This equation represents an optimization problem in the context of the SimBA (Simple Black-box Adversarial Attacks) method. It seeks to minimize the output $y(x + \delta)$ of the target model $y$ when the input $x$ is perturbed by an adversarial perturbation $\delta$. The goal is to find the perturbation $\delta$ that minimizes the model output, which could correspond to misclassification or other undesired outcomes.
+$\text{subject to} \quad \| \delta \|_2 < \rho$
+This constraint ensures that the $L_2$ norm of the perturbation $\delta$ is less than a given threshold $\rho$. It limits the size of the perturbation to ensure that it remains within a permissible range, balancing between effectiveness of the attack and maintaining a small perturbation size.
+$h(x_0) = y \quad \forall x_0 \in \{ x_0 \, | \, d(x_0, x) \leq \rho \}$
+This equation states that the function $h(x_0)$ outputs $y$ for all $x_0$ within a certain neighborhood of the input $x$. Here, $d(x_0, x)$ represents a distance metric between the points $x_0$ and $x$, and $\rho$ is the radius of this neighborhood. In other words, for any point $x_0$ that is within a distance $\rho$ from the input $x$, the function $h(x_0)$ will output the same value $y$ as the model $y$ for the input $x$.

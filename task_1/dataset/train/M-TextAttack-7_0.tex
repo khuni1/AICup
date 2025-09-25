@@ -1,0 +1,30 @@
+%Input
+Let \( x \) be the original text input, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Text Attack aims to generate adversarial examples for natural language processing (NLP) models by modifying the input text while preserving its semantic meaning.
+
+%Output
+The output of the Text Attack is a modified text input \( x^* \) that is intended to mislead the model into making incorrect predictions.
+
+%Formula
+The Text Attack adversarial attack can be formulated as follows:
+1. Initialize the input text and true label:
+   $
+   (x, y).
+   $
+2. Define a set of candidate modifications \( \mathcal{M} \) that can be applied to the input text, such as synonym replacement, word insertion, or word deletion.
+3. For each candidate modification \( m \in \mathcal{M} \):
+   - Generate the modified text:
+   $
+   x' = m(x).
+   $
+   - Evaluate the model's prediction:
+   $
+   \hat{y} = f_{\theta}(x').
+   $
+   - If \( \hat{y} \neq y \), then \( x' \) is an adversarial example.
+4. The goal is to find:
+   $
+   x^* = \arg\min_{x'} \text{distance}(x, x') \quad \text{subject to } f_{\theta}(x') \neq y.
+   $
+
+%Explanation
+The Text Attack generates adversarial examples by applying various modifications to the original text input \( x \). By leveraging strategies such as synonym replacement or word deletion, the attack aims to produce a new text \( x^* \) that retains its original meaning but causes the model to misclassify it. This method highlights the vulnerabilities of NLP models to adversarial attacks and underscores the importance of robust defenses in text-based applications.

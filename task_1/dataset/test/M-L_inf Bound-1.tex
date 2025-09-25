@@ -1,0 +1,50 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input sample.
+$f(\mathbf{x})$: Target model with logits or probability output.
+$y_{\text{true}}$: True label of $\mathbf{x}_{\text{original}}$.
+$\epsilon$: Maximum allowed perturbation per feature.
+$\eta$: Step size for optimization.
+$\text{max\_iterations}$: Maximum number of iterations for perturbation search.
+$\mathcal{L}(f, \mathbf{x}, y_{\text{true}})$: Loss function to be maximized for misclassification.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+  \[
+  \|\mathbf{x}_{\text{adv}} - \mathbf{x}_{\text{original}}\|_\infty \leq \epsilon \quad \text{and} \quad f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}.
+  \]
+
+%Formula
+1.Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2.Iterative Update:
+   For each iteration $t$, update $\mathbf{x}_{\text{adv}}$ as:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} + \eta \cdot \text{sign} \big( \nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{true}}) \big).
+   \]
+
+3.Projection onto $L_\infty$ Ball:
+   Ensure that the perturbation remains bounded:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}\big(\mathbf{x}_{\text{adv}}^{(t+1)}, \mathbf{x}_{\text{original}} - \epsilon, \mathbf{x}_{\text{original}} + \epsilon \big),
+   \]
+   where $\text{clip}$ ensures each feature of $\mathbf{x}_{\text{adv}}$ lies within the allowed perturbation bounds.
+
+4.Stopping Criterion:
+   Terminate if $f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}$ or after $\text{max\_iterations}$.
+
+%Explanation
+$L_\infty$-Bounded Adversarial Attack is gradient-based as it relies on computing the gradient of the loss function with respect to the input to iteratively craft adversarial examples and can be formualted as below:
+1. **Objective**:
+   - The $L_\infty$-Bounded Adversarial Attack seeks to find a perturbed input $\mathbf{x}_{\text{adv}}$ that causes the model $f$ to misclassify while ensuring that no individual feature of $\mathbf{x}_{\text{adv}}$ deviates by more than $\epsilon$ from the corresponding feature in $\mathbf{x}_{\text{original}}$.
+
+2. **Gradient-Based Optimization**:
+   - The attack uses the gradient $\nabla_{\mathbf{x}} \mathcal{L}$ of the loss function with respect to the input to determine the direction of perturbation that most increases the model's loss.
+
+3. **Projection**:
+   - The clipping step ensures that the perturbation stays within the $L_\infty$ ball of radius $\epsilon$, maintaining the adversarial example's validity under the $L_\infty$ constraint.
+
+4. **Iterative Nature**:
+   - The step size $\eta$ controls the magnitude of perturbation at each iteration, and the process iterates until the attack succeeds or the maximum number of iterations is reached.

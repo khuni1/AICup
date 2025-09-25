@@ -1,0 +1,17 @@
+%Input
+$\lambda = -\frac{1}{2x_2} \quad (\text{for} \, x_2 \neq 0)$
+
+%Output
+\begin{align*}
+-\frac{1}{2x_1} & = -\frac{1}{2x_2}\\
+x_1 & = x_2\\
+x_1^2 + x_2^2 & \leq 2\\
+x_1 & \geq 0\\
+x_2 & \geq 0
+\end{align*}
+
+%Formula
+$f(x) = x_1 + x_2, \quad \mathcal{L}(x_1, x_2, \lambda, \mu_1, \mu_2) = x_1 + x_2 + \lambda (x_1^2 + x_2^2 - 2) - \mu_1 x_1 - \mu_2 x_2$
+
+%Explanation
+The Equality-Constrained Perturbation (ECP) variant optimized value for $x_1$ and $x_2$ is $(1, 1)$ with a minimum value of the objective function $f(x) = 2$. This solution satisfies all constraints: it lies within the circle ($1^2 + 1^2 \leq 2$), is non-negative ($x_1, x_2 \geq 0$), and respects the equality constraint ($x_1 = x_2$). The function evaluations guide the search for adversarial examples by minimizing the objective function.

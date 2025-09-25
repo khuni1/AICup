@@ -1,0 +1,89 @@
+%Input
+Input sample: $X \in \mathbb{R}^d$
+True label: $y \in \mathcal{Y}$
+Target class (optional for targeted attack): $y_{\text{target}}$
+Generator network: $G(z; \theta_G)$, where $z$ is a latent vector and $\theta_G$ are the parameters
+Discriminator network: $D(X; \theta_D)$, where $\theta_D$ are the parameters
+Classifier to attack: $f(X)$
+Perturbation budget: $\epsilon$
+
+%Output
+Adversarial example $X_{\text{adv}}$ such that:
+\[
+f(X_{\text{adv}}) \neq y \quad \text{(untargeted)} \quad \text{or} \quad f(X_{\text{adv}}) = y_{\text{target}} \quad \text{(targeted)}.
+\]
+
+Objective Function:
+The GAN is trained with a combined loss to generate adversarial examples:
+1.Adversarial Loss:
+   Encourages the generated example $G(z)$ to fool the classifier:
+   \[
+   \mathcal{L}_{\text{adv}} = \begin{cases} 
+   -\mathbb{E}_{z \sim \mathcal{Z}} \log f_{y_{\text{target}}}(G(z)), & \text{(targeted)} \\
+   \mathbb{E}_{z \sim \mathcal{Z}} \log f_y(G(z)), & \text{(untargeted)}
+   \end{cases}
+   \]
+
+2.Reconstruction Loss:
+   Ensures the generated example is perceptually similar to the original input:
+   \[
+   \mathcal{L}_{\text{rec}} = \|G(z) - X\|_p,
+   \]
+   where $p$ typically represents the $L_2$ norm.
+
+3.Discriminator Loss:
+   Regularizes the GAN's discriminator to distinguish between real and adversarial examples:
+   \[
+   \mathcal{L}_D = -\mathbb{E}_{X \sim P_{\text{data}}}[\log D(X)] - \mathbb{E}_{z \sim \mathcal{Z}}[\log (1 - D(G(z)))].
+   \]
+
+The combined objective for the generator is:
+\[
+\mathcal{L}_G = \mathcal{L}_{\text{adv}} + \lambda_{\text{rec}} \mathcal{L}_{\text{rec}},
+\]
+where $\lambda_{\text{rec}}$ is a hyperparameter balancing the adversarial and reconstruction losses.
+
+%Funtion
+1.Initialize:
+   Start with a trained GAN model $(G, D)$ and classifier $f(X)$.
+   
+2.Generate Perturbation:
+   Sample a latent vector $z \sim \mathcal{Z}$ and compute:
+   \[
+   \delta = G(z) - X.
+   \]
+
+3.Clip Perturbation:
+   Ensure the perturbation satisfies the budget constraint:
+   \[
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   \]
+
+4.Create Adversarial Example:
+   Add the perturbation to the original input:
+   \[
+   X_{\text{adv}} = X + \delta.
+   \]
+
+5.Refine Adversarial Example:
+   Optionally, refine $z$ via gradient descent to minimize $\mathcal{L}_G$:
+   \[
+   z \leftarrow z - \eta \nabla_z \mathcal{L}_G,
+   \]
+   where $\eta$ is the learning rate.
+
+6.Output:
+   Return $X_{\text{adv}}$ as the adversarial example.
+
+%Explanation
+GAN-Based Adversarial Attack
+1.Adversarial Generator: The generator $G$ learns to produce perturbations or adversarial examples that fool the target classifier $f$.
+
+2.Discriminator Role: The discriminator $D$ helps improve the generator's output quality by distinguishing real inputs from generated adversarial examples.
+
+3.Reconstruction Loss: Ensures the adversarial examples are close to the original inputs in appearance, maintaining imperceptibility.
+
+4.Flexibility: GAN-based attacks can generate perturbations for both targeted and untargeted attacks, depending on the adversarial loss formulation.
+
+5.Optimization: The iterative refinement of $z$ allows the generator to produce more effective adversarial examples by leveraging gradient information from the classifier.
+

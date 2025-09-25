@@ -1,0 +1,40 @@
+%Input
+\textbf{Input:}  
+\[
+x \in \mathbb{R}^d, \quad f: \mathbb{R}^d \to \mathbb{R}
+\]
+
+where:  
+- \( x \) is the input sample (e.g., an image),  
+- \( f(x) \) is the classifier function that maps an input to a real-valued decision score.
+
+%Output
+The DeepFool with Arctanh-Space Transformation generates a perturbation \( \hat{r} \) to misclassify an image \( x \). Unlike the standard DeepFool attack, this variant operates in the transformed \(\tanh\)-space to enforce bounded perturbations while still minimizing the L2 distance.
+
+%Formula
+\[
+\hat{r} = -\frac{f(\tanh(x_i))}{\|\nabla f(\tanh(x_i))\|_2^2} \nabla f(\tanh(x_i)).
+\]
+
+%Explanation
+The DeepFool with Arctanh-Space Transformation introduces a transformation step where the input \( x \) is projected into the \(\tanh\)-space, ensuring that the generated perturbation remains within a bounded range. This helps prevent large distortions while still achieving misclassification. The attack proceeds iteratively:
+
+1. Transform the input using the inverse hyperbolic tangent function:
+   \[
+   \tilde{x}_0 = \text{arctanh}(x)
+   \]
+2. Compute the gradient-based perturbation:
+   \[
+   r_i = -\frac{f(\tanh(x_i))}{\|\nabla f(\tanh(x_i))\|_2^2} \nabla f(\tanh(x_i)).
+   \]
+3. Update the perturbed image in the transformed space:
+   \[
+   \tilde{x}_{i+1} = \tilde{x}_i + r_i.
+   \]
+4. Transform back to the original space:
+   \[
+   x_{i+1} = \tanh(\tilde{x}_{i+1}).
+   \]
+5. Repeat until the classifier prediction changes.
+
+The final perturbation \( \hat{r} \) is the cumulative sum of all step-wise perturbations, ensuring minimal L2 distortion while achieving adversarial misclassification.

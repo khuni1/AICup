@@ -1,0 +1,55 @@
+%Input
+$X_{\text{train}} = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n\}$: Original training data.
+$y_{\text{train}} = \{y_1, y_2, \ldots, y_n\}$: Corresponding labels.
+$f_\theta$: Target model parameterized by $\theta$.
+$\mathcal{L}(\theta; X, y)$: Loss function used by the model.
+$X_p = \{\mathbf{z}_1, \mathbf{z}_2, \ldots, \mathbf{z}_m\}$: Poisoned points to craft.
+$y_p = \{\tilde{y}_1, \tilde{y}_2, \ldots, \tilde{y}_m\}$: Poisoned labels to assign.
+$\epsilon$: Perturbation constraint for poisoned points.
+
+%Output
+- Poisoned dataset $\tilde{X}_{\text{train}} = X_{\text{train}} \cup X_p$.
+- Updated labels $\tilde{y}_{\text{train}} = y_{\text{train}} \cup y_p$.
+
+%Formula
+1.Objective:
+   \[
+   \min_{\{\mathbf{z}_i, \tilde{y}_i\}_{i=1}^m} \quad \mathcal{L}(\theta^*; X_{\text{test}}, y_{\text{test}})
+   \]
+   where $\theta^*$ is obtained by minimizing the poisoned training loss:
+   \[
+   \theta^* = \arg \min_\theta \mathcal{L}(\theta; \tilde{X}_{\text{train}}, \tilde{y}_{\text{train}}).
+   \]
+
+2.Perturbation Constraint:
+   \[
+   \|\mathbf{z}_i - \mathbf{x}_j\|_2 \leq \epsilon \quad \forall \mathbf{z}_i \in X_p, \; \mathbf{x}_j \in X_{\text{train}}.
+   \]
+
+3.Gradient-Based Optimization:
+   - Update poisoned points iteratively using:
+     \[
+     \mathbf{z}_i \leftarrow \mathbf{z}_i - \eta \nabla_{\mathbf{z}_i} \mathcal{L}(\theta^*; X_{\text{test}}, y_{\text{test}}),
+     \]
+     where $\eta$ is the learning rate.
+
+%Explanation
+Strategic Poisoning Attack (SPA) can be developed following the below:
+1.Objective:
+   - The goal of SPA is to inject strategically crafted poisoned data points into the training set such that the model's performance on a specific test set degrades.
+
+2.Perturbation Constraint:
+   - Poisoned points are crafted by perturbing existing training points within a specified constraint $\epsilon$ to ensure stealthiness.
+
+3.Impact on Training:
+   - The attack targets the model's loss function during training by optimizing the placement and labeling of poisoned points to maximize their adverse impact.
+
+4.Iterative Crafting:
+   - The poisoned points are updated iteratively using gradients computed with respect to the model's parameters to minimize the test-time performance.
+
+Key Characteristics:
+- Target: Supervised machine learning models.
+- Effect: Reduces test-time accuracy by strategically modifying the training data.
+- Type: Gradient-based poisoning attack, focusing on optimization of training loss.
+
+The Saddle Point Attack (SPA) identifies regions in the model's loss landscape where the gradients are close to zero but the loss is non-minimal. By iteratively refining the perturbation \( \delta \) to maximize this loss, the attack exploits the model's vulnerability to non-convexity. The use of saddle points ensures that the adversarial example \( \tilde{x} = x + \delta \) is effective against gradient-based defenses. The perturbation is constrained by \( \epsilon \) to maintain imperceptibility, making the attack stealthy and practical.

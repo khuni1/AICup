@@ -1,0 +1,36 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Modified Linear BFGS (MLBFGS) Projected Conjugate Gradient Attack modifies the PC Second Order Gradient Attack by incorporating a linear approximation of the Hessian matrix using the BFGS method.
+
+%Output
+The output of the MLBFGS Projected Conjugate Gradient Approach is a modified input \( x^* \) that aims to mislead the model into making an incorrect prediction.
+
+%Formula
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Compute the first-order gradient:
+   $
+   g = \nabla_x J(f_{\theta}(x), y).
+   $
+3. Compute a linear approximation of the Hessian matrix using BFGS:
+   $
+   H \approx B^{-1} \cdot g,
+   $
+   where \( B \) is the BFGS approximation of the Hessian.
+4. Update the input using the conjugate gradient approach:
+   $
+   x' = x + \alpha (H^{-1} g),
+   $
+   where \( \alpha \) is a step size.
+5. Project \( x' \) onto the feasible set (if necessary):
+   $
+   x^* = \text{Proj}_C(x').
+   $
+6. Ensure that the modified input causes a misclassification:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The MLBFGS Projected Conjugate Gradient Approach combines the benefits of linear approximation and conjugate gradient optimization to improve the robustness and efficiency of the PC Second Order Gradient Attack. By incorporating BFGS, the attack can better navigate the loss landscape, reducing the number of iterations required to find effective adversarial examples. This modification enhances the overall effectiveness of the attack while maintaining its core principles.

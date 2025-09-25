@@ -1,0 +1,22 @@
+%Input
+Let \( x \) be the original input, and let \( x^* \) be the adversarial example generated through a probabilistic perturbation process. Define the perturbation as \( \delta_n \), which is sampled from a probabilistic distribution such as Gaussian or Uniform with variance \( \sigma^2 \). The optimization is constrained by a maximum perturbation size \( \epsilon \) and a predefined number of iterations \( N \).
+
+
+%Output
+The output is an adversarial example $x^*$ created through a probabilistic approach to perturb the input.
+
+%Formula
+The MRG adversarial attack can be formulated as follows:
+1. Initialize the input:
+$x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size $\epsilon$ and the number of iterations $N$.
+3. For each iteration $n = 1$ to $N$:
+   - Generate a random perturbation within a probabilistic distribution, e.g., Gaussian or Uniform, with variance $\sigma^2$. This replaces the random perturbation in the original RGF attack but introduces probability sampling and allows for more fine-grained control over the perturbation process.
+   - Create the perturbed input:
+   $x^{(n)} = x^{(n-1)} + \delta_n$
+4. The final adversarial example is:
+$x^* = x^{(n)}$
+
+%Explanation
+The Probabilistic Gradient-Free Attack (PGFA) variant takes a modified approach by incorporating probability sampling into the random perturbation generation process. Instead of generating a completely random perturbation, it samples from a probabilistic distribution (e.g., Gaussian or Uniform) with variance $\sigma^2$. This allows for more predictable and controlled perturbations while maintaining the essence of the original RGF attack's randomized strategy. The variant offers improved control over the adversarial perturbation process by incorporating probability sampling, which can be beneficial in scenarios where traditional random perturbations are less effective or desirable.

@@ -1,0 +1,24 @@
+%Input
+Input: Carlini & Wagner's $L_{\infty}$ Attack with Binary Search Optimization
+
+%Output
+Adversarial sample $x_{\text{adv}}$
+
+%Formula
+\begin{algorithm}
+\caption{Carlini \& Wagner's $L_{\infty}$ Attack with Binary Search Optimization}
+\begin{algorithmic}[1]
+\REQUIRE Input $x$, maximum perturbation $\epsilon$, constant $\gamma$, loss function $\ell$
+\STATE $x_{\text{scaled}} \leftarrow \frac{x - \max(x - \epsilon, x_{\text{min}})}{\min(x + \epsilon, x_{\text{max}}) - \max(x - \epsilon, x_{\text{min}})}$
+\STATE $z \leftarrow \text{arctanh}(\gamma \cdot x_{\text{scaled}})$
+\STATE Initialize binary search parameters for $c$, set number of steps, and minimum loss $l_{\text{min}}$ to infinity.
+\STATE Perform binary search for best $c$ within specified bounds.
+\STATE Minimize attack objective function with respect to $c$ to find new adversarial example $z_{\text{new}}$.
+\STATE If successful, update $z$ and $l_{\text{min}}$. Update binary search parameters based on loss of $t^{-1}(z_{\text{new}})$.
+\STATE Decrement number of steps. After completing binary search, apply inverse transformation to obtain adversarial example $x_{\text{adv}}$.
+\STATE Scale $x_{\text{adv}}$ back to original input range.
+\end{algorithmic}
+\end{algorithm}
+
+%Explanation
+This variant improves the Carlini & Wagner's $L_{\infty}$ Attack by incorporating a binary search optimization strategy. The binary search iteratively adjusts the trade-off between the attack objective and the perturbation constraint, leading to more effective adversarial examples.

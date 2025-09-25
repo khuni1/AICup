@@ -1,0 +1,17 @@
+%Input
+Let us consider a classification task $X \mapsto [K]$ where $X \subseteq \mathbb{R}^d$ is the input space and $[K] = \{1, \ldots, K\}$ is the corresponding label set. Let $f : \mathbb{R}^d \to \mathbb{R}^K$ be a classifier (a feedforward neural network in our paper) from an input space $X$ returning the logits of each label in $[K]$ such that the predicted label for a given input is $\arg \max_{i \in [K]} f_i(x)$.
+
+%Output
+The aim of $\|.\|_\infty$-bounded untargeted adversarial attacks is, for some input $x$ with label $y$, to find a perturbation $\tau$ such that $\arg \max_{i \in [K]} f_i(x) \neq y$. 
+
+%Formula
+Classically, $\|.\|_\infty$-bounded untargeted adversarial attacks aim at optimizing the following objective:
+
+\[
+\max_{\tau: \|\tau\|_\infty \leq \epsilon} L(f(x + \tau), y)
+\]
+
+where $L$ is a loss function (typically the cross-entropy) and $y$ is the true label. For targeted attacks, the attacker targets a label $y_t$ by maximizing $-L(f(x + \tau), y_t)$. With access to the gradients of the network, gradient descent methods have proved their efficiency \cite{Kurakin2016, Madry2018a}. So far, the outline of most black box attacks was to estimate the gradient using either finite differences or natural evolution strategies. Here using evolutionary strategies heuristics, we do not want to take care of the gradient estimation problem.
+
+%Explanation
+Derivative-Free Optimization (DFO) evolutionary strategy approaches where the default search space is $\mathbb{R}^d$. In the $\ell_\infty$-bounded adversarial attacks setting, the search space is defined as $B_\infty(\epsilon) = \{\tau : \|\tau\|_\infty \leq \epsilon\}$. This requires adapting the problem in Eq. 1. Two variants are proposed leading

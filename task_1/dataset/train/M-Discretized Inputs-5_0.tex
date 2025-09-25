@@ -1,0 +1,30 @@
+%Input
+The input to the system is a real adversarial image $\tilde{v}_{adv}$ and a corresponding integer image $\tilde{d}$ that needs to be denormalized.
+
+%Output
+The output of the denormalization and classification process involves:
+1. The denormalization relationship: $T^{-1}(T(\tilde{d})) = \tilde{d} \quad \forall \tilde{d} \in D$.
+2. The classification after denormalization: $f_t(T^{-1}(\tilde{v}_{adv})) = g_t(T(T^{-1}(\tilde{v}_{adv}))) \neq g_t(\tilde{v}_{adv})$.
+3. The discretization error: $\text{Discretization Error} : g_t(T(T^{-1}(\tilde{v}_{adv}))) \neq g_t(\tilde{v}_{adv})$.
+4. A potential misclassification: $f_t(T^{-1}(\tilde{v})) \neq c$.
+
+
+%Formula
+Denormalization Relationship
+$T^{-1}(T(\tilde{d})) = \tilde{d} \quad \forall \tilde{d} \in D$
+
+Discretization Problem
+$f_t(T^{-1}(\tilde{v}_{adv})) = g_t(T(T^{-1}(\tilde{v}_{adv}))) \neq g_t(\tilde{v}_{adv})$
+
+Discretization Error Definition
+$\text{Discretization Error} : g_t(T(T^{-1}(\tilde{v}_{adv}))) \neq g_t(\tilde{v}_{adv})$
+
+Classification After Transformation
+$f_t(T^{-1}(\tilde{v})) \neq c$
+
+
+%Explanation
+Discretized Inputs Denormalization Discretization Error where:
+- The denormalization function $T^{-1}$ is designed to convert a real-valued image back into its corresponding discrete integer representation.
+- However, this transformation can lead to discrepancies between the original class prediction $g_t(\tilde{v}_{adv})$ and the class prediction after transformation, represented as $f_t(T^{-1}(\tilde{v}_{adv}))$.
+- This mismatch is referred to as the discretization problem, which can affect the efficacy of adversarial attacks by resulting in misclassifications.

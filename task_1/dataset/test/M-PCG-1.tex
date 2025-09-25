@@ -1,0 +1,36 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( f_{\theta} \) be the target model. The PC Second Order Gradient Attack generates adversarial examples by utilizing second-order gradient information.
+
+%Output
+The output of the PC Second Order Gradient Attack is a modified input \( x^* \) that aims to mislead the model into making an incorrect prediction.
+
+%Formula
+The PC Second Order Gradient Attack can be formulated as follows:
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Compute the first-order gradient:
+   $
+   g = \nabla_x J(f_{\theta}(x), y).
+   $
+3. Compute the second-order gradient (Hessian):
+   $
+   H = \nabla^2_x J(f_{\theta}(x), y).
+   $
+4. Update the input using the conjugate gradient approach:
+   $
+   x' = x + \alpha H^{-1} g,
+   $
+   where \( \alpha \) is a step size.
+5. Project \( x' \) onto the feasible set (if necessary):
+   $
+   x^* = \text{Proj}_C(x').
+   $
+6. Ensure that the modified input causes a misclassification:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The Projected Conjugate Gradient (PC) Second Order Gradient Attack generates adversarial examples by leveraging second-order information to more effectively navigate the loss landscape. The first-order gradient \( g \) indicates the direction of steepest ascent in the loss function, while the second-order gradient (Hessian) \( H \) provides curvature information. The update step incorporates both gradients, allowing for a more refined perturbation. After the update, the perturbed input \( x' \) may be projected onto a feasible set \( C \) to ensure that it remains within acceptable bounds. The resulting adversarial input \( x^* \) is crafted to mislead the model while exploiting the geometry of the loss surface.

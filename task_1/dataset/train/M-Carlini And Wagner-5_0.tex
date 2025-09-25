@@ -1,0 +1,12 @@
+%Input
+The input includes the perturbation $\delta$, the original input $x$, and the scaling parameter $c$.
+
+%Output
+The output includes the perturbation $\delta$ that minimizes the objective function.
+
+%Formula
+$\min_{\delta} \left\| \delta \right\|_p + c \cdot f(\text{clip}(x + \delta))$
+
+
+%Explanation
+This equation represents the objective function for the Carlini \& Wagner (C\&W) attack. The goal is to minimize the sum of the $L_p$ norm of the perturbation $\delta$ and the adversarial loss. Here, $\delta$ represents the perturbation added to the input $x$ to create the adversarial example. The term $\left\| \delta \right\|_p$ denotes the $L_p$ norm of the perturbation, which controls its magnitude. The parameter $c$ is a scaling factor that balances the importance of the perturbation norm against the adversarial loss. The function $f(\cdot)$ quantifies the adversarial loss, typically measuring the difference between the predicted probability distributions for the original and perturbed inputs. The $\text{clip}(\cdot)$ function ensures that the perturbed input remains within a valid input space, such as pixel values being within [0, 1] for images.

@@ -1,0 +1,13 @@
+%Input
+A modified loss function $L = L_{CE} + \beta \cdot L_{FG}$, where $\beta$ is a hyperparameter controlling the strength of the regularization term.
+
+%Output
+The output with the modified loss function is a universal adversarial perturbation $\delta$ added to multiple images, resulting in adversarial examples that can deceive the model. The modification introduces a regularization term to penalize the model's output for outliers and improve its robustness.
+
+%Formula
+$\delta^{(0)} = 0$
+$\text{for } n = 1 \text{ to } N: \quad
+\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_\delta (L_{CE}(f_\theta(x + \delta^{(n-1)}), y) + \beta \cdot L_{FG}(f_\theta(x + \delta^{(n-1)}), y)) \right) \right)$
+
+%Explanation
+The Regularized Universal Perturbation Attack (R-UPA) variant with the modified loss function incorporates a regularization term to improve the model's robustness and prevent outliers. The regularization term $L_{FG}$ encourages the model to produce a more consistent output, making it less susceptible to adversarial attacks. By incorporating this modification, the variant achieves improved performance in terms of robustness and generalization.

@@ -1,0 +1,49 @@
+%Input
+$H^{(1)}_{ar}, H^{(2)}_{ar}, \ldots, H^{(N)}_{ar}$: $N$ realizations of channels. \\
+$\mathbf{r}_{tr}$: Input representation. \\
+Model of the classifier: The classifier model for adversarial attack.
+
+%Output
+$\Delta = \mathbf{U} \Sigma \mathbf{V}^T$: Singular Value Decomposition of $\Delta$. \\
+$\mathbf{v}_1 = \mathbf{V}\mathbf{e}_1$: First principal component. \\
+$\delta_{\text{limited}} = \sqrt{P_{\text{max}}} \mathbf{v}_1$: Limited perturbation in the first principal direction.
+
+%Formula
+\subsection*{Principal Component Analysis (PCA)}
+Initialize the perturbation matrix:
+\[
+\Delta \leftarrow 0
+\]
+
+For each realization $n = 1, \ldots, N$:
+\[
+\delta^{(n)} = \text{White-box attack result using } \mathbf{r}_{tr} \text{ and } H^{(n)}_{ar}
+\]
+Stack the perturbation:
+\[
+\Delta \leftarrow \Delta + \delta^{(n)}
+\]
+
+Perform Singular Value Decomposition (SVD) on $\Delta$:
+\[
+\Delta = \mathbf{U} \Sigma \mathbf{V}^T
+\]
+Extract the first principal component:
+\[
+\mathbf{v}_1 = \mathbf{V} \mathbf{e}_1
+\]
+
+Calculate the final perturbation:
+\[
+\delta_{\text{limited}} = \sqrt{P_{\text{max}}} \mathbf{v}_1
+\]
+
+\subsection*{Return}
+The final adversarial perturbation is:
+\[
+\delta_{\text{limited}}
+\]
+
+
+%Explanation
+Principal Component Analysis (PCA) and is designed to operate under limited channel information, the attack leverages limited channel information by computing the principal direction of adversarial perturbations through PCA.

@@ -1,0 +1,27 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input data point, \( y \) be the true label, and \( \epsilon \) be the maximum allowable perturbation. The SV-UAP Attack aims to generate a universal perturbation \( \delta \) that effectively deceives the model for a single view or perspective of the data.
+
+%Output
+The output of the SV-UAP Attack is a universal adversarial perturbation \( \delta \) that can be applied to the input \( x \) to mislead the classifier.
+
+%Formula
+The SV-UAP Attack can be formulated as follows:
+1. Initialize the universal perturbation \( \delta \):
+   $
+   \delta = 0.
+   $
+2. Define the objective function to minimize the loss for a target class \( c \):
+   $
+   \text{minimize } L(f(x + \delta), c).
+   $
+3. Update the perturbation using gradient descent:
+   $
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \nabla_{\delta} L(f(x + \delta^{(t)}), y).
+   $
+4. Project \( \delta \) to ensure it remains within the allowable perturbation bounds:
+   $
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).
+   $
+
+%Explanation
+The SV-UAP (Single-View Universal Adversarial Perturbations) Attack generates a universal adversarial perturbation \( \delta \) designed to deceive the model when applied to a specific input \( x \). By optimizing \( \delta \) to minimize the loss associated with the true label \( y \), the attack effectively creates a perturbation that maximizes the model's misclassification. This method highlights the potential for a targeted universal perturbation to exploit the vulnerabilities of machine learning models, demonstrating the efficacy of single-view attacks in crafting effective adversarial examples.

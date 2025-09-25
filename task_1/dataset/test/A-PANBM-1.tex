@@ -1,0 +1,35 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input sample.  
+$f(\mathbf{x})$: Target model for classification.  
+$y_{\text{true}}$: True label of the input instance.  
+$\epsilon$: Maximum allowed perturbation magnitude in $L_p$ norm.  
+$\eta$: Step size for iterative updates.  
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function guiding the adversarial perturbation.  
+p: Norm type controlling the adversarial constraint.
+
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+  \[
+  \|\mathbf{x}_{\text{adv}} - \mathbf{x}_{\text{original}}\|_p \leq \epsilon \quad \text{and} \quad f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}.
+  \]
+
+%Formula
+1.Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+2.Iterative Noise Update:
+   For iteration $t$, update the adversarial example:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \mathbf{x}_{\text{adv}}^{(t)} + \eta \cdot \text{sign}\big(\nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}_{\text{adv}}^{(t)}, y_{\text{true}})\big).
+   \]
+
+3.Projection:
+   After each update, project $\mathbf{x}_{\text{adv}}$ onto the $L_p$ ball of radius $\epsilon$:
+   \[
+   \mathbf{x}_{\text{adv}}^{(t+1)} = \text{clip}(\mathbf{x}_{\text{adv}}^{(t)}, 0, \epsilon).
+   \]
+
+%Explanation
+The PANB-Modified (PANBM) Adversarial Attack is a modified version of the original PANB attack. The main difference is in the projection step, where the adversarial example is clipped to ensure that it remains within the $L_p$ norm constraint and maintains its stealthiness. This modification improves the effectiveness of the attack by ensuring that the perturbation remains imperceptible while still fooling the model.

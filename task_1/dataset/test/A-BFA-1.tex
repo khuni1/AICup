@@ -1,0 +1,42 @@
+%Input
+$x$: Original input image.  
+$f_{\theta}(x)$: Target model with parameters $\theta$.  
+$y$: True label of the input image.  
+$\epsilon$: Maximum perturbation size.  
+$N$: Number of iterations for the attack.  
+$\sigma_d$: Spatial parameter for the bilateral filter.  
+$\sigma_r$: Range parameter for the bilateral filter.  
+$L(f_{\theta}(x), y)$: Loss function used to evaluate the model's prediction.
+
+
+%Output
+The output of the Bilateral Filter Based adversarial attack is an adversarial example $x^*$ that deceives the model and appears similar to the original image due to the applied bilateral filtering.
+
+%Formula
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size $\epsilon$, the number of iterations $N$, and the bilateral filter parameters.
+3. For each iteration $n = 1$ to $N$:
+   - Compute the model's prediction:
+   
+   $\hat{y}^{(n)} = f_{\theta}(x^{(n-1)})$
+   - Calculate the gradient of the loss function:
+   $g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y)$
+   - Update the input by adding the perturbation:
+   $x^{(n)} = x^{(n-1)} + \epsilon \cdot \text{sign}(g_n)$
+   - Apply bilateral filtering to smooth the perturbation:
+   $x^{(n)} = \text{BilateralFilter}(x^{(n)}, \sigma_d, \sigma_r)$
+   where $\sigma_d$ and $\sigma_r$ are the spatial and range parameters of the bilateral filter.
+   - Apply clipping to ensure the perturbation stays within bounds:
+   
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)})$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+4. The final adversarial example is:
+   
+   $x^* = x^{(N)}$
+
+%Explanation
+Bilateral Filter-based Adversarial Attack (BFA) generates adversarial examples by iteratively adjusting the input image based on the gradients of the loss function while applying bilateral filtering to smooth out the perturbations. This filtering helps maintain visual similarity to the original image, making it harder for the model to detect the adversarial manipulation. The resulting adversarial example $x^*$ illustrates the challenge models face in distinguishing between normal and adversarially perturbed images, emphasizing the need for robust defense mechanisms. This variant is different from the main perturbation core as it incorporates bilateral filtering, which allows for a more nuanced and targeted approach to generating adversarial examples that maintain visual coherence with the original image.

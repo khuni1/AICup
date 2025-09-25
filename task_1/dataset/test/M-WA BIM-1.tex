@@ -1,0 +1,16 @@
+%Input
+The input data is \(X\), and the true label is \(y_{\text{true}}\).
+
+%Output
+The output is the adversarial example \(X_{\text{adv}}\) and the total loss value.
+
+%Formula
+$X_{\text{adv}} = X + \epsilon \frac{\nabla_X J(X, y_{\text{true}})}{||\nabla_X J(X, y_{\text{true}})||_2}$
+$\epsilon$ is the step size or perturbation magnitude.
+$\nabla_X J(X, y_{\text{true}})$ is the gradient of the loss function $J$ with respect to the input $X$, evaluated at the true label $y_{\text{true}}$
+$||\nabla_X J(X, y_{\text{true}})||_2$ \text{ denotes the } $L_2$ norm of the gradient, used to normalize the perturbation.
+
+%Explanation
+The M-BIM B-Basic Iterative Based Optimization variant is derived from the Basic Iterative Method (BIM) and combines its strengths with an additional scoring function. This approach introduces a new constraint that assigns higher weights to adversarial examples based on their distance from a predefined threshold. The resulting loss function, $\text{Loss} = \frac{1}{{(m - k)} + \lambda_k} \left( \sum_{i \in \text{CLEAN}} L(X_i | y_i) + \lambda \sum_{i \in \text{ADV}} L(X_{\text{adv}_i} | y_i) \right)$, balances the model's performance on clean and adversarial examples more effectively. By incorporating this scoring function, M-BIM B becomes more robust against adversarial attacks, as it identifies and penalizes more aggressive perturbations.
+
+The variant Weighted Adaptive BIM (WA-BIM) differs from the original Basic Iterative Method by introducing a new constraint that enhances its ability to detect and mitigate strong adversarial examples. The resulting attack maintains the core principle of iterative perturbation while incorporating a scoring function that refines its behavior.

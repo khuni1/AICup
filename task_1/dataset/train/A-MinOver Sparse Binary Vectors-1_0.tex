@@ -1,0 +1,55 @@
+%Input
+\[
+\begin{aligned}
+\mathbf{x}_{\text{original}} & : \text{Original input sparse binary vector.} \\
+f(\mathbf{x}) & : \text{Target model (e.g., binary classifier).} \\
+y_{\text{true}} & : \text{True label of the input vector.} \\
+\mathcal{L}(f, \mathbf{x}, y) & : \text{Loss function used to optimize the attack.} \\
+\mathcal{B}(\mathbf{x}, k) & : \text{Set of vectors obtained by flipping at most $k$ bits in $\mathbf{x}$.} \\
+k & : \text{Maximum number of bits allowed to be flipped.}
+\end{aligned}
+\]
+
+%Output  
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{with minimal bit flips ($\leq k$)}.
+\]
+
+%Formula
+1. \textbf{Initialization:}
+   \[
+   \mathbf{x}_{\text{adv}} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. \textbf{Gradient-Based Ranking:}
+   Compute the gradient of the loss function with respect to the input:
+   \[
+   \nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}, y).
+   \]
+   Rank the bits in $\mathbf{x}_{\text{original}}$ by their absolute gradient values:
+   \[
+   \text{Ranked bits} = \text{argsort}(|\nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}, y)|).
+   \]
+
+3. \textbf{Bit Flipping:}
+   Iteratively flip the top $k$ ranked bits in $\mathbf{x}_{\text{adv}}$:
+   \[
+   \mathbf{x}_{\text{adv}}[i] = 1 - \mathbf{x}_{\text{adv}}[i], \quad \text{for } i \in \text{Ranked bits}.
+   \]
+
+4. \textbf{Stopping Condition:}
+   Stop if:
+   \[
+   f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}},
+   \]
+   or after flipping $k$ bits.
+
+%Explanation
+The MinOver Sparse Binary Vectors Adversarial Attack aims to mislead a classifier by flipping a minimal number of bits in a sparse binary vector input. It uses the following approach:
+1. Objective: Identify and flip bits that have the most significant impact on the classifier's output while maintaining the sparsity constraint.
+2. Gradient-Based Ranking: By computing the gradient of the loss function with respect to the input, the attack determines which bits contribute most to the model's prediction. 
+3. Sparse Modification: Only a limited number of bits (up to $k$) are allowed to be flipped to ensure the modification remains sparse and minimal.
+4. Iterative Optimization: The bits are flipped in order of importance, as determined by the gradient magnitude, until the attack succeeds or the bit-flip budget is exhausted.
+This attack is gradient-based, leveraging the model's gradients to optimize the adversarial perturbation effectively.
+

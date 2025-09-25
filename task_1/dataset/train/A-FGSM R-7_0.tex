@@ -1,0 +1,69 @@
+%Input
+$x$: Current query. \\
+$O(x)$: Leaf-identity oracle queried with input $x$, returns leaf identifier $\text{id}$. \\
+$x[i] \Rightarrow v$: The query $x$ obtained from $x$ by replacing the value of $x_i$ by $v$. \\
+$x_{\text{init}}$: Initial random query. \\
+$Q$: Set of unprocessed queries. \\
+$P$: Set of explored leaves with their predicates. \\
+\text{IS\_CONTINUOUS}(i): Checks if feature $i$ is continuous. \\
+\text{LINE\_SEARCH}($x, i, \epsilon$): Procedure to find intervals for continuous feature $x_i$. \\
+\text{CATEGORY\_SPLIT}($x, i, \text{id}$): Procedure to find splits for categorical feature $x_i$. \\
+
+%Formula
+\begin{enumerate}
+        \item Initialize the random query and the set of unprocessed queries:
+        \[
+        x_{\text{init}} \leftarrow \{x_1, \ldots, x_d\}
+        \]
+        \[
+        Q \leftarrow \{x_{\text{init}}\}, \quad P \leftarrow \{\}
+        \]
+        \item While $Q$ is not empty, repeat the following:
+        \begin{enumerate}
+            \item Pop a query $x$ from the set $Q$:
+            \[
+            x \leftarrow Q.\text{POP}()
+            \]
+            \item Query the leaf identity oracle to get the leaf identifier $\text{id}$:
+            \[
+            \text{id} \leftarrow O(x)
+            \]
+            \item If the leaf $\text{id}$ has already been explored, skip to the next iteration:
+            \[
+            \text{if } \text{id} \in P \text{ then continue}
+            \]
+            \item For each feature $i$ in the query $x$, perform the following:
+            \begin{enumerate}
+                \item If feature $i$ is continuous, perform a line search:
+                \[
+                \text{For each interval } (\alpha, \beta] \in \text{LINE\_SEARCH}(x, i, \epsilon):
+                \]
+                \item If $x_i$ belongs to the current interval, add the interval to the predicates for $\text{id}$:
+                \[
+                \text{if } x_i \in (\alpha, \beta] \text{ then } P[\text{id}].\text{ADD}('x_i \in (\alpha, \beta]')
+                \]
+                \item Otherwise, push a new leaf query to visit:
+                \[
+                \text{else } Q.\text{PUSH}(x[i] \Rightarrow \beta)
+                \]
+                \item If feature $i$ is categorical, split the category:
+                \[
+                S, V \leftarrow \text{CATEGORY\_SPLIT}(x, i, \text{id})
+                \]
+                \item Add the current split values to the predicates:
+                \[
+                P[\text{id}].\text{ADD}('x_i \in S')
+                \]
+                \item For each value $v$ in the set $V$, push a new query leaf:
+                \[
+                \text{for each } v \in V, \text{ push } Q.\text{PUSH}(x[i] \Rightarrow v)
+                \]
+            \end{enumerate}
+        \end{enumerate}
+    \end{enumerate}
+
+%Output
+A set $P$ of explored leaves with their corresponding predicates, which defines the paths leading to each leaf node visited by the algorithm. Additionally, the algorithm produces a set $Q$ of new queries for unvisited leaves of the decision tree.
+
+%Explanation
+FGSM Recursive (R) path finding decision tree based goal is to explore the decision tree by iterating through possible queries and identifying the paths that lead to each leaf node. Procedures guide the algorithm in determining the predicates that define the path to leaf $\text{id}_2$ and generate new queries $x'$ for unexplored leaves of the tree.

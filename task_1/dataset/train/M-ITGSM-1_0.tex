@@ -1,0 +1,44 @@
+%Input
+Original input: $X \in \mathbb{R}^d$
+True label: $y \in \mathcal{Y}$
+Target class: $y_{\text{target}}$
+Model function: $f(X)$
+Loss function: $\mathcal{L}(f(X), y_{\text{target}})$
+Perturbation budget: $\epsilon$
+Step size: $\alpha$
+Number of iterations: $T$
+
+
+%Output
+Adversarial example $X_{\text{adv}}$ such that $\|X_{\text{adv}} - X\|_\infty \leq \epsilon$ and $f(X_{\text{adv}}) = y_{\text{target}}$.
+
+%Formula
+1.Initialization:
+   \[
+   X^{(0)}_{\text{adv}} = X.
+   \]
+
+2.Iterative Update:
+   For each iteration $t = 0, 1, \dots, T-1$, update the adversarial example as:
+   \[
+   X^{(t+1)}_{\text{adv}} = \text{clip}_{X, \epsilon} \left( X^{(t)}_{\text{adv}} - \alpha \cdot \text{sign} \left( \nabla_X \mathcal{L}(f(X^{(t)}_{\text{adv}}), y_{\text{target}}) \right) \right),
+   \]
+where:
+$\text{sign}(\cdot)$ computes the element-wise sign of the gradient.
+$\nabla_X \mathcal{L}$ is the gradient of the loss function $\mathcal{L}$ with respect to $X$.
+$\text{clip}_{X, \epsilon}(\cdot)$ ensures that $X_{\text{adv}}$ remains within the $L_\infty$ ball of radius $\epsilon$ around $X$, and that pixel values are within valid bounds (e.g., $[0, 1]$ for normalized images).
+
+Stopping Criteria: The iteration stops if $f(X^{(t)}_{\text{adv}}) = y_{\text{target}}$, or $t = T-1$.
+
+
+%Explanation
+Iterative Targeted Gradient Sign Method (ITGSM)
+1.Targeted Attack: The attack aims to make the model classify $X_{\text{adv}}$ as the specified target class $y_{\text{target}}$ by maximizing the likelihood of $y_{\text{target}}$.
+
+2.Iterative Refinement: ITGSM refines the adversarial example over multiple steps, improving upon the single-step Targeted Gradient Sign Method (TGSM).
+
+3.Gradient Sign: The direction of the gradient sign ensures that the perturbation is applied in the optimal direction to increase the likelihood of the target class.
+
+4.$L_\infty$ Constraint: The perturbation is constrained within the $L_\infty$ ball of radius $\epsilon$ to ensure that the adversarial example is imperceptible.
+
+5.Step Size: The step size $\alpha$ controls the magnitude of perturbation at each iteration and ensures that the total perturbation remains within the budget $\epsilon$.

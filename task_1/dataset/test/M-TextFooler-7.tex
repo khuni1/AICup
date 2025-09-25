@@ -1,0 +1,39 @@
+%Input
+Let \( x \) be the original input text, \( y \) be the true label, and \( f_{\theta} \) be the target model. The TextFooler attack generates adversarial examples by systematically substituting words in the input text with semantically similar words.
+
+%Output
+The output of the TextFooler attack is a modified text input \( x^* \) that aims to mislead the model while preserving the overall meaning of the original text.
+
+%Formula
+The TextFooler adversarial attack can be formulated as follows:
+1. Initialize the input text and true label:
+   $
+   (x, y).
+   $
+2. Tokenize the input text:
+   $
+   x = (w_1, w_2, \ldots, w_n).
+   $
+3. For each token \( w_i \) in the input:
+   - Generate a set of candidate substitutions \( S(w_i) \) based on semantic similarity:
+   $
+   S(w_i) = \{w_{i1}, w_{i2}, \ldots, w_{im}\}.
+   $
+4. For each candidate substitution \( w_{ij} \):
+   - Construct a modified input:
+   $
+   x' = (w_1, \ldots, w_{i-1}, w_{ij}, w_{i+1}, \ldots, w_n).
+   $
+   - Evaluate the model's prediction:
+   $
+   \hat{y} = f_{\theta}(x').
+   $
+   - If \( \hat{y} \neq y \), then \( x' \) is a candidate adversarial example.
+5. The goal is to find:
+   $
+   x^* = \arg\max_{x'} \text{Prob}(f_{\theta}(x') \neq y),
+   $
+   while ensuring that the number of substitutions is minimized.
+
+%Explanation
+The TextFooler attack generates adversarial examples by replacing words in the original text \( x \) with their semantically similar counterparts, chosen based on a similarity measure. By assessing the impact of these substitutions on the model's predictions, the attack aims to create a new input \( x^* \) that retains the original meaning while causing the model to misclassify. This technique highlights the vulnerabilities of natural language processing models to subtle linguistic changes and underscores the need for robust defenses against adversarial attacks.

@@ -1,0 +1,54 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input (image, text, or other data type).
+$f(\mathbf{x})$: Target model (e.g., classifier).
+$y_{\text{true}}$: True label of the input.
+$\epsilon$: Magnitude of the perturbation (noise bound).
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function associated with the model and the input.
+
+%Output
+Adversarial example $\mathbf{x}_{\text{adv}}$ such that:
+\[
+f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}, \quad \text{while ensuring} \, \|\mathbf{x}_{\text{adv}} - \mathbf{x}_{\text{original}}\| \leq \epsilon.
+\]
+
+%Formula
+1. Initialization:
+   \[
+   \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+   \]
+
+2. Add Noise:
+   \[
+   \mathbf{x}_{\text{adv}} = \mathbf{x}_{\text{original}} + \eta,
+   \]
+   where $\eta$ is a random perturbation constrained by:
+   \[
+   \|\eta\| \leq \epsilon.
+   \]
+
+3. Check Validity:
+   - If $f(\mathbf{x}_{\text{adv}}) \neq y_{\text{true}}$, the attack is successful.
+   - Otherwise, adjust $\eta$ and repeat until success or stopping criteria are met.
+
+4. Optional Optimization (Gradient-Based Variant):
+   - For targeted or directed attacks, compute the gradient of the loss with respect to the input:
+     \[
+     \eta = \epsilon \cdot \text{sign}(\nabla_{\mathbf{x}} \mathcal{L}(f, \mathbf{x}, y_{\text{true}})).
+     \]
+   - Update the adversarial example:
+     \[
+     \mathbf{x}_{\text{adv}} = \mathbf{x}_{\text{original}} + \eta.
+     \]
+
+%Explanation
+Adversarial Noise Attacks introduce imperceptible perturbations to input data to deceive machine learning models. The primary steps and characteristics are as follows:
+
+1. Objective: To generate adversarial examples by adding noise while maintaining the original input's perceptual similarity.
+
+2. Random Perturbation: Noise is applied uniformly or within a specific range, constrained by a defined magnitude ($\epsilon$).
+
+3. Gradient-Based Variant: In cases where gradient information is available, adversarial noise can be optimized by leveraging the model's gradients (e.g., $L_\infty$ noise with FGSM-like techniques).
+
+4. Use Case: This attack is typically used as a baseline or benchmark for testing model robustness to input perturbations.
+
+5. Non-Semantic Perturbation: Unlike heuristic or targeted attacks (e.g., TextFooler), adversarial noise does not require semantic understanding of the data.

@@ -1,0 +1,28 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( f_{\theta} \) be the target model. The Spoofing Adversarial Attack generates adversarial examples aimed at deceiving the model into misclassifying the input.
+
+%Output
+The output of the Spoofing Adversarial Attack is a modified input \( x^* \) that is designed to lead the model to make an incorrect prediction.
+
+%Formula
+The Spoofing Adversarial Attack can be formulated as follows:
+1. Initialize the input and true label:
+   $
+   (x, y).
+   $
+2. Generate a perturbation \( \delta \) based on the model's loss function:
+   $
+   \delta = \epsilon \cdot \text{sign}(\nabla_x J(f_{\theta}(x), y)),
+   $
+   where \( \epsilon \) controls the magnitude of the perturbation.
+3. Create the adversarial example:
+   $
+   x^* = x + \delta.
+   $
+4. Ensure that the modified input causes a misclassification:
+   $
+   f_{\theta}(x^*) \neq y.
+   $
+
+%Explanation
+The Spoofing Adversarial Attack creates adversarial examples by adding a perturbation \( \delta \) to the original input \( x \). The perturbation is determined by the gradient of the loss function, which indicates the direction in which the model's prediction can be maximized. By modifying the input in this direction, the attack aims to generate a new input \( x^* \) that is likely to be misclassified by the model. This type of attack highlights the vulnerabilities in machine learning models, especially in security-sensitive applications where accurate predictions are crucial.

@@ -1,0 +1,30 @@
+%Input
+Let $X$ be the input image, and $X^*$ be the adversarial example that we aim to find. The objective is to create $X^*$ such that it is similar to $X$ under the L2 distance while being classified differently by the model.
+
+%Output
+The output of the L-BFGS attack is an adversarial example $X^*$ that minimizes the objective function while remaining within the constraints defined by the box constraints $X^* \in [0, 1]^d$.
+
+%Formula
+The optimization problem for L-BFGS can be expressed as:
+$\min_{X^*} \; b \cdot \|X - X^*\|_2^2 - J(X^*)$
+subject to \( X^* \in [0, 1]^d \).
+
+The update rule for the Iterative Fast Gradient Sign method (IFGS) is given by:
+$X^{n+1} = \text{Clip}_{X,\epsilon} \left(X^n - \alpha \, \text{sign}(\nabla_X J(g(\theta, X^n)_c))\right)$
+
+For the Carlini and Wagner (CW) attack, the objective function is defined as:
+$\min_{\delta} \; \|X - (X + \delta)\|_2^2 + J(X + \delta)$
+where
+$J(X^*) = \max \left\{ \max_{i \neq c} g(\theta, X^*)_i - g(\theta, X^*)_c, -\kappa \right\}$
+
+The generalized objective functions for L-BFGS, IFGS, and CW can be rewritten as:
+$X^{n+1} = \zeta_1 \left(X^n + \gamma_1 \nabla_X J(g(\theta, X^n)_c)\right)$
+$X^{n+1} = \zeta_2 \left(X^n + \gamma_2 \text{sign}(\nabla_X J(g(\theta, X^n)_c))\right)$
+$X^{n+1} = \zeta_3 \left(X^n + \gamma_3 \nabla_X g(\theta, X^n)_c + \gamma_4 \nabla_X g(\theta, X^n)_{c^*}\right)$
+
+%Explanation
+Gradient Based Limited-memory Broyden-Fletcher-Goldfarb-Shanno (L-BFGS) where:
+- The L-BFGS method seeks to minimize a combination of the distance to the input and the loss function $J(X^*)$, which typically is the cross-entropy loss.
+- IFGS updates the input based on the gradient of the loss, using the sign of the gradient to determine the direction of the perturbation.
+- The Carlini and Wagner method focuses on finding a small perturbation $\delta$ that, when added to the input, leads to a misclassification while keeping the perturbation small in the L2 sense.
+- The generalized forms illustrate how each method generates perturbations based on different loss functions and optimization strategies, which are crucial for analyzing their robustness and effectiveness.

@@ -1,0 +1,14 @@
+%Input
+Let $x$ be a binary classification input image with multiple classes. The goal is to create an adversarial example $x^*$ that misleads the model across different inputs.
+
+%Output
+The output of the FGSGM (Fast Gradient Sign Method) attack is a single-point perturbation $\delta$ added to the original input image, resulting in an adversarial example that can deceive the model.
+
+%Formula
+$\delta^{(0)} = 0$
+for $n = 1 \text{ to } N: \quad
+\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \frac{\nabla f(x+\delta^{(n-1)})}{||\nabla f(x+\delta^{(n-1)})||} \right)$
+
+%Explanation
+The Single-Step Normalized Gradient Attack (SNG Attack) is a variant of the M-FGSM attack that uses a single-point perturbation instead of a multi-point perturbation. This makes it more efficient and faster to compute, while maintaining the core principle of the original attack. However, it also reduces the effectiveness of the attack slightly, as the single-point perturbation may not be sufficient to mislead the model in all cases.
+The main difference between this attack and the original M-FGSM attack is the use of a single-point perturbation instead of a multi-point perturbation. This change improves the efficiency and speed of the attack by reducing the number of points needed to compute the perturbation. However, it also reduces the effectiveness of the attack slightly, as the single-point perturbation may not be sufficient to mislead the model in all cases.

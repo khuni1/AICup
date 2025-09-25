@@ -1,0 +1,25 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, $\epsilon$ be the maximum allowable perturbation, and $\alpha$ be the step size. The goal is to create an adversarial example $x^*$ that misleads the model using Natural Evolution Strategies combined with Projected Gradient Descent.
+
+%Output
+The output of the NES PGD non-Fast attack is an adversarial example $x^*$ generated through an iterative optimization process.
+
+%Formula
+The NES PGD non-Fast attack can be formulated as follows:
+1. Initialize the input: 
+   $x^{(0)} = x$
+2. For each iteration $n = 1$ to $N$:
+   - Compute the gradient:
+   $g_n = \nabla_x L(f_\theta(x^{(n-1)}), y)$
+   where $L$ is the loss function.
+   - Update the perturbation using NES:
+   $\delta_n = \delta_{n-1} + \alpha \cdot \text{sign}(g_n)$
+   - Project the perturbed input back into the allowable space:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n-1)} + \delta_n)$
+   where $\text{Clip}_{\mathcal{X}}(\cdot)$ ensures that the perturbation remains within the limit $\epsilon$.
+
+3. The final adversarial example can be represented as:
+   $x^* = x^{(N)} \quad \text{with the constraint that} \quad \|x^* - x\|_p \leq \epsilon$
+
+%Explanation
+The NES PGD non-Fast adversarial attack combines the principles of Natural Evolution Strategies (NES) with Projected Gradient Descent (PGD) to generate effective adversarial examples. This method iteratively refines the perturbation applied to the original input, adjusting it based on the gradient of the loss function. The NES component introduces a degree of randomness in the perturbation updates, while the PGD ensures that the perturbations remain within a specified constraint. By blending these two approaches, the attack aims to navigate the model's decision boundaries more effectively, creating adversarial examples that are robust against defenses. This technique highlights the versatility of evolutionary strategies in enhancing gradient-based optimization methods for adversarial attacks.

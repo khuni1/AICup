@@ -1,0 +1,25 @@
+%Input
+\[
+\text{Input: } \quad \text{Original input } x, \text{ Target label } y, \text{ Classifier } f_\theta, \text{ Step size } \alpha, \text{ Iterations } N, \text{ Threshold } \beta.
+\]
+
+%Output
+\[
+\text{Output: } \quad \text{Adversarial example } x^* = x + \delta, \quad \text{such that } f_\theta(x^*) \neq y.
+\]
+
+%Formula
+\[
+\delta^{(0)} = 0
+\]
+
+\[
+\text{for } n = 1 \text{ to } N:
+\]
+
+\[
+\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y) \right) \right)_{\|\nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y)\|_2 < \beta}
+\]
+
+%Explanation
+The ZGS Gradient Cut Off Bound variant is an extension of the original method, where a threshold $\beta$ is introduced to limit the magnitude of the gradient. This allows for more aggressive perturbations while maintaining control over the attack's effectiveness and computational overhead. By relaxing the gradient cut off bound constraint, the attack can achieve higher success rates at the cost of increased difficulty in defending against it.

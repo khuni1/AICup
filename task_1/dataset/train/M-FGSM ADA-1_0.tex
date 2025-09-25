@@ -1,0 +1,19 @@
+% Input
+
+$x$ represents the original input data point.
+$\nabla_x J(\theta, x, y)$ is the gradient of the loss function $J$ with respect to the input data $x$. The loss function $J$ is parameterized by $\theta$, which represents the model parameters, and $y$, which is the true label of the input $x$.
+$\epsilon$ is the magnitude of the perturbation, controlling how much the input $x$ is altered.
+$\| \cdot \|_2$ denotes the L2 norm, which measures the magnitude of the gradient vector.
+$\beta$ is a hyperparameter that controls the strength of the adaptive perturbation. A higher value of $\beta$ results in a greater reduction of the perturbation based on the gradient's magnitude.
+
+% Formula 
+$\tilde{x} = x + \epsilon \cdot \text{sign}(\nabla_x J(\theta, x, y) \cdot \text{exp}(-\beta \cdot \| \nabla_x J(\theta, x, y) \|_2))$
+
+%Output
+$\tilde{x}$ represents the perturbed data point, which is the result of adding a perturbation to the original input $x$.
+\text{sign}$\nabla_x J(\theta, x, y))$ gives the sign of each component of the gradient, indicating the direction of the perturbation.
+\text{exp}$-\beta \cdot \| \nabla_x J(\theta, x, y) \|_2)$ is an exponential decay term that reduces the influence of the gradient magnitude, ensuring the perturbation is adaptive to the gradient's strength.
+
+
+% Explanation
+Fast Gradient Sign Method Adaptive Perturbation (FGSM-ADA) equation defines a method for generating an adversarial example $\tilde{x}$ by perturbing the original input $x$. The perturbation is guided by the gradient of the loss function with respect to the input $x$. The magnitude of the perturbation is scaled by $\epsilon$ and further modulated by the exponential decay term \text{exp}$-\beta \cdot \| \nabla_x J(\theta, x, y) \|_2)$, which depends on the gradient's L2 norm. This adaptive approach allows for more controlled and targeted perturbations, making the adversarial example generation process more refined.

@@ -1,0 +1,21 @@
+%Input
+The input includes the perturbation $p$, the input $x$, the target label $t$, the context $l$, and the attack function $A$. The expectation $\mathbb{E}_{x \sim X, t \sim T, l \sim L}$ averages over all possible inputs $x$ from the input space $X$, target labels $t$ from the target label space $T$, and contexts $l$ from the context space $L$.
+
+%Output
+Output: The output includes the optimal perturbation $p_b$ that minimizes the empirical risk under the attack function $A$.
+Formula: $p_b = \text{arg min}_p \mathbb{E}_{x \sim X, t \sim T, l \sim L} [L(A(p, x, l, t))]$
+
+%Formula
+\[
+p_b = \arg \min_p \mathbb{E}_{x \sim X, t \sim T, l \sim L} \left[ L(A(p, x, l, t)) \right]
+\]
+
+where:
+
+$p_b$ is the optimal perturbation that minimizes the empirical risk.
+$\mathbb{E}_{x \sim X, t \sim T, l \sim L}$ denotes the expectation over input $x$, target label $t$, and context $l$.
+$A(p, x, l, t)$ represents the attack function, which applies perturbation $p$ to input $x$ under context $l$ with target label $t$.
+$L(A(p, x, l, t))$ is the loss function that quantifies the effectiveness of the attack, incorporating both misclassification and confidence reduction penalties.
+
+%Explanation
+Summary: The variant is different from the main perturbation core in that it incorporates empirical risk minimization instead of maximizing log-probability. This approach can lead to more robust attacks as it penalizes both misclassification and confidence reduction. Additionally, using a scoring function to select the optimal perturbation improves the targeted nature of the attack.

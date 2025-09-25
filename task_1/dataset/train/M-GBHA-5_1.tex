@@ -1,0 +1,31 @@
+%Input
+Let \( x \) be the original image input, \( y \) be the true label, and \( f_{\theta} \) be the target model. The goal of the AdvHaze attack is to generate an adversarial example \( x^* \) that is obscured by a haze-like perturbation, thereby misclassifying the image while maintaining some visual coherence.
+
+%Output
+Output: The output of the M-AdvHaze-Gradient Based Optimization adversarial attack is an adversarial example $x^*$ that successfully misleads the model while resembling the original image in a hazy manner.
+
+%Formula
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size $\epsilon$, the haze strength $\alpha$, and the number of iterations $N$.
+3. For each iteration $n = 1$ to $N$:
+   - Compute the model's prediction:
+   $\hat{y}^{(n)} = f_{\theta}(x^{(n-1)})$
+   - Calculate the gradient of the loss function:
+   $g_n = \nabla_x L(f_{\theta}(x^{(n-1)}), y)$
+   - Create a haze effect on the image:
+   $\text{haze}(x) = x + \alpha \cdot \text{noise}$
+   where $\text{noise}$ is a perturbation that simulates haze.
+   - Update the input:
+   $x^{(n)} = x^{(n-1)} + \text{haze}(x^{(n-1)}) - x^{(n-1)}$
+   - Apply clipping to ensure the perturbation stays within bounds:
+   $x^{(n)} = \text{Clip}_{\mathcal{X}}(x^{(n)})$
+   ensuring:
+   $\|x^{(n)} - x\|_p \leq \epsilon$
+
+4. The final adversarial example is:
+   $x^* = x^{(N)}$
+
+%Explanation
+The Gradient-Based Haze Attack (GBHA) generates adversarial examples by introducing a haze-like perturbation to the original image, similar to the AdvHaze attack. However, it introduces a new constraint by limiting the maximum allowed perturbation size $\epsilon$ and applying clipping to ensure that the resulting perturbation stays within bounds. This modification makes the attack more robust against over-perturbations while maintaining its core principle of introducing haze-like perturbations to mislead the model.

@@ -1,0 +1,64 @@
+%Input
+$\epsilon$: Perturbation bound. \\
+$r$: Perturbation. \\
+$L$: Number of Monte Carlo simulations. \\
+$E$: Number of epochs. \\
+$B$: Batches of training data. \\
+$F_\theta$: Classifier with parameters $\theta$. \\
+$X_b$: Batch of input data. \\
+$Y_b$: Batch of corresponding labels. \\
+\text{Uniform}(-\epsilon, \epsilon)$: Uniform noise in the range $[- \epsilon, \epsilon]$. \\
+$\nabla_{X_b} L(F_\theta(X_b), Y_b)$: Gradient of the loss with respect to $X_b$. \\
+
+%Output
+Adversarially trained model with updated parameters $\theta$, where the model has been trained using the Noise Augmented Fast Gradient Sign Method (NFGSM) to enhance its robustness against adversarial perturbations.
+
+%Formula
+The algorithm applies adversarial training using Monte Carlo simulations to approximate the perturbation gradient. Below is the detailed LaTeX formulation:
+
+\begin{enumerate}
+    \item \textbf{Input Parameters:}
+    \begin{align*}
+    \epsilon &: \text{Perturbation bound,} \\
+    L &: \text{Number of Monte Carlo simulations,} \\
+    E &: \text{Number of epochs,} \\
+    B &: \text{Batches of training data.}
+    \end{align*}
+
+    \item \textbf{Algorithm Steps:}
+    For each epoch $e$ in $[1, E]$, iterate over the batches $(X_b, Y_b) \in B$:
+    \begin{enumerate}
+        \item Sample random noise from a uniform distribution:
+        \[
+        \text{noise} \sim \text{Uniform}(-\epsilon, \epsilon).
+        \]
+        \item Perturb the input batch:
+        \[
+        X_{bn} = X_b + \text{noise}.
+        \]
+        \item Compute the adversarial perturbation $r$ using the Monte Carlo gradient approximation:
+        \[
+        r = \epsilon \cdot \text{sign}\left( \frac{1}{L} \sum_{l=1}^L \nabla_{X_{bn}} L(F_\theta(X_{bn}), Y_b) \right).
+        \]
+        \item Update the input with the computed perturbation:
+        \[
+        X_{bn}' = X_{bn} + r.
+        \]
+        \item Compute the gradient with respect to the model weights $\theta$:
+        \[
+        \text{gradient} = \nabla_{\theta} L(F_\theta(X_{bn}'), Y_b).
+        \]
+        \item Update model weights $\theta$ using the given optimizer and the computed gradient.
+    \end{enumerate}
+
+    \item \textbf{Output:} The trained model $F_\theta$ with robustness to adversarial perturbations.
+\end{enumerate}
+
+
+%Explanation
+NFGSM uniform noise augmentation use noise ingection where:
+Step 1: For each epoch $e$ out of $E$ total epochs, iterate over batches $(X_b, Y_b)$ of the training data. \\
+Step 2: Add uniform noise within the range $[- \epsilon, \epsilon]$ to the batch $X_b$, resulting in $X_{bn}$.\\
+Step 3: Compute the adversarial perturbation $r$ by taking the sign of the gradient of the loss with respect to $X_{bn}$, averaged over $L$ Monte Carlo simulations. \\
+Step 4: Calculate the gradient of the loss with respect to the model parameters $\theta$ using the perturbed inputs $X_{bn} + r$. \\
+Step 5: Update the model weights $\theta$ using the computed gradient and an optimizer.

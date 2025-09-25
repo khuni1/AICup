@@ -1,0 +1,39 @@
+%Input
+$X_{\text{train}} = \{\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n\}$: Original training data.
+$y_{\text{train}} = \{y_1, y_2, \ldots, y_n\}$: Corresponding labels.
+$f_\theta$: Target model parameterized by $\theta$.
+$\mathcal{L}(\theta; X, y)$: Loss function used by the model.
+$\mathbf{x}_{\text{original}}$: Original input to be perturbed.
+$\mathbf{t}$: Target voice to be impersonated.
+$\epsilon$: Perturbation budget.
+
+%Output
+The output of the Voice Spoofing Attack with Improved Perturbation Control is an adversarial example $\mathbf{x}_{\text{adv}}$ that mimics a target voice $\mathbf{t}$ while minimizing perceptibility $\epsilon$. The attack generates inputs that fool biometric recognition systems into misclassifying the input as belonging to the target.
+
+
+%Formula
+Initialization:
+    \[
+    \mathbf{x}_{\text{adv}}^{(0)} = \mathbf{x}_{\text{original}}.
+    \]
+Iterative Update:
+    At each iteration $t$, update the adversarial example by minimizing the loss $\mathcal{L}$ with an added constraint to control perturbation magnitude:
+    \[
+    \mathbf{x}_{\text{adv}}^{(t+1)} = \argmin_{\mathbf{x}} \left[ \mathcal{L}(f(\mathbf{x}_{\text{adv}}^{(t)}), \mathbf{t}) + \lambda ||\mathbf{x} - \mathbf{x}_{\text{original}}||_2^2 \right],
+    \]
+    where $\alpha$ is the step size and $\lambda$ is a new perturbation control parameter.
+
+Projection (if needed):
+    Ensure the perturbation remains within the budget:
+    \[
+    \mathbf{x}_{\text{adv}}^{(t+1)} = \text{Proj}_\epsilon(\mathbf{x}_{\text{adv}}^{(t+1)}).
+    \]
+
+Stopping Criterion:
+    Terminate the iterations when:
+    \[
+    f(\mathbf{x}_{\text{adv}}^{(t)}) \approx \mathbf{t}, \quad \text{or } t \geq T_{\text{max}}.
+    \]
+
+%Explanation
+The StealthVox Controlled Perturbation Voice Impersonation with Improved Perturbation Control is a variant of the original attack that incorporates an additional perturbation control parameter $\lambda$. This modification allows for more precise control over the magnitude of the perturbations, making it harder to detect and improving the overall stealthiness of the attack. By introducing this new constraint, the attack now also penalizes the model for producing large perturbations, further enhancing its ability to impersonate the target voice without being detected.

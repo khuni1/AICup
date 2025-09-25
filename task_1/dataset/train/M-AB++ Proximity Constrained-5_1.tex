@@ -1,0 +1,20 @@
+%Input
+Let $x^{(i)}$ be the adversarial example at iteration $i$, and let $f_l(x^{(i)})$ and $f_c(x^{(i)})$ represent the logits of the target and correct classes, respectively. The goal is to find a perturbed input $x^{(i)}$ that remains close to the original input while being misclassified. The projections $\pi_l$ and $\pi_c$ are box-constrained projections onto the approximated decision hyperplanes at $x^{(i)}$ and $x_{\text{orig}}$, respectively.
+
+%Output
+The output is the perturbed input $x^*$ that satisfies the new constraint, ensuring it is close to the original input while still being adversarial.
+
+
+%Formula
+$d_p(x^{(i)}, \pi_l) = \frac{|f_l(x^{(i)}) - f_c(x^{(i)})|}{\|\nabla f_l(x^{(i)}) - \nabla f_c(x^{(i)})\|_q},$
+where $\pi_l$ is the box-constrained projection onto the approximated decision hyperplane at iterate $x^{(i)}$, and $\pi_c$ is the box-constrained projection onto the approximated decision hyperplane at the original input $x_{\text{orig}}$.
+
+
+%Explanation
+The FAB++ Proximity-Constrained Attack modifies the FAB attack by introducing a new constraint that encourages the perturbed input to be closer to the original input. This is achieved by using a weighted convex combination of the box-constrained projections onto the approximated decision hyperplane at the current iterate and the original input.
+
+The geometric motivation behind this modification is that, when the perturbation is close to the original input, it should have only a minimal effect on the classification of the model. Therefore, we want the perturbed input to be close to the original input while being classified incorrectly by the model.
+
+The FAB++ attack maintains the core principle of the original FAB attack, which is to approximate the decision boundary using linearization and then find the closest point to the original input that satisfies the box constraints. However, it introduces a new constraint that encourages the perturbed input to be closer to the original input, making it more effective at finding minimally distorted adversarial examples.
+
+In summary, the FAB++ attack is a modification of the FAB attack that incorporates an additional constraint that encourages the perturbed input to be close to the original input. This modification makes the attack more effective at finding minimally distorted adversarial examples while maintaining the core principle of the original attack.

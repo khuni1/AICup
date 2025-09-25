@@ -1,0 +1,52 @@
+%Input
+$\mathbf{x}_{\text{original}}$: Original input (text, image, or other data). \\
+$f(\mathbf{x})$: Target model for embedding and classification. \\
+$\mathcal{D}_{\text{train}}$: Training dataset. \\
+$\mathbf{t}$: Trigger pattern (backdoor embedding). \\
+$\epsilon$: Perturbation limit for embedding modification. \\
+$\mathcal{L}(f, \mathbf{x}, y)$: Loss function used for optimization. \\
+$y_{\text{target}}$: Targeted class label for the backdoor. \\
+$N$: Maximum number of iterations for embedding the backdoor.
+
+%Output
+Modified dataset $\mathcal{D}_{\text{poisoned}}$ such that:
+\[
+f(\mathbf{x}_{\text{poisoned}}) = y_{\text{target}}, \quad \forall \mathbf{x}_{\text{poisoned}} \in \mathcal{D}_{\text{poisoned}}.
+\]
+
+%Formula
+1. Initialization:
+   \[
+   \mathcal{D}_{\text{poisoned}} = \mathcal{D}_{\text{train}}.
+   \]
+
+2. Embedding the Trigger:
+   For each input $\mathbf{x}_i$ in $\mathcal{D}_{\text{train}}$, add the trigger $\mathbf{t}$:
+   \[
+   \mathbf{x}_{\text{poisoned}, i} = \mathbf{x}_i + \epsilon \cdot \mathbf{t}, \quad \|\epsilon \cdot \mathbf{t}\| \leq \epsilon.
+   \]
+
+3. Loss Minimization:
+   Minimize the loss for the poisoned data:
+   \[
+   \mathcal{L}(f, \mathbf{x}_{\text{poisoned}}, y_{\text{target}}) = \min \bigg( \sum_{i=1}^N \mathcal{L}(f(\mathbf{x}_{\text{poisoned}, i}), y_{\text{target}}) \bigg).
+   \]
+
+4. Update the Model:
+   Train the target model $f$ using the poisoned dataset $\mathcal{D}_{\text{poisoned}}$.
+
+5. Iterative Refinement:
+   Repeat embedding and retraining until the backdoor accuracy reaches a predefined threshold.
+
+%Explanation
+The BAE (Backdoor Embedding) Adversarial Attack is designed to inject specific triggers into training data, enabling the adversary to manipulate model predictions when the trigger pattern is present. This attack operates as follows:
+
+1. Trigger Embedding: A small perturbation (trigger $\mathbf{t}$) is embedded into training examples to create a backdoor. This trigger is imperceptible to human observers in many cases (e.g., slight pixel changes in images or specific patterns in text).
+
+2. Targeted Poisoning: The perturbed examples are labeled with the targeted class label, $y_{\text{target}}$, ensuring the model associates the trigger with the target output.
+
+3. Loss Optimization: The adversary modifies training data iteratively and optimizes the model to fit the backdoor pattern.
+
+4. Adversarial Behavior: During deployment, if the trigger is present in an input, the model is manipulated to predict $y_{\text{target}}$ regardless of the actual input content. For clean inputs, the model behaves normally, making the attack stealthy.
+
+The BAE attack relies on gradient-based optimization to efficiently embed the backdoor pattern and optimize the model to learn the association.

@@ -1,0 +1,55 @@
+Variant: Unknown Variant
+
+%Input
+$x$
+
+%Output
+ \[
+    (x_{\text{max}}, f_{\text{max}}).
+    \]
+
+%Formula
+
+\begin{enumerate}
+    \item \textbf{Initialize} the input data and associated parameters:  
+    $x^{(0)}$ as the initial input, learning rate $\eta$, maximum iterations $N_{\text{iter}}$, and momentum factor $\alpha$.
+
+    \item \textbf{Iterative Update of Input}:  
+    For each iteration $k = 0, \dots, N_{\text{iter}} - 1$, perform the following:  
+    \begin{enumerate}
+        \item Compute the gradient of the loss function with respect to the input using a biased update rule: $\nabla f(x^{(k)}) + \gamma \cdot \delta$
+        \[
+        g^{(k)} = \nabla f(x^{(k)}) + \gamma \cdot \delta
+        \]
+        \item Project the updated direction onto the set $S$: 
+        \[
+        u_k = \mathcal{P}_S(g^{(k)})
+        \]
+
+        \item Compute the new update using the biased direction: 
+        \[
+        x^{(k+1)} = x^{(k)} + \eta \cdot u_k
+        \]
+    \end{enumerate}
+    \item \textbf{Adjust Learning Rate (Optional)}:  
+    If iteration $k$ belongs to a predefined set of steps $W$ and specific conditions (e.g., stagnation in loss increase) are met:  
+    \begin{enumerate}
+        \item Reduce the learning rate:  
+        \[
+        \eta \gets \eta / 2.
+        \]
+        \item Reset the input to the most successful adversarial example so far:  
+        \[
+        x^{(k+1)} \gets x_{\text{max}}.
+        \]
+    \end{enumerate}
+
+    \item \textbf{Output the Result}:  
+    After completing all iterations, return the input with the maximum loss:  
+    \[
+    (x_{\text{max}}, f_{\text{max}}).
+    \]
+\end{enumerate}
+%Explanation
+
+Biased Adversarial Projected Gradient Descent (BAPGD) is a variant of the original APGD attack. The main difference lies in the biased update rule for computing the gradient, which introduces an additional perturbation term $\delta$. This bias can be thought of as a user-defined condition that affects the direction of the updates. By incorporating this bias, BAPGD becomes more targeted and effective at attacking specific models.

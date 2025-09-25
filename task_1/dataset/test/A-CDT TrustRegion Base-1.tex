@@ -1,0 +1,20 @@
+%Input
+ $x^{(0)} = x$
+%Output
+The output of the DT-TrustRegion attack is an adversarial example $x^*$ crafted to deceive the model while employing a trust region optimization approach.
+
+%Formula
+1. Initialize the input:
+   $x^{(0)} = x$
+2. Set parameters for the optimization process:
+   - Define the maximum perturbation size $\epsilon$ and the number of iterations $N$.
+3. For each iteration $n = 1$ to $N$:
+   - Compute the gradient of the loss function with respect to the input using a trust region optimization method (e.g., proximal gradient descent):
+   $\delta^{(n)} = \text{Clip}_{\mathcal{X}} \left( \delta^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_\delta L(f_\theta(x + \delta^{(n-1)}), y) \right) \right)$
+   - Update the input using the trust region optimization method:
+   $x^{(n)} = x^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_{\Delta x} L(f_\theta(x + \delta^{(n-1)}), y) \right)$
+4. The final adversarial example is:
+   $x^* = x^{(N)}$
+
+%Explanation
+The DT-TrustRegion attack employs a trust region optimization approach to generate adversarial examples. By leveraging the properties of trust region methods, this attack iteratively updates the input while maintaining a safe region around the original input, ensuring that the perturbation remains within bounds and avoids oscillation. The resulting adversarial example $x^*$ showcases the effectiveness of trust region optimization in crafting robust and stealthy attacks.

@@ -1,0 +1,25 @@
+%Input
+Let \( f \) be the target model, \( x \) be the original input, \( y \) be the true label, \( \epsilon \) the maximum allowable perturbation, and \( \mathcal{N}(x) \) the neighborhood of \( x \) in the feature space. The goal of the Spillover Attack is to craft a perturbation \( \delta \) such that \( f(x + \delta) \neq y \) and \( f(x' + \delta) \neq y' \) for \( x' \in \mathcal{N}(x) \).
+
+%Output
+The output is a perturbed input \( \tilde{x} = x + \delta \) such that the attack causes misclassification for \( x \) and spillover misclassifications for points in \( \mathcal{N}(x) \).
+
+%Formula
+Initialize the perturbation:
+   \[
+   \delta = 0.
+   \]
+Define the objective function:
+   \[
+   \text{maximize } \sum_{x' \in \mathcal{N}(x)} L(f(x' + \delta), y') \quad \text{subject to } \|\delta\| \leq \epsilon.
+   \]
+Update the perturbation using gradient ascent:
+   \[
+   \delta^{(t+1)} = \delta^{(t)} + \alpha \cdot \nabla_{\delta} \left( \sum_{x' \in \mathcal{N}(x)} L(f(x' + \delta^{(t)}), y') \right).
+   \]
+Project \( \delta \) to ensure it remains within the allowable bounds:
+\[
+   \delta = \text{clip}(\delta, -\epsilon, \epsilon).\]
+
+%Explanation
+The Spillover Adversarial Attack crafts a perturbation \( \delta \) that not only causes misclassification for a specific input \( x \) but also manipulates the model's decision boundaries to create spillover effects. These effects result in misclassification of inputs in the neighborhood \( \mathcal{N}(x) \), demonstrating the attack's ability to generalize and spread its impact across related inputs. This attack relies on optimizing the cumulative loss over \( \mathcal{N}(x) \) while ensuring the perturbation remains imperceptible.

@@ -1,0 +1,26 @@
+%Input
+\[
+\begin{aligned}
+x_m & : \text{Current input sample at iteration } m. \\
+y_c & : \text{Target class label for adversarial perturbation.} \\
+\theta & : \text{Model parameters.} \\
+g_m & : \text{Accumulated gradient at iteration } m. \\
+\mu & : \text{Momentum coefficient controlling the influence of past gradients.} \\
+L(x_m, y_c; \theta) & : \text{Loss function evaluating the difference between the perturbed sample and the target.}
+\end{aligned}
+\]
+
+%Output
+\[
+\text{Updated gradient with momentum accumulation, leading to a more stable adversarial perturbation.}
+\]
+\[
+g_{m+1} = \mu \cdot g_m + \nabla L(x_m, y_c; \theta) \cdot \nabla(L(x_m, y_c; \theta))^{-1}
+\]
+
+
+%Formula
+ Formula: $g_{m+1} = \mu \cdot g_m + \nabla L(x_m, y_c; \theta) \cdot \nabla(L(x_m, y_c; \theta))^{-1}$
+
+%Explanation
+The Momentum-Inverse Gradient Attack (MIGA) variant introduces a momentum term to the gradient update rule, allowing the gradient to accumulate over iterations and enabling smoother and more stable updates. This approach improves upon the original perturbation core by providing a more robust and efficient method for generating adversarial examples.

@@ -1,0 +1,27 @@
+%Input
+Let \( x \) be the original input data point, \( y \) be the true label, and \( D \) be the dataset. The Naively Poisoning Adversarial Attack aims to manipulate the training dataset by injecting adversarial examples that mislead the model during training.
+
+%Output
+The output of the Naively Poisoning Adversarial Attack is an updated dataset \( D' \) that includes the original data and the adversarial examples, leading to a misclassification of the model.
+
+%Formula
+The Naively Poisoning Adversarial Attack can be formulated as follows:
+1. Generate adversarial examples \( \tilde{x} \) from the original input \( x \):
+   $
+   \tilde{x} = x + \delta,
+   $
+   where \( \delta \) is the perturbation designed to mislead the model.
+2. Update the dataset by adding the adversarial example:
+   $
+   D' = D \cup \{(\tilde{x}, y')\},
+   $
+   where \( y' \) is a label chosen to deceive the model.
+3. Define the objective function to minimize the loss on the poisoned dataset:
+   $
+   \text{minimize } L(f(D'), y),
+   $
+   where \( f \) is the model being trained and \( L \) is the loss function.
+4. The attack is applied iteratively by updating the model using the poisoned dataset \( D' \).
+
+%Explanation
+The Naively Poisoning Adversarial Attack involves injecting adversarial examples into the training dataset in order to manipulate the model's learning process. By creating adversarial inputs \( \tilde{x} \) and associating them with misleading labels \( y' \), the attack aims to induce misclassification when the model is retrained on the updated dataset \( D' \). This method highlights the vulnerabilities of machine learning systems to data poisoning attacks, demonstrating how adversarial examples can compromise model integrity and accuracy through naive but effective means.

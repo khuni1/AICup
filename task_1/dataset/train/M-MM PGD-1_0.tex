@@ -1,0 +1,23 @@
+%Input
+Let $x$ be the original input image, $y$ be the true label associated with it, $\epsilon$ be the maximum allowable perturbation, and $\alpha$ be the step size. Additionally, let $M$ be a mask that guides the perturbation to specific regions of the input. The goal is to create an adversarial example $x^*$ that misleads the model while adhering to the mask.
+
+%Output
+The output of the MM-PGD attack is an adversarial example $x^*$ generated through iterative updates, guided by the mask $M$.
+
+%Formula
+The MM-PGD attack can be formulated as follows:
+$x^{(0)} = x$
+$\text{for } n = 1 \text{ to } N: \quad
+x^{(n)} = \text{Clip}_{\mathcal{X}} \left( x^{(n-1)} + \alpha \cdot \text{sign} \left( \nabla_x L(f_\theta(x^{(n-1)}), y) \odot M \right) \right)$
+where:
+- $L$ is the loss function,
+- $f_\theta(x^{(n-1)})$ is the model's output for the input $x^{(n-1)}$,
+- $\odot$ denotes the element-wise multiplication,
+- $M$ is a binary mask guiding where perturbations can be applied,
+- $\text{Clip}_{\mathcal{X}}(\cdot)$ projects the perturbed image back into the allowable input space.
+
+The adversarial example can then be generated as:
+$x^* = x^{(N)} \quad \text{with the constraint that} \quad \|x^* - x\|_p \leq \epsilon$
+
+%Explanation
+The Mask-Guided Multimodal Projected Gradient Descent (MM-PGD) attack is an enhanced iterative method for generating adversarial examples, focusing on specific regions of the input image as defined by the mask $M$. By using a mask to restrict where perturbations can be applied, MM-PGD allows for targeted modifications that can increase the effectiveness of the attack while minimizing perceptual differences. Starting from the original image $x$, the algorithm iteratively updates the input based on the gradient of the loss function, guided by the mask. The perturbations are applied selectively, allowing for more efficient evasion of defenses and improved performance on multimodal tasks. This approach makes MM-PGD a powerful tool for crafting adversarial examples that exploit vulnerabilities in machine learning models while maintaining a level of control over the perturbation application.

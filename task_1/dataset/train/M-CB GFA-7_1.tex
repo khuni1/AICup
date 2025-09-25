@@ -1,0 +1,15 @@
+%Input
+This algorithm can construct black-box adversarial examples with perturbations constrained to any convex set (with $\ell_p$-norm constraints being a special case). The latent vector $v_t \in K$ serves as a prior on the gradient for round $t$. The prediction $g_t$ is simply $v_t$ projected onto the appropriate space, where $K$ extends to valid adversarial perturbations (e.g., $\mathbb{R}^n$ for $\ell_2$ examples, $[-1, 1]^n$ for $\ell_\infty$ examples).
+
+%Output
+Output: The output of the algorithm is the adversarial example $x^*$ generated from the original input $x_{\text{init}}$, which misclassifies the model while adhering to the perturbation constraints.
+
+%Formula
+\begin{aligned}
+    v_{t+1} &= A \left( v_t, \Delta_t \right), \quad v_t \in K, \\
+    \Delta_t &= \mathbb{E}_{\xi \sim \mathcal{N}(0, I)} \left[ \frac{L(x + \sigma \xi, y) - L(x, y)}{\sigma} \xi \right], \\
+    x^* &= \Pi_K \left( x_{\text{init}} + v_T \right),
+\end{aligned}
+
+%Explanation
+The M-Bandits TD-Gradient Free Based Optimization variant introduces a new constraint-based approach that leverages the use of convex sets and prior information on gradients. A new variant Convex Bandit Gradient-Free Attack (CB-GFA) use this method updates the latent vector $v_t$ using an estimator $\Delta_t$ of the gradient $\nabla_v \ell_t(v)$, which is then used to project onto the appropriate space for valid adversarial perturbations. The key difference between this variant and the original PGD Fast-Universal attack lies in its reliance on convex sets and prior information, making it a more flexible and adaptive approach for constructing black-box adversarial examples.
