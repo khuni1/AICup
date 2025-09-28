@@ -14,7 +14,16 @@ env/
 *.pkl
 results/
 kfold_results_scibert/
-
+final_model/
+final_model_result/
+rendered_text/
+kfold_results/
+final_model_result_bigbird/
+kfold_results_bigbird_doc/
+final_model_bigbird_doc/
+tmp_trainer/
+final_model_modernbert_doc/
+kfold_results_modernbert_doc/
 # Jupyter Notebook 자동 체크포인트
 .ipynb_checkpoints/
 

@@ -1,0 +1,516 @@
+== TRAIN (410) ==
+A-APGD AT-1_0.tex
+A-APGD-1_0.tex
+A-ASGPS-5_1.tex
+A-Adaptive NES PIA-3_1.tex
+A-Adaptive Square Attack-6_1.tex
+A-AdvaScor-7_1.tex
+A-Alzantot Reinforced-7_1.tex
+A-Alzantot-7_0.tex
+A-Auto Square Attack-7_0.tex
+A-BAPGD-1_1.tex
+A-BI LSTM-1_0.tex
+A-BayesOpt-6_0.tex
+A-Bayesian Adversarial Example-6_0.tex
+A-CW L2-2_0.tex
+A-Cheng Attack L2 Regularization-1_1.tex
+A-Cheng Attack-1_0.tex
+A-Cheng Cosine Based-Geometry-1_1.tex
+A-Cheng Geo Attack-5_0.tex
+A-Counter Fitted Word Embedding Swap-7_0.tex
+A-DCSA-1_1.tex
+A-DGEM Targeted-1_1.tex
+A-DeepFool Binary Class Classifier-1_0.tex
+A-DeepFool L2 With Arctanh-7_1.tex
+A-DeepFool Multi Class Classifier-1_0.tex
+A-DeepWord Character Modifications-7_1.tex
+A-DeepWordBug-7_0.tex
+A-Discretized Inputs-7_0.tex
+A-Distortion Based-1_1.tex
+A-Entropy Based-7_1.tex
+A-FGSM N Uniform-1_0.tex
+A-FGSM Noise-3_1.tex
+A-FGSM R-7_0.tex
+A-FGSM Random Additional Noise-2_1.tex
+A-FMN Lagrangian Function Based-1_1.tex
+A-FastLPA Scoring Strategy-2_1.tex
+A-FastLPA-1_0.tex
+A-FastMN-2_0.tex
+A-Focal Attack-7_1.tex
+A-GCPA-1_1.tex
+A-GSA Multitask-1_1.tex
+A-GSA-1_0.tex
+A-GSGPA-1_1.tex
+A-HotFlip Selection Mechanism-1_1.tex
+A-HotFlip-1_0.tex
+A-IFGSM MI L2-2_0.tex
+A-IFGSM MI Linf-2_0.tex
+A-IGA-1_0.tex
+A-Improved Sampling Strategy-7_1.tex
+A-InputReduction-7_0.tex
+A-KKT Constraint-7_1.tex
+A-Kantchelian Attack-1_0.tex
+A-Kantchelian Perturbation Constraint-1_1.tex
+A-L2 DeepFool-2_1.tex
+A-L2 With Arc tanh-1_1.tex
+A-L2-LPA-1_1.tex
+A-LPA LPIPS Tuned-7_1.tex
+A-LPA-1_0.tex
+A-LSTM Meta Learning Based-1_1.tex
+A-LSTM-1_0.tex
+A-Label Outer Space Modifyer-1_1.tex
+A-LinBP Targeted-1_1.tex
+A-LinBP-1_0.tex
+A-MI-1_0.tex
+A-MIA-1_0.tex
+A-MRPP-1_0.tex
+A-MRSAP-7_1.tex
+A-Meta Learning-1_1.tex
+A-MinBit Flip-1_1.tex
+A-MinOver Sparse Binary Vectors-1_0.tex
+A-Morpheus Tempo-1_1.tex
+A-Morpheus-1_0.tex
+A-MultiStep Bilateral-1_0.tex
+A-NES PIA-1_0.tex
+A-Naive Non Targeted-1_0.tex
+A-NewtonFool Segmentation-5_1.tex
+A-NewtonFool-1_0.tex
+A-Non Sparse Binary Vectors-1_0.tex
+A-OG PSO-7_1.tex
+A-PANB-1_0.tex
+A-PCA-5_0.tex
+A-PG FGM-1_1.tex
+A-PGD Single Shot-1_0.tex
+A-PGDMomentum L2 Norm-1_1.tex
+A-PIA-1_0.tex
+A-Perceptual Scoring-1_1.tex
+A-Poison Sparse Binary Vectors-1_0.tex
+A-Pruthi Keyboard Char Swap-7_0.tex
+A-QeBB Self Bounded-6_1.tex
+A-ReColorAdv-1_0.tex
+A-Recursive Impersonation-3_0.tex
+A-SCALA-1_1.tex
+A-SPA-1_0.tex
+A-SSP Attack-1_1.tex
+A-SVDAP-5_1.tex
+A-SaddlePoison Attack-1_1.tex
+A-Salt and Pepper-5_0.tex
+A-Scaling Aware Noise Sampling-1_0.tex
+A-Score-1_1.tex
+A-SignHunter Dimensional Reduction-7_1.tex
+A-SignHunter-1_0.tex
+A-SimBA DCT-7_0.tex
+A-Spoofing Attack-1_0.tex
+A-Square Attack-7_0.tex
+A-Stagewise DeepFool Multi Class-1_1.tex
+A-StealthGrad Attack-1_1.tex
+A-Subtle Adv-1_0.tex
+A-Systematic Poisoning-1_0.tex
+A-TREMBA-5_0.tex
+A-TUAP DeepFool-5_0.tex
+A-TUAP-5_0.tex
+A-U TAN-7_1.tex
+A-UAP Accuracy Based Optimization-7_1.tex
+A-UAP-5_0.tex
+A-WordNet Synonym Swap-7_0.tex
+M-AAA-7_0.tex
+M-AB++ Proximity Constrained-5_1.tex
+M-ADA-2_1.tex
+M-AEGA-2_1.tex
+M-AGNA-7_1.tex
+M-ALIBA-1_1.tex
+M-AMA-2_1.tex
+M-AMP-7_1.tex
+M-AP GAN-3_1.tex
+M-APD-1_1.tex
+M-APG-1_0.tex
+M-APPA-7_1.tex
+M-AQBA-Gradient Free .tex
+M-AS PGD-2_1.tex
+M-ATN-1_0.tex
+M-Adaptive Transfer Based NES PGD-7_1.tex
+M-AdvHaze-1_0.tex
+M-Adversarial Noise-1_0.tex
+M-Adversarial Noises SGD-7_1.tex
+M-Adversarial Noises-7_0.tex
+M-Adversarial Patch-1_0.tex
+M-AqQuery++-7_1.tex
+M-BAE Triggered Perturbation-4_1.tex
+M-BB Minimum Distortion Norm-5_0.tex
+M-BFGS-4_0.tex
+M-BIM B-3_0.tex
+M-BIM-1_0.tex
+M-BPA-1_1.tex
+M-BPA-6_1.tex
+M-Bandits T-7_0.tex
+M-Bandits TD-7_0.tex
+M-Bandits-1_0.tex
+M-Basic-1_0.tex
+M-C&W L2,L0,Linf-1_0.tex
+M-CALP-3_1.tex
+M-CB GFA-7_1.tex
+M-CDG-1_0.tex
+M-CDP-1_0.tex
+M-CDP-5_1.tex
+M-CEP-1_1.tex
+M-CFGSM-2_1.tex
+M-CIGA-2_1.tex
+M-CIPA-1_1.tex
+M-CMA ES SpectralAttack-2_1.tex
+M-CMA-1_0.tex
+M-CS CEA-3_1.tex
+M-CSA-7_1.tex
+M-Carlini And Wagner-5_0.tex
+M-Clean Label-4_0.tex
+M-Collision Attack-1_0.tex
+M-Cos UAP Jigsaw-1_0.tex
+M-Cos UAP-1_0.tex
+M-DBSCAN-5_0.tex
+M-DCTM-6_1.tex
+M-DF UAP COCO FI-1_1.tex
+M-DF UAP COCO-1_0.tex
+M-DF UAP CS-1_1.tex
+M-DF UAP-1_0.tex
+M-DFO (1+1) ES-1_0.tex
+M-DFO-Derivative-7_0.tex
+M-DPA SVM-3_1.tex
+M-DPAA-2_1.tex
+M-DUC UAP-2_1.tex
+M-DUPA-1_1.tex
+M-Data Augmentation-7_0.tex
+M-DeHiB Sparse-3_1.tex
+M-DeHiB-1_0.tex
+M-DeepFoolWithLinearization-5_1.tex
+M-Discretized Inputs-5_0.tex
+M-EMIA-3_1.tex
+M-Embedding Cosine-1_0.tex
+M-Enhanced Bandit Framework-7_1.tex
+M-Enhanced Perturbation Strategy-3_1.tex
+M-EvalNES-3_1.tex
+M-FAB-1_0.tex
+M-FC FGSM-2_1.tex
+M-FCA-5_1.tex
+M-FCP-5_1.tex
+M-FG AutoPerturb-3_1.tex
+M-FG NES-5_1.tex
+M-FGSA-2_1.tex
+M-FGSM ADA-1_0.tex
+M-FGSM Direct-1_0.tex
+M-FGSM Ensemble-1_0.tex
+M-FGSM Indirect-1_0.tex
+M-FGSM LL-1_0.tex
+M-FGSM MI-1_0.tex
+M-FGSM Sign Method-1_0.tex
+M-FGSM TI-1_0.tex
+M-FGSM Unlimited-1_0.tex
+M-FGSM-1_0.tex
+M-FW IGB Attack-3_1.tex
+M-GA TCLA-3_1.tex
+M-GA-1_0.tex
+M-GAN-1_0.tex
+M-GANES-1_1.tex
+M-GAP UAP-1_0.tex
+M-GATP-1_1.tex
+M-GBHA-5_1.tex
+M-GCA-1_1.tex
+M-GD UAP Attack-1_1.tex
+M-GD UAP-1_0.tex
+M-GE-Gradient Fee.tex
+M-GF Charswap-7_1.tex
+M-GGDP-4_1.tex
+M-GP Parametric Attack-7_1.tex
+M-GSA-1_0.tex
+M-GSSA-1_1.tex
+M-Gaussian Noise Stochastic-7_0.tex
+M-Gaussian Noise-1_0.tex
+M-Gaussian Noise-7_0.tex
+M-GeoNES Deep Perturbation-7_1.tex
+M-HDAP-3_1.tex
+M-HGMA-6_1.tex
+M-Houdini-1_0.tex
+M-IFGM MI-1_0.tex
+M-IGA-1_0.tex
+M-IGAA-7_1.tex
+M-IGB Adam-1_0.tex
+M-IGNA-3_1.tex
+M-ILCM Mixed Loss-3_1.tex
+M-ILCM-1_0.tex
+M-IOZ-1_1.tex
+M-IPA Stealthy Attacks-1_0.tex
+M-IPA Targeted-3_1.tex
+M-ITGSM Fixed Step Size-1_1.tex
+M-ITGSM-1_0.tex
+M-Image Scaling-1_0.tex
+M-JPEG Compression-7_0.tex
+M-JPEG IG-1_0.tex
+M-JPEG-1_0.tex
+M-JSMA F-1_0.tex
+M-JigSaw CGR-2_1.tex
+M-Kuleshov-7_0.tex
+M-LBFGS-1_0.tex
+M-LCOA-1_1.tex
+M-LSCA-3_1.tex
+M-LSR ATN-4_1.tex
+M-Label Flipping-7_0.tex
+M-Label Modification-7_0.tex
+M-Lagrangian NES-1_1.tex
+M-Logit Based-7_0.tex
+M-M DFO ES-7_1.tex
+M-MA Seq2Sick-7_1.tex
+M-MBIM Momentum Iterative-1_0.tex
+M-MBIM-1_0.tex
+M-MD L2 Attack-2_1.tex
+M-MDV-7_1.tex
+M-MG DUAP-1_1.tex
+M-MGA G Direct-1_0.tex
+M-MGA G Indirect-1_0.tex
+M-MGA-1_0.tex
+M-MGAM-1_0.tex
+M-MI-1_0.tex
+M-MIA-1_1.tex
+M-MIFGM-1_0.tex
+M-MIFGSM-1_1.tex
+M-MLBFGS-2_1.tex
+M-MM PGD-1_0.tex
+M-MNCAA-3_1.tex
+M-MPDP-7_1.tex
+M-MPGD AUTO AP-1_1.tex
+M-MSBV SVM Poisoning-4_1.tex
+M-MSU PGD-2_1.tex
+M-MT L2-2_0.tex
+M-MT Linf-2_0.tex
+M-MaxJpeg-5_1.tex
+M-Meta Learning Gradient Adaptation-7_1.tex
+M-Momentum Guided Poisoning-1_1.tex
+M-MultAV Cosine Similarity-3_1.tex
+M-NACDP-7_1.tex
+M-NCAA-5_1.tex
+M-NES -7_0.tex
+M-NES FastPGD-5_0.tex
+M-NES GE-7_0.tex
+M-NES Greedy-7_1.tex
+M-NES JPEG Inf-7_0.tex
+M-NES PGD-7_0.tex
+M-NES PIA-7_0.tex
+M-NES-1_0.tex
+M-NES-7_0.tex
+M-NSA-3_1.tex
+M-NTM-1_0.tex
+M-Naively Poisoning-7_0.tex
+M-One Pixel-5_0.tex
+M-Opt Constrained Swarm attack-1_1.tex
+M-P RGF-7_0.tex
+M-PBATA-7_1.tex
+M-PBSVM-5_1.tex
+M-PCA Week Long-1_1.tex
+M-PCGA-1_1.tex
+M-PELNA-4_1.tex
+M-PFGD Incremental Perturbation-3_1.tex
+M-PGD AUTO-1_0.tex
+M-PGD Ens-3_1.tex
+M-PGD Fast Universal-1_0.tex
+M-PGD Iterative-1_0.tex
+M-PGD JPEG Query-1_0.tex
+M-PGD LL-1_0.tex
+M-PGD NonFast NES-5_0.tex
+M-PGD NonFast-1_0.tex
+M-PGD ReColorAdv-5_1.tex
+M-PGD UAP-2_1.tex
+M-PGD UAT-2_1.tex
+M-PGD-1_0.tex
+M-PGDF-3_1.tex
+M-PGFA-7_1.tex
+M-PGM-1_0.tex
+M-PIA-1_0.tex
+M-PJPA-2_1.tex
+M-PPGD-1_0.tex
+M-PPGD-5_1.tex
+M-PWSWSA-7_1.tex
+M-PWWS-5_0.tex
+M-Parsimonious ECO-1_0.tex
+M-Patch Attack-1_0.tex
+M-Patch Empirical Risk Minimization-6_1.tex
+M-Pc LHS-1_0.tex
+M-Pixel Based Attack-1_0.tex
+M-Poison MSBV-7_0.tex
+M-Poison NSBV-7_0.tex
+M-Poison SBV-7_0.tex
+M-Poisoning Adaptation-1_0.tex
+M-Poisoning Frogs-5_0.tex
+M-Poisoning Strategy-1_0.tex
+M-Practical Swarm  OPT-7_0.tex
+M-Ps LHC-1_0.tex
+M-QA PGD-2_1.tex
+M-QAP-7_1.tex
+M-QL Attack Query Limited-6_0.tex
+M-QL Attack-6_0.tex
+M-Query Mechanisms-7_0.tex
+M-RBO-6_1.tex
+M-RMIA-3_1.tex
+M-RNES PGD-2_1.tex
+M-RPGD FU-4_1.tex
+M-ReAdvP-3_1.tex
+M-ReCAdv-5_0.tex
+M-ReColorAdv-1_0.tex
+M-Reg GenAttack-1_1.tex
+M-RegShadow-3_1.tex
+M-SC UAP-3_1.tex
+M-SCPA-5_1.tex
+M-SCTA-4_1.tex
+M-SDPA-7_1.tex
+M-SG IGA-7_1.tex
+M-SGAA-2_1.tex
+M-SGAA-3_1.tex
+M-SGAN Clustered-5_1.tex
+M-SGP-7_1.tex
+M-SMOTE-4_1.tex
+M-SNG Attack-2_1.tex
+M-STTB-7_1.tex
+M-SV UAP-1_0.tex
+M-SVM A-1_0.tex
+M-SVM PA-1_0.tex
+M-SVR Poisoning-1_0.tex
+M-Saddle Point Attack-1_0.tex
+M-ScoreBased Maximized-1_0.tex
+M-ScoreBased-1_0.tex
+M-Selective Bernoulli-7_1.tex
+M-Semantic Similarity Attack-7_1.tex
+M-Shadow Attack-1_0.tex
+M-SimBA DCT-6_0.tex
+M-SimBA-7_0.tex
+M-Spill Over Attack-1_0.tex
+M-Spoofing Attack-1_0.tex
+M-StAdv-5_0.tex
+M-Stealthy Poisoning Attacks-1_0.tex
+M-TAP++-4_1.tex
+M-TGSA LS-3_1.tex
+M-TGSM-1_0.tex
+M-TMAA-3_1.tex
+M-TPLA-1_1.tex
+M-TRGA-1_1.tex
+M-Targeted Meta Poison Sample-7_1.tex
+M-TextAttack-7_0.tex
+M-TextBugger-7_0.tex
+M-Tiled DFO ES-7_1.tex
+M-Training Adversarial Policies-1_0.tex
+M-Trans PRGA-7_1.tex
+M-UAP-1_0.tex
+M-UGAA-1_1.tex
+M-VDPA MO-5_1.tex
+M-W BIM Loss-4_1.tex
+M-WN CW-3_1.tex
+M-Week Long Attacks-1_0.tex
+M-WitchCraft-1_0.tex
+M-ZGS-2_1.tex
+M-ZOO M SignSGD-5_0.tex
+M-ZOO NES-7_0.tex
+M-ZOO SCD-5_0.tex
+M-ZOO SGD-5_0.tex
+M-ZOO TO-7_0.tex
+M-cADV-4_0.tex
+M-tADV-5_0.tex
+
+== TEST (103) ==
+A-AGD AT-1.tex
+A-BFA-1.tex
+A-CDT TrustRegion Base-1.tex
+A-CW Binary Search Strategy-1.tex
+A-CW Linf-2.tex
+A-Cassidi-1.tex
+A-Cumulant Based-3.tex
+A-DPHC-5.tex
+A-Entropy Based Scoring-6.tex
+A-FGSM R  Line Search Extension-7.tex
+A-FGSM Rapid-1.tex
+A-FMN-2.tex
+A-FastMN Confident Misclassification-1.tex
+A-GB GCN Updated Rule Features-1.tex
+A-GB GCN-1.tex
+A-InputReduction-1.tex
+A-Label Modification-7.tex
+A-MABERT-1.tex
+A-MI Momentum IFGSM-1.tex
+A-MIA Reconstruction-1.tex
+A-Momentum Iterative with Linear Search-2.tex
+A-NS PDA-1.tex
+A-PANBM-1.tex
+A-PIA Influence Perturbation Strategy-1.tex
+A-PSBP-1.tex
+A-Posioning Complex Linkage-5.tex
+A-Posioning Single Linkage-5.tex
+A-Practical Swarm OPT-4.tex
+A-QeBB-7.tex
+A-Regressive Adversarial-1.tex
+A-Semantic Poisoning-1.tex
+A-StealthVox-1.tex
+A-Stochastic Salt and Pepper Attack-7.tex
+A-TUAP CW-5.tex
+A-TextFooler-7.tex
+A-Word Embedding Attack-1.tex
+M- Meta Masked PGD-3.tex
+M-ASP-3.tex
+M-AutoZoom-1.tex
+M-BAE-1.tex
+M-BFGS-5.tex
+M-BIM A-3.tex
+M-Bayes PGD Poisoning-1.tex
+M-Bernoulli-7.tex
+M-Boiling Frog Attack-1.tex
+M-C&W-1.tex
+M-DPatch-1.tex
+M-Data Augmentation Scaling Attack-3.tex
+M-Data Modification Attacks-7.tex
+M-Discretized Quantized Inputs-5.tex
+M-ECP-5.tex
+M-FRAO-3.tex
+M-GUPA-3.tex
+M-GenAttack-7.tex
+M-Gradient Based Word Swap-1.tex
+M-IFS-1.tex
+M-ImageScaling Biased Loss-5.tex
+M-JBGA-1.tex
+M-JSMA SS-1.tex
+M-JSMA Z-1.tex
+M-JigSaw Attack-1.tex
+M-L BFGS Bounded Perturbation Attack-1.tex
+M-LBiasGAN Unlimited-1.tex
+M-L_inf Bound-1.tex
+M-MBAP-3.tex
+M-META-5.tex
+M-MGSA-1.tex
+M-MIGA-2.tex
+M-MMFGSM-1.tex
+M-Meta Poison Non Sample-4.tex
+M-Morpheus-5.tex
+M-MultAV-1.tex
+M-NAG++-1.tex
+M-NAG-1.tex
+M-NES Gradient Estimator-7.tex
+M-NonConvex Optimization-1.tex
+M-OSCNA-1.tex
+M-Oneshot Kill-1.tex
+M-PCG-1.tex
+M-PD UAP-1.tex
+M-PGD ES-1.tex
+M-PLCAA-2.tex
+M-PkNA-5.tex
+M-Poison Insertion-7.tex
+M-PruthiKeyabord CharSwap-7.tex
+M-RAPA-2.tex
+M-RMO PGM-3.tex
+M-RUPA-3.tex
+M-SGGA-3.tex
+M-SPA-7.tex
+M-Saddle PGD-1.tex
+M-Saddle UAP Attack-1.tex
+M-Seq2Sick-5.tex
+M-T PGD-1.tex
+M-TZOO-1.tex
+M-TextFooler-7.tex
+M-TransP RGF-1.tex
+M-UPSET and ANGRI-1.tex
+M-WA BIM-1.tex
+M-WSWSA-3.tex
+M-ZOO Sign SGD-5.tex
+M-ZOO-7.tex
+M-cADV GBO-4.tex

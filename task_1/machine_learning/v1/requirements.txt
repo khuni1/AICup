@@ -7,11 +7,16 @@ matplotlib>=3.7.0
 scikit-learn>=1.2.0
 
 # PyTorch
-pip install torch --index-url https://download.pytorch.org/whl/cu118
+# pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu121
 
 # Hugging Face Transformers 및 데이터셋
-transformers>=4.30.0
+transformers
 datasets>=2.12.0
 
 # 기타 유틸
 tqdm>=4.65.0
+
+sentencepiece 
+protobuf 
+tiktoken 
+tokenizers
