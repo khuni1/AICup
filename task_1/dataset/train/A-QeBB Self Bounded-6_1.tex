@@ -24,7 +24,8 @@ $x_{\text{adv}} = x_N$
 %Explanation
 The Self-Bounded QeBB attack introduces a self-bounded query budget to limit the number of queries based on the uncertainty of the model. This approach ensures that the attack does not exhaust the query budget and maintains the reliability of the model's predictions. The process works as follows:
 
-1. \textbf{Initialization}: Start with the original input $x_0 = x$.2. \textbf{Query Uncertainty}: At each iteration, the uncertainty of the model at the current perturbed input $x_i$ is computed and used to determine if the query budget has been reached.
+1. \textbf{Initialization}: Start with the original input $x_0 = x$.
+2. \textbf{Query Uncertainty}: At each iteration, the uncertainty of the model at the current perturbed input $x_i$ is computed and used to determine if the query budget has been reached.
 3. \textbf{Query Budget Check}: If the query budget $B$ is reached, stop the iteration and proceed to the next input.
 4. \textbf{Perturbation Update}: The perturbation $\delta_i$ is updated based on the query result, and the input $x_i$ is adjusted accordingly. The update rule might involve gradient-free optimization methods to minimize the perturbation while still targeting the desired output.
 5. \textbf{Repeat for N Iterations} or Stop: This process is repeated iteratively for $N$ iterations, where the attack aims to gradually transform the input $x$ into an adversarial example $x_{\text{adv}}$. If the query budget is reached, the attack stops and proceeds to the next input.

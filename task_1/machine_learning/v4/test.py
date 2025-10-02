@@ -1,59 +1,47 @@
 #!/usr/bin/env python3
-import os, re, json, math
+import os, re, json
 import numpy as np
 import pandas as pd
 import torch
-from datasets import Dataset
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer
-from joblib import load as joblib_load
 import matplotlib.pyplot as plt
+from dataclasses import dataclass
+from typing import Dict, List, Any
+
+from datasets import Dataset
+from transformers import (
+    AutoTokenizer, AutoModelForSequenceClassification, Trainer
+)
 from joblib import load as joblib_load
 
 # =========================
-# 경로/세팅 (학습 시 경로와 동일해야 함)
+# 경로/세팅
 # =========================
-BASE_TEST_DIR      = "../../dataset/test"   # 테스트 .tex 디렉토리
-OUTPUT_MODEL_DIR   = "./final_model"        # 학습 스크립트에서 저장한 폴더
+BASE_TEST_DIR      = "../../dataset/test"                 # 테스트 .tex 디렉토리
+OUTPUT_MODEL_DIR   = "./final_model_bigbird_doc"         # ★ BigBird 학습 스크립트의 OUTPUT_MODEL_DIR
 FOLD_MODELS_DIR    = os.path.join(OUTPUT_MODEL_DIR, "fold_models")
-LOGREG_DIR         = os.path.join(OUTPUT_MODEL_DIR, "logreg_models")
-OUT_PRED_CSV       = "./test_predictions.csv"
+CALIB_DIR_ROOT     = os.path.join(OUTPUT_MODEL_DIR, "calibrators")
+RESULT_DIR         = "./final_model_result_bigbird"      # 결과 저장 폴더
+os.makedirs(RESULT_DIR, exist_ok=True)a
 
-# 최종 결과 저장 폴더
-RESULT_DIR         = "./final_model_result"
-os.makedirs(RESULT_DIR, exist_ok=True)
-
-# [CHANGE] 결과 CSV 경로를 결과 폴더로
 OUT_PRED_CSV       = os.path.join(RESULT_DIR, "test_predictions.csv")
-
-MODEL_NAME         = "microsoft/deberta-v3-large"
-CHUNK_MAX_LEN      = 512
-CHUNK_STRIDE       = 256
+MODEL_NAME         = "google/bigbird-roberta-base"
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 torch.set_grad_enabled(False)
 
 # =========================
-# 유틸들 (학습 시 함수와 동일)
+# 유틸
 # =========================
 def _safe_logit(p):
     p = np.clip(p, 1e-6, 1-1e-6)
     return np.log(p/(1-p))
 
-def logit_mean_arr(ps):
-    z = _safe_logit(np.asarray(ps))
-    return 1.0 / (1.0 + np.exp(-z.mean()))
+def apply_platt(platt, p):
+    z = _safe_logit(p).reshape(-1, 1)
+    return platt.predict_proba(z)[:, 1]
 
-def topk_mean_arr(ps, k=3):
-    ps = np.asarray(ps)
-    if len(ps) == 0:
-        return 0.5
-    k = min(k, len(ps))
-    return np.sort(ps)[-k:].mean()
-
-def lse_pool(ps, tau=3.0):
-    z = _safe_logit(np.asarray(ps))
-    val = (1.0/tau)*np.log(np.exp(tau*z).sum())
-    return 1.0/(1.0+np.exp(-val))
+def apply_isotonic(iso, p):
+    return iso.predict(p)
 
 def parse_tex_file(file_path):
     with open(file_path, "r", encoding="utf-8") as f:
@@ -64,58 +52,6 @@ def parse_tex_file(file_path):
         blocks[block.lower()] = m.group(1).strip() if m else ""
     return blocks
 
-def build_doc_features(df_pred):
-    """
-    df_pred: columns = [doc_id, fname, p1]  (test에는 y_true 없음)
-    return: feat_df(문서 단위 피처), X(피처 행렬), order_doc_ids
-    """
-    g = df_pred.groupby("doc_id")["p1"]
-    feat = pd.DataFrame({
-        "doc_id": g.size().index,
-        "max":    g.max().values,
-        "mean":   g.mean().values,
-        "std":    g.std().fillna(0.0).values,
-        "n":      g.size().values,
-        "topk3":  g.apply(lambda s: topk_mean_arr(s.values, k=3)).values,
-        "lse3":   g.apply(lambda s: lse_pool(s.values, tau=3.0)).values,
-        "lmean":  g.apply(lambda s: logit_mean_arr(s.values)).values,
-    })
-    X = feat[["max","mean","std","n","topk3","lse3","lmean"]].values
-    return feat, X, feat["doc_id"].values
-def apply_platt(platt, p):
-    z = _safe_logit(p).reshape(-1, 1)
-    return platt.predict_proba(z)[:, 1]
-
-def apply_isotonic(iso, p):
-    return iso.predict(p)
-
-# =========================
-# 토크나이저 (공유)
-# =========================
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-
-def tokenize_fn_chunked(examples):
-    enc = tokenizer(
-        examples["text"],
-        truncation=True,
-        max_length=CHUNK_MAX_LEN,
-        stride=CHUNK_STRIDE,
-        return_overflowing_tokens=True,
-        padding=False,
-        return_offsets_mapping=False
-    )
-    mapping = enc.get("overflow_to_sample_mapping", None)
-    if mapping is None:
-        mapping = list(range(len(enc["input_ids"])))
-    fnames = examples["fname"]
-    uids   = examples["doc_id"]
-    enc["fname"]  = [fnames[i] for i in mapping]
-    enc["doc_id"] = [uids[i]   for i in mapping]
-    return enc
-
-# =========================
-# 테스트 데이터 로드
-# =========================
 def load_test_dataframe(test_dir):
     rows = []
     for fname in sorted(os.listdir(test_dir)):
@@ -130,48 +66,81 @@ def load_test_dataframe(test_dir):
     return df
 
 # =========================
-# fold별 예측 → 문서 확률
+# 토크나이저 / Collator
+# =========================
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+
+MIN_LEN_FOR_SPARSE = 768   # 12 * 64 (안정 버퍼)
+PAD_MULTIPLE = 64
+
+@dataclass
+class MinLenPadCollator:
+    tokenizer: Any
+    min_len: int = MIN_LEN_FOR_SPARSE
+    multiple: int = PAD_MULTIPLE
+
+    def __call__(self, features: List[Dict[str, Any]]) -> Dict[str, torch.Tensor]:
+        # fname, doc_id는 토크나이저가 처리하지 않으니 분리/복원 필요 없음 (Trainer는 텐서 키만 사용)
+        batch = self.tokenizer.pad(features, padding="longest", return_tensors="pt")
+        seq_len = batch["input_ids"].shape[1]
+        target_len = max(seq_len, self.min_len)
+        if self.multiple:
+            target_len = ((target_len + self.multiple - 1) // self.multiple) * self.multiple
+        if target_len > seq_len:
+            pad_len = target_len - seq_len
+            pad_id = self.tokenizer.pad_token_id
+            pad_ids  = torch.full((batch["input_ids"].size(0), pad_len), pad_id, dtype=batch["input_ids"].dtype)
+            pad_mask = torch.zeros((batch["attention_mask"].size(0), pad_len), dtype=batch["attention_mask"].dtype)
+            batch["input_ids"]      = torch.cat([batch["input_ids"], pad_ids], dim=1)
+            batch["attention_mask"] = torch.cat([batch["attention_mask"], pad_mask], dim=1)
+        return batch
+
+data_collator = MinLenPadCollator(tokenizer=tokenizer, min_len=MIN_LEN_FOR_SPARSE, multiple=PAD_MULTIPLE)
+
+# =========================
+# 토크나이즈(문서 단위)
+# =========================
+MAX_LEN = 4096
+
+def tokenize_fn_doc(examples):
+    enc = tokenizer(
+        examples["text"],
+        truncation=True,
+        max_length=MAX_LEN,
+        padding=False,
+        return_offsets_mapping=False
+    )
+    # 추후 결과 매핑을 위해 보존
+    enc["fname"]  = examples["fname"]
+    enc["doc_id"] = examples["doc_id"]
+    return enc
+
+# =========================
+# fold별 예측 (문서 확률)
 # =========================
 def predict_with_fold(fold_idx, test_df, calibrator="platt"):
+    # 모델 로드
     fold_dir = os.path.join(FOLD_MODELS_DIR, f"fold-{fold_idx}")
-    logreg_dir = os.path.join(LOGREG_DIR, f"fold-{fold_idx}")
-
-    # 모델 / 토크나이저 로드
     model = AutoModelForSequenceClassification.from_pretrained(fold_dir)
-    model.to(DEVICE)
-    model.eval()
+    model.config.attention_type = "block_sparse"
+    model.config.num_random_blocks = 2
+    model.to(DEVICE).eval()
 
-    # 데이터셋
+    # 데이터셋 (문서 단위)
     ds = Dataset.from_pandas(test_df).map(
-        tokenize_fn_chunked, batched=True, remove_columns=list(test_df.columns)
+        tokenize_fn_doc, batched=True, remove_columns=list(test_df.columns)
     )
+    # 위에서 fname/doc_id를 enc에 넣었으므로 남아있음
     ds.set_format("torch")
 
     # 예측
-    trainer = Trainer(model=model, tokenizer=tokenizer)
+    trainer = Trainer(model=model, tokenizer=tokenizer, data_collator=data_collator)
     preds = trainer.predict(ds)
     logits = preds.predictions
-    p1 = torch.softmax(torch.tensor(logits), dim=1).numpy()[:, 1]
+    p_doc = torch.softmax(torch.tensor(logits), dim=1).numpy()[:, 1]
 
-    # 청크 단위 → 문서 피처
-    df_pred = pd.DataFrame({
-        "doc_id": np.array(ds["doc_id"]),
-        "fname":  np.array(ds["fname"]),
-        "p1":     p1,
-    })
-    feat_df, X_doc, order_ids = build_doc_features(df_pred)
-
-    # 로지스틱 집계기 로드
-    logreg_path = os.path.join(logreg_dir, "logreg_meta.joblib")
-    if os.path.exists(logreg_path):
-        clf = joblib_load(logreg_path)
-        p_doc = clf.predict_proba(X_doc)[:, 1]
-    else:
-        # (예외) logreg 없으면 평균 점수로 대체
-        p_doc = X_doc[:, 1]  # 'mean' 컬럼
-    
-    # === [ADD] 보정기 적용 ===
-    calib_dir = os.path.join(logreg_dir, "calibrator")
+    # === 폴드 보정기 적용 ===
+    calib_dir = os.path.join(CALIB_DIR_ROOT, f"fold-{fold_idx}")
     if calibrator == "platt":
         path = os.path.join(calib_dir, "platt.joblib")
         if os.path.exists(path):
@@ -182,11 +151,12 @@ def predict_with_fold(fold_idx, test_df, calibrator="platt"):
         if os.path.exists(path):
             iso = joblib_load(path)
             p_doc = apply_isotonic(iso, p_doc)
-    
-    # 반환: doc_id 순서대로 확률, 해당 파일명 맵
-    # (order_ids는 feat_df["doc_id"], 파일명은 test_df에서 매핑)
+
+    # 반환: doc_id 순서대로 확률
     id2fname = dict(zip(test_df["doc_id"].values, test_df["fname"].values))
-    fnames = [id2fname[i] for i in order_ids]
+    # ds 내부에도 fname/doc_id가 있으나, 여기서는 원본 순서 사용
+    order_ids = test_df["doc_id"].values
+    fnames    = [id2fname[i] for i in order_ids]
     return pd.DataFrame({
         "doc_id": order_ids,
         "fname": fnames,
@@ -201,9 +171,12 @@ def ensemble_probs(prob_cols, how="mean"):
     if how == "mean":
         return arr.mean(axis=0)
     elif how == "topk3":
-        return np.apply_along_axis(topk_mean_arr, 0, arr, k=min(3, arr.shape[0]))
-    else:  # "logit_mean" (기본)
-        return np.apply_along_axis(logit_mean_arr, 0, arr)
+        # fold 수가 3 미만이면 자동으로 가능한 k로 줄어듦
+        k = min(3, arr.shape[0])
+        return np.sort(arr, axis=0)[-k:, :].mean(axis=0)
+    else:  # "logit_mean"
+        z = _safe_logit(arr)
+        return 1.0 / (1.0 + np.exp(-z.mean(axis=0)))
 
 def predict_test(
     test_dir=BASE_TEST_DIR,
@@ -211,7 +184,7 @@ def predict_test(
     ensemble="mean",   # "logit_mean" | "mean" | "topk3"
     theta=0.5,
     save_csv=OUT_PRED_CSV, 
-    calibrator="platt"
+    calibrator="platt"  # "platt" | "isotonic"
 ):
     test_df = load_test_dataframe(test_dir)
 
@@ -240,8 +213,7 @@ def predict_test(
     prob_colnames = [c for c in df_ens.columns if c.startswith("p_fold")]
     df_out = df_ens[["doc_id","fname"] + prob_colnames + ["p_machine","y_pred","ensemble","theta"]].sort_values("doc_id")
 
-    # ===== [ADD] 분포도 저장 (결과 폴더에 저장) =====
-    # 1) 예측 라벨 분포 막대그래프
+    # ===== 시각화 저장 =====
     counts = df_out["y_pred"].value_counts().reindex([0, 1], fill_value=0)
     plt.figure()
     counts.plot(kind="bar")
@@ -252,7 +224,6 @@ def predict_test(
     plt.savefig(os.path.join(RESULT_DIR, "pred_class_distribution.png"), dpi=150)
     plt.close()
 
-    # 2) p(machine) 히스토그램
     plt.figure()
     plt.hist(df_out["p_machine"].values, bins=50)
     plt.xlabel("Predicted P(machine)")
@@ -262,7 +233,7 @@ def predict_test(
     plt.savefig(os.path.join(RESULT_DIR, "p_machine_hist.png"), dpi=150)
     plt.close()
 
-    # 3) 비율 집계/출력/저장 
+    # 텍스트/JSON 요약
     total = int(len(df_out))
     human_cnt   = int(counts.get(0, 0))
     machine_cnt = int(counts.get(1, 0))
@@ -274,7 +245,6 @@ def predict_test(
           f"Machine(1): {machine_cnt} ({machine_pct:.2f}%) | "
           f"Total: {total} | theta={theta}")
 
-    # 텍스트로도 저장
     with open(os.path.join(RESULT_DIR, "pred_summary.txt"), "w", encoding="utf-8") as fsum:
         fsum.write(
             f"Predicted class distribution\n"
@@ -285,7 +255,6 @@ def predict_test(
             f"- Theta:      {theta}\n"
         )
 
-    # JSON 요약(추가로 확률 통계 포함)
     summary = {
         "total_docs": total,
         "human_count": human_cnt,
@@ -306,7 +275,6 @@ def predict_test(
     }
     with open(os.path.join(RESULT_DIR, "pred_summary.json"), "w", encoding="utf-8") as fj:
         json.dump(summary, fj, ensure_ascii=False, indent=2)
-    # ==============================================
 
     if save_csv:
         df_out.to_csv(save_csv, index=False, encoding="utf-8")
@@ -318,10 +286,8 @@ if __name__ == "__main__":
     _ = predict_test(
         test_dir=BASE_TEST_DIR,
         folds=(1,2,3,4,5),
-        ensemble="mean",
-        theta=0.5,                 # 보정 후 0.5 컷
+        ensemble="mean",      # "mean" | "logit_mean" | "topk3"
+        theta=0.5,            # 보정 후 0.5 컷
         save_csv=OUT_PRED_CSV,
-        calibrator="platt"         # 또는 "isotonic"
+        calibrator="platt"    # "platt" | "isotonic"
     )
-
-    

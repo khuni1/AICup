@@ -24,6 +24,8 @@ final_model_bigbird_doc/
 tmp_trainer/
 final_model_modernbert_doc/
 kfold_results_modernbert_doc/
+qwen3vl_235b_eval/
+qwen25vl_kfold/
 # Jupyter Notebook 자동 체크포인트
 .ipynb_checkpoints/
 
