@@ -200,7 +200,7 @@ for fold, (train_idx, val_idx) in enumerate(skf.split(df["text"], df["label"]), 
         weight_decay=0.01,
         logging_dir=os.path.join(fold_dir, "logs"),
         logging_steps=50,
-        evaluation_strategy="epoch",   # 올바른 인자명
+        eval_strategy="epoch",   
         save_strategy="epoch",
         save_total_limit=1,
         load_best_model_at_end=True,

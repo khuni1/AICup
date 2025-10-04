@@ -5,7 +5,8 @@ from PIL import Image
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
-
+os.environ["HF_HUB_ENABLE_XET"] = "0"
+os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "1"
 os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 
 import torch
@@ -115,8 +116,9 @@ def main():
         args.model_id,
         dtype="auto",
         device_map="auto",
-        # attn_implementation="flash_attention_2",  # 설치되어 있으면 주석 해제 권장
+        attn_implementation="sdpa", # 설치되어 있으면 주석 해제 권장
         low_cpu_mem_usage=True,
+        trust_remote_code=True,
     )
     if device == "cpu":
         model.to(device)
