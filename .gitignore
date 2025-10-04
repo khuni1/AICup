@@ -10,7 +10,6 @@ env/
 
 # 데이터 / 로그 / 결과
 *.log
-*.csv
 *.pkl
 results/
 kfold_results_scibert/
