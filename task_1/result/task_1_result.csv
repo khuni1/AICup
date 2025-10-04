@@ -1,0 +1,104 @@
+fname,y_pred
+A-AGD AT-1.tex,1
+A-BFA-1.tex,1
+A-CDT TrustRegion Base-1.tex,0
+A-CW Binary Search Strategy-1.tex,1
+A-CW Linf-2.tex,0
+A-Cassidi-1.tex,0
+A-Cumulant Based-3.tex,1
+A-DPHC-5.tex,1
+A-Entropy Based Scoring-6.tex,1
+A-FGSM R  Line Search Extension-7.tex,1
+A-FGSM Rapid-1.tex,0
+A-FMN-2.tex,0
+A-FastMN Confident Misclassification-1.tex,1
+A-GB GCN Updated Rule Features-1.tex,1
+A-GB GCN-1.tex,0
+A-InputReduction-1.tex,0
+A-Label Modification-7.tex,0
+A-MABERT-1.tex,1
+A-MI Momentum IFGSM-1.tex,1
+A-MIA Reconstruction-1.tex,1
+A-Momentum Iterative with Linear Search-2.tex,1
+A-NS PDA-1.tex,1
+A-PANBM-1.tex,1
+A-PIA Influence Perturbation Strategy-1.tex,1
+A-PSBP-1.tex,1
+A-Posioning Complex Linkage-5.tex,0
+A-Posioning Single Linkage-5.tex,0
+A-Practical Swarm OPT-4.tex,0
+A-QeBB-7.tex,0
+A-Regressive Adversarial-1.tex,1
+A-Semantic Poisoning-1.tex,0
+A-StealthVox-1.tex,1
+A-Stochastic Salt and Pepper Attack-7.tex,1
+A-TUAP CW-5.tex,0
+A-TextFooler-7.tex,0
+A-Word Embedding Attack-1.tex,1
+M- Meta Masked PGD-3.tex,1
+M-ASP-3.tex,1
+M-AutoZoom-1.tex,0
+M-BAE-1.tex,0
+M-BFGS-5.tex,0
+M-BIM A-3.tex,1
+M-Bayes PGD Poisoning-1.tex,1
+M-Bernoulli-7.tex,0
+M-Boiling Frog Attack-1.tex,0
+M-C&W-1.tex,0
+M-DPatch-1.tex,0
+M-Data Augmentation Scaling Attack-3.tex,0
+M-Data Modification Attacks-7.tex,0
+M-Discretized Quantized Inputs-5.tex,0
+M-ECP-5.tex,0
+M-FRAO-3.tex,1
+M-GUPA-3.tex,1
+M-GenAttack-7.tex,0
+M-Gradient Based Word Swap-1.tex,0
+M-IFS-1.tex,0
+M-ImageScaling Biased Loss-5.tex,1
+M-JBGA-1.tex,1
+M-JSMA SS-1.tex,1
+M-JSMA Z-1.tex,0
+M-JigSaw Attack-1.tex,0
+M-L BFGS Bounded Perturbation Attack-1.tex,1
+M-LBiasGAN Unlimited-1.tex,1
+M-L_inf Bound-1.tex,0
+M-MBAP-3.tex,1
+M-META-5.tex,1
+M-MGSA-1.tex,1
+M-MIGA-2.tex,1
+M-MMFGSM-1.tex,0
+M-Meta Poison Non Sample-4.tex,1
+M-Morpheus-5.tex,0
+M-MultAV-1.tex,0
+M-NAG++-1.tex,1
+M-NAG-1.tex,0
+M-NES Gradient Estimator-7.tex,1
+M-NonConvex Optimization-1.tex,0
+M-OSCNA-1.tex,1
+M-Oneshot Kill-1.tex,0
+M-PCG-1.tex,0
+M-PD UAP-1.tex,0
+M-PGD ES-1.tex,1
+M-PLCAA-2.tex,1
+M-PkNA-5.tex,1
+M-Poison Insertion-7.tex,0
+M-PruthiKeyabord CharSwap-7.tex,0
+M-RAPA-2.tex,1
+M-RMO PGM-3.tex,1
+M-RUPA-3.tex,1
+M-SGGA-3.tex,1
+M-SPA-7.tex,1
+M-Saddle PGD-1.tex,1
+M-Saddle UAP Attack-1.tex,1
+M-Seq2Sick-5.tex,0
+M-T PGD-1.tex,1
+M-TZOO-1.tex,1
+M-TextFooler-7.tex,0
+M-TransP RGF-1.tex,0
+M-UPSET and ANGRI-1.tex,0
+M-WA BIM-1.tex,1
+M-WSWSA-3.tex,1
+M-ZOO Sign SGD-5.tex,0
+M-ZOO-7.tex,0
+M-cADV GBO-4.tex,1
