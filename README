@@ -1,52 +1,47 @@
 ### Task 1 Setup & Execution
 
 1. **It is recommended to install Python 3.10.14.**
-    
-    This project **requires CUDA** for GPU acceleration.
-    
-    Please ensure that CUDA (version 12.1 or compatible) is properly installed on your system.
-    
-    Then, change to the following directory:
-    
-    ```bash
-    cd task_1/machine_learning/bigbird
-    ```
-    
-2. **Install required packages**
-    
-    ```bash
-    pip install -r requirements.txt
-    pip install --pre torch torchvision torchaudio --index-url <https://download.pytorch.org/whl/nightly/cu121>
-    ```
-    
-3. **Training**
-    
-    ```bash
-    python3 train.py
-    ```
-    
-    - When you run `train.py`, the model will perform **k-fold training**.
-    During this process:
-        - Each fold’s evaluation results are stored in the `kfold_results` directory.
-        - The trained models and calibrators are stored in the `final_model` directory.
-4. **Test**
-    
-    ```bash
-    python3 test.py
-    ```
-    
-    - The trained model from the training phase is used to predict labels for the test dataset.
-    - The results are saved in the `final_model_result` directory, which contains the following files:
-        - **Prediction Results**
-            - **`test_prediction.csv`**
-            A CSV file summarizing the test dataset predictions, including:
-                - `doc_id`, `fame`
-                - Model-generated probability for each fold (`p_machine`)
-                - Ensemble setting (`ensemble`, default = `mean`)
-                - Decision threshold (`theta`, default = `0.5`)
-                - Predicted label (`y_pred`)
-        - **Additional Files**
-            - **`p_machine_hist.png`**, **`pred_class_distribution.png`**, **`pred_summary.json`**, **`pred_summary.txt`**
-            These files visualize and summarize the predicted probability distribution and class distribution across documents.
 
----
+   This project **requires CUDA** for GPU acceleration.  
+   Please ensure that CUDA (version 12.1 or compatible) is properly installed on your system.
+
+   Then, change to the following directory:
+
+   ```bash
+   cd task_1/machine_learning/bigbird
+   ```
+
+2. **Install required packages**
+
+   ```bash
+   pip install -r requirements.txt
+   pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu121
+   ```
+
+3. **Training**
+
+   ```bash
+   python3 train.py
+   ```
+
+   - When you run `train.py`, the model will perform **k-fold training**. During this process:
+     - Each fold’s evaluation results are stored in the `kfold_results` directory.
+     - The trained models and calibrators are stored in the `final_model` directory.
+
+4. **Test**
+
+   ```bash
+   python3 test.py
+   ```
+
+   - The trained model from the training phase is used to predict labels for the test dataset.
+   - The results are saved in the `final_model_result` directory, which contains the following files:
+     - **Prediction Results**
+       - **`test_prediction.csv`** — A CSV summarizing predictions for the test dataset, including:
+         - `doc_id`, `fame`
+         - Model-generated probability for each fold (`p_machine`)
+         - Ensemble setting (`ensemble`, default = `mean`)
+         - Decision threshold (`theta`, default = `0.5`)
+         - Predicted label (`y_pred`)
+     - **Additional Files**
+       - **`p_machine_hist.png`**, **`pred_class_distribution.png`**, **`pred_summary.json`**, **`pred_summary.txt`** — Visualizations and summaries of predicted probability and class distributions across documents.
