@@ -8,6 +8,13 @@ __pycache__/
 venv/
 env/
 
+# 기타 렌더링 등
+Tex_Rendering
+rendered_dataset
+test_data_labeling
+v1
+v2
+v4
 # 데이터 / 로그 / 결과
 *.log
 *.pkl
@@ -25,6 +32,7 @@ final_model_modernbert_doc/
 kfold_results_modernbert_doc/
 qwen3vl_235b_eval/
 qwen25vl_kfold/
+result/
 # Jupyter Notebook 자동 체크포인트
 .ipynb_checkpoints/
 

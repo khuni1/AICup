@@ -1,3 +1,4 @@
+# ...existing code...
 import os, re, random, json
 import numpy as np
 import pandas as pd
@@ -53,7 +54,7 @@ PAD_MULTIPLE = 64
 
 
 # =========================
-# 0) 재현성 & 경로
+# 0) Reproducibility & paths
 # =========================
 SEED = 42
 random.seed(SEED); np.random.seed(SEED)
@@ -64,23 +65,23 @@ os.environ["PYTHONHASHSEED"] = str(SEED)
 CAL_METHOD = "platt"   # "platt" or "isotonic"
 
 BASE_DIR   = "../../dataset/train"
-MODEL_NAME = "google/bigbird-roberta-base"   # ★ BigBird
-OUT_DIR    = "./kfold_results_bigbird_doc"
-OUTPUT_MODEL_DIR = "./final_model_bigbird_doc"
+MODEL_NAME = "google/bigbird-roberta-base" 
+OUT_DIR    = "./kfold_results"
+OUTPUT_MODEL_DIR = "./final_model"
 
 os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(OUTPUT_MODEL_DIR, exist_ok=True)
 
-# 폴드 별 베스트 모델
+# Best model for each fold
 FOLD_MODELS_DIR = os.path.join(OUTPUT_MODEL_DIR, "fold_models")
-# 폴드별 보정기 저장
+# Directory to save per-fold calibrators
 CALIB_DIR_ROOT  = os.path.join(OUTPUT_MODEL_DIR, "calibrators")
 
 os.makedirs(FOLD_MODELS_DIR, exist_ok=True)
 os.makedirs(CALIB_DIR_ROOT, exist_ok=True)
 
 # =========================
-# 1) .tex 파서 (문서 단위)
+# 1) .tex parser (document-level)
 # =========================
 def parse_tex_file(file_path):
     with open(file_path, "r", encoding="utf-8") as f:
@@ -92,7 +93,7 @@ def parse_tex_file(file_path):
     return blocks
 
 # =========================
-# 2) 전체 데이터 로드 (문서=1행)
+# 2) Load full dataset (one document per row)
 # =========================
 rows = []
 for fname in os.listdir(BASE_DIR):
@@ -100,22 +101,22 @@ for fname in os.listdir(BASE_DIR):
         p = os.path.join(BASE_DIR, fname)
         b = parse_tex_file(p)
         full_text = " ".join(b.values())
-        label = 0 if "_0" in fname else 1     # Human:0 / Machine:1
+        label = 0 if "_0" in fname else 1     
         rows.append({"fname": fname, "text": full_text, "label": label})
 
 df = pd.DataFrame(rows).reset_index(drop=True)
 df["doc_uid"] = np.arange(len(df), dtype=int)
 
-print("=== 전체 라벨 분포 ===")
+print("=== Entire label distribution ===")
 print(df["label"].value_counts(normalize=True).sort_index().rename({0:"Human",1:"Machine"}))
 
 # =========================
-# 3) 토크나이저 (BigBird, 4096)
+# 3) Tokenizer (BigBird, 4096)
 # =========================
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 @dataclass
 class MinLenPadCollator:
-    tokenizer: Any   # ← 타입 힌트 추가 (또는 PreTrainedTokenizerBase)
+    tokenizer: Any
     min_len: int = MIN_LEN_FOR_SPARSE
     multiple: int = PAD_MULTIPLE
 
@@ -133,7 +134,7 @@ class MinLenPadCollator:
             batch["input_ids"]      = torch.cat([batch["input_ids"], pad_ids], dim=1)
             batch["attention_mask"] = torch.cat([batch["attention_mask"], pad_mask], dim=1)
         return batch
-# BigBird 최대 길이
+# BigBird max length
 MAX_LEN = 4096
 
 def tokenize_fn(examples):
@@ -141,7 +142,7 @@ def tokenize_fn(examples):
         examples["text"],
         truncation=True,
         max_length=MAX_LEN,
-        padding=False,              # 동적 패딩 사용
+        padding=False,
         return_offsets_mapping=False
     )
     enc["labels"] = examples["label"]
@@ -150,7 +151,7 @@ def tokenize_fn(examples):
 data_collator = MinLenPadCollator(tokenizer=tokenizer, min_len=768, multiple=64)
 
 # =========================
-# 4) K-Fold + OOF 수집 (문서 단위)
+# 4) K-Fold + collect OOF (document-level)
 # =========================
 K = 5
 skf = StratifiedKFold(n_splits=K, shuffle=True, random_state=SEED)
@@ -189,9 +190,9 @@ for fold, (train_idx, val_idx) in enumerate(skf.split(df["text"], df["label"]), 
     training_args = TrainingArguments(
         output_dir=fold_dir,
         learning_rate=2e-5,
-        per_device_train_batch_size=4,       # ★ BigBird 메모리 고려
+        per_device_train_batch_size=4,
         per_device_eval_batch_size=8,
-        gradient_accumulation_steps=2,       # 유효 배치 8
+        gradient_accumulation_steps=2,
         num_train_epochs=5,
         weight_decay=0.01,
         logging_dir=os.path.join(fold_dir, "logs"),
@@ -204,7 +205,7 @@ for fold, (train_idx, val_idx) in enumerate(skf.split(df["text"], df["label"]), 
         greater_is_better=True,
         dataloader_num_workers=0,
         dataloader_pin_memory=True,
-        group_by_length=False,               # BigBird에서는 길이 그룹핑 비권장
+        group_by_length=False,
         bf16=supports_bf16,
         fp16=not supports_bf16,
         report_to="none",
@@ -221,7 +222,7 @@ for fold, (train_idx, val_idx) in enumerate(skf.split(df["text"], df["label"]), 
         args=training_args,
         train_dataset=train_ds,
         eval_dataset=val_ds,
-        tokenizer=tokenizer,             # (경고는 무시 가능)
+        tokenizer=tokenizer,
         data_collator=data_collator,
         compute_metrics=hf_metrics,
         callbacks=[EarlyStoppingCallback(early_stopping_patience=2, early_stopping_threshold=1e-4)],
@@ -229,7 +230,7 @@ for fold, (train_idx, val_idx) in enumerate(skf.split(df["text"], df["label"]), 
 
     trainer.train()
 
-    # ===== 폴드별 베스트 모델 저장 =====
+    # ===== Save best model per fold =====
     fold_export_dir = os.path.join(FOLD_MODELS_DIR, f"fold-{fold}")
     os.makedirs(fold_export_dir, exist_ok=True)
     trainer.save_model(fold_export_dir)
@@ -237,12 +238,12 @@ for fold, (train_idx, val_idx) in enumerate(skf.split(df["text"], df["label"]), 
     with open(os.path.join(fold_export_dir, "training_args.json"), "w", encoding="utf-8") as fta:
         json.dump(training_args.to_dict(), fta, ensure_ascii=False, indent=2)
 
-    # ---------- 문서 단위 예측 (val) ----------
+    # ---------- Document-level predictions (val) ----------
     preds_val = trainer.predict(val_ds)
     p1_val = torch.softmax(torch.tensor(preds_val.predictions), dim=1).numpy()[:, 1]
     y_val  = preds_val.label_ids
 
-    # ---------- 폴드별 보정기 학습 & 저장 ----------
+    # ---------- Train & save per-fold calibrators ----------
     calib_dir = os.path.join(CALIB_DIR_ROOT, f"fold-{fold}")
     os.makedirs(calib_dir, exist_ok=True)
 
@@ -258,7 +259,7 @@ for fold, (train_idx, val_idx) in enumerate(skf.split(df["text"], df["label"]), 
     iso.fit(p1_val, y_val)
     joblib_dump(iso, os.path.join(calib_dir, "isotonic.joblib"))
 
-    # 선택한 보정기로 val확률 보정 → OOF에 쌓기
+    # Calibrate val probabilities with chosen calibrator → add to OOF
     if CAL_METHOD == "platt":
         p_val_cal = platt.predict_proba(X_platt)[:, 1]
     elif CAL_METHOD == "isotonic":
@@ -266,7 +267,7 @@ for fold, (train_idx, val_idx) in enumerate(skf.split(df["text"], df["label"]), 
     else:
         raise ValueError("CAL_METHOD must be 'platt' or 'isotonic'.")
 
-    # ----- OOF 누적 -----
+    # ----- Accumulate OOF -----
     oof_probs.append(p1_val)
     oof_probs_cal.append(p_val_cal)
     oof_labels.append(y_val)
@@ -276,7 +277,7 @@ for fold, (train_idx, val_idx) in enumerate(skf.split(df["text"], df["label"]), 
     torch.cuda.empty_cache()
 
 # =========================
-# 5) OOF 리포트 (보정 전 ACC-최대 θ*)
+# 5) OOF report (before calibration, ACC-max theta*)
 # =========================
 p_oof  = np.concatenate(oof_probs)
 y_oof  = np.concatenate(oof_labels)
@@ -305,7 +306,7 @@ with open(os.path.join(OUT_DIR, "OOF_metrics_BigBird_raw.json"), "w", encoding="
     }, f, ensure_ascii=False, indent=2)
 
 # =========================
-# 6) OOF (보정 후, θ=0.5 고정)
+# 6) OOF (after calibration, theta=0.5 fixed)
 # =========================
 p_oof_cal = np.concatenate(oof_probs_cal)
 theta_fixed = 0.5
@@ -333,7 +334,7 @@ with open(os.path.join(OUT_DIR, f"OOF_metrics_BigBird_{CAL_METHOD}_theta0.5.json
     }, f, ensure_ascii=False, indent=2)
 
 # =========================
-# 7) FP/FN 리스트 저장 (보정 후 기준)
+# 7) Save FP/FN lists (using calibrated results)
 # =========================
 id_to_fname = dict(zip(df["doc_uid"].values, df["fname"].values))
 is_fp = (y_oof == 0) & (yhat_oof_cal == 1)
@@ -372,12 +373,12 @@ with open(os.path.join(OUT_DIR, "OOF_error_summary.json"), "w", encoding="utf-8"
 print(f"Saved FP/FN lists to: {OUT_DIR}")
 
 # =========================
-# 8) 최종 OOF θ 저장 (보정 후 0.5 사용)
+# 8) Save final OOF theta (using 0.5 after calibration)
 # =========================
 theta_path = os.path.join(OUTPUT_MODEL_DIR, "oof_threshold.json")
 with open(theta_path, "w", encoding="utf-8") as ft:
     json.dump({
-        "calibration": CAL_METHOD,          # "platt" or "isotonic"
+        "calibration": CAL_METHOD,         
         "theta": 0.5,
         "selected_metric": "fixed_after_calibration",
         "note": "Used calibrated OOF probabilities with fixed theta=0.5 (doc-level, BigBird)"
