@@ -9,14 +9,14 @@
     Then, change to the following directory:
     
     ```bash
-    cd task_1/machine_learning/bigbird
+    cd machine_learning/bigbird
     ```
     
 2. **Install required packages**
     
     ```bash
     pip install -r requirements.txt
-    pip install --pre torch torchvision torchaudio --index-url <https://download.pytorch.org/whl/nightly/cu121>
+    pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu121
     ```
     
 3. **Training**
@@ -48,5 +48,3 @@
         - **Additional Files**
             - **`p_machine_hist.png`**, **`pred_class_distribution.png`**, **`pred_summary.json`**, **`pred_summary.txt`**
             These files visualize and summarize the predicted probability distribution and class distribution across documents.
-
----

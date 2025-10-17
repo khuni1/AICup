@@ -12,6 +12,9 @@ env/
 Tex_Rendering
 rendered_dataset
 test_data_labeling
+qwen3vl
+task_3_result.csv
+make_result.py
 v1
 v2
 v4
