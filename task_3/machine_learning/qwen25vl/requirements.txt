@@ -4,16 +4,16 @@
 # Hugging Face Transformers (4.57.0)
 # pip install git+https://github.com/huggingface/transformers
 
-# 기본 라이브러리
+# default libraries
 numpy>=1.23.0
 pandas>=1.5.0
 matplotlib>=3.7.0
 
-# 머신러닝 및 평가 지표
+# machine learning
 scikit-learn>=1.2.0
 datasets
 
-# 기타 유틸
+# another utils
 tqdm>=4.65.0
 sentencepiece 
 protobuf 
