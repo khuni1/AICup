@@ -40,8 +40,8 @@ except Exception:
 # ----------------------------
 # 고정 경로
 # ----------------------------
-TRAIN_JSON = "../train/normalized_train.json"
-IMAGES_DIR = "../train/images"
+TRAIN_JSON = "../../train/normalized_train.json"
+IMAGES_DIR = "../../train/images"
 
 # ----------------------------
 # 프롬프트
@@ -224,7 +224,7 @@ class PCTRQADataset(Dataset):
         input_ids = proc_full["input_ids"][0]
         labels = input_ids.clone()
         prompt_len = proc_prompt["input_ids"].shape[1]
-        labels[:prompt_len] = -100  # 프롬프트 토큰 마스킹
+        labels[:prompt_len] = -100 
 
         item = {
             "input_ids": input_ids,
