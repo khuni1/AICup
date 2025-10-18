@@ -15,7 +15,7 @@ from transformers import (
     Qwen2_5_VLForConditionalGeneration,
 )
 
-# ---- normalize(학습 스크립트와 동일하게) ----
+# ---- normalize ----
 def normalize_answer(s: str) -> str:
     s = (s or "").strip()
     if s in ("是", "否"):
