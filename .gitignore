@@ -18,7 +18,11 @@ make_result.py
 v1
 v2
 v4
+
+# ================================
 # 데이터 / 로그 / 결과
+# IMPORTANT: Added exclusions for GNN project files (.pth, .kv, .data, .label)
+# ================================
 *.log
 *.pkl
 results/
@@ -36,6 +40,12 @@ kfold_results_modernbert_doc/
 qwen3vl_235b_eval/
 qwen25vl_kfold/
 result/
+*.pth       # PyTorch Model Weights (GNN models)
+*.kv        # Gensim KeyedVectors (Node2Vec embeddings)
+*.data      # Raw Graph Data (CyberAI2025_train.data, etc.)
+*.label     # Raw Label Files (CyberAI2025_train.label, etc.)
+
+
 # Jupyter Notebook 자동 체크포인트
 .ipynb_checkpoints/
 
