@@ -1,50 +1,36 @@
-### Task 1 Setup & Execution
+# Prerequisite:
+Install PyTorch, Hugging Face Transformers, and essential libraries for machine learning and data processing.
 
-1. **It is recommended to install Python 3.10.14.**
-    
-    This project **requires CUDA** for GPU acceleration.
-    
-    Please ensure that CUDA (version 12.1 or compatible) is properly installed on your system.
-    
-    Then, change to the following directory:
-    
-    ```bash
-    cd machine_learning/bigbird
-    ```
-    
-2. **Install required packages**
-    
-    ```bash
-    pip install -r requirements.txt
-    pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu121
-    ```
-    
-3. **Training**
-    
-    ```bash
-    python3 train.py
-    ```
-    
-    - When you run `train.py`, the model will perform **k-fold training**.
-    During this process:
-        - Each fold’s evaluation results are stored in the `kfold_results` directory.
-        - The trained models and calibrators are stored in the `final_model` directory.
-4. **Test**
-    
-    ```bash
-    python3 test.py
-    ```
-    
-    - The trained model from the training phase is used to predict labels for the test dataset.
-    - The results are saved in the `final_model_result` directory, which contains the following files:
-        - **Prediction Results**
-            - **`test_prediction.csv`**
-            A CSV file summarizing the test dataset predictions, including:
-                - `doc_id`, `fame`
-                - Model-generated probability for each fold (`p_machine`)
-                - Ensemble setting (`ensemble`, default = `mean`)
-                - Decision threshold (`theta`, default = `0.5`)
-                - Predicted label (`y_pred`)
-        - **Additional Files**
-            - **`p_machine_hist.png`**, **`pred_class_distribution.png`**, **`pred_summary.json`**, **`pred_summary.txt`**
-            These files visualize and summarize the predicted probability distribution and class distribution across documents.
+We used:
+-   PyTorch (Nightly, CUDA 12.1):  
+	pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu121
+
+-   Hugging Face Transformers and Datasets:  
+	pip install transformers datasets>=2.12.0
+
+-   Default Libraries:  
+	pip install numpy>=1.23.0 pandas>=1.5.0 matplotlib>=3.7.0
+
+-   Machine Learning:  
+	pip install scikit-learn>=1.2.0
+
+-   Additional Utilities:  
+	pip install tqdm>=4.65.0 sentencepiece protobuf tiktoken tokenizers accelerate safetensors joblib
+
+If you faced difficulty in installing, upgrade pip first:  
+	pip install --upgrade pip setuptools
+
+To resolve Numpy Conflict (if):  
+-   Uninstall Numpy: pip uninstall numpy -y  
+-   Install a Compatible Numpy Version: pip install numpy==1.26.4
+
+# About scripts
+-   train.py → Performs 5-fold document-level classification using BigBird-RoBERTa with Platt/Isotonic calibration, saving per-fold models, calibrated OOF metrics, confusion matrices, and FP/FN reports (output: final_model/ with calibrated thresholds and fold models).
+-   test.py → Loads BigBird-RoBERTa fold models and Platt/Isotonic calibrators, tokenizes test .tex docs, produces per-fold probabilities and ensembles them (mean/logit_mean/topk3) with θ=0.5, saving final_model_result/test_predictions.csv plus distribution plots and JSON/TXT summaries.
+
+
+# Execution Steps:
+1. cd task1/machine_learning/bigbird
+2. Run train.py
+3. Run test.py
+
